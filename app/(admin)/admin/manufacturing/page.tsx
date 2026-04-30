@@ -1,6 +1,7 @@
 'use client';
 
 import { AdminLayout } from '@/components/AdminLayout';
+import { SheetEmbed } from '@/components/admin/SheetEmbed';
 import { supabase } from '@/lib/supabase';
 import { useState, useEffect } from 'react';
 import { formatCentsToUSD } from '@/lib/format';
@@ -821,6 +822,12 @@ export default function ManufacturingPage() {
           </div>
         )}
       </div>
+
+      <SheetEmbed
+        slug="manufacturing"
+        defaultLabel="Manufacturing · costing + recipes"
+        hint="ingredient pricing, per-pop recipes, and batch costing — the workbook is the source of truth."
+      />
     </AdminLayout>
   );
 }

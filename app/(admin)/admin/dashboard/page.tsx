@@ -80,6 +80,13 @@ const TOOLS: ToolCard[] = [
     accent: 'var(--magenta)',
   },
   {
+    href: '/admin/sheets',
+    label: 'sheets',
+    description:
+      'link Google Sheets to financials / manufacturing / inventory / wholesale and they render inline on those pages.',
+    accent: 'var(--ultraviolet)',
+  },
+  {
     href: '/admin/pitch',
     label: 'pitch deck',
     description:

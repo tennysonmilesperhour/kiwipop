@@ -18,6 +18,7 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: '/admin/manufacturing', label: 'manufacturing' },
   { href: '/admin/financials', label: 'financials' },
   { href: '/admin/logistics', label: 'logistics' },
+  { href: '/admin/sheets', label: 'sheets' },
   { href: '/admin/pitch', label: 'pitch deck' },
 ];
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { AdminLayout } from '@/components/AdminLayout';
+import { SheetEmbed } from '@/components/admin/SheetEmbed';
 import { supabase } from '@/lib/supabase';
 import { formatCentsToUSD } from '@/lib/format';
 import { useState, useEffect } from 'react';
@@ -384,6 +385,12 @@ export default function FinancialsPage() {
           <p>No expenses recorded yet</p>
         )}
       </div>
+
+      <SheetEmbed
+        slug="financials"
+        defaultLabel="Financials · P&L workbook"
+        hint="P&L, COGS, expenses, and margin tracking that's faster to keep in sheets than in this UI."
+      />
     </AdminLayout>
   );
 }

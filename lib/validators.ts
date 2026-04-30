@@ -134,6 +134,29 @@ export const wholesaleApplicationSchema = z.object({
 
 export type WholesaleApplication = z.infer<typeof wholesaleApplicationSchema>;
 
+const SHEET_SLUG = /^[a-z0-9_-]+$/;
+
+export const sheetUpsertSchema = z.object({
+  slug: z
+    .string()
+    .trim()
+    .min(1)
+    .max(50)
+    .regex(SHEET_SLUG, 'slug must be lowercase letters, numbers, dash, or underscore'),
+  label: z.string().trim().min(1).max(100),
+  embed_url: z
+    .string()
+    .url()
+    .refine(
+      (u) => u.startsWith('https://docs.google.com/') || u.startsWith('https://'),
+      'must be an https:// URL'
+    ),
+  height_px: z.number().int().min(200).max(2000).optional(),
+  position: z.number().int().min(0).max(999).optional(),
+});
+
+export type SheetUpsert = z.infer<typeof sheetUpsertSchema>;
+
 export const wholesaleAccountUpdateSchema = z.object({
   approval_status: z.enum(['pending', 'approved', 'rejected']).optional(),
   tier: z.enum(['standard', 'premium']).optional(),

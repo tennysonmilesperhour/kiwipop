@@ -1,6 +1,7 @@
 'use client';
 
 import { AdminLayout } from '@/components/AdminLayout';
+import { SheetEmbed } from '@/components/admin/SheetEmbed';
 import { supabase } from '@/lib/supabase';
 import { formatCentsToUSD } from '@/lib/format';
 import { useState, useEffect } from 'react';
@@ -454,6 +455,12 @@ export default function WholesalePage() {
           <p>No tiered pricing yet</p>
         )}
       </div>
+
+      <SheetEmbed
+        slug="wholesale"
+        defaultLabel="Wholesale · pipeline tracker"
+        hint="account pipeline, expected volume, and outreach notes that supabase doesn't store."
+      />
     </AdminLayout>
   );
 }

@@ -1718,6 +1718,39 @@ button { font: inherit; }
 }
 
 /* =========================================================
+   25e. ADMIN SHEET EMBED
+   ========================================================= */
+.sheet-embed {
+  margin-top: 1.5rem;
+  padding: 1rem 1rem 0.75rem;
+}
+.sheet-embed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.sheet-embed-hint {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--bone);
+  margin-top: 0.5rem;
+}
+.sheet-embed iframe {
+  display: block;
+  width: 100%;
+  border-radius: 0;
+}
+.sheet-embed--empty,
+.sheet-embed--loading {
+  background: var(--midnight);
+  border-color: rgba(244, 240, 232, 0.1);
+}
+
+/* =========================================================
    25c. PITCH DECK (admin)
    ========================================================= */
 .pitch-page {

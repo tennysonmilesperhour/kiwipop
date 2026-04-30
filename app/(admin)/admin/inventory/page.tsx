@@ -1,6 +1,7 @@
 'use client';
 
 import { AdminLayout } from '@/components/AdminLayout';
+import { SheetEmbed } from '@/components/admin/SheetEmbed';
 import { useProducts } from '@/lib/hooks';
 import { useState } from 'react';
 
@@ -133,6 +134,12 @@ export default function InventoryPage() {
           <p>No products yet</p>
         )}
       </div>
+
+      <SheetEmbed
+        slug="inventory"
+        defaultLabel="Inventory · stock + projections"
+        hint="restock plans and projection math the supabase tables don't track."
+      />
     </AdminLayout>
   );
 }
