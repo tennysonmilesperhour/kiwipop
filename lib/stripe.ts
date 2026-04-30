@@ -2,17 +2,35 @@ import 'server-only';
 
 import Stripe from 'stripe';
 
-const secretKey = process.env.STRIPE_SECRET_KEY;
+let cached: Stripe | null = null;
 
-if (!secretKey) {
-  throw new Error(
-    'Missing STRIPE_SECRET_KEY environment variable. Set it in .env.local for local dev or Vercel project settings for production.'
-  );
+function build(): Stripe {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    throw new Error(
+      'Missing STRIPE_SECRET_KEY environment variable.'
+    );
+  }
+  return new Stripe(secretKey, {
+    apiVersion: '2025-02-24.acacia',
+    typescript: true,
+  });
 }
 
-export const stripe = new Stripe(secretKey, {
-  apiVersion: '2025-02-24.acacia',
-  typescript: true,
+function getStripe(): Stripe {
+  if (!cached) cached = build();
+  return cached;
+}
+
+/**
+ * Lazy-initialized Stripe client. Server-only.
+ */
+export const stripe = new Proxy({} as Stripe, {
+  get(_target, prop, receiver) {
+    const client = getStripe();
+    const value = Reflect.get(client, prop, receiver);
+    return typeof value === 'function' ? value.bind(client) : value;
+  },
 });
 
 interface CheckoutLineItem {
@@ -32,8 +50,8 @@ interface CreateCheckoutSessionParams {
 }
 
 export async function createCheckoutSession(params: CreateCheckoutSessionParams) {
-  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = params.items.map(
-    (item) => ({
+  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
+    params.items.map((item) => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -44,8 +62,7 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
         unit_amount: item.amount,
       },
       quantity: item.quantity,
-    })
-  );
+    }));
 
   return stripe.checkout.sessions.create({
     mode: 'payment',
