@@ -1153,3 +1153,84 @@ button { font: inherit; }
    ========================================================= */
 .bg-gray-100, .bg-zinc-100, .bg-slate-100 { background: var(--terminal) !important; }
 .text-zinc-600, .text-zinc-500, .text-zinc-400 { color: var(--bone) !important; }
+
+/* =========================================================
+   23. VERSION-WATCHER TOAST
+   ========================================================= */
+.version-toast {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  left: 1rem;
+  max-width: 520px;
+  margin-left: auto;
+  z-index: 9999;
+  background: var(--midnight);
+  border: 1px solid var(--lime);
+  box-shadow: 0 0 30px rgba(168, 255, 60, 0.25),
+    inset 0 0 0 1px rgba(168, 255, 60, 0.08);
+  animation: fadeUp 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  font-family: var(--mono);
+}
+.version-toast-content {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  flex-wrap: wrap;
+}
+.version-toast-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  animation: pulse 1.5s infinite;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(168, 255, 60, 0.8);
+}
+.version-toast-text { flex: 1; min-width: 0; }
+.version-toast-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  color: var(--lime);
+}
+.version-toast-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--bone);
+  margin-top: 2px;
+}
+.version-toast-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+  align-items: center;
+}
+.version-toast-actions .btn {
+  padding: 0.5rem 0.85rem;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+}
+.version-toast-actions .btn:not(.btn-primary) {
+  background: transparent;
+  border-color: rgba(244, 240, 232, 0.2);
+  padding: 0.35rem 0.6rem;
+  font-size: 14px;
+  line-height: 1;
+}
+
+@media (max-width: 520px) {
+  .version-toast {
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+  }
+  .version-toast-content { padding: 0.75rem; }
+  .version-toast-actions { width: 100%; margin-left: 0; }
+  .version-toast-actions .btn-primary { flex: 1; }
+}

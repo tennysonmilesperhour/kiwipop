@@ -8,6 +8,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
+import { VersionWatcher } from '@/components/VersionWatcher';
 import { Providers } from './providers';
 import './globals.css';
 
@@ -109,6 +110,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Navigation />
           <main className="main-container">{children}</main>
           <Footer />
+          <VersionWatcher />
         </Providers>
         <Analytics />
         <SpeedInsights />
