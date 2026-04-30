@@ -3,28 +3,48 @@
 import { AdminLayout } from '@/components/AdminLayout';
 import { useOrders, useOrderWithItems } from '@/lib/hooks';
 import { formatCentsToUSD } from '@/lib/format';
-import { supabase } from '@/lib/supabase';
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function OrdersPage() {
   const { data: orders, isLoading, refetch } = useOrders();
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const { data: selectedOrder } = useOrderWithItems(selectedOrderId || '');
+  const [statusError, setStatusError] = useState<string>('');
+  const [pendingStatus, setPendingStatus] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const handleStatusUpdate = async (orderId: string, newStatus: string) => {
-    const { error } = await supabase
-      .from('orders')
-      .update({ status: newStatus })
-      .eq('id', orderId);
-
-    if (!error) {
-      refetch();
+    setStatusError('');
+    setPendingStatus(newStatus);
+    try {
+      const response = await fetch(`/api/admin/orders/${orderId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error ?? 'Failed to update order');
+      }
+      await refetch();
+      await queryClient.invalidateQueries({ queryKey: ['order', orderId] });
+    } catch (err) {
+      setStatusError(
+        err instanceof Error ? err.message : 'Failed to update order'
+      );
+    } finally {
+      setPendingStatus(null);
     }
   };
 
   return (
     <AdminLayout>
       <h1 className="text-3xl font-bold mb-6">Orders</h1>
+
+      {statusError && (
+        <div className="alert alert-error mb-4">{statusError}</div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
@@ -90,7 +110,8 @@ export default function OrdersPage() {
               <div>
                 <p className="text-gray-600">Status</p>
                 <select
-                  value={selectedOrder.status}
+                  value={pendingStatus ?? selectedOrder.status}
+                  disabled={!!pendingStatus}
                   onChange={(e) => handleStatusUpdate(selectedOrder.id, e.target.value)}
                   className="form-select text-sm"
                 >
@@ -98,7 +119,7 @@ export default function OrdersPage() {
                   <option value="paid">Paid</option>
                   <option value="shipped">Shipped</option>
                   <option value="completed">Completed</option>
-                  <option value="cancelled">Cancelled</option>
+                  <option value="cancelled">Cancelled (refunds Stripe)</option>
                 </select>
               </div>
 

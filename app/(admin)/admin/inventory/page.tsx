@@ -2,29 +2,45 @@
 
 import { AdminLayout } from '@/components/AdminLayout';
 import { useProducts } from '@/lib/hooks';
-import { supabase } from '@/lib/supabase';
 import { useState } from 'react';
 
 export default function InventoryPage() {
   const { data: products, isLoading, refetch } = useProducts();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<{ [key: string]: number }>({});
+  const [error, setError] = useState<string>('');
+  const [savingId, setSavingId] = useState<string | null>(null);
 
   const handleUpdateStock = async (productId: string, newStock: number) => {
-    const { error } = await supabase
-      .from('products')
-      .update({ in_stock: newStock })
-      .eq('id', productId);
-
-    if (!error) {
+    setError('');
+    setSavingId(productId);
+    try {
+      const response = await fetch('/api/admin/inventory', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId,
+          quantityAvailable: newStock,
+        }),
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error ?? 'Update failed');
+      }
       setEditingId(null);
-      refetch();
+      await refetch();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Update failed');
+    } finally {
+      setSavingId(null);
     }
   };
 
   return (
     <AdminLayout>
       <h1 className="text-3xl font-bold mb-6">Inventory</h1>
+
+      {error && <div className="alert alert-error mb-4">{error}</div>}
 
       <div className="card">
         <h2 className="card-title">Product Stock Levels</h2>
@@ -85,9 +101,10 @@ export default function InventoryPage() {
                               editValues[product.id] ?? product.in_stock
                             )
                           }
+                          disabled={savingId === product.id}
                           className="text-green-600 font-bold"
                         >
-                          Save
+                          {savingId === product.id ? 'Saving…' : 'Save'}
                         </button>
                         <button
                           onClick={() => setEditingId(null)}

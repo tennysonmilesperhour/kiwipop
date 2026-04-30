@@ -32,7 +32,7 @@ export const productCreateSchema = z.object({
   price_cents: z.number().int().positive(),
   preorder_only: z.boolean().default(false),
   preorder_deadline: z.string().datetime().nullable().optional(),
-  in_stock: z.boolean().default(true),
+  in_stock: z.number().int().min(0).default(0),
   image_url: z.string().url().nullable().optional().or(z.literal('')),
 });
 

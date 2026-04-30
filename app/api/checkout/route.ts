@@ -12,7 +12,7 @@ interface ProductRow {
   name: string;
   price_cents: number;
   image_url: string | null;
-  in_stock: boolean;
+  in_stock: number;
   preorder_only: boolean;
 }
 
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (!product.in_stock && !product.preorder_only) {
+    if (product.in_stock <= 0 && !product.preorder_only) {
       return NextResponse.json(
         { error: `Product out of stock: ${product.name}` },
         { status: 409 }
