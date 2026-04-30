@@ -119,3 +119,84 @@ export const wholesaleApprovalSchema = z.object({
 });
 
 export type WholesaleApproval = z.infer<typeof wholesaleApprovalSchema>;
+
+export const wholesaleAccountUpdateSchema = z.object({
+  approval_status: z.enum(['pending', 'approved', 'rejected']).optional(),
+  tier: z.enum(['standard', 'premium']).optional(),
+  business_name: z.string().trim().min(1).max(200).optional(),
+  tax_id: z.string().trim().max(100).optional().or(z.literal('')),
+});
+
+export type WholesaleAccountUpdate = z.infer<typeof wholesaleAccountUpdateSchema>;
+
+export const wholesalePricingCreateSchema = z.object({
+  product_id: z.string().uuid(),
+  tier: z.enum(['standard', 'premium']),
+  price_cents: z.number().int().positive(),
+  min_quantity: z.number().int().positive(),
+});
+
+export type WholesalePricingCreate = z.infer<typeof wholesalePricingCreateSchema>;
+
+export const supplierCreateSchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  contact_email: z.string().email().nullable().optional().or(z.literal('')),
+  supplier_type: z.enum(['manufacturer', 'raw_material']),
+  lead_time_days: z.number().int().min(0).nullable().optional(),
+});
+
+export type SupplierCreate = z.infer<typeof supplierCreateSchema>;
+export const supplierUpdateSchema = supplierCreateSchema.partial();
+export type SupplierUpdate = z.infer<typeof supplierUpdateSchema>;
+
+export const rawMaterialCreateSchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  sku: z.string().trim().min(1).max(50),
+  quantity_available: z.number().int().min(0).default(0),
+  quantity_reserved: z.number().int().min(0).default(0),
+  reorder_point: z.number().int().min(0).default(0),
+  supplier_id: z.string().uuid().nullable().optional(),
+});
+
+export type RawMaterialCreate = z.infer<typeof rawMaterialCreateSchema>;
+export const rawMaterialUpdateSchema = rawMaterialCreateSchema.partial();
+export type RawMaterialUpdate = z.infer<typeof rawMaterialUpdateSchema>;
+
+export const batchUpdateSchema = z.object({
+  batch_number: z.string().trim().min(1).max(50).optional(),
+  product_id: z.string().uuid().optional(),
+  quantity_ordered: z.number().int().positive().optional(),
+  quantity_completed: z.number().int().min(0).optional(),
+  supplier_id: z.string().uuid().nullable().optional(),
+  status: z
+    .enum(['draft', 'ordered', 'in_progress', 'completed', 'shipped'])
+    .optional(),
+  order_date: z.string().nullable().optional(),
+  expected_delivery: z.string().nullable().optional(),
+  actual_delivery: z.string().nullable().optional(),
+  cost_cents: z.number().int().min(0).optional(),
+  notes: z.string().trim().max(2000).optional().or(z.literal('')),
+});
+
+export type BatchUpdate = z.infer<typeof batchUpdateSchema>;
+
+export const shipmentUpdateSchema = z.object({
+  carrier: z.enum(['usps', 'ups', 'fedex']).optional(),
+  tracking_number: z.string().trim().min(1).max(100).optional(),
+  label_url: z.string().url().nullable().optional().or(z.literal('')),
+  shipped_at: z.string().datetime().nullable().optional(),
+  delivered_at: z.string().datetime().nullable().optional(),
+});
+
+export type ShipmentUpdate = z.infer<typeof shipmentUpdateSchema>;
+
+export const returnUpdateSchema = z.object({
+  status: z
+    .enum(['pending', 'received', 'refunded', 'rejected'])
+    .optional(),
+  reason: z.string().trim().min(1).max(1000).optional(),
+  refund_amount_cents: z.number().int().min(0).optional(),
+  process_refund: z.boolean().optional(),
+});
+
+export type ReturnUpdate = z.infer<typeof returnUpdateSchema>;

@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
+import { useAuth } from '@/lib/auth-context';
 import { formatCentsToUSD } from '@/lib/format';
 import {
   checkoutRequestSchema,
@@ -21,9 +23,11 @@ export default function CheckoutPage() {
   const items = useCart((s) => s.items);
   const total = useCart((s) => s.getTotalPrice());
   const router = useRouter();
+  const { user, profile } = useAuth();
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
+  const [hasEditedEmail, setHasEditedEmail] = useState(false);
 
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState<ShippingAddress>({
@@ -35,6 +39,24 @@ export default function CheckoutPage() {
     zip: '',
     country: 'US',
   });
+
+  useEffect(() => {
+    if (!hasEditedEmail && user?.email && !email) {
+      setEmail(user.email);
+    }
+    if (
+      profile?.display_name &&
+      !address.firstName &&
+      !address.lastName
+    ) {
+      const [first, ...rest] = profile.display_name.split(' ');
+      setAddress((prev) => ({
+        ...prev,
+        firstName: first ?? '',
+        lastName: rest.join(' '),
+      }));
+    }
+  }, [user, profile, hasEditedEmail, email, address.firstName, address.lastName]);
 
   if (items.length === 0) {
     return (
@@ -103,6 +125,37 @@ export default function CheckoutPage() {
     <div className="checkout-container">
       <h1 className="text-2xl font-bold mb-6">Checkout</h1>
 
+      {!user && (
+        <div
+          className="alert mb-4"
+          style={{ background: '#f4f4f5', borderRadius: 8, padding: 12 }}
+        >
+          <strong>Checking out as a guest.</strong> No account needed —
+          we&apos;ll email your receipt and a tracking link.{' '}
+          <Link
+            href={`/auth/signin?next=${encodeURIComponent('/checkout')}`}
+            className="text-primary font-bold"
+          >
+            Have an account? Sign in
+          </Link>
+          .
+        </div>
+      )}
+
+      {user && (
+        <div
+          className="alert mb-4"
+          style={{
+            background: '#ecfdf5',
+            borderRadius: 8,
+            padding: 12,
+          }}
+        >
+          Signed in as <strong>{user.email}</strong>. This order will be saved
+          to your account.
+        </div>
+      )}
+
       {error && <div className="alert alert-error">{error}</div>}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -140,7 +193,10 @@ export default function CheckoutPage() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setHasEditedEmail(true);
+                }}
                 className="form-input"
                 required
                 autoComplete="email"

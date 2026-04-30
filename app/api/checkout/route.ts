@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { createCheckoutSession } from '@/lib/stripe';
 import { checkoutRequestSchema } from '@/lib/validators';
 
@@ -99,10 +100,24 @@ export async function POST(request: NextRequest) {
     (item) => productsById.get(item.productId)?.preorder_only === true
   );
 
+  // If the caller has an active session, attach their user_id so the order
+  // shows up in their account history. Guests check out without a session
+  // and the order stays user_id=null (retrievable via the order id link).
+  let authedUserId: string | null = null;
+  try {
+    const supabase = createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    authedUserId = user?.id ?? null;
+  } catch {
+    authedUserId = null;
+  }
+
   const { data: order, error: orderError } = await supabaseAdmin
     .from('orders')
     .insert({
-      user_id: null,
+      user_id: authedUserId,
       user_email: parsed.email,
       status: 'pending',
       total_cents: totalCents,
