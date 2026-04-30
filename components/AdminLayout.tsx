@@ -18,6 +18,7 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: '/admin/manufacturing', label: 'manufacturing' },
   { href: '/admin/financials', label: 'financials' },
   { href: '/admin/logistics', label: 'logistics' },
+  { href: '/admin/pitch', label: 'pitch deck' },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {

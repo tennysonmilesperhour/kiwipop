@@ -1566,6 +1566,304 @@ button { font: inherit; }
 .legal-page > .btn { margin-top: 2.5rem; }
 
 /* =========================================================
+   25c. PITCH DECK (admin)
+   ========================================================= */
+.pitch-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+.pitch-header { margin-bottom: 1.5rem; }
+.pitch-header h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+  color: var(--lime);
+  line-height: 0.95;
+}
+.pitch-subtitle {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-top: 0.6rem;
+}
+
+.pitch-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0;
+  border: 1px solid rgba(244, 240, 232, 0.15);
+  margin-bottom: 2rem;
+}
+.pitch-tab {
+  background: var(--terminal);
+  border: none;
+  border-right: 1px solid rgba(244, 240, 232, 0.15);
+  color: var(--paper);
+  padding: 1rem 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: background 0.15s, color 0.15s;
+}
+.pitch-tab:last-child { border-right: none; }
+.pitch-tab:hover { background: var(--midnight); }
+.pitch-tab--active {
+  background: var(--lime);
+  color: var(--midnight);
+}
+.pitch-tab--active:hover { background: var(--lime); }
+.pitch-tab-amount {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+}
+.pitch-tab-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.pitch-slide {
+  background: var(--terminal);
+  border: 1px solid rgba(244, 240, 232, 0.08);
+  padding: 2rem 2rem 2.2rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.pitch-slide-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 1rem;
+}
+.pitch-slide--thesis {
+  background: var(--midnight);
+  border-color: var(--lime);
+  box-shadow: inset 0 0 30px rgba(168, 255, 60, 0.06);
+}
+.pitch-slide--exit {
+  background: var(--midnight);
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.06);
+}
+.pitch-thesis {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--paper);
+}
+.pitch-thesis--exit { color: var(--cyan); }
+.pitch-prose {
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--paper);
+}
+
+.pitch-table {
+  margin-top: 0.5rem;
+}
+.pitch-table th, .pitch-table td {
+  vertical-align: top;
+}
+.pitch-budget-label {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--paper);
+}
+.pitch-budget-amount {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--lime);
+  white-space: nowrap;
+}
+.pitch-budget-pct {
+  position: relative;
+  width: 22%;
+  min-width: 110px;
+  vertical-align: middle;
+  padding-right: 1.4rem;
+}
+.pitch-bar {
+  display: block;
+  height: 4px;
+  background: var(--lime);
+  margin-bottom: 4px;
+  box-shadow: 0 0 8px rgba(168, 255, 60, 0.4);
+}
+.pitch-bar-pct {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--bone);
+}
+.pitch-budget-detail {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--bone);
+  opacity: 0.85;
+  line-height: 1.5;
+}
+.pitch-table tfoot td {
+  border-top: 1px solid rgba(244, 240, 232, 0.2);
+  padding-top: 1rem;
+}
+
+.pitch-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.pitch-timeline li {
+  display: grid;
+  grid-template-columns: minmax(110px, 140px) 1fr;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--midnight);
+  border: 1px solid rgba(244, 240, 232, 0.08);
+}
+.pitch-timeline-when {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.pitch-timeline-what {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--paper);
+}
+
+.pitch-projection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+.pitch-projection-card {
+  background: var(--midnight);
+  border: 1px solid rgba(244, 240, 232, 0.08);
+  padding: 1rem 1.1rem;
+}
+.pitch-projection-metric {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.pitch-projection-value {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  color: var(--lime);
+  margin-top: 0.5rem;
+  line-height: 1.15;
+}
+
+.pitch-risks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pitch-risks li {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--paper);
+  border-bottom: 1px solid rgba(244, 240, 232, 0.06);
+}
+.pitch-risks li:last-child { border-bottom: none; }
+.pitch-risks li::before {
+  content: '!';
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--magenta);
+  color: var(--midnight);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 12px;
+  border-radius: 2px;
+}
+
+.pitch-foot {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--midnight);
+  border: 1px solid rgba(244, 240, 232, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.pitch-foot-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bone);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.pitch-foot-stamp {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--lime);
+}
+
+@media (max-width: 700px) {
+  .pitch-table thead { display: none; }
+  .pitch-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(244, 240, 232, 0.08);
+  }
+  .pitch-table tbody td {
+    border: none;
+    padding: 0.25rem 0;
+  }
+  .pitch-budget-pct { width: 100%; min-width: 0; padding-right: 0; }
+  .pitch-table tfoot td { padding-top: 0.6rem; }
+}
+
+/* =========================================================
    25. VERSION-WATCHER TOAST
    ========================================================= */
 .version-toast {
