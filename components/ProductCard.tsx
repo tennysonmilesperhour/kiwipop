@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 
 interface ProductCardProps {
   id: string;

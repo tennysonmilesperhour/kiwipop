@@ -1,7 +1,7 @@
 'use client';
 
 import { useOrderWithItems } from '@/lib/hooks';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 import Link from 'next/link';
 
 interface OrderConfirmationProps {

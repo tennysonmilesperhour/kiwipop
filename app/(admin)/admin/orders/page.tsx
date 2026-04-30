@@ -2,7 +2,7 @@
 
 import { AdminLayout } from '@/components/AdminLayout';
 import { useOrders, useOrderWithItems } from '@/lib/hooks';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 import { supabase } from '@/lib/supabase';
 import { useState } from 'react';
 

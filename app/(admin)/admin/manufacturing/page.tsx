@@ -3,7 +3,7 @@
 import { AdminLayout } from '@/components/AdminLayout';
 import { supabase } from '@/lib/supabase';
 import { useState, useEffect } from 'react';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 
 interface ManufacturingBatch {
   id: string;

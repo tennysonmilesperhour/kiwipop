@@ -2,7 +2,7 @@
 
 import { useCart } from '@/lib/store';
 import { CartItem } from '@/components/CartItem';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 import Link from 'next/link';
 
 export default function CartPage() {

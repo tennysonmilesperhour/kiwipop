@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { CartItem as CartItemType, useCart } from '@/lib/store';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 
 interface CartItemProps {
   item: CartItemType;

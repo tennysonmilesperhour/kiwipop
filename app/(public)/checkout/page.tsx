@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useCart } from '@/lib/store';
 import { useCreateOrder } from '@/lib/hooks';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {

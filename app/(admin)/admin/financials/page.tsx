@@ -2,7 +2,7 @@
 
 import { AdminLayout } from '@/components/AdminLayout';
 import { supabase } from '@/lib/supabase';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 import { useState, useEffect } from 'react';
 
 export default function FinancialsPage() {

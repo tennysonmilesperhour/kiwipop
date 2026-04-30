@@ -3,7 +3,7 @@
 import { AdminLayout } from '@/components/AdminLayout';
 import { useProducts } from '@/lib/hooks';
 import { supabase } from '@/lib/supabase';
-import { formatCentsToUSD } from '@/lib/stripe';
+import { formatCentsToUSD } from '@/lib/format';
 import { useState } from 'react';
 
 export default function ProductsPage() {
