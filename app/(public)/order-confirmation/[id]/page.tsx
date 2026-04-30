@@ -7,8 +7,8 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Order confirmed',
-  description: 'Your Kiwi Pop order receipt.',
+  title: 'receipt',
+  description: 'your kiwi pop order receipt.',
   robots: { index: false, follow: false },
 };
 
@@ -63,74 +63,120 @@ export default async function OrderConfirmation({
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="card text-center">
-        <div className="text-4xl mb-4">✓</div>
-        <h1 className="text-3xl font-bold mb-2">Order Confirmed</h1>
-        <p className="text-gray-600 mb-6">
-          Thanks for your order. We&apos;ve sent a receipt to{' '}
-          <strong>{data.user_email || 'your email on file'}</strong>.
-        </p>
+    <div className="page-container">
+      <p
+        className="hero-tagline"
+        style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
+      >
+        // receipt
+      </p>
+      <h1
+        style={{
+          fontFamily: 'var(--display)',
+          fontWeight: 800,
+          fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
+          letterSpacing: '-0.04em',
+          textTransform: 'lowercase',
+          color: 'var(--lime)',
+          marginBottom: '0.6rem',
+        }}
+      >
+        you&apos;re in.
+      </h1>
+      <p style={{ color: 'var(--paper)', marginBottom: '2rem' }}>
+        receipt sent to{' '}
+        <strong style={{ color: 'var(--lime)' }}>
+          {data.user_email || 'your email'}
+        </strong>
+        .
+      </p>
 
-        <div className="bg-light p-4 rounded-lg mb-6 text-left">
-          <p className="mb-2">
-            <strong>Order ID:</strong>{' '}
-            <span className="font-mono text-sm">{data.id}</span>
-          </p>
-          <p className="mb-2">
-            <strong>Status:</strong> {data.status}
-          </p>
-          <p>
-            <strong>Total:</strong> {formatCentsToUSD(data.total_cents)}
-          </p>
+      <div className="card">
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+            gap: '1rem',
+            marginBottom: '1.5rem',
+          }}
+        >
+          <div>
+            <p className="stat-label">order id</p>
+            <p
+              style={{
+                fontFamily: 'var(--mono)',
+                fontSize: 11,
+                wordBreak: 'break-all',
+              }}
+            >
+              {data.id}
+            </p>
+          </div>
+          <div>
+            <p className="stat-label">status</p>
+            <p style={{ color: 'var(--lime)', fontFamily: 'var(--mono)' }}>
+              {data.status}
+            </p>
+          </div>
+          <div>
+            <p className="stat-label">total</p>
+            <p
+              style={{
+                color: 'var(--lime)',
+                fontFamily: 'var(--display)',
+                fontSize: '1.5rem',
+                fontWeight: 800,
+              }}
+            >
+              {formatCentsToUSD(data.total_cents)}
+            </p>
+          </div>
         </div>
 
         {data.items && data.items.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-lg font-bold mb-3 text-left">Order Items</h2>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Qty</th>
-                  <th>Price</th>
-                  <th>Total</th>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>product</th>
+                <th>qty</th>
+                <th>price</th>
+                <th>total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.items.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.products?.name?.toLowerCase() ?? '—'}</td>
+                  <td>{item.quantity}</td>
+                  <td>{formatCentsToUSD(item.price_cents)}</td>
+                  <td>{formatCentsToUSD(item.price_cents * item.quantity)}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {data.items.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.products?.name ?? 'Unknown product'}</td>
-                    <td>{item.quantity}</td>
-                    <td>{formatCentsToUSD(item.price_cents)}</td>
-                    <td>{formatCentsToUSD(item.price_cents * item.quantity)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         )}
+      </div>
 
-        {data.shipping_address && (
-          <div className="text-left text-sm mb-6">
-            <h3 className="font-bold mb-1">Shipping to</h3>
-            <p>
-              {data.shipping_address.firstName} {data.shipping_address.lastName}
-            </p>
-            <p>{data.shipping_address.address}</p>
-            <p>
-              {data.shipping_address.city}, {data.shipping_address.state}{' '}
-              {data.shipping_address.zip}
-            </p>
-            <p>{data.shipping_address.country}</p>
-          </div>
-        )}
-
-        <div className="flex gap-4 justify-center">
-          <Link href="/" className="btn btn-primary">
-            Continue shopping
-          </Link>
+      {data.shipping_address && (
+        <div className="card">
+          <div className="card-title">shipping</div>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 1.7 }}>
+            {data.shipping_address.firstName} {data.shipping_address.lastName}
+            <br />
+            {data.shipping_address.address}
+            <br />
+            {data.shipping_address.city}, {data.shipping_address.state}{' '}
+            {data.shipping_address.zip}
+            <br />
+            {data.shipping_address.country}
+          </p>
         </div>
+      )}
+
+      <div style={{ marginTop: '2rem' }}>
+        <Link href="/" className="btn btn-primary">
+          back to the drop
+        </Link>
       </div>
     </div>
   );

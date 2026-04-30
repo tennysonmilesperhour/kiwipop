@@ -28,68 +28,90 @@ export default function SignIn() {
       await signIn(email, password);
       router.push(next);
     } catch (err) {
-      setError((err as Error).message || 'Failed to sign in');
+      setError((err as Error).message || 'failed to sign in');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="card">
-        <h1 className="text-2xl font-bold mb-6">Sign In</h1>
+    <div className="page-container" style={{ maxWidth: 460 }}>
+      <p
+        className="hero-tagline"
+        style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
+      >
+        // sign in
+      </p>
+      <h1
+        style={{
+          fontFamily: 'var(--display)',
+          fontWeight: 800,
+          fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+          letterSpacing: '-0.03em',
+          textTransform: 'lowercase',
+          marginBottom: '2rem',
+        }}
+      >
+        welcome back.
+      </h1>
 
+      <div className="card">
         {next === '/checkout' && (
-          <div
-            className="alert mb-4"
-            style={{ background: '#f4f4f5', padding: 12, borderRadius: 8 }}
-          >
-            Signing in is optional — you can also{' '}
-            <Link href="/checkout" className="text-primary font-bold">
-              continue as a guest
+          <div className="alert" style={{ marginBottom: '1rem' }}>
+            signing in is optional —{' '}
+            <Link
+              href="/checkout"
+              style={{ color: 'var(--lime)', fontWeight: 700 }}
+            >
+              continue as a guest →
             </Link>
-            .
           </div>
         )}
 
-        {error && <div className="alert alert-error mb-4">{error}</div>}
+        {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label">email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="form-input"
               required
+              autoComplete="email"
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-input"
               required
+              autoComplete="current-password"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="btn btn-primary btn-full mb-4"
+            className="btn btn-primary btn-full"
+            style={{ marginBottom: '1rem' }}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'wait…' : 'sign in'}
           </button>
         </form>
 
-        <p className="text-center text-gray-600">
-          Don't have an account?{' '}
-          <Link href="/auth/signup" className="text-primary font-bold">
-            Sign Up
+        <p style={{ textAlign: 'center', color: 'var(--bone)', fontSize: 12 }}>
+          no account?{' '}
+          <Link
+            href="/auth/signup"
+            style={{ color: 'var(--lime)', fontWeight: 700 }}
+          >
+            sign up
           </Link>
         </p>
       </div>

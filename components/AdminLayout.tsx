@@ -1,17 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth-context';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useAuth } from '@/lib/auth-context';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
+const NAV: Array<{ href: string; label: string }> = [
+  { href: '/admin/dashboard', label: 'dashboard' },
+  { href: '/admin/orders', label: 'orders' },
+  { href: '/admin/inventory', label: 'inventory' },
+  { href: '/admin/products', label: 'products' },
+  { href: '/admin/wholesale', label: 'wholesale' },
+  { href: '/admin/manufacturing', label: 'manufacturing' },
+  { href: '/admin/financials', label: 'financials' },
+  { href: '/admin/logistics', label: 'logistics' },
+];
+
 export function AdminLayout({ children }: AdminLayoutProps) {
   const { isAdmin, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!loading && !isAdmin) {
@@ -20,44 +32,51 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   }, [isAdmin, loading, router]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="page-container">
+        <p
+          style={{
+            color: 'var(--bone)',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+          }}
+        >
+          loading…
+        </p>
+      </div>
+    );
   }
 
-  if (!isAdmin) {
-    return null;
-  }
+  if (!isAdmin) return null;
 
   return (
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div className="sidebar-header">
-          <h2>Admin Panel</h2>
+          <h2>// admin</h2>
         </div>
         <nav className="sidebar-nav">
-          <Link href="/admin/dashboard" className="nav-item">
-            Dashboard
-          </Link>
-          <Link href="/admin/orders" className="nav-item">
-            Orders
-          </Link>
-          <Link href="/admin/inventory" className="nav-item">
-            Inventory
-          </Link>
-          <Link href="/admin/products" className="nav-item">
-            Products
-          </Link>
-          <Link href="/admin/wholesale" className="nav-item">
-            Wholesale
-          </Link>
-          <Link href="/admin/manufacturing" className="nav-item">
-            Manufacturing
-          </Link>
-          <Link href="/admin/financials" className="nav-item">
-            Financials
-          </Link>
-          <Link href="/admin/logistics" className="nav-item">
-            Logistics
-          </Link>
+          {NAV.map((item) => {
+            const active = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="nav-item"
+                style={
+                  active
+                    ? {
+                        background: 'var(--midnight)',
+                        color: 'var(--lime)',
+                        borderLeft: '2px solid var(--lime)',
+                      }
+                    : undefined
+                }
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </aside>
       <main className="admin-content">{children}</main>

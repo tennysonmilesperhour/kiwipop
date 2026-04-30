@@ -11,19 +11,56 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="cart-empty">
-        <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
-        <p className="text-gray-600 mb-6">Your cart is empty</p>
+      <div className="page-container" style={{ textAlign: 'center' }}>
+        <p
+          className="hero-tagline"
+          style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
+        >
+          // your cart
+        </p>
+        <h1
+          style={{
+            fontFamily: 'var(--display)',
+            fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+            fontWeight: 800,
+            letterSpacing: '-0.03em',
+            textTransform: 'lowercase',
+            marginBottom: '1.5rem',
+            color: 'var(--lime)',
+          }}
+        >
+          empty.
+        </h1>
+        <p style={{ color: 'var(--bone)', marginBottom: '2rem' }}>
+          go pick a flavor.
+        </p>
         <Link href="/" className="btn btn-primary">
-          Continue Shopping
+          back to the drop
         </Link>
       </div>
     );
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
+    <div className="page-container">
+      <p
+        className="hero-tagline"
+        style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
+      >
+        // your cart
+      </p>
+      <h1
+        style={{
+          fontFamily: 'var(--display)',
+          fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+          fontWeight: 800,
+          letterSpacing: '-0.03em',
+          textTransform: 'lowercase',
+          marginBottom: '2rem',
+        }}
+      >
+        cart.
+      </h1>
 
       <div className="cart-container">
         <div className="cart-items">
@@ -33,29 +70,34 @@ export default function CartPage() {
         </div>
 
         <div className="cart-summary">
-          <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+          <div className="card-title">order summary</div>
 
           <div className="summary-row">
-            <span>Subtotal:</span>
+            <span>subtotal</span>
             <span>{formatCentsToUSD(total)}</span>
           </div>
-
           <div className="summary-row">
-            <span>Shipping:</span>
-            <span>Calculated at checkout</span>
+            <span>shipping</span>
+            <span>at checkout</span>
           </div>
-
           <div className="summary-row summary-total">
-            <span>Total:</span>
+            <span>total</span>
             <span>{formatCentsToUSD(total)}</span>
           </div>
 
-          <Link href="/checkout" className="btn btn-primary btn-full mt-4">
-            Proceed to Checkout
+          <Link
+            href="/checkout"
+            className="btn btn-primary btn-full"
+            style={{ marginTop: '1rem' }}
+          >
+            checkout →
           </Link>
-
-          <Link href="/" className="btn btn-secondary btn-full mt-2">
-            Continue Shopping
+          <Link
+            href="/"
+            className="btn btn-secondary btn-full"
+            style={{ marginTop: '0.5rem' }}
+          >
+            keep shopping
           </Link>
         </div>
       </div>

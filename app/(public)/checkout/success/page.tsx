@@ -2,8 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Order Confirmed',
-  description: 'Your Kiwi Pop order has been received.',
+  title: "you're in",
+  description: 'your kiwi pop order was received.',
   robots: { index: false, follow: false },
 };
 
@@ -15,25 +15,53 @@ export default function CheckoutSuccessPage({ searchParams }: SuccessPageProps) 
   const orderId = searchParams.order_id;
 
   return (
-    <div className="checkout-success">
-      <h1 className="text-3xl font-bold mb-4">Thanks for your order</h1>
-      <p className="mb-2">
-        Your payment was received. We&apos;re packing your pops now and will email
-        a tracking link once your order ships.
+    <div className="page-container checkout-success">
+      <p
+        className="hero-tagline"
+        style={{ marginBottom: '1rem', color: 'var(--bone)' }}
+      >
+        // confirmed
+      </p>
+      <h1>you&apos;re in.</h1>
+      <p
+        style={{
+          marginTop: '1rem',
+          color: 'var(--paper)',
+          fontFamily: 'var(--mono)',
+        }}
+      >
+        we got the order. packing now. tracking link in your inbox.
       </p>
       {orderId ? (
-        <p className="text-sm text-zinc-600 mb-6">
-          Order reference: <code>{orderId}</code>
+        <p
+          style={{
+            marginTop: '1.5rem',
+            color: 'var(--bone)',
+            fontFamily: 'var(--mono)',
+            fontSize: 11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+          }}
+        >
+          ref · <code>{orderId}</code>
         </p>
       ) : null}
-      <div className="flex gap-3">
+      <div
+        style={{
+          marginTop: '2.5rem',
+          display: 'flex',
+          gap: '0.75rem',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
         {orderId ? (
           <Link className="btn btn-primary" href={`/order-confirmation/${orderId}`}>
-            View order
+            view receipt
           </Link>
         ) : null}
         <Link className="btn" href="/">
-          Continue shopping
+          back to the drop
         </Link>
       </div>
     </div>

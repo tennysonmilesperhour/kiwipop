@@ -122,37 +122,43 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="checkout-container">
-      <h1 className="text-2xl font-bold mb-6">Checkout</h1>
+    <div className="page-container checkout-container">
+      <p
+        className="hero-tagline"
+        style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
+      >
+        // checkout
+      </p>
+      <h1
+        style={{
+          fontFamily: 'var(--display)',
+          fontWeight: 800,
+          fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+          letterSpacing: '-0.03em',
+          textTransform: 'lowercase',
+          marginBottom: '2rem',
+        }}
+      >
+        check out.
+      </h1>
 
       {!user && (
-        <div
-          className="alert mb-4"
-          style={{ background: '#f4f4f5', borderRadius: 8, padding: 12 }}
-        >
-          <strong>Checking out as a guest.</strong> No account needed —
-          we&apos;ll email your receipt and a tracking link.{' '}
+        <div className="alert" style={{ marginBottom: '1rem' }}>
+          checking out as a guest — no account needed. we&apos;ll email
+          the receipt and a tracking link.{' '}
           <Link
             href={`/auth/signin?next=${encodeURIComponent('/checkout')}`}
-            className="text-primary font-bold"
+            style={{ color: 'var(--lime)', fontWeight: 700 }}
           >
-            Have an account? Sign in
+            have an account? sign in →
           </Link>
-          .
         </div>
       )}
 
       {user && (
-        <div
-          className="alert mb-4"
-          style={{
-            background: '#ecfdf5',
-            borderRadius: 8,
-            padding: 12,
-          }}
-        >
-          Signed in as <strong>{user.email}</strong>. This order will be saved
-          to your account.
+        <div className="alert alert-success" style={{ marginBottom: '1rem' }}>
+          signed in as <strong>{user.email}</strong>. order goes to your
+          account.
         </div>
       )}
 
