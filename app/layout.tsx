@@ -38,11 +38,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'kiwi pop · suck on the future',
+    default: 'kiwi pop · sucker-shaped supplements you can party with',
     template: '%s · kiwi pop',
   },
   description:
-    "sugar-free, vegan, functional lollipops for the dance floor. each flavor is a feeling. each flavor does a thing. candy for people who don't eat candy.",
+    "sucker-shaped supplements you can party with. sugar-free, vegan, functional lollipops with real pop rocks, edible mica glitter, and a six-ingredient functional payload. candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   keywords: [
@@ -57,24 +57,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'kiwi pop',
-    title: 'kiwi pop · suck on the future',
+    title: 'kiwi pop · sucker-shaped supplements you can party with',
     description:
-      'sugar-free, vegan, functional lollipops for the dance floor.',
+      'sucker-shaped supplements you can party with. sugar-free, vegan, functional lollipops.',
     url: siteUrl,
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'kiwi pop — suck on the future',
+        alt: 'kiwi pop — sucker-shaped supplements you can party with',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'kiwi pop · suck on the future',
+    title: 'kiwi pop · sucker-shaped supplements you can party with',
     description:
-      'sugar-free, vegan, functional lollipops for the dance floor.',
+      'sucker-shaped supplements you can party with. sugar-free, vegan, functional lollipops.',
     images: ['/og-image.png'],
   },
   robots: {

@@ -39,7 +39,9 @@ export function Hero() {
             kiwi pop
           </span>
         </h1>
-        <p className="hero-tagline">a little secret in your mouth</p>
+        <p className="hero-tagline">
+          sucker-shaped supplements you can party with
+        </p>
         <p className="hero-subtagline">
           refreshing club lolli · sugar free · vegan · 5 cal
         </p>
