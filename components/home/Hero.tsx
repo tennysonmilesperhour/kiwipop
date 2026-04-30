@@ -45,6 +45,9 @@ export function Hero() {
         <p className="hero-subtagline">
           refreshing club lolli · sugar free · vegan · 5 cal
         </p>
+        <p className="hero-subtagline">
+          hydrated · regulated · thriving
+        </p>
       </div>
 
       <div className="hero-bottom">
