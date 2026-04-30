@@ -85,7 +85,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setProfile(data);
       }
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.error('[auth] failed to load profile', error);
+      }
     } finally {
       setLoading(false);
     }

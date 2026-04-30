@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from 'next';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Navigation } from '@/components/Navigation';
 import { Providers } from './providers';
 import './globals.css';
@@ -74,6 +76,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Navigation />
           <main className="main-container">{children}</main>
         </Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
