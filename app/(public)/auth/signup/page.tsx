@@ -2,12 +2,18 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+
+const SAFE_NEXT = /^\/[a-zA-Z0-9/_\-?=&]*$/;
 
 export default function SignUp() {
   const { signUp } = useAuth();
   const router = useRouter();
+  const params = useSearchParams();
+  const rawNext = params.get('next');
+  const next = rawNext && SAFE_NEXT.test(rawNext) ? rawNext : '/auth/signin';
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -23,7 +29,7 @@ export default function SignUp() {
     try {
       await signUp(email, password, displayName);
       setSuccess(true);
-      setTimeout(() => router.push('/auth/signin'), 1800);
+      setTimeout(() => router.push(next), 1800);
     } catch (err) {
       setError((err as Error).message || 'failed to sign up');
     } finally {

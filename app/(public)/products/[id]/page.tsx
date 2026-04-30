@@ -122,10 +122,26 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
           )}
 
-          {product.preorder_only && product.preorder_deadline && (
-            <div className="alert alert-info" style={{ marginTop: '1rem' }}>
-              preorder · ships{' '}
-              {new Date(product.preorder_deadline).toLocaleDateString()}
+          {product.preorder_only && (
+            <div
+              className="alert"
+              style={{
+                marginTop: '1rem',
+                borderColor: 'var(--ultraviolet)',
+                color: 'var(--ultraviolet)',
+              }}
+            >
+              <strong style={{ letterSpacing: '0.15em' }}>
+                PREORDER ·
+              </strong>{' '}
+              charged now, ships{' '}
+              {product.preorder_deadline
+                ? new Date(product.preorder_deadline).toLocaleDateString(
+                    'en-US',
+                    { month: 'long', day: 'numeric', year: 'numeric' }
+                  )
+                : 'when the batch is ready'}
+              . email goes out the day before the truck moves.
             </div>
           )}
 
@@ -149,7 +165,11 @@ export default function ProductPage({ params }: ProductPageProps) {
             className="btn btn-primary btn-full"
             style={{ marginBottom: '0.5rem' }}
           >
-            {added ? '✓ added' : 'add to cart'}
+            {added
+              ? '✓ added'
+              : product.preorder_only
+              ? 'preorder now'
+              : 'add to cart'}
           </button>
           <button
             type="button"

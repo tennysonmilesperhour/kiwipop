@@ -29,6 +29,9 @@ export function Navigation() {
         <Link className="nav-link" href="/find-us">
           find us
         </Link>
+        <Link className="nav-link" href="/wholesale">
+          wholesale
+        </Link>
         <Link className="nav-link" href="/#list">
           list
         </Link>

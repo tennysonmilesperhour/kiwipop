@@ -120,6 +120,20 @@ export const wholesaleApprovalSchema = z.object({
 
 export type WholesaleApproval = z.infer<typeof wholesaleApprovalSchema>;
 
+export const wholesaleApplicationSchema = z.object({
+  business_name: z.string().trim().min(1, 'business name required').max(200),
+  tax_id: z.string().trim().max(100).optional().or(z.literal('')),
+  contact_email: z.string().email('valid email required').max(255),
+  contact_phone: z.string().trim().max(40).optional().or(z.literal('')),
+  expected_monthly_units: z.number().int().min(0).optional(),
+  channel: z
+    .enum(['retail-shop', 'cafe-bar', 'event-vendor', 'distributor', 'other'])
+    .optional(),
+  message: z.string().trim().max(2000).optional().or(z.literal('')),
+});
+
+export type WholesaleApplication = z.infer<typeof wholesaleApplicationSchema>;
+
 export const wholesaleAccountUpdateSchema = z.object({
   approval_status: z.enum(['pending', 'approved', 'rejected']).optional(),
   tier: z.enum(['standard', 'premium']).optional(),

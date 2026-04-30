@@ -9,6 +9,7 @@ interface ProductRow {
   sku: string | null;
   name: string;
   price_cents: number;
+  preorder_only: boolean;
 }
 
 export function DropSection() {
@@ -25,15 +26,19 @@ export function DropSection() {
           <span className="num">/01</span>the drop
         </div>
         <div className="section-meta">
-          one live · three soon · five cal each · zero sugar
+          one live · three on preorder · five cal each · zero sugar
         </div>
       </div>
 
       <div className="flavor-grid">
         {FLAVORS.map((flavor, idx) => {
           const product = productsBySku[flavor.sku];
-          const isLive = flavor.status === 'live' && product;
-          const href = isLive ? `/products/${product!.id}` : '#list';
+          const isLive = flavor.status === 'live';
+          // Both live and preorder products link to their product detail page
+          // when the row exists in the DB. Preorder products show a preorder
+          // CTA there. If no product row exists yet (DB hasn't been seeded),
+          // we drop preorder cards onto the email list instead.
+          const href = product ? `/products/${product.id}` : '#list';
           const displayLines = flavor.display.split('\n');
           return (
             <Link
@@ -41,12 +46,12 @@ export function DropSection() {
               href={href}
               className="flavor-card"
               style={{ '--c': flavor.color } as React.CSSProperties}
-              aria-label={`${flavor.name} — ${isLive ? 'shop' : 'notify me'}`}
+              aria-label={`${flavor.name} — ${isLive ? 'shop' : 'preorder'}`}
               data-status={flavor.status}
             >
               <div className="flavor-top">
                 <div className="flavor-num">
-                  flavor 0{idx + 1} / 04 · {flavor.status === 'live' ? 'live' : 'soon'}
+                  flavor 0{idx + 1} / 04 · {isLive ? 'live' : 'preorder'}
                 </div>
                 <div className="flavor-name">
                   {displayLines.map((line, i) => (
@@ -60,9 +65,13 @@ export function DropSection() {
               <div className="flavor-bottom">
                 <div className="flavor-feeling">{flavor.feeling}</div>
                 <div className="flavor-fn">{flavor.flavor}</div>
-                {isLive ? (
+                {isLive && product ? (
                   <div className="flavor-price">
-                    ${(product!.price_cents / 100).toFixed(2)} · shop ↗
+                    ${(product.price_cents / 100).toFixed(2)} · shop ↗
+                  </div>
+                ) : product ? (
+                  <div className="flavor-price">
+                    ${(product.price_cents / 100).toFixed(2)} · preorder ↗
                   </div>
                 ) : (
                   <div className="flavor-price">notify me ↗</div>
@@ -70,7 +79,7 @@ export function DropSection() {
               </div>
               {!isLive && (
                 <div className="flavor-soon-overlay" aria-hidden="true">
-                  coming soon
+                  preorder
                 </div>
               )}
             </Link>

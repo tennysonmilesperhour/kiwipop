@@ -22,6 +22,9 @@ export function Footer() {
           <Link href="/find-us" className="footer-link">
             find us
           </Link>
+          <Link href="/wholesale" className="footer-link">
+            wholesale
+          </Link>
           <Link href="/legal/privacy" className="footer-link">
             privacy
           </Link>
