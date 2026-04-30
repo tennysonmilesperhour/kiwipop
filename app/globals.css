@@ -225,6 +225,31 @@ button { font: inherit; }
   font-size: 10px;
 }
 
+.nav-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.nav-cta-admin {
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-cta-admin:hover {
+  background: var(--cyan);
+  color: var(--midnight);
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.45);
+  transform: translateY(-1px);
+}
+.nav-cta-admin span {
+  display: inline-block;
+  transition: transform 0.15s;
+}
+.nav-cta-admin:hover span { transform: translateX(2px); }
+
 /* =========================================================
    5. MAIN CONTAINER
    ========================================================= */

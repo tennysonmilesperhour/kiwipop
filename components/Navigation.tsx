@@ -33,33 +33,37 @@ export function Navigation() {
           list
         </Link>
         {user ? (
-          <>
-            {isAdmin && (
-              <Link className="nav-link" href="/admin/dashboard">
-                admin
-              </Link>
-            )}
-            <button
-              type="button"
-              onClick={signOut}
-              className="nav-link"
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-            >
-              sign out
-            </button>
-          </>
+          <button
+            type="button"
+            onClick={signOut}
+            className="nav-link"
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            sign out
+          </button>
         ) : (
           <Link className="nav-link" href="/auth/signin">
             sign in
           </Link>
         )}
       </div>
-      <Link href="/cart" className="nav-cta" aria-label="cart">
-        cart
-        {mounted && cartCount > 0 ? (
-          <span className="cart-badge">{cartCount}</span>
+      <div className="nav-actions">
+        {isAdmin ? (
+          <Link
+            href="/admin/dashboard"
+            className="nav-cta nav-cta-admin"
+            aria-label="open admin dashboard"
+          >
+            <span aria-hidden="true">▸</span>&nbsp;admin
+          </Link>
         ) : null}
-      </Link>
+        <Link href="/cart" className="nav-cta" aria-label="cart">
+          cart
+          {mounted && cartCount > 0 ? (
+            <span className="cart-badge">{cartCount}</span>
+          ) : null}
+        </Link>
+      </div>
     </nav>
   );
 }
