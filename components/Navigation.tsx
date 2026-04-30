@@ -20,11 +20,14 @@ export function Navigation() {
         <Link className="nav-link" href="/#drop">
           drop
         </Link>
-        <Link className="nav-link" href="/#crew">
-          crew
-        </Link>
-        <Link className="nav-link" href="/#spec">
+        <Link className="nav-link" href="/#ingredients">
           spec
+        </Link>
+        <Link className="nav-link" href="/about">
+          story
+        </Link>
+        <Link className="nav-link" href="/find-us">
+          find us
         </Link>
         <Link className="nav-link" href="/#list">
           list
@@ -52,7 +55,10 @@ export function Navigation() {
         )}
       </div>
       <Link href="/cart" className="nav-cta" aria-label="cart">
-        cart{mounted && cartCount > 0 ? <span className="cart-badge">{cartCount}</span> : null}
+        cart
+        {mounted && cartCount > 0 ? (
+          <span className="cart-badge">{cartCount}</span>
+        ) : null}
       </Link>
     </nav>
   );

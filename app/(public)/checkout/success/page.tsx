@@ -22,7 +22,7 @@ export default function CheckoutSuccessPage({ searchParams }: SuccessPageProps) 
       >
         // confirmed
       </p>
-      <h1>you&apos;re in.</h1>
+      <h1>your secret is on its way.</h1>
       <p
         style={{
           marginTop: '1rem',
@@ -30,7 +30,8 @@ export default function CheckoutSuccessPage({ searchParams }: SuccessPageProps) 
           fontFamily: 'var(--mono)',
         }}
       >
-        we got the order. packing now. tracking link in your inbox.
+        sweet, tart, clean — and en route. packing now. tracking link in your
+        inbox.
       </p>
       {orderId ? (
         <p

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export function Footer() {
   return (
     <footer className="footer">
@@ -6,11 +8,43 @@ export function Footer() {
         <div style={{ marginTop: '0.5rem', opacity: 0.6 }}>
           © {new Date().getFullYear()} · new shibuya · do not eat the wrapper
         </div>
+        <div
+          style={{
+            marginTop: '0.75rem',
+            display: 'flex',
+            gap: '1rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Link href="/about" className="footer-link">
+            story
+          </Link>
+          <Link href="/find-us" className="footer-link">
+            find us
+          </Link>
+          <Link href="/legal/privacy" className="footer-link">
+            privacy
+          </Link>
+          <Link href="/legal/terms" className="footer-link">
+            terms
+          </Link>
+          <Link href="/legal/shipping" className="footer-link">
+            shipping
+          </Link>
+          <Link href="/legal/refund" className="footer-link">
+            refunds
+          </Link>
+        </div>
       </div>
       <div style={{ textAlign: 'right' }}>
         <div>ig · tiktok · discord</div>
         <div style={{ marginTop: '0.5rem', opacity: 0.6 }}>
-          contains caffeine · 21+ · not for children
+          contains functional ingredients · not medical advice
+        </div>
+        <div style={{ marginTop: '0.5rem', opacity: 0.6 }}>
+          <a href="mailto:hello@kiwipop.co" style={{ color: 'var(--lime)' }}>
+            hello@kiwipop.co
+          </a>
         </div>
       </div>
     </footer>

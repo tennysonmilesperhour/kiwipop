@@ -81,10 +81,10 @@ export default async function OrderConfirmation({
           marginBottom: '0.6rem',
         }}
       >
-        you&apos;re in.
+        your secret is on its way.
       </h1>
       <p style={{ color: 'var(--paper)', marginBottom: '2rem' }}>
-        receipt sent to{' '}
+        sweet, tart, clean — and en route. receipt to{' '}
         <strong style={{ color: 'var(--lime)' }}>
           {data.user_email || 'your email'}
         </strong>

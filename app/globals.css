@@ -392,6 +392,32 @@ button { font: inherit; }
   filter: drop-shadow(0 0 40px rgba(168, 255, 60, 0.3));
 }
 
+.hero-pop {
+  position: absolute;
+  right: -4%;
+  bottom: 4%;
+  width: clamp(220px, 42vw, 560px);
+  height: auto;
+  z-index: 2;
+  filter: drop-shadow(0 0 60px rgba(0, 240, 255, 0.35))
+    drop-shadow(0 0 80px rgba(168, 255, 60, 0.25));
+  pointer-events: none;
+}
+.hero-pop img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hero-subtagline {
+  font-family: var(--mono);
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-top: 0.6rem;
+}
+
 /* Floating sticker chaos */
 .sticker {
   position: absolute;
@@ -538,6 +564,28 @@ button { font: inherit; }
   letter-spacing: 0.1em;
   color: var(--midnight);
   margin-top: 0.4rem;
+}
+
+.flavor-card[data-status='soon']::before {
+  filter: blur(0.5px) saturate(0.6);
+  opacity: 0.55;
+}
+.flavor-soon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  z-index: 5;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--midnight);
+  background: var(--paper);
+  padding: 0.4rem 0.9rem;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 /* =========================================================
@@ -741,6 +789,15 @@ button { font: inherit; }
   color: var(--lime);
   text-transform: lowercase;
 }
+.footer-link {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bone);
+  transition: color 0.15s;
+}
+.footer-link:hover { color: var(--lime); }
 
 /* =========================================================
    14. PRODUCT DETAIL / CART / CHECKOUT
@@ -1155,7 +1212,361 @@ button { font: inherit; }
 .text-zinc-600, .text-zinc-500, .text-zinc-400 { color: var(--bone) !important; }
 
 /* =========================================================
-   23. VERSION-WATCHER TOAST
+   24. TIMELINE / INGREDIENTS / HOW-ITS-MADE / COMMENTS
+   ========================================================= */
+.timeline-section {
+  padding: 6rem var(--pad-page);
+  background: var(--midnight);
+}
+.timeline-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0;
+  border: 1px solid rgba(244, 240, 232, 0.15);
+}
+.timeline-card {
+  position: relative;
+  padding: 2rem 1.5rem 2.5rem;
+  border-right: 1px solid rgba(244, 240, 232, 0.12);
+}
+.timeline-card:last-child {
+  border-right: none;
+}
+.timeline-index {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.timeline-step {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 2.2rem;
+  letter-spacing: -0.02em;
+  color: var(--terminal);
+  opacity: 0.5;
+}
+.timeline-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  margin-top: 0.6rem;
+  margin-bottom: 0.4rem;
+  color: var(--paper);
+}
+.timeline-body {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--bone);
+}
+
+.ingredients-section {
+  padding: 6rem var(--pad-page);
+  background: var(--paper);
+  color: var(--midnight);
+}
+.ingredients-section .section-title { color: var(--midnight); }
+.ingredients-section .section-meta { color: var(--midnight); opacity: 0.6; }
+.ingredients-section .section-header { border-color: rgba(0, 0, 0, 0.2); }
+.ingredients-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0;
+  border: 1px solid var(--midnight);
+}
+.ingredient-card {
+  padding: 1.5rem;
+  border-right: 1px solid var(--midnight);
+  border-bottom: 1px solid var(--midnight);
+  background: var(--paper);
+  transition: background 0.2s, color 0.2s;
+}
+.ingredient-card:hover { background: var(--midnight); color: var(--paper); }
+.ingredient-card:hover .ingredient-num { color: var(--lime); }
+.ingredient-card:hover .ingredient-name { color: var(--paper); }
+.ingredient-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--midnight);
+  opacity: 0.5;
+}
+.ingredient-name {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  margin-top: 0.4rem;
+  color: var(--midnight);
+}
+.ingredient-amount {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+.ingredient-why {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 0.75rem;
+}
+.ingredients-footnote {
+  max-width: 1400px;
+  margin: 1.5rem auto 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--midnight);
+  opacity: 0.65;
+  line-height: 1.7;
+}
+
+.howitsmade-section {
+  padding: 6rem var(--pad-page);
+  background: var(--midnight);
+}
+.howitsmade-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.howitsmade-step {
+  background: var(--terminal);
+  border: 1px solid rgba(244, 240, 232, 0.1);
+  padding: 1.5rem;
+  position: relative;
+}
+.howitsmade-step-num {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  color: var(--lime);
+  opacity: 0.7;
+}
+.howitsmade-step h3 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  margin-bottom: 0.6rem;
+  color: var(--paper);
+}
+.howitsmade-step p {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--bone);
+}
+.howitsmade-tagline {
+  max-width: 1400px;
+  margin: 2.5rem auto 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--bone);
+}
+
+.comments-section {
+  padding: 6rem var(--pad-page);
+  background: var(--midnight);
+  border-top: 1px solid rgba(244, 240, 232, 0.05);
+}
+.comments-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.comment-card {
+  background: var(--terminal);
+  border: 1px solid rgba(244, 240, 232, 0.1);
+  padding: 1.6rem 1.4rem;
+  font-style: normal;
+  position: relative;
+}
+.comment-card--highlight {
+  background: var(--midnight);
+  border-color: var(--lime);
+  box-shadow: 0 0 28px rgba(168, 255, 60, 0.18);
+}
+.comment-card--highlight .comment-text { color: var(--lime); font-size: 1.4rem; }
+.comment-text {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  color: var(--paper);
+  line-height: 1.3;
+}
+.comment-byline {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+  font-style: normal;
+}
+.comments-international {
+  max-width: 1400px;
+  margin: 2rem auto 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--bone);
+}
+.comments-international .dot { margin-top: 0.4rem; }
+
+@media (max-width: 768px) {
+  .ingredient-card,
+  .timeline-card { border-right: 1px solid rgba(244, 240, 232, 0.12); }
+  .ingredients-grid .ingredient-card { border-right-color: var(--midnight); }
+}
+
+/* =========================================================
+   25b. ABOUT / FIND US / LEGAL
+   ========================================================= */
+.story-prose {
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--paper);
+}
+.story-prose p { margin-bottom: 1.1rem; }
+.story-prose p:last-child { margin-bottom: 0; }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.contact-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-bottom: 0.4rem;
+}
+.contact-link {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: var(--lime);
+  text-decoration: none;
+}
+.contact-link:hover { text-shadow: 0 0 12px rgba(168, 255, 60, 0.6); }
+
+.terminal-block {
+  background: var(--midnight);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.06);
+}
+
+.social-card:hover {
+  border-color: var(--lime) !important;
+}
+
+.legal-page {
+  max-width: 760px;
+}
+.legal-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+  color: var(--lime);
+  margin-bottom: 0.4rem;
+}
+.legal-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-bottom: 2.5rem;
+}
+.legal-prose {
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--paper);
+}
+.legal-prose h2 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--paper);
+  margin-top: 2rem;
+  margin-bottom: 0.7rem;
+}
+.legal-prose p { margin-bottom: 1rem; }
+.legal-prose ul {
+  list-style: none;
+  margin: 0 0 1rem 0;
+  padding-left: 1rem;
+}
+.legal-prose li {
+  position: relative;
+  padding-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+.legal-prose li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--lime);
+  font-weight: 800;
+}
+.legal-prose a { color: var(--lime); }
+.legal-prose a:hover { text-shadow: 0 0 12px rgba(168, 255, 60, 0.6); }
+.legal-page > .btn { margin-top: 2.5rem; }
+
+/* =========================================================
+   25. VERSION-WATCHER TOAST
    ========================================================= */
 .version-toast {
   position: fixed;

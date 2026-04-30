@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useProduct } from '@/lib/hooks';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FLAVORS_BY_SKU } from '@/lib/flavors';
+import { FLAVORS_BY_SKU, FUNCTIONALS, TIMELINE } from '@/lib/flavors';
 
 interface ProductPageProps {
   params: { id: string };
@@ -173,6 +173,93 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div>in stock · {product.in_stock}</div>
           </div>
         </div>
+      </div>
+
+      <div className="card" style={{ marginTop: '3rem' }}>
+        <p className="stat-label" style={{ marginBottom: '1.2rem' }}>
+          // what it&apos;s actually like
+        </p>
+        <div className="timeline-grid">
+          {TIMELINE.map((m, idx) => (
+            <div className="timeline-card" key={m.index}>
+              <div className="timeline-index">{m.index}</div>
+              <div className="timeline-step">
+                {String(idx + 1).padStart(2, '0')}
+              </div>
+              <h3 className="timeline-title">{m.title}</h3>
+              <p className="timeline-body">{m.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: '1rem' }}>
+        <p className="stat-label" style={{ marginBottom: '1.2rem' }}>
+          // six things, doing real work
+        </p>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '1rem',
+          }}
+        >
+          {FUNCTIONALS.map((ing) => (
+            <div
+              key={ing.name}
+              style={{
+                padding: '1rem',
+                border: '1px solid rgba(244,240,232,0.1)',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'var(--display)',
+                  fontWeight: 800,
+                  fontSize: '1.1rem',
+                  textTransform: 'lowercase',
+                  color: 'var(--lime)',
+                }}
+              >
+                {ing.name}
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--mono)',
+                  fontSize: 11,
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: 'var(--bone)',
+                  marginTop: '0.4rem',
+                }}
+              >
+                {ing.amount}
+              </div>
+              <p
+                style={{
+                  fontFamily: 'var(--mono)',
+                  fontSize: 12,
+                  marginTop: '0.5rem',
+                  lineHeight: 1.6,
+                }}
+              >
+                {ing.why}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p
+          style={{
+            marginTop: '1rem',
+            fontFamily: 'var(--mono)',
+            fontSize: 11,
+            color: 'var(--bone)',
+            opacity: 0.7,
+          }}
+        >
+          // base: isomalt · monk fruit + allulose · liquid sunflower lecithin
+          · pop rocks · edible mica luster dust · 5 cal · zero sugar · vegan
+        </p>
       </div>
     </div>
   );

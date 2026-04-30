@@ -2,20 +2,19 @@ export function Manifesto() {
   return (
     <section className="manifesto scanlines">
       <div className="manifesto-text">
-        we made a lollipop
+        <span className="strike">gum and mints</span>
         <br />
-        for the people who{' '}
-        <span className="strike">never sit down</span>
+        just don&apos;t hit the way
         <br />
-        <span className="accent">never go home.</span>
+        they used to.
         <br />
-        sugar&apos;s dead.
+        <span className="accent">a little secret</span>
         <br />
-        long live the lick.
+        in your mouth.
       </div>
       <div className="manifesto-meta">
         <span>― kiwi pop // est. 2026</span>
-        <span>doc: manifesto v1 // public</span>
+        <span>refreshing club lolli // five cal // zero sugar</span>
       </div>
     </section>
   );
