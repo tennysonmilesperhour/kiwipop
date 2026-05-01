@@ -6,11 +6,11 @@ import {
 } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { SiteChrome } from '@/components/SiteChrome';
 import { VersionWatcher } from '@/components/VersionWatcher';
 import { Providers } from './providers';
 import './globals.css';
+import './kp-landing.css';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -107,9 +107,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <body>
         <Providers>
-          <Navigation />
-          <main className="main-container">{children}</main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
           <VersionWatcher />
         </Providers>
         <Analytics />
