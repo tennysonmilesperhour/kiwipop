@@ -9,6 +9,7 @@ import { FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { FundraiserBar } from './FundraiserBar';
+import { RaffleForm } from './RaffleForm';
 
 interface LandingProps {
   products: LandingProducts;
@@ -145,6 +146,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
+          <a href="#raffle">RAFFLE</a>
           <Link href="/merch">MERCH</Link>
           <Link href="/find-us">FIND US</Link>
         </div>
@@ -575,6 +577,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </div>
         </div>
       </section>
+
+      <RaffleForm />
 
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
