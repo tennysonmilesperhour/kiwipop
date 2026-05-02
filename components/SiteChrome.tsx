@@ -9,7 +9,7 @@ interface SiteChromeProps {
   children: ReactNode;
 }
 
-const ROUTES_WITH_OWN_CHROME = new Set(['/', '/donate']);
+const ROUTES_WITH_OWN_CHROME = new Set(['/', '/donate', '/wholesale/contact']);
 
 export function SiteChrome({ children }: SiteChromeProps) {
   const pathname = usePathname();

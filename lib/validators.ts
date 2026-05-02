@@ -132,6 +132,35 @@ export const wholesaleApplicationSchema = z.object({
   message: z.string().trim().max(2000).optional().or(z.literal('')),
 });
 
+/**
+ * Public wholesale contact form. No auth required — anyone can submit.
+ * Goes to the wholesale_inquiries table and forwards a notification email
+ * via /api/wholesale/inquire.
+ */
+export const wholesaleInquirySchema = z.object({
+  business_name: z.string().trim().min(1, 'business name required').max(200),
+  contact_name: z.string().trim().min(1, 'your name required').max(200),
+  contact_email: z.string().email('valid email required').max(255),
+  contact_phone: z.string().trim().max(40).optional().or(z.literal('')),
+  location: z
+    .string()
+    .trim()
+    .min(1, 'where are you located?')
+    .max(200),
+  business_type: z
+    .enum(['retail-shop', 'cafe-bar', 'event-vendor', 'distributor', 'gym-studio', 'online-store', 'other'])
+    .optional(),
+  looking_to_order: z
+    .string()
+    .trim()
+    .min(1, "tell us what you're looking to order")
+    .max(2000),
+  about_business: z.string().trim().max(2000).optional().or(z.literal('')),
+  timeline: z.string().trim().max(200).optional().or(z.literal('')),
+});
+
+export type WholesaleInquiry = z.infer<typeof wholesaleInquirySchema>;
+
 export type WholesaleApplication = z.infer<typeof wholesaleApplicationSchema>;
 
 const SHEET_SLUG = /^[a-z0-9_-]+$/;

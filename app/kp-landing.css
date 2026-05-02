@@ -1875,6 +1875,93 @@
 }
 .kp-page .kp-foot .legal .kw { color: var(--lemon); }
 
+/* ========= wholesale inquiry form ========= */
+.kp-page .kp-inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.kp-page .kp-inquiry-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.kp-page .kp-inquiry-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kp-page .kp-inquiry-label {
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lemon);
+  text-shadow: 0 0 6px rgba(245, 255, 61, 0.35);
+}
+.kp-page .kp-inquiry-form input,
+.kp-page .kp-inquiry-form select,
+.kp-page .kp-inquiry-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 5px;
+  color: var(--bone);
+  font-family: var(--font-cyber);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  transition: border-color 200ms, box-shadow 200ms;
+}
+.kp-page .kp-inquiry-form input::placeholder,
+.kp-page .kp-inquiry-form textarea::placeholder {
+  color: var(--bone-mute);
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+}
+.kp-page .kp-inquiry-form input:focus,
+.kp-page .kp-inquiry-form select:focus,
+.kp-page .kp-inquiry-form textarea:focus {
+  outline: none;
+  border-color: var(--lemon);
+  box-shadow: 0 0 14px rgba(245, 255, 61, 0.4);
+}
+.kp-page .kp-inquiry-form textarea {
+  resize: vertical;
+  min-height: 96px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  text-transform: lowercase;
+}
+.kp-page .kp-inquiry-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--lemon) 50%),
+    linear-gradient(135deg, var(--lemon) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 2px),
+    calc(100% - 13px) calc(50% - 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+.kp-page .kp-inquiry-msg {
+  font-family: var(--font-cyber);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.kp-page .kp-inquiry-msg.err { color: var(--hot-pink); text-shadow: 0 0 6px rgba(255, 26, 140, 0.4); }
+.kp-page .kp-inquiry-msg.ok  { color: var(--kiwi); text-shadow: 0 0 6px rgba(182, 255, 26, 0.4); }
+@media (max-width: 700px) {
+  .kp-page .kp-inquiry-row { grid-template-columns: 1fr; }
+}
+
 /* ========= subtle 5-ish-px rounded corners across box surfaces =========
    Founder direction: round the corners of all of the boxes by 5%.
    Interpreted as a small radius (5px) on box-like elements throughout the

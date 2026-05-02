@@ -150,7 +150,7 @@ export function DonateForm({ product, snapshot }: DonateFormProps) {
             <Link className="kp-fr-cta" href="/">
               ← BACK TO LANDING
             </Link>
-            <Link className="kp-fr-cta pink" href="/wholesale/apply">
+            <Link className="kp-fr-cta pink" href="/wholesale/contact">
               WHOLESALE PREORDER →
             </Link>
           </div>

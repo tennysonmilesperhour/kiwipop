@@ -595,14 +595,14 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           {products.varietyHalfOff ? (
             <Link href="/cart">variety 12-pack · half off</Link>
           ) : null}
-          <Link href="/wholesale/apply">wholesale · preorder special</Link>
+          <Link href="/wholesale/contact">wholesale · preorder special</Link>
         </div>
         <div className="col">
           <h4>BRAND</h4>
           <a href="#inside">what&apos;s inside</a>
           <Link href="/about">a little secret</Link>
           <Link href="/find-us">find us irl</Link>
-          <Link href="/wholesale">wholesale</Link>
+          <Link href="/wholesale/contact">wholesale · contact us</Link>
           <Link href="/donate">donate</Link>
         </div>
         <div className="col">
