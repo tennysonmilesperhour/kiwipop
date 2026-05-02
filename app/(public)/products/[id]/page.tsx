@@ -277,8 +277,8 @@ export default function ProductPage({ params }: ProductPageProps) {
             opacity: 0.7,
           }}
         >
-          // base: isomalt · monk fruit + allulose · liquid sunflower lecithin
-          · pop rocks · edible mica luster dust · 5 cal · zero sugar · vegan
+          // base: isomalt · xylitol · monk fruit · coconut oil · blue spirulina
+          · ~35 cal · 0g added sugar · vegan
         </p>
       </div>
     </div>

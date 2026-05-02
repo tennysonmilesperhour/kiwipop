@@ -509,23 +509,23 @@
 }
 .kp-page .z1 .hero-pop {
   position: absolute;
-  right: 6%;
+  right: 27.5%;
   top: 50%;
-  transform: translateY(-50%);
-  width: clamp(280px, 32vw, 480px);
+  transform: translate(50%, -50%);
+  height: min(92vh, 100%);
   aspect-ratio: 800 / 1471;
   background: url("/landing/img/kiwi-kitty-pop.webp") center/contain no-repeat;
-  filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.55)) drop-shadow(0 18px 60px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 0 50px rgba(0, 240, 255, 0.55)) drop-shadow(0 24px 70px rgba(0, 0, 0, 0.75));
   z-index: 2;
   pointer-events: none;
 }
 @media (max-width: 900px) {
   .kp-page .z1 .hero-pop {
-    right: 4%;
+    right: 50%;
     top: auto;
-    bottom: 90px;
-    transform: none;
-    width: clamp(200px, 50vw, 300px);
+    bottom: 80px;
+    transform: translateX(50%);
+    height: 60vh;
   }
 }
 .kp-page .z1 .cn-bg {

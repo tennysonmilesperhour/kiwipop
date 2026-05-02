@@ -52,10 +52,13 @@ export default function TermsPage() {
 
         <h2>health + medical</h2>
         <p>
-          kiwi pop contains real functional ingredients (b12, l-tyrosine,
-          ginkgo, turmeric, electrolytes). it is candy with a payload, not a
-          drug, and not medical advice. if you have a condition, are
-          pregnant, or are on medication, ask your doctor before eating
+          kiwi pop contains real functional ingredients (kava, theobromine,
+          ginseng, magnesium glycinate, taurine, b12, blue spirulina, and an
+          electrolyte blend). it is candy with a payload, not a drug, and not
+          medical advice. kava in particular is not for anyone with liver
+          conditions, anyone pregnant or nursing, anyone under 18, or anyone
+          mixing it with alcohol or sedatives. if you have any medical
+          condition or are on medication, ask your doctor before eating
           functional candy. we&apos;re not them.
         </p>
 

@@ -42,15 +42,17 @@ export const metadata: Metadata = {
     template: '%s · kiwi pop',
   },
   description:
-    "sucker-shaped supplements you can party with. sugar-free, vegan, functional lollipops with real pop rocks, edible mica glitter, and a six-ingredient functional payload. candy for people who don't eat candy.",
+    "sucker-shaped supplements you can party with. zero added sugar, vegan, ~35 cal functional lollipops loaded with kava, theobromine, ginseng, magnesium, taurine, b12, blue spirulina, and electrolytes. candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   keywords: [
     'kiwi pop',
-    'sugar free lollipops',
+    'kava lollipop',
+    'theobromine candy',
+    'no added sugar lollipops',
     'vegan lollipops',
     'functional candy',
-    'caffeine lollipop',
+    'b12 lollipop',
     'rave snack',
     'after-hours candy',
   ],
@@ -59,7 +61,7 @@ export const metadata: Metadata = {
     siteName: 'kiwi pop',
     title: 'kiwi pop · sucker-shaped supplements you can party with',
     description:
-      'sucker-shaped supplements you can party with. sugar-free, vegan, functional lollipops.',
+      'sucker-shaped supplements you can party with. zero added sugar, vegan, kava + theobromine + ginseng + b12 lollipops.',
     url: siteUrl,
     images: [
       {
@@ -74,7 +76,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'kiwi pop · sucker-shaped supplements you can party with',
     description:
-      'sucker-shaped supplements you can party with. sugar-free, vegan, functional lollipops.',
+      'sucker-shaped supplements you can party with. zero added sugar, vegan, kava + theobromine + ginseng + b12 lollipops.',
     images: ['/og-image.png'],
   },
   robots: {

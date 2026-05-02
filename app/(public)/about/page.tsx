@@ -52,13 +52,13 @@ export default function AboutPage() {
             sugar and no anything else.
           </p>
           <p>
-            so i made one. five calories. zero sugar. real pop rocks crystals
-            in the middle so the snap is unmistakable. edible mica glitter
-            swirled through so it catches light when you lick it. b12,
-            electrolytes, l-tyrosine, ginkgo, turmeric — the functional
-            payload — measured by gram, not by vibe. monk fruit and allulose
-            do the sweet, no insulin spike. isomalt does the body. one stick.
-            small batch. you can taste the small batch.
+            so i made one. about thirty-five calories. zero added sugar. blue
+            spirulina swirled through for the color, so it catches light when
+            you lick it. kava, theobromine, ginseng, magnesium, taurine, b12 —
+            plus an electrolyte blend — measured by gram, not by vibe. that&apos;s
+            the lean-back, the slow lift, the eyes-open-longer all stacked
+            into one stick. monk fruit does the sweet, isomalt and a little
+            xylitol do the body. small batch. you can taste the small batch.
           </p>
           <p>
             <strong style={{ color: 'var(--lime)' }}>
