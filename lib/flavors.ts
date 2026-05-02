@@ -21,19 +21,19 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'kiwi kitty',
     display: 'kiwi\nkitty',
     feeling: '// the original',
-    fn: '8 actives · kava + theobromine · blue spirulina',
+    fn: '6 functionals · pop rocks · luster dust',
     flavor: 'kiwi · sweet, tart, clean',
     color: '#a8ff3c',
     status: 'live',
     description:
-      "the launch flavor. real kiwi powder, kava + theobromine for the lean-back-and-glow, blue spirulina for the color. ~35 calories. zero added sugar — sweetened with monk fruit on an isomalt + xylitol base. a little secret in your mouth.",
+      "the launch flavor. bright kiwi, real pop rocks crystals snapping inside, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. sweetened with monk fruit and xylitol on an isomalt base. a little secret in your mouth.",
   },
   {
     sku: 'KP-LUCY-LEMON',
     name: 'lucy lemon',
     display: 'lucy\nlemon',
     feeling: '// the bright one',
-    fn: '8 actives · kava + theobromine · blue spirulina',
+    fn: '6 functionals · pop rocks · luster dust',
     flavor: 'lemon + ginger · sharp and citrus',
     color: '#ffce1f',
     status: 'soon',
@@ -45,7 +45,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'mango molly',
     display: 'mango\nmolly',
     feeling: '// the warm one',
-    fn: '8 actives · kava + theobromine · blue spirulina',
+    fn: '6 functionals · pop rocks · luster dust',
     flavor: 'mango · ripe, glossy, sticky',
     color: '#ff2d8a',
     status: 'soon',
@@ -57,7 +57,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'mary mint',
     display: 'mary\nmint',
     feeling: '// the cool down',
-    fn: '8 actives · kava + theobromine · blue spirulina',
+    fn: '6 functionals · pop rocks · luster dust',
     flavor: 'peppermint · clean, cold, sharp',
     color: '#00f0ff',
     status: 'soon',
@@ -71,9 +71,8 @@ export const FLAVORS_BY_SKU: Record<string, FlavorBrandInfo> = Object.fromEntrie
 );
 
 /**
- * Functional ingredients per pop, v2.0 recipe. The first six are the headline
- * "actives" rendered in the homepage signal grid; taurine, spirulina, and the
- * electrolyte blend are full-payload sidekicks called out in copy below.
+ * The six functional things doing real work, per the production recipe.
+ * Source: kiwi_pop_costing.xlsx (Recipes tab, shared columns).
  */
 export interface FunctionalIngredient {
   name: string;
@@ -83,44 +82,34 @@ export interface FunctionalIngredient {
 
 export const FUNCTIONALS: readonly FunctionalIngredient[] = [
   {
-    name: 'kava',
-    amount: '0.75 g instant',
-    why: 'the lean-back. soft body, eyes still working.',
-  },
-  {
     name: 'theobromine',
     amount: '175 mg',
-    why: 'one square of dark chocolate. a slow lift, no crash.',
+    why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
+  },
+  {
+    name: 'kava',
+    amount: '0.75 g instant',
+    why: 'the relaxed thing. shoulders drop. you smile a little, alone.',
   },
   {
     name: 'ginseng',
     amount: '150 mg',
-    why: 'the smooth focus. eyes open longer.',
-  },
-  {
-    name: 'magnesium',
-    amount: '300 mg glycinate',
-    why: 'the soft lock on the muscles. relaxed, not asleep.',
-  },
-  {
-    name: 'taurine',
-    amount: '250 mg',
-    why: 'amino acid, light hand. evens out the kava.',
+    why: 'half a supplement dose. steady wake, no crash.',
   },
   {
     name: 'b12',
     amount: '1 mg methylcobalamin',
-    why: 'the active form, full dose. brain on.',
+    why: 'the active form. brain on, no buzz.',
   },
   {
-    name: 'electrolytes',
-    amount: '250 mg blend',
-    why: 'sodium / potassium. you sweat. we replace.',
+    name: 'magnesium glycinate',
+    amount: '300 mg',
+    why: 'the un-cramp. legs stay loose on the floor.',
   },
   {
-    name: 'spirulina',
-    amount: '125 mg blue',
-    why: 'where the color comes from. trace nutrition, real pigment.',
+    name: 'taurine',
+    amount: '250 mg',
+    why: 'clean focus current. no energy-drink edge.',
   },
 ] as const;
 
@@ -143,17 +132,17 @@ export const TIMELINE: readonly TimelineMoment[] = [
   {
     index: '00:15',
     title: 'first lick',
-    body: 'sweet, tart, clean. real kiwi powder up front. the blue spirulina catches the light.',
+    body: 'sweet, tart, clean. <1g of sugar — no sugar burn. the mica glitter catches the light.',
   },
   {
     index: '02:00',
-    title: 'the lean',
-    body: 'kava settles in. shoulders drop, mouth goes a little tingly. small private smile.',
+    title: 'the snap',
+    body: 'pop rocks hit. small electric thing on your tongue. you smile a little, alone.',
   },
   {
     index: '20:00',
     title: 'the after',
-    body: 'theobromine + b12 + electrolytes doing the math in the background. you feel like you ate.',
+    body: 'theobromine + kava + b12 + electrolytes doing the math in the background. you feel like you ate.',
   },
 ] as const;
 

@@ -9,7 +9,7 @@ This repo holds the **kiwi pop** webapp — storefront, admin cockpit, financial
 
 ## What kiwi pop is
 
-A functional lollipop. Sugar-free hard candy (isomalt-based), real Pop Rocks crystals embedded inside, edible mica glitter swirled through the middle, and a small functional payload — theobromine, instant kava, ginseng, electrolytes, B12, and blue spirulina for natural color. **Five calories per pop.** Sweetened with monk fruit and allulose.
+A functional lollipop. Low-sugar hard candy (isomalt + xylitol base, **<1g of sugar per pop**), real Pop Rocks crystals embedded inside, edible mica glitter swirled through the middle, and a real functional payload — theobromine, instant kava, ginseng, magnesium glycinate, taurine, B12, electrolytes, kiwi powder, spirulina. **~35 cal per pop (~9g net digestible carbs).** Sweetened with monk fruit extract and xylitol.
 
 Positioned for the rave / festival / party scene as a "candy that does something" — built to occupy a structural gap in the functional-confectionery market currently dominated by calm, pastel, wellness-coded brands.
 
@@ -123,14 +123,14 @@ If you're picking this up cold, read in this order:
 
 ## The product
 
-Kiwi pop is a **sugar-free, vegan, functional lollipop** at five calories. Built from:
+Kiwi pop is a **<1g of sugar, vegan, functional lollipop** at ~35 calories per pop. Built from:
 
-- **Isomalt base** — the sugar-free hard-candy carrier
-- **Monk fruit + allulose** — sweeteners that don't crash you
+- **Isomalt + xylitol base** — the low-sugar hard-candy carrier (sugar alcohols, ~50% absorbed → ~9g net digestible carbs per pop)
+- **Monk fruit extract** — the sweetener finish, no insulin spike
 - **Real Pop Rocks crystals** embedded inside — the texture moment
 - **Edible mica glitter** swirled through the center — the shimmer
-- **Blue spirulina** for natural color
-- **Functional payload:** theobromine, instant kava, ginseng, electrolytes, B12
+- **Kiwi powder** (1g) + a touch of coconut oil for body
+- **Functional payload:** theobromine (175mg), instant kava (0.75g), ginseng (150mg), magnesium glycinate (300mg), taurine (250mg), B12 methylcobalamin (1mg), electrolyte blend (250mg), spirulina (125mg), citric acid (200mg)
 
 The functional payload is the thing the category doesn't have. Wellness candy is calm and beige. Energy candy is loud and chemical. Kiwi pop is a small private pleasure with real ingredients doing real things — kava-relaxed, theobromine-lifted, hydrated, glittery.
 
@@ -215,7 +215,7 @@ The phrases that carry the brand:
 
 ### What this voice avoids
 
-- Manifesto-style declarations ("Sugar-free candy is for moms" / "Wellness doesn't have to be polite") — earlier drafts had these. Felt performed. Cut.
+- Manifesto-style declarations ("Low-sugar candy is for moms" / "Wellness doesn't have to be polite") — earlier drafts had these. Felt performed. Cut.
 - Edgy provocation ("Lick fast, rave harder") — same problem. The brand is sensual, not aggressive.
 - Wellness-speak ("clinically-backed nootropic blend", "synergistic adaptogens") — the brand sounds like a person, not a supplement label.
 - Anything that strains for cool. The brand IS cool because it's specific and confident, not because it's trying.
@@ -283,7 +283,7 @@ Total monthly cost while small: **$0–$25/month.**
 **Admin cockpit (private):**
 - Dashboard — today's orders, current inventory, this drop's burn rate, cash position
 - Orders — every order, status, fulfillment, refunds
-- Inventory — finished pops *and* raw ingredients (isomalt, monk fruit, allulose, theobromine, kava, ginseng, electrolytes, B12, blue spirulina, mica, Pop Rocks, wrappers, sticks)
+- Inventory — finished pops *and* raw ingredients (isomalt, xylitol, monk fruit extract, coconut oil, kiwi powder, theobromine, instant kava, ginseng, magnesium glycinate, taurine, B12 methylcobalamin, electrolyte blend, spirulina, citric acid, mica, Pop Rocks, wrappers, sticks)
 - Drops — schedule a drop, set quantity caps, set go-live date, write copy, set color story
 - Customers — full list with order count, lifetime value, last order date
 - Financials — live P&L, cost-per-pop, margin per flavor, break-even quantities, runway
