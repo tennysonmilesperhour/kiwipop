@@ -5,6 +5,7 @@ import { TimelineSection } from '@/components/home/TimelineSection';
 import { IngredientsSection } from '@/components/home/IngredientsSection';
 import { HowItsMade } from '@/components/home/HowItsMade';
 import { CrewSection } from '@/components/home/CrewSection';
+import { MerchSection } from '@/components/home/MerchSection';
 import { CommentsBand } from '@/components/home/CommentsBand';
 import { SpecSection } from '@/components/home/SpecSection';
 import { ListSection } from '@/components/home/ListSection';
@@ -19,6 +20,7 @@ export default function Home() {
       <IngredientsSection />
       <HowItsMade />
       <CrewSection />
+      <MerchSection />
       <CommentsBand />
       <SpecSection />
       <ListSection />
