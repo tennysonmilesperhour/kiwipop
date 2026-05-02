@@ -59,6 +59,13 @@ const TOOLS: ToolCard[] = [
     accent: 'var(--ultraviolet)',
   },
   {
+    href: '/admin/wholesale/inquiries',
+    label: 'wholesale inquiries',
+    description:
+      'public contact-form intake. every /wholesale/contact submission lands here with email-forward status, status workflow, and one-click reply.',
+    accent: 'var(--cherry)',
+  },
+  {
     href: '/admin/manufacturing',
     label: 'manufacturing',
     description:

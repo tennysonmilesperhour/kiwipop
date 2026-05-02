@@ -161,6 +161,23 @@ export const wholesaleInquirySchema = z.object({
 
 export type WholesaleInquiry = z.infer<typeof wholesaleInquirySchema>;
 
+/**
+ * Admin-side patch on a wholesale_inquiries row. Only the workflow
+ * fields are mutable: contact status + a notify-status override (rarely
+ * used; for when an admin manually clears a failed email forward).
+ */
+export const wholesaleInquiryUpdateSchema = z.object({
+  status: z
+    .enum(['new', 'contacted', 'catalog_sent', 'active', 'declined'])
+    .optional(),
+  notify_status: z
+    .enum(['pending', 'sent', 'failed', 'skipped'])
+    .optional(),
+  notify_error: z.string().trim().max(2000).nullable().optional(),
+});
+
+export type WholesaleInquiryUpdate = z.infer<typeof wholesaleInquiryUpdateSchema>;
+
 export type WholesaleApplication = z.infer<typeof wholesaleApplicationSchema>;
 
 const SHEET_SLUG = /^[a-z0-9_-]+$/;
