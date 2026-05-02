@@ -834,7 +834,7 @@
 .kp-page .z3 h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 104px;
+  font-size: clamp(2.6rem, 11vw, 6.5rem);
   letter-spacing: -0.06em;
   line-height: 0.83;
   text-transform: uppercase;
@@ -1559,7 +1559,7 @@
 .kp-page .z6 h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 108px;
+  font-size: clamp(2.8rem, 12vw, 6.75rem);
   letter-spacing: -0.06em;
   line-height: 0.82;
   text-transform: uppercase;
@@ -2057,7 +2057,9 @@
 }
 .kp-page .kp-foot .legal .kw { color: var(--lemon); }
 
-/* ========= responsive bare-minimum ========= */
+/* ========= responsive ========= */
+
+/* Tablets and below */
 @media (max-width: 900px) {
   .kp-page .z2 { grid-template-columns: 1fr; }
   .kp-page .z6 .copy { grid-template-columns: 1fr; }
@@ -2068,18 +2070,99 @@
   .kp-page .zr .head { grid-template-columns: 1fr; }
   .kp-page .zr .agg { text-align: left; }
   .kp-page .zr .grid { grid-template-columns: repeat(2, 1fr); }
-  .kp-page .kp-foot { grid-template-columns: 1fr 1fr; }
+  .kp-page .kp-foot { grid-template-columns: 1fr 1fr; padding: 60px 20px 30px; }
   .kp-page .z1 .hero-img { width: 100%; opacity: 0.45; }
   .kp-page .z1 .content { max-width: 100%; }
   .kp-page .kp-nav { padding: 14px 20px; }
-  .kp-page .kp-nav-links { display: none; }
+  /* On mobile the nav becomes a single horizontally-scrollable strip so the
+     RAFFLE / SHOP / FLAVORS / etc. links stay reachable. Hiding them broke
+     access to the new raffle anchor. */
+  .kp-page .kp-nav-links {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex: 1;
+    margin: 0 12px;
+    padding: 4px 0;
+    white-space: nowrap;
+  }
+  .kp-page .kp-nav-links::-webkit-scrollbar { display: none; }
+  .kp-page .kp-nav-links a { font-size: 11px; letter-spacing: 0.2em; flex-shrink: 0; }
   .kp-page .kp-ticker-bar { padding: 6px 20px; }
-  .kp-page .z1, .kp-page .z2, .kp-page .z5, .kp-page .z6, .kp-page .zr { padding-left: 20px; padding-right: 20px; }
+  .kp-page .z1,
+  .kp-page .z2,
+  .kp-page .z5,
+  .kp-page .z6,
+  .kp-page .zr,
+  .kp-page .zraffle { padding-left: 20px; padding-right: 20px; }
   .kp-page .z3 .head { padding: 60px 20px 40px; flex-direction: column; align-items: flex-start; gap: 20px; }
   .kp-page .z3 .head .right { text-align: left; }
   .kp-page .z3 .rail { padding: 0 20px; }
   .kp-page .kp-fundraiser { padding: 14px 20px 16px; }
+  .kp-page .kp-fundraiser .kp-fr-row { gap: 8px; }
   .kp-page .kp-fundraiser .kp-fr-amount { font-size: 18px; }
+  .kp-page .kp-fundraiser .kp-fr-amount .pct { display: block; margin: 4px 0 0; }
   .kp-page .kp-fundraiser .kp-fr-cta { padding: 8px 12px; font-size: 10px; letter-spacing: 0.16em; }
   .kp-page .pack-pick { grid-template-columns: repeat(2, 1fr); }
+  .kp-page .flav-pick { grid-template-columns: repeat(2, 1fr); }
+  .kp-page .qty-row { flex-wrap: wrap; gap: 12px; }
+  /* Decorative oversized hanzi: shrink so they don't dominate / cause
+     horizontal overflow even with overflow-x:hidden inheritance quirks. */
+  .kp-page .z1 .cn-bg { font-size: clamp(180px, 60vw, 320px); top: 60px; left: -20px; }
+  .kp-page .z1 .cn-bg2 { font-size: clamp(120px, 38vw, 200px); }
+  .kp-page .z3 .cn-bg2 { font-size: clamp(180px, 56vw, 300px); }
+  .kp-page .z4 .cn-huge { font-size: clamp(180px, 60vw, 320px); }
+  .kp-page .z5 .cn-bg { font-size: clamp(200px, 64vw, 360px); }
+  .kp-page .zr .cn-bg { font-size: clamp(160px, 50vw, 280px); }
+  .kp-page .zraffle .cn-bg { font-size: clamp(140px, 44vw, 240px); }
+}
+
+/* Phones */
+@media (max-width: 560px) {
+  .kp-page .kp-nav { padding: 12px 16px; gap: 8px; }
+  .kp-page .kp-brand .nm { font-size: 13px; }
+  .kp-page .kp-cart-btn { padding: 6px 10px; font-size: 10px; letter-spacing: 0.18em; }
+  .kp-page .z1 { padding: 110px 20px 60px; }
+  .kp-page .z1 .below { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .kp-page .z2 { padding-top: 60px; padding-bottom: 60px; }
+  .kp-page .z2 .img { aspect-ratio: 4/5; max-height: 460px; }
+  .kp-page .z2 .ings { gap: 4px; }
+  .kp-page .z2 .ing { font-size: 10px; padding: 4px 8px; }
+  .kp-page .z3 { padding: 80px 0 100px; }
+  .kp-page .fc { width: 280px; min-height: 460px; }
+  .kp-page .fc h3 { font-size: 36px; }
+  .kp-page .z4 { padding: 40px 0; }
+  .kp-page .z5 { padding-top: 60px; padding-bottom: 60px; }
+  .kp-page .z5 .grid { grid-template-columns: 1fr; gap: 14px; }
+  .kp-page .z5 .lab-band { flex-wrap: wrap; gap: 8px; }
+  .kp-page .zr .grid { grid-template-columns: 1fr; }
+  .kp-page .z6 { padding-top: 60px; padding-bottom: 60px; }
+  .kp-page .z6 .checkout { padding: 20px; }
+  .kp-page .z6 .pack-opt { padding: 8px 4px; }
+  .kp-page .z6 .pack-opt .sz { font-size: 14px; }
+  .kp-page .z6 .meta-row { flex-wrap: wrap; gap: 8px; }
+  .kp-page .cta-take { font-size: 12px; padding: 14px; letter-spacing: 0.14em; }
+  .kp-page .zraffle { padding-top: 80px; padding-bottom: 80px; }
+  .kp-page .zraffle h2 { font-size: clamp(44px, 13vw, 72px); }
+  .kp-page .raffle-form { padding: 22px 18px; }
+  .kp-page .raffle-form .fine { font-size: 9px; letter-spacing: 0.1em; }
+  .kp-page .kp-foot { grid-template-columns: 1fr; gap: 28px; padding: 50px 20px 24px; }
+  .kp-page .kp-foot .legal { font-size: 9px; letter-spacing: 0.1em; }
+}
+
+/* Smallest phones (~360px and below) */
+@media (max-width: 380px) {
+  .kp-page .kp-nav { padding: 10px 12px; }
+  .kp-page .kp-nav-links { margin: 0 6px; gap: 12px; }
+  .kp-page .kp-brand .nm { font-size: 12px; }
+  .kp-page .kp-cart-btn { padding: 5px 8px; font-size: 9px; }
+  .kp-page .fc { width: 250px; min-height: 420px; }
+  .kp-page .fc h3 { font-size: 30px; }
+  .kp-page .z6 .pack-opt { font-size: 9px; letter-spacing: 0.1em; }
+  .kp-page .z6 .qty span { font-size: 16px; }
+  .kp-page .raffle-form { padding: 18px 14px; }
+  .kp-page .raffle-form input { font-size: 13px; padding: 10px 12px; }
+  .kp-page .raffle-form .cta { padding: 14px 16px; letter-spacing: 0.16em; }
 }
