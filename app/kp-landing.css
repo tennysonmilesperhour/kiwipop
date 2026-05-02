@@ -79,6 +79,282 @@
   mix-blend-mode: screen;
 }
 
+/* ========= FUNDRAISER BAR (very top of page, scrolls away) ========= */
+.kp-page .kp-fundraiser {
+  position: relative;
+  z-index: 101;
+  background: linear-gradient(90deg, #050008 0%, #1a0028 50%, #050008 100%);
+  border-bottom: 1.5px solid var(--lemon);
+  padding: 16px 40px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+.kp-page .kp-fundraiser::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(245, 255, 61, 0.18), transparent 70%);
+  pointer-events: none;
+}
+.kp-page .kp-fundraiser .kp-fr-row {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.kp-page .kp-fundraiser .kp-fr-label {
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lemon);
+  text-shadow: 0 0 8px rgba(245, 255, 61, 0.45);
+}
+.kp-page .kp-fundraiser .kp-fr-label .cn {
+  font-family: var(--font-cn);
+  font-weight: 900;
+  margin-right: 6px;
+  letter-spacing: 0;
+}
+.kp-page .kp-fundraiser .kp-fr-amount {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+  text-transform: uppercase;
+}
+.kp-page .kp-fundraiser .kp-fr-amount .raised {
+  color: var(--lemon);
+  text-shadow: 0 0 12px rgba(245, 255, 61, 0.55);
+}
+.kp-page .kp-fundraiser .kp-fr-amount .of {
+  color: var(--bone-mute);
+  font-weight: 400;
+  margin: 0 6px;
+}
+.kp-page .kp-fundraiser .kp-fr-amount .pct {
+  color: var(--rose-dust);
+  font-family: var(--font-cyber);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  margin-left: 14px;
+}
+.kp-page .kp-fundraiser .kp-fr-track {
+  position: relative;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(245, 255, 61, 0.3);
+  overflow: hidden;
+}
+.kp-page .kp-fundraiser .kp-fr-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--kiwi) 0%, var(--lemon) 50%, var(--hot-pink) 100%);
+  box-shadow: 0 0 18px rgba(245, 255, 61, 0.55);
+  transform-origin: left center;
+  animation: kp-fr-pulse 3s ease-in-out infinite;
+}
+.kp-page .kp-fundraiser .kp-fr-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.18) 0,
+    rgba(0, 0, 0, 0.18) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+@keyframes kp-fr-pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
+}
+.kp-page .kp-fundraiser .kp-fr-ctas {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.kp-page .kp-fundraiser .kp-fr-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid rgba(245, 255, 61, 0.5);
+  color: var(--bone);
+  background: rgba(0, 0, 0, 0.4);
+  transition: transform 200ms var(--ease-spring), box-shadow 200ms, color 200ms, background 200ms;
+}
+.kp-page .kp-fundraiser .kp-fr-cta:hover {
+  transform: translateY(-1px);
+  color: var(--lemon);
+  box-shadow: 0 0 18px rgba(245, 255, 61, 0.45);
+}
+.kp-page .kp-fundraiser .kp-fr-cta.primary {
+  background: var(--lemon);
+  color: var(--void);
+  border-color: var(--lemon);
+  box-shadow: var(--glow-kiwi);
+}
+.kp-page .kp-fundraiser .kp-fr-cta.primary:hover { color: var(--void); transform: translateY(-1px) scale(1.02); }
+.kp-page .kp-fundraiser .kp-fr-cta.pink {
+  border-color: var(--hot-pink);
+  color: var(--hot-pink);
+}
+.kp-page .kp-fundraiser .kp-fr-cta.pink:hover { color: var(--bone); background: var(--hot-pink); box-shadow: var(--glow-pink); }
+.kp-page .kp-fundraiser .kp-fr-cta:disabled,
+.kp-page .kp-fundraiser .kp-fr-cta[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.kp-page .kp-fundraiser .kp-fr-flash {
+  font-family: var(--font-cyber);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rose-dust);
+  margin-top: 4px;
+}
+.kp-page .kp-fundraiser .kp-fr-flash .em {
+  color: var(--lemon);
+  text-shadow: 0 0 6px rgba(245, 255, 61, 0.4);
+}
+
+/* checkout pack-size picker (added under flav-pick) */
+.kp-page .pack-pick {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.kp-page .pack-opt {
+  padding: 10px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: var(--bone-dim);
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 200ms var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.kp-page .pack-opt .sz {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+}
+.kp-page .pack-opt .pp {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--bone-mute);
+}
+.kp-page .pack-opt.on {
+  border-color: var(--lemon);
+  color: var(--lemon);
+  box-shadow: 0 0 14px rgba(245, 255, 61, 0.45);
+}
+.kp-page .pack-opt.on .sz { color: var(--lemon); text-shadow: 0 0 8px rgba(245, 255, 61, 0.5); }
+.kp-page .pack-opt.on .pp { color: var(--lemon); }
+
+/* newsletter tile (replaces leave-a-review) */
+.kp-page .rev.signup form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.kp-page .rev.signup input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(245, 255, 61, 0.4);
+  color: var(--bone);
+  font-family: var(--font-cyber);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  transition: border-color 200ms, box-shadow 200ms;
+}
+.kp-page .rev.signup input:focus {
+  outline: none;
+  border-color: var(--lemon);
+  box-shadow: 0 0 14px rgba(245, 255, 61, 0.4);
+}
+.kp-page .rev.signup button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--lemon);
+  color: var(--void);
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  box-shadow: var(--glow-kiwi);
+  transition: transform 200ms var(--ease-spring);
+}
+.kp-page .rev.signup button[type="submit"]:hover { transform: scale(1.02); }
+.kp-page .rev.signup button[type="submit"]:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.kp-page .rev.signup .msg {
+  font-family: var(--font-cyber);
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rose-dust);
+  margin-top: 2px;
+}
+.kp-page .rev.signup .msg.ok { color: var(--kiwi); }
+.kp-page .rev.signup .msg.err { color: var(--hot-pink); }
+
+/* flavor card status pill */
+.kp-page .fc .status-pill {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  padding: 4px 10px;
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.65);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.kp-page .fc .status-pill.live { color: var(--kiwi); border: 1px solid var(--kiwi); box-shadow: 0 0 10px rgba(182, 255, 26, 0.4); }
+.kp-page .fc .status-pill.soon { color: var(--rose-dust); border: 1px solid var(--rose-dust); }
+
+/* added-to-cart confirmation flash on the take-one button */
+.kp-page .cta-take.added {
+  background: var(--kiwi);
+  color: var(--void);
+}
+
 /* ========= NAV ========= */
 .kp-page .kp-nav {
   position: fixed;
@@ -1574,4 +1850,8 @@
   .kp-page .z3 .head { padding: 60px 20px 40px; flex-direction: column; align-items: flex-start; gap: 20px; }
   .kp-page .z3 .head .right { text-align: left; }
   .kp-page .z3 .rail { padding: 0 20px; }
+  .kp-page .kp-fundraiser { padding: 14px 20px 16px; }
+  .kp-page .kp-fundraiser .kp-fr-amount { font-size: 18px; }
+  .kp-page .kp-fundraiser .kp-fr-cta { padding: 8px 12px; font-size: 10px; letter-spacing: 0.16em; }
+  .kp-page .pack-pick { grid-template-columns: repeat(2, 1fr); }
 }
