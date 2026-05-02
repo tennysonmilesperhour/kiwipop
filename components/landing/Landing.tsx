@@ -170,6 +170,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="cn-bg">舐夜</div>
         <div className="cn-bg2">糖</div>
         <div className="hero-img" />
+        <div className="hero-pop" aria-hidden="true" />
         <div className="content">
           <span className="eyebrow">
             <span className="cn">舐</span> SUCKER-SHAPED SUPPLEMENTS YOU CAN PARTY WITH

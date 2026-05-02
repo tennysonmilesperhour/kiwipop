@@ -507,6 +507,27 @@
   background: linear-gradient(180deg, rgba(10, 0, 20, 0.25), transparent 30%, transparent 70%, rgba(10, 0, 20, 0.5));
   pointer-events: none;
 }
+.kp-page .z1 .hero-pop {
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(280px, 32vw, 480px);
+  aspect-ratio: 800 / 1471;
+  background: url("/landing/img/kiwi-kitty-pop.webp") center/contain no-repeat;
+  filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.55)) drop-shadow(0 18px 60px rgba(0, 0, 0, 0.7));
+  z-index: 2;
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .kp-page .z1 .hero-pop {
+    right: 4%;
+    top: auto;
+    bottom: 90px;
+    transform: none;
+    width: clamp(200px, 50vw, 300px);
+  }
+}
 .kp-page .z1 .cn-bg {
   position: absolute;
   left: -40px;
