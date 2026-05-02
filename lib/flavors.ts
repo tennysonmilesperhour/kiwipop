@@ -26,7 +26,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#a8ff3c',
     status: 'live',
     description:
-      "the launch flavor. bright kiwi, real pop rocks crystals snapping inside, edible mica glitter swirled through the middle. five calories. sweetened with monk fruit and allulose. a little secret in your mouth.",
+      "the launch flavor. bright kiwi, real pop rocks crystals snapping inside, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. sweetened with monk fruit and xylitol on an isomalt base. a little secret in your mouth.",
   },
   {
     sku: 'KP-LUCY-LEMON',
@@ -82,34 +82,34 @@ export interface FunctionalIngredient {
 
 export const FUNCTIONALS: readonly FunctionalIngredient[] = [
   {
-    name: 'b12',
-    amount: '25 mcg methylcobalamin',
-    why: 'the active form. brain on, no jitters.',
+    name: 'theobromine',
+    amount: '175 mg',
+    why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
   },
   {
-    name: 'electrolytes',
-    amount: '250 mg blend',
-    why: 'sodium / potassium / magnesium. you sweat. we replace.',
+    name: 'kava',
+    amount: '0.75 g instant',
+    why: 'the relaxed thing. shoulders drop. you smile a little, alone.',
   },
   {
-    name: 'l-tyrosine',
+    name: 'ginseng',
     amount: '150 mg',
-    why: 'the focus precursor. cuts through the fog.',
+    why: 'half a supplement dose. steady wake, no crash.',
   },
   {
-    name: 'ginkgo biloba',
-    amount: '50 mg extract',
-    why: 'circulation. eyes open longer.',
+    name: 'b12',
+    amount: '1 mg methylcobalamin',
+    why: 'the active form. brain on, no buzz.',
   },
   {
-    name: 'turmeric',
-    amount: '50 mg (95% curcumin)',
-    why: 'anti-inflammatory. the morning-after favor.',
+    name: 'magnesium glycinate',
+    amount: '300 mg',
+    why: 'the un-cramp. legs stay loose on the floor.',
   },
   {
-    name: 'pop rocks',
-    amount: '2 g real crystals',
-    why: 'the snap. the tell.',
+    name: 'taurine',
+    amount: '250 mg',
+    why: 'clean focus current. no energy-drink edge.',
   },
 ] as const;
 
@@ -132,7 +132,7 @@ export const TIMELINE: readonly TimelineMoment[] = [
   {
     index: '00:15',
     title: 'first lick',
-    body: 'sweet, tart, clean. no sugar burn. the mica glitter catches the light.',
+    body: 'sweet, tart, clean. <1g of sugar — no sugar burn. the mica glitter catches the light.',
   },
   {
     index: '02:00',
@@ -142,7 +142,7 @@ export const TIMELINE: readonly TimelineMoment[] = [
   {
     index: '20:00',
     title: 'the after',
-    body: 'b12 + electrolytes + l-tyrosine doing the math in the background. you feel like you ate.',
+    body: 'theobromine + kava + b12 + electrolytes doing the math in the background. you feel like you ate.',
   },
 ] as const;
 
