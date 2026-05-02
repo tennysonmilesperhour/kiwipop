@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
-import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
 import type { ProductRow } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
@@ -13,14 +11,35 @@ interface DonateFormProps {
   snapshot: FundraiserSnapshot;
 }
 
+interface DonateResponse {
+  checkoutUrl?: string;
+  error?: string;
+  details?: string;
+}
+
 const PRESETS = [5, 25, 50, 100, 250];
+const MAX_MESSAGE_LEN = 500;
+
+const fieldStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '14px 16px',
+  background: 'rgba(0, 0, 0, 0.45)',
+  border: '1px solid rgba(245, 255, 61, 0.4)',
+  color: 'var(--bone)',
+  fontFamily: 'var(--font-cyber)',
+  fontWeight: 500,
+  fontSize: 14,
+  letterSpacing: '0.12em',
+};
 
 export function DonateForm({ product, snapshot }: DonateFormProps) {
-  const router = useRouter();
-  const addItem = useCart((s) => s.addItem);
   const [amount, setAmount] = useState<number>(25);
   const [custom, setCustom] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const effectiveAmount = (() => {
     const n = Number(custom);
@@ -30,18 +49,31 @@ export function DonateForm({ product, snapshot }: DonateFormProps) {
 
   const percent = Math.min(100, snapshot.percent);
 
-  const handleDonate = () => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!product || submitting || effectiveAmount <= 0) return;
+    setError('');
     setSubmitting(true);
-    addItem({
-      productId: product.id,
-      name: `${product.name} · ${formatCentsToUSD(effectiveAmount * 100)}`,
-      price: product.price_cents, // $1/unit, quantity = dollars
-      quantity: effectiveAmount,
-      image: undefined,
-      isPreorder: false,
-    });
-    router.push('/cart');
+    try {
+      const response = await fetch('/api/donate-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amountDollars: effectiveAmount,
+          email,
+          name: name || undefined,
+          message: message || undefined,
+        }),
+      });
+      const json = (await response.json()) as DonateResponse;
+      if (!response.ok || !json.checkoutUrl) {
+        throw new Error(json.error ?? 'could not start checkout — try again.');
+      }
+      window.location.href = json.checkoutUrl;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'could not start checkout');
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -81,7 +113,7 @@ export function DonateForm({ product, snapshot }: DonateFormProps) {
               donations aren&apos;t live yet. run migration 008 in the supabase project to seed the donation product.
             </p>
           ) : (
-            <>
+            <form onSubmit={handleSubmit} noValidate>
               <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
                 <span className="ing">PICK AN AMOUNT</span>
                 <span className="ing"><span className="mg">USD</span></span>
@@ -114,36 +146,76 @@ export function DonateForm({ product, snapshot }: DonateFormProps) {
                 value={custom}
                 onChange={(e) => setCustom(e.target.value)}
                 placeholder="custom · whole dollars"
-                style={{
-                  width: '100%',
-                  padding: '14px 16px',
-                  background: 'rgba(0, 0, 0, 0.45)',
-                  border: '1px solid rgba(245, 255, 61, 0.4)',
-                  color: 'var(--bone)',
-                  fontFamily: 'var(--font-cyber)',
-                  fontWeight: 500,
-                  fontSize: 14,
-                  letterSpacing: '0.12em',
-                  marginBottom: 24,
-                }}
+                style={fieldStyle}
                 aria-label="custom donation amount in dollars"
               />
 
+              <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 18, marginBottom: 8 }}>
+                <span className="ing">EMAIL · WE&apos;LL SEND A RECEIPT</span>
+              </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="you@somewhere.cool"
+                autoComplete="email"
+                style={fieldStyle}
+                aria-label="email for receipt"
+              />
+
+              <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 18, marginBottom: 8 }}>
+                <span className="ing">NAME · OPTIONAL · HOW TO CREDIT YOU</span>
+              </div>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                maxLength={120}
+                placeholder="anonymous works too"
+                autoComplete="name"
+                style={fieldStyle}
+                aria-label="name (optional)"
+              />
+
+              <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 18, marginBottom: 8 }}>
+                <span className="ing">LEAVE A MESSAGE · OPTIONAL</span>
+                <span className="ing"><span className="mg">{message.length} / {MAX_MESSAGE_LEN}</span></span>
+              </div>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value.slice(0, MAX_MESSAGE_LEN))}
+                placeholder="hype, advice, lyrics, threats — read by a real human."
+                rows={4}
+                style={{ ...fieldStyle, resize: 'vertical', fontFamily: 'inherit', marginBottom: 24 }}
+                aria-label="message (optional)"
+              />
+
+              {error ? (
+                <p
+                  className="lede"
+                  role="alert"
+                  aria-live="polite"
+                  style={{ color: 'var(--hot-pink)', marginBottom: 16, fontSize: 14 }}
+                >
+                  {error}
+                </p>
+              ) : null}
+
               <button
-                type="button"
+                type="submit"
                 className="cta-take"
-                onClick={handleDonate}
-                disabled={submitting || effectiveAmount <= 0}
+                disabled={submitting || effectiveAmount <= 0 || !email}
                 style={{ width: '100%', justifyContent: 'space-between' }}
               >
-                <span>CONTRIBUTE {formatCentsToUSD(effectiveAmount * 100)}</span>
-                <span>→ CART</span>
+                <span>{submitting ? 'REDIRECTING TO STRIPE…' : `CONTRIBUTE ${formatCentsToUSD(effectiveAmount * 100)}`}</span>
+                <span>→ PAY</span>
               </button>
 
               <p className="lede" style={{ marginTop: 24, fontSize: 14 }}>
-                no goods ship. processed via stripe through the same checkout as a sale, so it counts toward the live progress bar instantly on payment.
+                no shipping needed. processed via stripe — counts toward the live progress bar instantly on payment.
               </p>
-            </>
+            </form>
           )}
 
           <div style={{ marginTop: 40, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
