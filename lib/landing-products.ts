@@ -30,9 +30,8 @@ export interface LandingProducts {
 
 const PACK_SKU_BY_SIZE: Record<number, string> = {
   1: 'KP-KIWI-KITTY',
-  3: 'KP-PACK-3',
   6: 'KP-PACK-6',
-  12: 'KP-PACK-12',
+  20: 'KP-PACK-20',
 };
 
 const FUNDRAISER_SKUS = {
@@ -42,9 +41,8 @@ const FUNDRAISER_SKUS = {
 
 const ALL_SKUS = [
   ...FLAVORS.map((f) => f.sku),
-  'KP-PACK-3',
   'KP-PACK-6',
-  'KP-PACK-12',
+  'KP-PACK-20',
   FUNDRAISER_SKUS.donation,
   FUNDRAISER_SKUS.varietyHalfOff,
 ];

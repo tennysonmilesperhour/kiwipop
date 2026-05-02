@@ -186,18 +186,17 @@ export interface PackTier {
 export const PACKS: readonly PackTier[] = [
   { size: 1, label: 'single', priceCents: 500, perPopCents: 500 },
   {
-    size: 3,
-    label: '3-pack',
-    priceCents: 1200,
-    perPopCents: 400,
-    badge: 'starter',
+    size: 6,
+    label: '6-pack',
+    priceCents: 2500,
+    perPopCents: 417,
+    badge: 'share size',
   },
-  { size: 6, label: '6-pack', priceCents: 2400, perPopCents: 400 },
   {
-    size: 12,
-    label: '12-pack',
-    priceCents: 4800,
-    perPopCents: 400,
+    size: 20,
+    label: 'party pack',
+    priceCents: 6000,
+    perPopCents: 300,
     badge: 'best value',
   },
 ] as const;

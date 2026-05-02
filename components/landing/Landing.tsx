@@ -53,7 +53,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const liveFlavors = products.flavors.filter((f) => f.product);
   const initialFlavorSku = liveFlavors[0]?.sku ?? products.flavors[0]?.sku ?? '';
   const [flavorSku, setFlavorSku] = useState<string>(initialFlavorSku);
-  const [packSize, setPackSize] = useState<number>(12);
+  const [packSize, setPackSize] = useState<number>(20);
   const [qty, setQty] = useState<number>(1);
   const [addState, setAddState] = useState<'idle' | 'added'>('idle');
 
@@ -69,7 +69,10 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   );
 
   const selectedPack = useMemo(
-    () => products.packs.find((p) => p.size === packSize) ?? products.packs[3],
+    () =>
+      products.packs.find((p) => p.size === packSize) ??
+      products.packs[products.packs.length - 1] ??
+      products.packs[0],
     [packSize, products.packs],
   );
 
@@ -505,7 +508,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <div className="row">
               <span className="label">PACK SIZE</span>
               <span className="label">
-                <span className="kw">$5 / POP RETAIL · BUNDLE TO SAVE</span>
+                <span className="kw">$5 SINGLE · 6 FOR $25 · 20 FOR $60</span>
               </span>
             </div>
             <div className="pack-pick">
