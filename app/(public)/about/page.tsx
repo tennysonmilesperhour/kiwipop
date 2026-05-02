@@ -48,15 +48,16 @@ export default function AboutPage() {
           <p>
             i wanted something to put in my mouth at 1am that didn&apos;t
             wreck me. nothing on the shelf was right. wellness candy was
-            polite. energy chews tasted like a gym towel. mints came with no
-            sugar and no anything else.
+            polite. energy chews tasted like a gym towel. mints came with
+            barely any flavor and nothing else.
           </p>
           <p>
-            so i made one. five calories. zero sugar. real pop rocks crystals
-            in the middle so the snap is unmistakable. edible mica glitter
-            swirled through so it catches light when you lick it. b12,
-            electrolytes, l-tyrosine, ginkgo, turmeric — the functional
-            payload — measured by gram, not by vibe. monk fruit and allulose
+            so i made one. about thirty-five calories. less than a gram of
+            sugar. real pop rocks crystals in the middle so the snap is
+            unmistakable. edible mica glitter swirled through so it catches
+            light when you lick it. theobromine, kava, ginseng, b12,
+            magnesium, taurine, electrolytes — the functional payload —
+            measured by gram, not by vibe. monk fruit and a touch of xylitol
             do the sweet, no insulin spike. isomalt does the body. one stick.
             small batch. you can taste the small batch.
           </p>

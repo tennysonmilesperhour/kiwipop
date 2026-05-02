@@ -36,7 +36,7 @@ const FESTIVAL_TICKER = [
   'COACHELLA W2 · 2026.04',
   'EDC LAS VEGAS · 2026.06',
   'LIGHTNING IN A BOTTLE · 2026.08',
-  'ZERO SUGAR · 5 CAL · VEGAN',
+  '<1G SUGAR · ~35 CAL · VEGAN',
   'FREE SHIP $40+',
   'MFD NEW SHIBUYA',
 ];
@@ -180,7 +180,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="respect" style={{ color: 'rgb(155, 237, 255)' }}>respectfully</span>
           </h1>
           <p className="sub">
-            <span className="em">refreshing club lolli.</span> sugar free · vegan · 5 cal · b12 + electrolytes + l-tyrosine + ginkgo + turmeric · real pop rocks crystals inside.
+            <span className="em">refreshing club lolli.</span> &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · real pop rocks crystals inside.
           </p>
         </div>
         <div className="below">
@@ -203,7 +203,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="pk">SUPPLEMENTs.</span>
           </h2>
           <p className="lede">
-            <span className="em">b12, electrolytes, l-tyrosine, ginkgo, turmeric, real pop rocks.</span>{' '}
+            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes, real pop rocks.</span>{' '}
             measured by gram, not by vibe. same payload, every pop.
           </p>
           <div className="ings">
@@ -315,7 +315,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="lm">SUNRISE.</span>
           </h1>
           <p className="quote">
-            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — five calories, zero sugar, real pop rocks crystals snapping at the lick.
+            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, real pop rocks crystals snapping at the lick.
           </p>
         </div>
       </section>
@@ -353,7 +353,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           ))}
         </div>
         <div className="lab-band">
-          <div className="item"><span className="dot" />ZERO SUGAR · 5 CAL</div>
+          <div className="item"><span className="dot" />&lt;1G SUGAR · ~35 CAL</div>
           <div className="item"><span className="dot" />VEGAN · GLUTEN FREE</div>
           <div className="item"><span className="dot" />REAL POP ROCKS · 2G</div>
           <div className="item"><span className="dot" />MFD NEW SHIBUYA</div>
@@ -566,8 +566,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               </button>
             ) : null}
             <div className="meta-row">
-              <span className="item"><span className="dot" />ZERO SUGAR</span>
-              <span className="item"><span className="dot" />5 CAL</span>
+              <span className="item"><span className="dot" />&lt;1G SUGAR</span>
+              <span className="item"><span className="dot" />~35 CAL</span>
               <span className="item"><span className="dot" />VEGAN</span>
               <span className="item"><span className="dot" />REAL POP ROCKS</span>
             </div>
@@ -618,7 +618,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/shipping">shipping</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS REAL POP ROCKS CRYSTALS, EDIBLE MICA, B12, ELECTROLYTES.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS KAVA, THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, REAL POP ROCKS CRYSTALS, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES.
           <br />
           <br />© KIWI POP · {new Date().getFullYear()} · DROP 001 · MFD NEW SHIBUYA · <span className="kw">舐 一下</span>
         </div>

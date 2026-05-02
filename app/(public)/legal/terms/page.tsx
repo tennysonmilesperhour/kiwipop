@@ -52,11 +52,13 @@ export default function TermsPage() {
 
         <h2>health + medical</h2>
         <p>
-          kiwi pop contains real functional ingredients (b12, l-tyrosine,
-          ginkgo, turmeric, electrolytes). it is candy with a payload, not a
-          drug, and not medical advice. if you have a condition, are
-          pregnant, or are on medication, ask your doctor before eating
-          functional candy. we&apos;re not them.
+          kiwi pop contains real functional ingredients (theobromine, kava,
+          ginseng, b12, magnesium, taurine, electrolytes) and sugar alcohols
+          (isomalt, xylitol). it is candy with a payload, not a drug, and
+          not medical advice. if you have a condition, are pregnant, are on
+          medication, or have a sensitivity to sugar alcohols, ask your
+          doctor before eating functional candy. we&apos;re not them. xylitol
+          is toxic to dogs — keep these away from pets.
         </p>
 
         <h2>liability</h2>
