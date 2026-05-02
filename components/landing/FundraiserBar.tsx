@@ -61,9 +61,14 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
       </div>
 
       <div className="kp-fr-ctas">
-        <Link className="kp-fr-cta primary" href="/donate">
-          DONATE → CONTRIBUTE
-        </Link>
+        <a
+          className="kp-fr-cta primary"
+          href="https://venmo.com/u/tennyson-taggart"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          DONATE → VENMO @TENNYSON-TAGGART
+        </a>
         <button
           type="button"
           className="kp-fr-cta pink"
@@ -83,7 +88,7 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
       </div>
 
       <div className="kp-fr-flash">
-        <span className="em">LIMITED-TIME PREORDER</span> · $3 / pop · 6 + 12 packs ship at half off until the goal hits {formatCentsToUSD(snapshot.goalCents)} · wholesale preorder open as a fundraiser special
+        <span className="em">VENMO IS LIVE</span> · scan the qr in the peak section or tap donate to send to <strong>@tennyson-taggart</strong> · every dollar feeds the {formatCentsToUSD(snapshot.goalCents)} launch fundraiser
       </div>
     </div>
   );

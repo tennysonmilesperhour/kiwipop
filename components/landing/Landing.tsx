@@ -312,21 +312,21 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </h2>
           <a
             className="kp-venmo-card"
-            href="https://venmo.com/"
+            href="https://venmo.com/u/tennyson-taggart"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="open venmo to pay or donate to kiwi pop"
+            aria-label="open venmo to pay or donate to @tennyson-taggart"
           >
             <img
-              src="/landing/img/venmo-qr.png"
-              alt="venmo qr code · kiwi pop"
+              src="/landing/img/venmo-qr.jpg"
+              alt="venmo qr · @tennyson-taggart · kiwi pop"
               width={420}
               height={420}
             />
-            <span className="kp-venmo-handle">venmo · kiwi pop</span>
+            <span className="kp-venmo-handle">venmo · @tennyson-taggart</span>
           </a>
           <p className="quote">
-            <span className="em">scan to venmo.</span> donations + payments both feed the launch fundraiser. or open venmo and search <strong>kiwi pop</strong>.
+            <span className="em">scan to venmo.</span> donations + payments both feed the launch fundraiser. or open venmo and search <strong>@tennyson-taggart</strong>.
           </p>
         </div>
       </section>
