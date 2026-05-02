@@ -174,9 +174,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="cn">舐</span> SUCKER-SHAPED SUPPLEMENTS YOU CAN PARTY WITH
           </span>
           <h1>
-            <span style={{ color: '#f4ecff', display: 'block' }}>a little</span>
-            <span className="pk" style={{ display: 'block' }}>secret</span>
-            <span className="respect" style={{ color: 'rgb(155, 237, 255)' }}>in your mouth.</span>
+            <span style={{ color: '#f4ecff', display: 'block' }}>Put this</span>
+            <span className="pk" style={{ display: 'block' }}>in your mouth</span>
+            <span className="respect" style={{ color: 'rgb(155, 237, 255)' }}>respectfully.</span>
           </h1>
           <p className="sub">
             <span className="em">refreshing club lolli.</span> sugar free · vegan · 5 cal · b12 + electrolytes + l-tyrosine + ginkgo + turmeric · real pop rocks crystals inside.
