@@ -40,7 +40,7 @@ export function Hero() {
           </span>
         </h1>
         <p className="hero-tagline">
-          sucker-shaped supplements you can party with
+          put this in your mouth. respectfully
         </p>
         <p className="hero-subtagline">
           refreshing club lolli · sugar free · vegan · 5 cal
