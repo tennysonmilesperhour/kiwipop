@@ -24,7 +24,7 @@ INSERT INTO public.products (
 ) VALUES
   (
     'Kiwi Kitty',
-    'the launch flavor. bright kiwi, real pop rocks crystals snapping inside, edible mica glitter swirled through the middle. five calories. sweetened with monk fruit and allulose. a little secret in your mouth.',
+    'the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. sweetened with monk fruit and xylitol on an isomalt base. a little secret in your mouth.',
     'KP-KIWI-KITTY',
     500,
     false,
