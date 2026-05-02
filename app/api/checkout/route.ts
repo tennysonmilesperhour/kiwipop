@@ -15,6 +15,7 @@ interface ProductRow {
   image_url: string | null;
   in_stock: number;
   preorder_only: boolean;
+  stripe_price_id: string | null;
 }
 
 interface CheckoutItem {
@@ -25,7 +26,7 @@ interface CheckoutItem {
 async function loadProducts(productIds: string[]): Promise<Map<string, ProductRow>> {
   const { data, error } = await supabaseAdmin
     .from('products')
-    .select('id, name, price_cents, image_url, in_stock, preorder_only')
+    .select('id, name, price_cents, image_url, in_stock, preorder_only, stripe_price_id')
     .in('id', productIds);
 
   if (error) {
@@ -172,6 +173,7 @@ export async function POST(request: NextRequest) {
           amount: product.price_cents,
           quantity: item.quantity,
           image: product.image_url ?? undefined,
+          stripePriceId: product.stripe_price_id,
         };
       }),
     });
