@@ -776,9 +776,8 @@
   z-index: 2;
   aspect-ratio: 1 / 1;
   max-height: 680px;
-  /* kiwi kitty product window — drop the painted blue-swirl-lollipop-on-lips
-     reference at public/landing/img/kiwi-kitty-product.jpg */
-  background: url("/landing/img/kiwi-kitty-product.jpg") center/cover no-repeat;
+  /* kiwi kitty product window — painted blue-swirl-lollipop-on-lips reference */
+  background: url("/landing/img/kiwi-kitty-product.png") center/cover no-repeat;
   box-shadow: 0 0 60px rgba(255, 26, 140, 0.35), 0 0 0 1px rgba(245, 255, 61, 0.4), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
 .kp-page .z2 .img::after {
