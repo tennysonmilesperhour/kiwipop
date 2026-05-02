@@ -24,9 +24,9 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     fn: '6 functionals · pop rocks · luster dust',
     flavor: 'kiwi · sweet, tart, clean',
     color: '#a8ff3c',
-    status: 'live',
+    status: 'soon',
     description:
-      "the launch flavor. bright kiwi, real pop rocks crystals snapping inside, edible mica glitter swirled through the middle. five calories. sweetened with monk fruit and allulose. a little secret in your mouth.",
+      "preorder. bright kiwi, real pop rocks crystals snapping inside, edible mica glitter swirled through the middle. five calories. sweetened with monk fruit and allulose. ships when the launch fundraiser hits.",
   },
   {
     sku: 'KP-LUCY-LEMON',
@@ -38,7 +38,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#ffce1f',
     status: 'soon',
     description:
-      "lemon meets ginger. sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. coming soon.",
+      "preorder. lemon meets ginger. sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base.",
   },
   {
     sku: 'KP-MANGO-MOLLY',
@@ -50,7 +50,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#ff2d8a',
     status: 'soon',
     description:
-      "ripe mango, glossy on the lips. freeze-dried mango powder cut with the LorAnn oil for full saturation. coming soon.",
+      "preorder. ripe mango, glossy on the lips. freeze-dried mango powder cut with the LorAnn oil for full saturation.",
   },
   {
     sku: 'KP-MARY-MINT',
@@ -62,7 +62,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#00f0ff',
     status: 'soon',
     description:
-      "cold peppermint, no sweetness on the back end. the mint that doesn't apologize. coming soon.",
+      "preorder. cold peppermint, no sweetness on the back end. the mint that doesn't apologize.",
   },
 ] as const;
 
@@ -173,7 +173,9 @@ export const PULL_QUOTES: readonly PullQuote[] = [
 ] as const;
 
 /**
- * Multi-pack pricing tiers, per shopify_launch_spec.md.
+ * Multi-pack pricing tiers. Launch-fundraiser pricing: PPL is $3, the
+ * 6-pack and 12-pack ship at 50% off so the bigger bundles are clearly
+ * the better value. 1- and 3-packs stay at full PPL.
  */
 export interface PackTier {
   size: number;
@@ -184,20 +186,26 @@ export interface PackTier {
 }
 
 export const PACKS: readonly PackTier[] = [
-  { size: 1, label: 'single', priceCents: 500, perPopCents: 500 },
+  { size: 1, label: 'single', priceCents: 300, perPopCents: 300 },
   {
     size: 3,
     label: '3-pack',
-    priceCents: 1200,
-    perPopCents: 400,
+    priceCents: 900,
+    perPopCents: 300,
     badge: 'starter',
   },
-  { size: 6, label: '6-pack', priceCents: 2400, perPopCents: 400 },
+  {
+    size: 6,
+    label: '6-pack',
+    priceCents: 900,
+    perPopCents: 150,
+    badge: 'half off',
+  },
   {
     size: 12,
     label: '12-pack',
-    priceCents: 4800,
-    perPopCents: 400,
-    badge: 'best value',
+    priceCents: 1800,
+    perPopCents: 150,
+    badge: 'half off · max value',
   },
 ] as const;

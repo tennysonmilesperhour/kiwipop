@@ -71,15 +71,19 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
           disabled={!varietyHalfOff || adding}
           aria-disabled={!varietyHalfOff || adding}
         >
-          {adding ? 'ADDING…' : 'HALF-OFF VARIETY 12-PACK · PREORDER'}
+          {adding
+            ? 'ADDING…'
+            : varietyHalfOff
+              ? `HALF-OFF VARIETY 12-PACK · PREORDER · ${formatCentsToUSD(varietyHalfOff.price_cents)}`
+              : 'HALF-OFF VARIETY 12-PACK · PREORDER'}
         </button>
         <Link className="kp-fr-cta" href="/wholesale/apply">
-          WHOLESALE PREORDER →
+          WHOLESALE PREORDER · FUNDRAISER SPECIAL →
         </Link>
       </div>
 
       <div className="kp-fr-flash">
-        <span className="em">LIMITED-TIME</span> · variety 12-pack preorder at half off ($24) until the goal hits {formatCentsToUSD(snapshot.goalCents)} · all proceeds toward drop 001
+        <span className="em">LIMITED-TIME PREORDER</span> · $3 / pop · 6 + 12 packs ship at half off until the goal hits {formatCentsToUSD(snapshot.goalCents)} · wholesale preorder open as a fundraiser special
       </div>
     </div>
   );
