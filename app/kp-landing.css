@@ -541,7 +541,11 @@
   top: 0;
   bottom: 0;
   width: 55%;
-  background: url("/landing/img/lips-lollipop.jpg") center/cover no-repeat;
+  /* scaled to 85% of container width (15% smaller than the previous cover
+     fit) and bottom-anchored so the figure's torso + lollipop handle
+     reach the bottom edge of the hero, lining up with the rest of the
+     page. the rave figure now reads smaller-than-the-face by intent. */
+  background: url("/landing/img/lips-lollipop.jpg") center bottom / 85% auto no-repeat;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 18%);
   mask-image: linear-gradient(90deg, transparent 0%, black 18%);
   filter: saturate(1.15) contrast(1.05);
