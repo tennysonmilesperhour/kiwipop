@@ -73,7 +73,7 @@ export function DonateForm({ product, snapshot }: DonateFormProps) {
             <span className="pk">DOLLAR.</span>
           </h2>
           <p className="lede" style={{ marginBottom: 32 }}>
-            <span className="em">tip jar.</span> every dollar feeds the launch — packaging, real pop rocks, a kid in new shibuya rolling 800 pops by hand. ships nothing. counts toward the {formatCentsToUSD(snapshot.goalCents)} goal at 100% of face value.
+            <span className="em">tip jar.</span> every dollar feeds the launch — packaging, kava, blue spirulina, a kid in new shibuya rolling 800 pops by hand. ships nothing. counts toward the {formatCentsToUSD(snapshot.goalCents)} goal at 100% of face value.
           </p>
 
           {!product ? (

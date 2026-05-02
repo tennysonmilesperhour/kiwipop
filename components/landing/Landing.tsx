@@ -9,6 +9,7 @@ import { FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { FundraiserBar } from './FundraiserBar';
+import { RaffleForm } from './RaffleForm';
 
 interface LandingProps {
   products: LandingProducts;
@@ -16,7 +17,7 @@ interface LandingProps {
 }
 
 const FLAVOR_IMG: Record<string, string> = {
-  'KP-KIWI-KITTY': '/landing/img/anime-lollipop.jpg',
+  'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
   'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
   'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
   'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',
@@ -145,6 +146,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
+          <a href="#raffle">RAFFLE</a>
           <Link href="/merch">MERCH</Link>
           <Link href="/find-us">FIND US</Link>
         </div>
@@ -170,6 +172,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="cn-bg">舐夜</div>
         <div className="cn-bg2">糖</div>
         <div className="hero-img" />
+        <div className="hero-pop" aria-hidden="true" />
         <div className="content">
           <span className="eyebrow">
             <span className="cn">舐</span> SUCKER-SHAPED SUPPLEMENTS YOU CAN PARTY WITH
@@ -355,7 +358,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="lab-band">
           <div className="item"><span className="dot" />&lt;1G SUGAR · ~35 CAL</div>
           <div className="item"><span className="dot" />VEGAN · GLUTEN FREE</div>
-          <div className="item"><span className="dot" />REAL POP ROCKS · 2G</div>
+          <div className="item"><span className="dot" />KAVA · 750MG / POP</div>
           <div className="item"><span className="dot" />MFD NEW SHIBUYA</div>
           <div className="item"><span className="dot" />DROP 001 · {new Date().getFullYear()}</div>
         </div>
@@ -569,11 +572,13 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="item"><span className="dot" />&lt;1G SUGAR</span>
               <span className="item"><span className="dot" />~35 CAL</span>
               <span className="item"><span className="dot" />VEGAN</span>
-              <span className="item"><span className="dot" />REAL POP ROCKS</span>
+              <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
             </div>
           </div>
         </div>
       </section>
+
+      <RaffleForm />
 
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
