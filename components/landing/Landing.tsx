@@ -16,7 +16,7 @@ interface LandingProps {
 }
 
 const FLAVOR_IMG: Record<string, string> = {
-  'KP-KIWI-KITTY': '/landing/img/anime-lollipop.jpg',
+  'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
   'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
   'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
   'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',

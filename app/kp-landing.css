@@ -921,7 +921,12 @@
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 .kp-page .fc .ings .mg { color: var(--lemon); text-shadow: 0 0 6px rgba(245, 255, 61, 0.6); }
-.kp-page .fc.cherry .img { background-image: url("/landing/img/lips-lollipop.jpg"); }
+.kp-page .fc.cherry .img {
+  background-size: contain;
+  background-position: center 28%;
+  background-repeat: no-repeat;
+  filter: saturate(1.15) drop-shadow(0 0 24px rgba(0, 240, 255, 0.35));
+}
 .kp-page .fc.kiwi-flavor .img { background-image: url("/landing/img/anime-lollipop.jpg"); }
 .kp-page .fc.grape .img { background-image: url("/landing/img/eye-galaxy.jpg"); }
 .kp-page .fc.lemon .img { background-image: url("/landing/img/yellow-hair.jpg"); }
