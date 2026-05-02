@@ -1113,6 +1113,66 @@
 .kp-page .z4 .bars b:nth-child(7) { height: 22px; animation-delay: 0.9s; }
 @keyframes kp-bar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.4); } }
 
+/* ========= ZONE 4 · venmo card (replaces "until sunrise" headline) ========= */
+.kp-page .z4 .kp-venmo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.kp-page .z4 .kp-venmo-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  text-transform: uppercase;
+  color: var(--bone);
+  text-shadow: -3px 0 var(--hot-pink), 3px 0 var(--cyan), 0 4px 22px rgba(0, 0, 0, 0.55);
+  margin: 0;
+}
+.kp-page .z4 .kp-venmo-h .lm {
+  color: var(--lemon);
+  text-shadow: -3px 0 var(--hot-pink), 3px 0 var(--cyan), 0 0 24px rgba(245, 255, 61, 0.5);
+}
+.kp-page .z4 .kp-venmo-card {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 22px 18px;
+  background: var(--bone);
+  border-radius: 18px;
+  box-shadow:
+    0 0 32px rgba(0, 240, 255, 0.45),
+    0 0 80px rgba(245, 255, 61, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform 250ms var(--ease-spring), box-shadow 250ms;
+  text-decoration: none;
+  max-width: 90vw;
+}
+.kp-page .z4 .kp-venmo-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 0 48px rgba(0, 240, 255, 0.6),
+    0 0 100px rgba(245, 255, 61, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.kp-page .z4 .kp-venmo-card img {
+  display: block;
+  width: clamp(220px, 38vw, 360px);
+  height: auto;
+  border-radius: 8px;
+}
+.kp-page .z4 .kp-venmo-handle {
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #008cff;
+}
+
 /* ========= ZONE 5 · REVEAL · ingredients ========= */
 .kp-page .z5 {
   position: relative;

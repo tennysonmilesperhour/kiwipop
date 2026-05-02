@@ -303,15 +303,30 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="bars r">
           <b /><b /><b /><b /><b /><b /><b />
         </div>
-        <div className="peak-content">
-          <span className="lab">04 · PEAK · 03:47 AM</span>
-          <h1 className="mega">
-            UNTIL
+        <div className="peak-content kp-venmo">
+          <span className="lab">04 · TAP IN · VENMO</span>
+          <h2 className="kp-venmo-h">
+            SCAN TO
             <br />
-            <span className="lm">SUNRISE.</span>
-          </h1>
+            <span className="lm">SEND.</span>
+          </h2>
+          <a
+            className="kp-venmo-card"
+            href="https://venmo.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="open venmo to pay or donate to kiwi pop"
+          >
+            <img
+              src="/landing/img/venmo-qr.png"
+              alt="venmo qr code · kiwi pop"
+              width={420}
+              height={420}
+            />
+            <span className="kp-venmo-handle">venmo · kiwi pop</span>
+          </a>
           <p className="quote">
-            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — five calories, zero sugar, real pop rocks crystals snapping at the lick.
+            <span className="em">scan to venmo.</span> donations + payments both feed the launch fundraiser. or open venmo and search <strong>kiwi pop</strong>.
           </p>
         </div>
       </section>
