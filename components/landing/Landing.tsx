@@ -38,7 +38,7 @@ const FESTIVAL_TICKER = [
   'EDC LAS VEGAS · 2026.06',
   'LIGHTNING IN A BOTTLE · 2026.08',
   'ZERO SUGAR · 5 CAL · VEGAN',
-  'MFD NEW SHIBUYA',
+  'MFD SALT LAKE CITY · INTERNATIONAL COMING SOON',
 ];
 
 const SIGNAL_FUNCTIONALS = FUNCTIONALS.slice(0, 4);
@@ -352,7 +352,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="item"><span className="dot" />ZERO SUGAR · 5 CAL</div>
           <div className="item"><span className="dot" />VEGAN · GLUTEN FREE</div>
           <div className="item"><span className="dot" />REAL POP ROCKS · 2G</div>
-          <div className="item"><span className="dot" />MFD NEW SHIBUYA</div>
+          <div className="item"><span className="dot" />MFD SALT LAKE CITY</div>
           <div className="item"><span className="dot" />DROP 001 · {new Date().getFullYear()}</div>
         </div>
       </section>
@@ -402,7 +402,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="verified" style={{ color: 'var(--lemon)' }}>JOIN</span>
             </div>
             <blockquote>
-              <span className="em">get on the list.</span> drops sell out in 11 minutes on average — don&apos;t be late.
+              <span className="em">get on the list.</span> selling out faster than we can make them — help us out.
             </blockquote>
             <form onSubmit={handleSignup}>
               <input
@@ -449,10 +449,10 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </div>
           <div className="copy-right">
             <p className="line">
-              every preorder feeds the launch fundraiser. <span className="em">6 + 12 packs ship at half off.</span>
+              <span className="em">selling out faster than we can make them,</span> help us out!
             </p>
             <span className="lab" style={{ borderColor: 'var(--lemon)', color: 'var(--lemon)' }}>
-              SHIPS FROM NEW SHIBUYA · WHEN THE GOAL HITS
+              SHIPS FROM SALT LAKE CITY · INTERNATIONAL COMING VERY SOON
             </span>
           </div>
         </div>
@@ -579,7 +579,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <div className="nm">KIWI<span className="pk">.</span>POP</div>
           </div>
           <p>
-            made small in new shibuya, dosed for the dance floor. preorder open during the launch fundraiser{launchProduct ? <> · {launchProduct.in_stock} drop-001 allocations.</> : '.'}
+            made small in salt lake city, dosed for the dance floor. preorder open during the launch fundraiser · international coming very soon{launchProduct ? <> · {launchProduct.in_stock} drop-001 allocations.</> : '.'}
           </p>
         </div>
         <div className="col">
@@ -616,7 +616,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="legal">
           <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS REAL POP ROCKS CRYSTALS, EDIBLE MICA, B12, ELECTROLYTES.
           <br />
-          <br />© KIWI POP · {new Date().getFullYear()} · DROP 001 · MFD NEW SHIBUYA · <span className="kw">舐 一下</span>
+          <br />© KIWI POP · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE CITY · <span className="kw">舐 一下</span>
         </div>
       </footer>
     </div>

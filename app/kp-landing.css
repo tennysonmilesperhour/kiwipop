@@ -147,34 +147,80 @@
 }
 .kp-page .kp-fundraiser .kp-fr-track {
   position: relative;
-  height: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(245, 255, 61, 0.3);
+  height: 22px;
+  background: rgba(0, 18, 32, 0.7);
+  border: 1.5px solid rgba(0, 240, 255, 0.55);
+  border-radius: 7px;
   overflow: hidden;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(0, 240, 255, 0.18);
 }
 .kp-page .kp-fundraiser .kp-fr-fill {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, var(--kiwi) 0%, var(--lemon) 50%, var(--hot-pink) 100%);
-  box-shadow: 0 0 18px rgba(245, 255, 61, 0.55);
+  width: 100%;
+  border-radius: 6px 0 0 6px;
+  background:
+    linear-gradient(180deg, #66f7ff 0%, var(--cyan) 45%, #007fd4 100%);
+  box-shadow:
+    0 0 24px rgba(0, 240, 255, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -3px 8px rgba(0, 60, 120, 0.55);
   transform-origin: left center;
+  overflow: hidden;
+  isolation: isolate;
   animation: kp-fr-pulse 3s ease-in-out infinite;
 }
-.kp-page .kp-fundraiser .kp-fr-fill::after {
+/* liquid wave (two stacked SVG fills moving in opposite directions for parallax) */
+.kp-page .kp-fundraiser .kp-fr-fill::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    rgba(0, 0, 0, 0.18) 0,
-    rgba(0, 0, 0, 0.18) 6px,
-    transparent 6px,
-    transparent 12px
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='22' viewBox='0 0 140 22' preserveAspectRatio='none'><path d='M0,11 Q35,4 70,11 T140,11 V22 H0 Z' fill='rgba(255,255,255,0.32)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='22' viewBox='0 0 100 22' preserveAspectRatio='none'><path d='M0,13 Q25,6 50,13 T100,13 V22 H0 Z' fill='rgba(255,255,255,0.18)'/></svg>");
+  background-size: 140px 100%, 100px 100%;
+  background-repeat: repeat-x, repeat-x;
+  animation: kp-fr-flow-a 4s linear infinite, kp-fr-flow-b 6s linear infinite reverse;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+/* sliding sheen highlight */
+.kp-page .kp-fundraiser .kp-fr-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -40%;
+  width: 40%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0.35) 55%,
+    transparent 100%
   );
+  animation: kp-fr-sheen 3.6s linear infinite;
+  pointer-events: none;
 }
 @keyframes kp-fr-pulse {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.15); }
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50% { filter: brightness(1.12) saturate(1.15); }
+}
+@keyframes kp-fr-flow-a {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 140px 0, 0 0; }
+}
+@keyframes kp-fr-flow-b {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 0 0, 100px 0; }
+}
+@keyframes kp-fr-sheen {
+  0%   { left: -40%; }
+  60%  { left: 110%; }
+  100% { left: 110%; }
 }
 .kp-page .kp-fundraiser .kp-fr-ctas {
   position: relative;
@@ -1828,6 +1874,45 @@
   z-index: 2;
 }
 .kp-page .kp-foot .legal .kw { color: var(--lemon); }
+
+/* ========= subtle 5-ish-px rounded corners across box surfaces =========
+   Founder direction: round the corners of all of the boxes by 5%.
+   Interpreted as a small radius (5px) on box-like elements throughout the
+   landing — the cyberpunk-sharp aesthetic stays for type and the fixed
+   nav/ticker, but cards/tiles/buttons/inputs get a softer edge. */
+.kp-page .z2 .lab,
+.kp-page .z2 .ing,
+.kp-page .z2 .cta,
+.kp-page .z2 .img,
+.kp-page .z2 .img-cap,
+.kp-page .z4 .lab,
+.kp-page .icd,
+.kp-page .z5 .lab-band,
+.kp-page .z6 .lab,
+.kp-page .checkout,
+.kp-page .checkout .qty,
+.kp-page .flav-opt,
+.kp-page .pack-opt,
+.kp-page .cta-take,
+.kp-page .z6 .img-foot,
+.kp-page .z6 .img-foot .ig-handle,
+.kp-page .fc,
+.kp-page .rev,
+.kp-page .rev.signup input,
+.kp-page .rev.signup button[type="submit"],
+.kp-page .zr .ig-row,
+.kp-page .rev.leave .arr,
+.kp-page .z1 .eyebrow {
+  border-radius: 5px;
+}
+/* slightly larger radius on the big container surfaces */
+.kp-page .checkout,
+.kp-page .z6 .img-foot,
+.kp-page .fc,
+.kp-page .rev,
+.kp-page .icd {
+  border-radius: 8px;
+}
 
 /* ========= responsive bare-minimum ========= */
 @media (max-width: 900px) {

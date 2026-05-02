@@ -57,7 +57,7 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
         aria-valuemax={snapshot.goalCents}
         aria-valuetext={`${formatCentsToUSD(snapshot.raisedCents)} raised of ${formatCentsToUSD(snapshot.goalCents)}`}
       >
-        <div className="kp-fr-fill" style={{ width: `${Math.max(snapshot.percent, 0.5)}%` }} />
+        <div className="kp-fr-fill" style={{ width: `${Math.max(snapshot.percent, 1.5)}%` }} />
       </div>
 
       <div className="kp-fr-ctas">
