@@ -1365,6 +1365,7 @@ button { font: inherit; }
   .cart-summary { position: static; }
   .product-detail { grid-template-columns: 1fr; }
   .nav-links { display: none; }
+  .raffle-grid { grid-template-columns: 1fr !important; }
 }
 @media (max-width: 640px) {
   .hero-meta { display: none; }
