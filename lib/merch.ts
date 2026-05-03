@@ -41,8 +41,8 @@ export const MERCH: readonly MerchItem[] = [
   {
     slug: 'mango-molly-tee',
     num: '/03',
-    name: 'mango molly tee',
-    display: 'mango\nmolly\ntee',
+    name: "mollie's mango tee",
+    display: "mollie's\nmango\ntee",
     kind: '// the warm shirt',
     blurb: 'heavyweight cotton · hot pink print on midnight · unisex fit',
     priceCents: 3500,

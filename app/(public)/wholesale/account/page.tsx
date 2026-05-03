@@ -317,7 +317,7 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <a
               href={`mailto:wholesale@kiwipop.co?subject=Preorder%20%C2%B7%20${encodeURIComponent(account.business_name)}&body=${encodeURIComponent(
-                `Hi,\n\nThis is ${account.business_name} (${user.email}). We're approved on the ${account.tier} tier.\n\nQuantities:\n  Kiwi Kitty: __\n  Lucy Lemon: __\n  Mango Molly: __\n  Mary Mint: __\n\nShipping to:\n  ___\n\nThanks!`
+                `Hi,\n\nThis is ${account.business_name} (${user.email}). We're approved on the ${account.tier} tier.\n\nQuantities:\n  Kiwi Kitty: __\n  Lucy Lemon: __\n  Mollie's Mango: __\n  Mary Mint: __\n\nShipping to:\n  ___\n\nThanks!`
               )}`}
               className="btn btn-primary"
             >

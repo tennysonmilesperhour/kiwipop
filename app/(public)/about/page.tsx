@@ -73,7 +73,7 @@ export default function AboutPage() {
             the original is{' '}
             <strong style={{ color: 'var(--lime)' }}>kiwi kitty</strong> —
             kiwi flavor, sweet/tart/clean. three more flavors are coming:{' '}
-            <strong style={{ color: 'var(--magenta)' }}>mango molly</strong>,{' '}
+            <strong style={{ color: 'var(--magenta)' }}>mollie&apos;s mango</strong>,{' '}
             <strong style={{ color: 'var(--sodium)' }}>lucy lemon</strong>,{' '}
             and{' '}
             <strong style={{ color: 'var(--cyan)' }}>mary mint</strong>. each

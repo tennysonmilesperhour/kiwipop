@@ -42,8 +42,8 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-MANGO-MOLLY',
-    name: 'mango molly',
-    display: 'mango\nmolly',
+    name: "mollie's mango",
+    display: "mollie's\nmango",
     feeling: '// the warm one',
     fn: '6 functionals · luster dust',
     flavor: 'mango · ripe, glossy, sticky',
