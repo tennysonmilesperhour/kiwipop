@@ -893,7 +893,7 @@ button { font: inherit; }
   position: relative;
   overflow: hidden;
 }
-.product-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.product-image-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; padding: 1.5rem; }
 .product-image-wrap .product-placeholder {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
