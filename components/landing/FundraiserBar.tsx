@@ -57,13 +57,18 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
         aria-valuemax={snapshot.goalCents}
         aria-valuetext={`${formatCentsToUSD(snapshot.raisedCents)} raised of ${formatCentsToUSD(snapshot.goalCents)}`}
       >
-        <div className="kp-fr-fill" style={{ width: `${Math.max(snapshot.percent, 0.5)}%` }} />
+        <div className="kp-fr-fill" style={{ width: `${Math.max(snapshot.percent, 1.5)}%` }} />
       </div>
 
       <div className="kp-fr-ctas">
-        <Link className="kp-fr-cta primary" href="/donate">
-          DONATE → CONTRIBUTE
-        </Link>
+        <a
+          className="kp-fr-cta primary"
+          href="https://venmo.com/u/tennyson-taggart"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          DONATE → VENMO @TENNYSON-TAGGART
+        </a>
         <button
           type="button"
           className="kp-fr-cta pink"
@@ -71,15 +76,19 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
           disabled={!varietyHalfOff || adding}
           aria-disabled={!varietyHalfOff || adding}
         >
-          {adding ? 'ADDING…' : 'HALF-OFF VARIETY 12-PACK · PREORDER'}
+          {adding
+            ? 'ADDING…'
+            : varietyHalfOff
+              ? `HALF-OFF VARIETY 12-PACK · PREORDER · ${formatCentsToUSD(varietyHalfOff.price_cents)}`
+              : 'HALF-OFF VARIETY 12-PACK · PREORDER'}
         </button>
         <Link className="kp-fr-cta" href="/wholesale/apply">
-          WHOLESALE PREORDER →
+          WHOLESALE PREORDER · FUNDRAISER SPECIAL →
         </Link>
       </div>
 
       <div className="kp-fr-flash">
-        <span className="em">LIMITED-TIME</span> · variety 12-pack preorder at half off ($24) until the goal hits {formatCentsToUSD(snapshot.goalCents)} · all proceeds toward drop 001
+        <span className="em">VENMO IS LIVE</span> · tap donate to send to <strong>@tennyson-taggart</strong> · every dollar feeds the {formatCentsToUSD(snapshot.goalCents)} launch fundraiser
       </div>
     </div>
   );
