@@ -191,10 +191,11 @@ export async function POST(request: NextRequest) {
       .update({ status: 'cancelled' })
       .eq('id', order.id);
 
+    const detail = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json(
       {
-        error: 'Failed to start payment session',
-        details: err instanceof Error ? err.message : 'Unknown error',
+        error: `Stripe rejected the checkout: ${detail}`,
+        details: detail,
       },
       { status: 502 }
     );
