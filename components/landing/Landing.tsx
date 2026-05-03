@@ -24,7 +24,7 @@ const FLAVOR_DOT_COLOR: Record<string, string> = {
 };
 
 const FESTIVAL_TICKER = [
-  'DROP 001 · KIWI KITTY · LIVE',
+  'DROP 001 · KIWI POP · LIVE',
   '3 PREORDERS OPEN',
   'BEYOND WONDERLAND · 2026.07',
   'COACHELLA W2 · 2026.04',
@@ -121,9 +121,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const stockLine = (() => {
     const launch = products.flavors.find((f) => f.sku === 'KP-KIWI-KITTY');
     if (launch?.product && launch.product.in_stock > 0) {
-      return `KIWI KITTY · ${launch.product.in_stock} IN STOCK`;
+      return `KIWI POP · ${launch.product.in_stock} IN STOCK`;
     }
-    return 'KIWI KITTY · WAITLIST';
+    return 'KIWI POP · WAITLIST';
   })();
 
   const handleAddToCart = () => {
@@ -259,7 +259,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
         <div className="img">
           <div className="img-cap">
-            <span>001 · KIWI KITTY EDITION</span>
+            <span>001 · KIWI POP EDITION</span>
             <span>DROP 001</span>
           </div>
         </div>
@@ -511,7 +511,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <p className="quote">
               &ldquo;{PULL_QUOTES[0]?.text}&rdquo; <span className="em">{PULL_QUOTES[0]?.byline}</span>
             </p>
-            <span className="who">— DROP 001 · KIWI KITTY · LIVE NOW</span>
+            <span className="who">— DROP 001 · KIWI POP · LIVE NOW</span>
           </div>
 
           <div className="checkout">
@@ -630,7 +630,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </div>
           <p>
             made small in salt lake, dosed for the dance floor. shipping since {new Date().getFullYear()}.
-            {launchProduct ? <> drop 001 · {launchProduct.in_stock} kiwi kitty in stock.</> : null}
+            {launchProduct ? <> drop 001 · {launchProduct.in_stock} kiwi pop in stock.</> : null}
           </p>
         </div>
         <div className="col">

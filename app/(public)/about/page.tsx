@@ -71,7 +71,7 @@ export default function AboutPage() {
           </p>
           <p>
             the original is{' '}
-            <strong style={{ color: 'var(--lime)' }}>kiwi kitty</strong> —
+            <strong style={{ color: 'var(--lime)' }}>kiwi pop</strong> —
             kiwi flavor, sweet/tart/clean. three more flavors are coming:{' '}
             <strong style={{ color: 'var(--magenta)' }}>mango molly</strong>,{' '}
             <strong style={{ color: 'var(--sodium)' }}>lucy lemon</strong>,{' '}
@@ -137,7 +137,7 @@ export default function AboutPage() {
 
       <div style={{ marginTop: '3rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
         <Link href="/#drop" className="btn btn-primary">
-          shop kiwi kitty
+          shop kiwi pop
         </Link>
         <Link href="/find-us" className="btn">
           find us irl

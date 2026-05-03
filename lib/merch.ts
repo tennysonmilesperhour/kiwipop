@@ -21,8 +21,8 @@ export const MERCH: readonly MerchItem[] = [
   {
     slug: 'kiwi-kitty-tee',
     num: '/01',
-    name: 'kiwi kitty tee',
-    display: 'kiwi\nkitty\ntee',
+    name: 'kiwi pop tee',
+    display: 'kiwi\npop\ntee',
     kind: '// the launch shirt',
     blurb: 'heavyweight cotton · neon green print on midnight · unisex fit',
     priceCents: 3500,
