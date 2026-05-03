@@ -71,6 +71,35 @@ export const FLAVORS_BY_SKU: Record<string, FlavorBrandInfo> = Object.fromEntrie
 );
 
 /**
+ * Per-flavor product hero image, used wherever we render a flavor product
+ * (landing flavor rail, /products/[id] hero, cart line items). Keyed by SKU.
+ * Centralized here so the homepage and the product/preorder pages stay in
+ * sync — no more "placeholder on the product page, real photo on the home
+ * page" drift.
+ */
+export const FLAVOR_IMG: Record<string, string> = {
+  'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
+  'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
+  'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
+  'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',
+};
+
+/**
+ * Resolves the best image for a product: prefer whatever the DB has on
+ * `image_url` (admin can upload one any time); fall back to the canonical
+ * brand asset for that SKU; null if neither exists.
+ */
+export function imageForProduct(
+  sku: string | null | undefined,
+  imageUrl: string | null | undefined,
+): string | null {
+  if (imageUrl) return imageUrl;
+  if (sku && FLAVOR_IMG[sku]) return FLAVOR_IMG[sku];
+  return null;
+}
+
+
+/**
  * The six functional things doing real work, per the production recipe.
  * Source: kiwi_pop_costing.xlsx (Recipes tab, shared columns).
  */
