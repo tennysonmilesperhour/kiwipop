@@ -21,19 +21,19 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'kiwi kitty',
     display: 'kiwi\nkitty',
     feeling: '// the original',
-    fn: '6 functionals · pop rocks · luster dust',
+    fn: '6 functionals · luster dust',
     flavor: 'kiwi · sweet, tart, clean',
     color: '#a8ff3c',
     status: 'live',
     description:
-      "the launch flavor. bright kiwi, real pop rocks crystals snapping inside, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. sweetened with monk fruit and xylitol on an isomalt base. a little secret in your mouth.",
+      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. sweetened with monk fruit and xylitol on an isomalt base. a little secret in your mouth.",
   },
   {
     sku: 'KP-LUCY-LEMON',
     name: 'lucy lemon',
     display: 'lucy\nlemon',
     feeling: '// the bright one',
-    fn: '6 functionals · pop rocks · luster dust',
+    fn: '6 functionals · luster dust',
     flavor: 'lemon + ginger · sharp and citrus',
     color: '#ffce1f',
     status: 'soon',
@@ -45,7 +45,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'mango molly',
     display: 'mango\nmolly',
     feeling: '// the warm one',
-    fn: '6 functionals · pop rocks · luster dust',
+    fn: '6 functionals · luster dust',
     flavor: 'mango · ripe, glossy, sticky',
     color: '#ff2d8a',
     status: 'soon',
@@ -57,7 +57,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'mary mint',
     display: 'mary\nmint',
     feeling: '// the cool down',
-    fn: '6 functionals · pop rocks · luster dust',
+    fn: '6 functionals · luster dust',
     flavor: 'peppermint · clean, cold, sharp',
     color: '#00f0ff',
     status: 'soon',
@@ -111,6 +111,16 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     amount: '250 mg',
     why: 'clean focus current. no energy-drink edge.',
   },
+  {
+    name: 'electrolytes',
+    amount: '250 mg blend',
+    why: 'sodium + potassium. you sweat, we replace.',
+  },
+  {
+    name: 'blue spirulina',
+    amount: '125 mg',
+    why: 'where the color comes from. trace nutrition, real pigment.',
+  },
 ] as const;
 
 /**
@@ -136,8 +146,8 @@ export const TIMELINE: readonly TimelineMoment[] = [
   },
   {
     index: '02:00',
-    title: 'the snap',
-    body: 'pop rocks hit. small electric thing on your tongue. you smile a little, alone.',
+    title: 'the lift',
+    body: 'theobromine + kava click in. shoulders drop, head clears. you smile a little, alone.',
   },
   {
     index: '20:00',

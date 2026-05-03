@@ -9,6 +9,7 @@ import { FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { FundraiserBar } from './FundraiserBar';
+import { RaffleForm } from './RaffleForm';
 
 interface LandingProps {
   products: LandingProducts;
@@ -16,7 +17,7 @@ interface LandingProps {
 }
 
 const FLAVOR_IMG: Record<string, string> = {
-  'KP-KIWI-KITTY': '/landing/img/anime-lollipop.jpg',
+  'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
   'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
   'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
   'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',
@@ -41,7 +42,48 @@ const FESTIVAL_TICKER = [
   'MFD NEW SHIBUYA',
 ];
 
-const SIGNAL_FUNCTIONALS = FUNCTIONALS.slice(0, 4);
+// Eight simple neon glyphs, one per functional ingredient slot. Index aligns
+// with the FUNCTIONALS array order in lib/flavors.ts.
+const FUNCTIONAL_ICONS = [
+  // theobromine — chocolate square
+  <g key="i0">
+    <rect x="5" y="5" width="14" height="14" rx="1" />
+    <path d="M9 5v14M14 5v14M5 9h14M5 14h14" />
+  </g>,
+  // kava — calm wave
+  <g key="i1">
+    <path d="M3 14c2-3 4-3 6 0s4 3 6 0 4-3 6 0" />
+    <path d="M3 9c2-3 4-3 6 0s4 3 6 0 4-3 6 0" opacity="0.6" />
+  </g>,
+  // ginseng — root
+  <g key="i2">
+    <path d="M12 3v8" />
+    <path d="M12 11c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5z" />
+    <path d="M9 13l-3-2M15 13l3-2M9 17l-3 2M15 17l3 2" />
+  </g>,
+  // b12 — bolt
+  <g key="i3">
+    <path d="M13 2L4 14h7l-2 8 9-12h-7l2-8z" />
+  </g>,
+  // magnesium — capsule
+  <g key="i4">
+    <rect x="3" y="9" width="18" height="6" rx="3" />
+    <path d="M12 9v6" />
+  </g>,
+  // taurine — amino chain (linked rings)
+  <g key="i5">
+    <circle cx="8" cy="12" r="4" />
+    <circle cx="16" cy="12" r="4" />
+  </g>,
+  // electrolytes — droplet
+  <g key="i6">
+    <path d="M12 3c-3 4-6 7-6 11a6 6 0 0 0 12 0c0-4-3-7-6-11z" />
+  </g>,
+  // spirulina — spiral
+  <g key="i7">
+    <path d="M12 4a8 8 0 1 1-7.9 9.5A6 6 0 1 1 16 14a4 4 0 1 1-7-1.5" />
+  </g>,
+];
 
 export default function Landing({ products, fundraiser }: LandingProps) {
   const router = useRouter();
@@ -148,6 +190,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
+          <a href="#raffle">RAFFLE</a>
           <Link href="/merch">MERCH</Link>
           <Link href="/find-us">FIND US</Link>
         </div>
@@ -173,6 +216,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="cn-bg">舐夜</div>
         <div className="cn-bg2">糖</div>
         <div className="hero-img" />
+        <div className="hero-pop" aria-hidden="true" />
         <div className="content">
           <span className="eyebrow">
             <span className="cn">舐</span> SUCKER-SHAPED SUPPLEMENTS YOU CAN PARTY WITH
@@ -183,7 +227,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="respect" style={{ color: 'rgb(155, 237, 255)' }}>respectfully</span>
           </h1>
           <p className="sub">
-            <span className="em">refreshing club lolli.</span> &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · real pop rocks crystals inside.
+            <span className="em">refreshing club lolli.</span> &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · edible mica glitter swirled inside.
           </p>
         </div>
         <div className="below">
@@ -206,7 +250,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="pk">SUPPLEMENTs.</span>
           </h2>
           <p className="lede">
-            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes, real pop rocks.</span>{' '}
+            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes.</span>{' '}
             measured by gram, not by vibe. same payload, every pop.
           </p>
           <div className="ings">
@@ -318,7 +362,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="lm">SUNRISE.</span>
           </h1>
           <p className="quote">
-            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, real pop rocks crystals snapping at the lick.
+            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick.
           </p>
         </div>
       </section>
@@ -340,14 +384,18 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </div>
         </div>
         <div className="grid">
-          {SIGNAL_FUNCTIONALS.map((ing, idx) => (
+          {FUNCTIONALS.map((ing, idx) => (
             <div className="icd" key={ing.name}>
-              <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-                {idx === 0 && <circle cx="12" cy="12" r="9" />}
-                {idx === 0 && <path d="M8 12l3 3 5-6" />}
-                {idx === 1 && <polyline points="2,12 6,12 8,5 12,19 14,9 16,14 22,14" />}
-                {idx === 2 && <path d="M12 2 L13 8 L19 9 L13 11 L12 17 L11 11 L5 9 L11 8 Z" />}
-                {idx === 3 && <path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z" />}
+              <svg
+                className="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {FUNCTIONAL_ICONS[idx] ?? <circle cx="12" cy="12" r="9" />}
               </svg>
               <div className="nm">{ing.name.toUpperCase()}</div>
               <div className="dose">{ing.amount.toUpperCase()}</div>
@@ -358,7 +406,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="lab-band">
           <div className="item"><span className="dot" />&lt;1G SUGAR · ~35 CAL</div>
           <div className="item"><span className="dot" />VEGAN · GLUTEN FREE</div>
-          <div className="item"><span className="dot" />REAL POP ROCKS · 2G</div>
+          <div className="item"><span className="dot" />KAVA · 750MG / POP</div>
           <div className="item"><span className="dot" />MFD NEW SHIBUYA</div>
           <div className="item"><span className="dot" />DROP 001 · {new Date().getFullYear()}</div>
         </div>
@@ -572,11 +620,13 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="item"><span className="dot" />&lt;1G SUGAR</span>
               <span className="item"><span className="dot" />~35 CAL</span>
               <span className="item"><span className="dot" />VEGAN</span>
-              <span className="item"><span className="dot" />REAL POP ROCKS</span>
+              <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
             </div>
           </div>
         </div>
       </section>
+
+      <RaffleForm />
 
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
@@ -621,7 +671,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/shipping">shipping</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS KAVA, THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, REAL POP ROCKS CRYSTALS, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS KAVA, THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES.
           <br />
           <br />© KIWI POP · {new Date().getFullYear()} · DROP 001 · MFD NEW SHIBUYA · <span className="kw">舐 一下</span>
         </div>

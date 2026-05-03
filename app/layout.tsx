@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     template: '%s · kiwi pop',
   },
   description:
-    "sucker-shaped supplements you can party with. <1g of sugar, vegan, functional lollipops with real pop rocks, edible mica glitter, and a six-ingredient functional payload (theobromine, kava, ginseng, b12, magnesium, taurine). candy for people who don't eat candy.",
+    "sucker-shaped supplements you can party with. <1g of sugar, vegan, functional lollipops with edible mica glitter and a six-ingredient functional payload (theobromine, kava, ginseng, b12, magnesium, taurine). candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   keywords: [
