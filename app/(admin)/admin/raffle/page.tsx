@@ -137,10 +137,10 @@ export default function AdminRafflePage() {
             background: 'rgba(245, 255, 61, 0.07)',
           }}
         >
-          <strong>migration 009 not applied yet.</strong> entries are being
+          <strong>migration 010 not applied yet.</strong> entries are being
           captured into <code>email_signups</code> with the payload encoded
           into <code>source</code>; they show up in this list. apply{' '}
-          <code>supabase/migrations/009_raffle_entries.sql</code> when you&apos;re
+          <code>supabase/migrations/010_raffle_entries.sql</code> when you&apos;re
           ready, then click &ldquo;draw a winner.&rdquo; the draw RPC needs
           the real table.
         </div>
@@ -169,7 +169,7 @@ export default function AdminRafflePage() {
             disabled={drawing || eligible === 0 || data?.storage?.migration_pending}
             title={
               data?.storage?.migration_pending
-                ? 'apply migration 009 to enable the draw RPC'
+                ? 'apply migration 010 to enable the draw RPC'
                 : undefined
             }
           >

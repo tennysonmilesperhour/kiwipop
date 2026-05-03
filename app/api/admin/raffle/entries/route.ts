@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
   let primaryAvailable = true;
   let fallbackUsed = false;
 
-  // Primary: raffle_entries (only present after migration 009).
+  // Primary: raffle_entries (only present after migration 010).
   const primary = await supabaseAdmin
     .from('raffle_entries')
     .select(
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Always also load fallback rows from email_signups so entries captured
-  // before migration 009 lands aren't lost. Filter on the source prefix and
+  // before migration 010 lands aren't lost. Filter on the source prefix and
   // decode the encoded payload back into name/phone/social.
   const fallback = await supabaseAdmin
     .from('email_signups')

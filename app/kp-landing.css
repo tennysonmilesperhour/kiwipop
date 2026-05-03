@@ -510,14 +510,11 @@
 .kp-page .z1 .hero-pop {
   position: absolute;
   right: 27.5%;
-  /* Slight negative bottom so the visible stick of the lollipop sits flush
-     with the bottom of the section instead of stopping short due to the
-     transparent halo padding around the artwork. */
-  bottom: -6%;
+  bottom: 0;
   transform: translateX(50%);
-  height: min(80vh, 85%);
+  height: min(92vh, 100%);
   aspect-ratio: 800 / 1471;
-  background: url("/landing/img/kiwi-kitty-pop.webp") bottom center / contain no-repeat;
+  background: url("/landing/img/kiwi-kitty-pop.webp") bottom center/contain no-repeat;
   filter: drop-shadow(0 0 50px rgba(0, 240, 255, 0.55)) drop-shadow(0 24px 70px rgba(0, 0, 0, 0.75));
   z-index: 2;
   pointer-events: none;
@@ -525,9 +522,8 @@
 @media (max-width: 900px) {
   .kp-page .z1 .hero-pop {
     right: 50%;
-    bottom: -4%;
-    transform: translateX(50%);
-    height: 51vh;
+    bottom: 0;
+    height: 60vh;
   }
 }
 .kp-page .z1 .cn-bg {

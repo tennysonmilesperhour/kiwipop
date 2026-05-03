@@ -25,7 +25,7 @@ const entrySchema = z.object({
   source: z.string().trim().max(50).optional(),
 });
 
-// Postgres "undefined_table" — surfaced when migration 009 hasn't run yet.
+// Postgres "undefined_table" — surfaced when migration 010 hasn't run yet.
 const PG_UNDEFINED_TABLE = '42P01';
 
 export async function POST(request: NextRequest) {
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true, storage: 'raffle_entries' });
   }
 
-  // Fallback: if migration 009 hasn't been applied yet, the canonical table
+  // Fallback: if migration 010 hasn't been applied yet, the canonical table
   // is missing. Park the entry in email_signups with the raffle payload
   // encoded into `source` so we don't lose anything; admin /admin/raffle
   // reads + decodes both surfaces. Once 009 lands, switch back to the

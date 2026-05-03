@@ -1,6 +1,6 @@
 /**
  * Helpers for the raffle entry system. The primary path writes rows to
- * `raffle_entries`, but until migration 009 is applied the API falls back
+ * `raffle_entries`, but until migration 010 is applied the API falls back
  * to writing into `email_signups` with the payload encoded into `source`.
  * This module owns the encode/decode contract so every reader stays in
  * sync with the writer.

@@ -39,6 +39,7 @@ interface CheckoutLineItem {
   amount: number;
   quantity: number;
   image?: string;
+  stripePriceId?: string | null;
 }
 
 interface CreateCheckoutSessionParams {
@@ -51,18 +52,26 @@ interface CreateCheckoutSessionParams {
 
 export async function createCheckoutSession(params: CreateCheckoutSessionParams) {
   const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
-    params.items.map((item) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.name,
-          images: item.image ? [item.image] : [],
-          metadata: { productId: item.productId },
+    params.items.map((item) => {
+      if (item.stripePriceId) {
+        return {
+          price: item.stripePriceId,
+          quantity: item.quantity,
+        };
+      }
+      return {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.name,
+            images: item.image ? [item.image] : [],
+            metadata: { productId: item.productId },
+          },
+          unit_amount: item.amount,
         },
-        unit_amount: item.amount,
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      };
+    });
 
   return stripe.checkout.sessions.create({
     mode: 'payment',
