@@ -111,6 +111,16 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     amount: '250 mg',
     why: 'clean focus current. no energy-drink edge.',
   },
+  {
+    name: 'electrolytes',
+    amount: '250 mg blend',
+    why: 'sodium + potassium. you sweat, we replace.',
+  },
+  {
+    name: 'blue spirulina',
+    amount: '125 mg',
+    why: 'where the color comes from. trace nutrition, real pigment.',
+  },
 ] as const;
 
 /**

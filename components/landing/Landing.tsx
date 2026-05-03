@@ -42,7 +42,48 @@ const FESTIVAL_TICKER = [
   'MFD NEW SHIBUYA',
 ];
 
-const SIGNAL_FUNCTIONALS = FUNCTIONALS.slice(0, 4);
+// Eight simple neon glyphs, one per functional ingredient slot. Index aligns
+// with the FUNCTIONALS array order in lib/flavors.ts.
+const FUNCTIONAL_ICONS = [
+  // theobromine — chocolate square
+  <g key="i0">
+    <rect x="5" y="5" width="14" height="14" rx="1" />
+    <path d="M9 5v14M14 5v14M5 9h14M5 14h14" />
+  </g>,
+  // kava — calm wave
+  <g key="i1">
+    <path d="M3 14c2-3 4-3 6 0s4 3 6 0 4-3 6 0" />
+    <path d="M3 9c2-3 4-3 6 0s4 3 6 0 4-3 6 0" opacity="0.6" />
+  </g>,
+  // ginseng — root
+  <g key="i2">
+    <path d="M12 3v8" />
+    <path d="M12 11c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5z" />
+    <path d="M9 13l-3-2M15 13l3-2M9 17l-3 2M15 17l3 2" />
+  </g>,
+  // b12 — bolt
+  <g key="i3">
+    <path d="M13 2L4 14h7l-2 8 9-12h-7l2-8z" />
+  </g>,
+  // magnesium — capsule
+  <g key="i4">
+    <rect x="3" y="9" width="18" height="6" rx="3" />
+    <path d="M12 9v6" />
+  </g>,
+  // taurine — amino chain (linked rings)
+  <g key="i5">
+    <circle cx="8" cy="12" r="4" />
+    <circle cx="16" cy="12" r="4" />
+  </g>,
+  // electrolytes — droplet
+  <g key="i6">
+    <path d="M12 3c-3 4-6 7-6 11a6 6 0 0 0 12 0c0-4-3-7-6-11z" />
+  </g>,
+  // spirulina — spiral
+  <g key="i7">
+    <path d="M12 4a8 8 0 1 1-7.9 9.5A6 6 0 1 1 16 14a4 4 0 1 1-7-1.5" />
+  </g>,
+];
 
 export default function Landing({ products, fundraiser }: LandingProps) {
   const router = useRouter();
@@ -343,14 +384,18 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </div>
         </div>
         <div className="grid">
-          {SIGNAL_FUNCTIONALS.map((ing, idx) => (
+          {FUNCTIONALS.map((ing, idx) => (
             <div className="icd" key={ing.name}>
-              <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-                {idx === 0 && <circle cx="12" cy="12" r="9" />}
-                {idx === 0 && <path d="M8 12l3 3 5-6" />}
-                {idx === 1 && <polyline points="2,12 6,12 8,5 12,19 14,9 16,14 22,14" />}
-                {idx === 2 && <path d="M12 2 L13 8 L19 9 L13 11 L12 17 L11 11 L5 9 L11 8 Z" />}
-                {idx === 3 && <path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z" />}
+              <svg
+                className="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {FUNCTIONAL_ICONS[idx] ?? <circle cx="12" cy="12" r="9" />}
               </svg>
               <div className="nm">{ing.name.toUpperCase()}</div>
               <div className="dose">{ing.amount.toUpperCase()}</div>
