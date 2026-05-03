@@ -276,7 +276,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <br />
             FLAVORS,
             <br />
-            eternal&nbsp;<span className="lm">VIBES.</span>
+            eternal&nbsp;<span className="lm">VIBRATIONS.</span>
           </h2>
           <div className="right">
             SWIPE → · {liveFlavors.length} OF {products.flavors.length} LIVE
