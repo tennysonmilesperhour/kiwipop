@@ -31,8 +31,8 @@ export const MERCH: readonly MerchItem[] = [
   {
     slug: 'lucy-lemon-tee',
     num: '/02',
-    name: 'lucy lemon tee',
-    display: 'lucy\nlemon\ntee',
+    name: 'lemon g. luci tee',
+    display: 'lemon g.\nluci\ntee',
     kind: '// the bright shirt',
     blurb: 'heavyweight cotton · acid yellow print on bone · unisex fit',
     priceCents: 3500,

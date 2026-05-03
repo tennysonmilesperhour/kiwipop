@@ -74,7 +74,7 @@ export default function AboutPage() {
             <strong style={{ color: 'var(--lime)' }}>kiwi kitty</strong> —
             kiwi flavor, sweet/tart/clean. three more flavors are coming:{' '}
             <strong style={{ color: 'var(--magenta)' }}>mango molly</strong>,{' '}
-            <strong style={{ color: 'var(--sodium)' }}>lucy lemon</strong>,{' '}
+            <strong style={{ color: 'var(--sodium)' }}>lemon g. luci</strong>,{' '}
             and{' '}
             <strong style={{ color: 'var(--cyan)' }}>mary mint</strong>. each
             built around a small obsession. same functional payload across

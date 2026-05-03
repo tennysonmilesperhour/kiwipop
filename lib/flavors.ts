@@ -30,15 +30,15 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-LUCY-LEMON',
-    name: 'lucy lemon',
-    display: 'lucy\nlemon',
+    name: 'lemon g. luci',
+    display: 'lemon g.\nluci',
     feeling: '// the bright one',
     fn: '6 functionals · luster dust',
     flavor: 'lemon + ginger · sharp and citrus',
     color: '#ffce1f',
     status: 'soon',
     description:
-      "lemon meets ginger. sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. coming soon.",
+      "the g is for ginger. bright lemon out front, ginger snap on the back end — sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. coming soon.",
   },
   {
     sku: 'KP-MANGO-MOLLY',
