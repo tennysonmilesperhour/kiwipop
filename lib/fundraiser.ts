@@ -63,7 +63,7 @@ export async function loadFundraiserSnapshot(): Promise<FundraiserSnapshot> {
       );
     }
   } catch {
-    // swallow — table may not exist before migration 011 runs
+    // swallow — table may not exist before migration 012 runs
   }
 
   const raisedCents = Math.min(

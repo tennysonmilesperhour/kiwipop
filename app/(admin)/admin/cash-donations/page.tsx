@@ -18,6 +18,13 @@ interface ListResponse {
   totalCents: number;
 }
 
+interface ApiErrorResponse {
+  error: string;
+  details?: string;
+  migration_pending?: boolean;
+  migration?: string;
+}
+
 const todayIso = () => new Date().toISOString().slice(0, 10);
 
 export default function AdminCashDonationsPage() {
@@ -25,6 +32,7 @@ export default function AdminCashDonationsPage() {
   const [totalCents, setTotalCents] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [migrationPending, setMigrationPending] = useState<string | null>(null);
 
   const [amountUsd, setAmountUsd] = useState('');
   const [donorName, setDonorName] = useState('');
@@ -40,14 +48,18 @@ export default function AdminCashDonationsPage() {
       const response = await fetch('/api/admin/cash-donations', {
         cache: 'no-store',
       });
-      const json = (await response.json()) as
-        | ListResponse
-        | { error: string; details?: string };
+      const json = (await response.json()) as ListResponse | ApiErrorResponse;
       if (!response.ok || !('donations' in json)) {
-        throw new Error(
-          'error' in json ? json.error : "couldn't load donations",
-        );
+        const errMsg = 'error' in json ? json.error : "couldn't load donations";
+        if ('migration_pending' in json && json.migration_pending) {
+          setMigrationPending(json.migration ?? '012_cash_donations.sql');
+          setRows([]);
+          setTotalCents(0);
+          return;
+        }
+        throw new Error(errMsg);
       }
+      setMigrationPending(null);
       setRows(json.donations);
       setTotalCents(json.totalCents);
     } catch (err) {
@@ -118,6 +130,8 @@ export default function AdminCashDonationsPage() {
     }
   };
 
+  const formDisabled = submitting || migrationPending !== null;
+
   return (
     <AdminLayout>
       <div className="admin-home">
@@ -131,6 +145,25 @@ export default function AdminCashDonationsPage() {
             still count automatically — these are the off-rail dollars.
           </p>
         </header>
+
+        {migrationPending && (
+          <div
+            className="alert"
+            style={{
+              marginTop: '1rem',
+              borderColor: 'var(--lemon, #f5ff3d)',
+              color: 'var(--lemon, #f5ff3d)',
+              background: 'rgba(245, 255, 61, 0.07)',
+            }}
+          >
+            <strong>database migration pending.</strong> the{' '}
+            <code>cash_donations</code> table doesn&apos;t exist yet. run{' '}
+            <code>supabase db push</code> (or paste{' '}
+            <code>supabase/migrations/{migrationPending}</code> into the
+            Supabase SQL editor) to enable this page. the form is disabled
+            until the table is there.
+          </div>
+        )}
 
         <div className="dashboard-grid">
           <div className="stat-card">
@@ -168,7 +201,7 @@ export default function AdminCashDonationsPage() {
                   value={amountUsd}
                   onChange={(e) => setAmountUsd(e.target.value)}
                   required
-                  disabled={submitting}
+                  disabled={formDisabled}
                 />
               </div>
               <div className="form-group">
@@ -182,7 +215,7 @@ export default function AdminCashDonationsPage() {
                   value={receivedAt}
                   onChange={(e) => setReceivedAt(e.target.value)}
                   required
-                  disabled={submitting}
+                  disabled={formDisabled}
                 />
               </div>
               <div className="form-group">
@@ -197,7 +230,7 @@ export default function AdminCashDonationsPage() {
                   value={donorName}
                   onChange={(e) => setDonorName(e.target.value)}
                   maxLength={120}
-                  disabled={submitting}
+                  disabled={formDisabled}
                 />
               </div>
             </div>
@@ -213,17 +246,26 @@ export default function AdminCashDonationsPage() {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 maxLength={500}
-                disabled={submitting}
+                disabled={formDisabled}
               />
             </div>
 
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={submitting}
+              disabled={formDisabled}
+              title={
+                migrationPending
+                  ? 'apply the cash_donations migration to enable'
+                  : undefined
+              }
               style={{ marginTop: '1rem' }}
             >
-              {submitting ? 'saving…' : 'add to progress bar →'}
+              {migrationPending
+                ? 'migration required'
+                : submitting
+                  ? 'saving…'
+                  : 'add to progress bar →'}
             </button>
 
             {formMessage ? (

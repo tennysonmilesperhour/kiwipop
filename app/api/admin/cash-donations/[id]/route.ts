@@ -19,6 +19,20 @@ export async function DELETE(_request: NextRequest, { params }: RouteContext) {
     .eq('id', params.id);
 
   if (error) {
+    if (
+      error.code === '42P01' ||
+      /relation .*cash_donations.* does not exist/i.test(error.message ?? '')
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            'cash_donations table not found — apply supabase/migrations/012_cash_donations.sql (`supabase db push`) and refresh.',
+          migration_pending: true,
+          migration: '012_cash_donations.sql',
+        },
+        { status: 503 },
+      );
+    }
     return NextResponse.json(
       { error: 'failed to delete donation', details: error.message },
       { status: 500 },
