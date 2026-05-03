@@ -46,7 +46,17 @@
    2. RESET & BASE
    ========================================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* iOS Safari (iPad) ignores `overflow-x: hidden` set only on <body>, which
+     lets oversized decorative elements (e.g. the giant hanzi backgrounds on
+     the landing page) push the document wider than the viewport. Setting it
+     on <html> too — plus `max-width: 100%` — pins the document to the
+     viewport width. `overflow-x: clip` is preferred where supported because
+     it doesn't create a containing block for fixed descendants. */
+  overflow-x: clip;
+  max-width: 100%;
+}
 
 body {
   background: var(--midnight);
@@ -56,7 +66,8 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
   position: relative;
   min-height: 100vh;
 }

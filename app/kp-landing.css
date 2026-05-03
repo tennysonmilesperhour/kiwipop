@@ -519,7 +519,7 @@
   z-index: 2;
   pointer-events: none;
 }
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .kp-page .z1 .hero-pop {
     right: 50%;
     bottom: 0;
@@ -2042,8 +2042,10 @@
 
 /* ========= responsive ========= */
 
-/* Tablets and below */
-@media (max-width: 900px) {
+/* Tablets and below — bumped from 900 to 1024 so iPad Pro 12.9" portrait
+   (1024px) and other iPad widths get the stacked layout instead of the
+   desktop two-column grids that overflow the viewport. */
+@media (max-width: 1024px) {
   .kp-page .z2 { grid-template-columns: 1fr; }
   .kp-page .z6 .copy { grid-template-columns: 1fr; }
   .kp-page .z6 .copy-right { text-align: left; align-items: flex-start; }
