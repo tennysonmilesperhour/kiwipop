@@ -7,6 +7,18 @@ import { cashDonationCreateSchema } from '@/lib/validators';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+// Postgres "undefined_table" — surfaced when migration 012 hasn't run yet.
+const PG_UNDEFINED_TABLE = '42P01';
+
+const MIGRATION_PENDING_MESSAGE =
+  'cash_donations table not found — apply supabase/migrations/012_cash_donations.sql (`supabase db push`) and refresh.';
+
+function isMissingTable(err: { code?: string; message?: string } | null | undefined): boolean {
+  if (!err) return false;
+  if (err.code === PG_UNDEFINED_TABLE) return true;
+  return /relation .*cash_donations.* does not exist/i.test(err.message ?? '');
+}
+
 export async function GET() {
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
@@ -18,6 +30,16 @@ export async function GET() {
     .order('created_at', { ascending: false });
 
   if (error) {
+    if (isMissingTable(error)) {
+      return NextResponse.json(
+        {
+          error: MIGRATION_PENDING_MESSAGE,
+          migration_pending: true,
+          migration: '012_cash_donations.sql',
+        },
+        { status: 503 },
+      );
+    }
     return NextResponse.json(
       { error: 'failed to load donations', details: error.message },
       { status: 500 },
@@ -72,6 +94,16 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error || !data) {
+    if (isMissingTable(error)) {
+      return NextResponse.json(
+        {
+          error: MIGRATION_PENDING_MESSAGE,
+          migration_pending: true,
+          migration: '012_cash_donations.sql',
+        },
+        { status: 503 },
+      );
+    }
     return NextResponse.json(
       { error: 'failed to record donation', details: error?.message },
       { status: 500 },
