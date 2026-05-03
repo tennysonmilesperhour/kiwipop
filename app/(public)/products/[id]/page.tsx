@@ -7,16 +7,20 @@ import { useRouter } from 'next/navigation';
 import { useProduct, useProductsBySkus } from '@/lib/hooks';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FLAVORS_BY_SKU, FUNCTIONALS, TIMELINE } from '@/lib/flavors';
+import {
+  FLAVORS_BY_SKU,
+  FLAVOR_IMG,
+  FLAVOR_SKU_FOR,
+  FUNCTIONALS,
+  PACK_SKUS_BY_FLAVOR,
+  TIMELINE,
+} from '@/lib/flavors';
 
 interface ProductPageProps {
   params: { id: string };
 }
 
-const PACK_LADDER_SKUS = ['KP-KIWI-KITTY', 'KP-PACK-6', 'KP-PACK-20'] as const;
-
 interface PackTile {
-  sku: string;
   size: 1 | 6 | 20;
   label: string;
   perPopCents?: number;
@@ -24,14 +28,27 @@ interface PackTile {
 }
 
 const PACK_TILES: readonly PackTile[] = [
-  { sku: 'KP-KIWI-KITTY', size: 1, label: 'single' },
-  { sku: 'KP-PACK-6', size: 6, label: '6-pack', perPopCents: 417, badge: 'share size' },
-  { sku: 'KP-PACK-20', size: 20, label: 'party pack', perPopCents: 300, badge: 'best value' },
+  { size: 1, label: 'single' },
+  { size: 6, label: '6-pack', perPopCents: 417, badge: 'share size' },
+  { size: 20, label: 'party pack', perPopCents: 300, badge: 'best value' },
 ];
 
 export default function ProductPage({ params }: ProductPageProps) {
   const { data: pageProduct, isLoading, error } = useProduct(params.id);
-  const { data: packProducts } = useProductsBySkus(PACK_LADDER_SKUS);
+
+  // Resolve which flavor this product belongs to (works whether the page
+  // is the flavor's single SKU or one of its pack SKUs).
+  const flavorSku = pageProduct?.sku
+    ? FLAVOR_SKU_FOR[pageProduct.sku] ?? pageProduct.sku
+    : undefined;
+  const flavorPacks = flavorSku ? PACK_SKUS_BY_FLAVOR[flavorSku] : undefined;
+
+  const ladderSkus = useMemo(
+    () => (flavorPacks ? [flavorPacks[1], flavorPacks[6], flavorPacks[20]] : []),
+    [flavorPacks],
+  );
+
+  const { data: packProducts } = useProductsBySkus(ladderSkus);
   const { addItem } = useCart();
   const [packSize, setPackSize] = useState<1 | 6 | 20>(1);
   const [quantity, setQuantity] = useState(1);
@@ -46,15 +63,15 @@ export default function ProductPage({ params }: ProductPageProps) {
     return map;
   }, [packProducts]);
 
-  const isKiwiKittyFamily =
-    pageProduct?.sku === 'KP-KIWI-KITTY' ||
-    pageProduct?.sku === 'KP-PACK-6' ||
-    pageProduct?.sku === 'KP-PACK-20';
+  const hasFlavorPacks = Boolean(flavorPacks);
+  const selectedTile =
+    PACK_TILES.find((t) => t.size === packSize) ?? PACK_TILES[0];
+  const selectedPackSku = flavorPacks ? flavorPacks[selectedTile.size] : undefined;
+  const selectedPackProduct = selectedPackSku
+    ? packProductBySku.get(selectedPackSku)
+    : undefined;
 
-  const selectedTile = PACK_TILES.find((t) => t.size === packSize) ?? PACK_TILES[0];
-  const selectedPackProduct = packProductBySku.get(selectedTile.sku);
-
-  const checkoutProduct = isKiwiKittyFamily ? selectedPackProduct : pageProduct;
+  const checkoutProduct = hasFlavorPacks ? selectedPackProduct : pageProduct;
   const linePriceCents = (checkoutProduct?.price_cents ?? 0) * quantity;
 
   if (isLoading) {
@@ -77,10 +94,15 @@ export default function ProductPage({ params }: ProductPageProps) {
     );
   }
 
-  const flavor = pageProduct.sku ? FLAVORS_BY_SKU[pageProduct.sku] : undefined;
+  const flavor = flavorSku ? FLAVORS_BY_SKU[flavorSku] : undefined;
   const accent = flavor?.color ?? 'var(--lime)';
   const description = pageProduct.description || flavor?.description || '';
-  const heroImage = pageProduct.image_url || '/landing/img/kiwi-kitty-pop.webp';
+  // Use the home-page flavor photo as the hero so the purchase window
+  // matches the flavor card the customer just clicked from.
+  const heroImage =
+    (flavorSku ? FLAVOR_IMG[flavorSku] : undefined) ??
+    pageProduct.image_url ??
+    '/landing/img/kiwi-kitty-pop.webp';
 
   const handleAddToCart = () => {
     if (!checkoutProduct) return;
@@ -138,7 +160,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {checkoutProduct
               ? formatCentsToUSD(checkoutProduct.price_cents)
               : formatCentsToUSD(pageProduct.price_cents)}
-            {isKiwiKittyFamily && selectedTile.size > 1 && selectedTile.perPopCents ? (
+            {hasFlavorPacks && selectedTile.size > 1 && selectedTile.perPopCents ? (
               <span
                 style={{
                   fontSize: '0.45em',
@@ -197,7 +219,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
           )}
 
-          {isKiwiKittyFamily && (
+          {hasFlavorPacks && flavorPacks && (
             <div className="form-group" style={{ marginTop: '2rem' }}>
               <label className="form-label">pack size</label>
               <div
@@ -209,12 +231,13 @@ export default function ProductPage({ params }: ProductPageProps) {
                 }}
               >
                 {PACK_TILES.map((tile) => {
-                  const tileProduct = packProductBySku.get(tile.sku);
+                  const tileSku = flavorPacks[tile.size];
+                  const tileProduct = packProductBySku.get(tileSku);
                   const tilePriceCents = tileProduct?.price_cents ?? 0;
                   const isOn = packSize === tile.size;
                   return (
                     <button
-                      key={tile.sku}
+                      key={tileSku}
                       type="button"
                       onClick={() => setPackSize(tile.size)}
                       aria-pressed={isOn}
