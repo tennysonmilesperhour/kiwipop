@@ -30,6 +30,21 @@ export function useProduct(id: string) {
   });
 }
 
+export function useProductsBySkus(skus: readonly string[]) {
+  return useQuery({
+    queryKey: ['products-by-skus', [...skus].sort().join(',')],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .in('sku', skus as string[]);
+      if (error) throw error;
+      return data ?? [];
+    },
+    enabled: skus.length > 0,
+  });
+}
+
 export function useOrders() {
   return useQuery({
     queryKey: ['orders'],

@@ -2181,3 +2181,44 @@ button { font: inherit; }
   .version-toast-actions { width: 100%; margin-left: 0; }
   .version-toast-actions .btn-primary { flex: 1; }
 }
+
+/* =========================================================
+   Subtle box rounding — softens the brand without
+   touching pills, circles, or the kanji ticker.
+   Set per-element rather than via a wildcard so we don't
+   accidentally round bars, hairlines, or full-bleed art.
+   ========================================================= */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-full,
+.card,
+.stat-card,
+.alert,
+.form-input,
+textarea.form-input,
+select.form-input,
+.product-image-wrap,
+.product-detail,
+.timeline-card,
+.preorder-badge,
+.merch-card,
+.order-row,
+.order-summary,
+.spec-cell,
+.spec-grid,
+.nav-cta-admin,
+.kp-page .pack-opt,
+.kp-page .kp-fundraiser,
+.kp-page .kp-fr-track,
+.kp-page .kp-fr-fill,
+.kp-page .kp-flavor-card,
+.kp-page .review-card,
+.kp-page .merch-card,
+.kp-page .footer-col,
+.kp-page .fl-card,
+.sheet-embed--empty,
+.sheet-embed--loading,
+.version-toast-content {
+  border-radius: 8px;
+}

@@ -2,7 +2,43 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { sendNotificationEmail } from '@/lib/email';
 import { wholesaleApplicationSchema } from '@/lib/validators';
+
+type WholesaleApplicationInput = ReturnType<
+  typeof wholesaleApplicationSchema.parse
+>;
+
+async function notifyFounder(
+  parsed: WholesaleApplicationInput,
+  isUpdate: boolean,
+  userEmail: string | null,
+): Promise<void> {
+  const to = process.env.WHOLESALE_NOTIFY_EMAIL;
+  if (!to) return;
+
+  const lines = [
+    `Business: ${parsed.business_name}`,
+    `Account email: ${userEmail ?? '(unknown)'}`,
+    `Contact email: ${parsed.contact_email}`,
+    parsed.contact_phone ? `Phone: ${parsed.contact_phone}` : null,
+    parsed.tax_id ? `Tax ID / EIN: ${parsed.tax_id}` : null,
+    parsed.channel ? `Channel: ${parsed.channel}` : null,
+    parsed.expected_monthly_units != null
+      ? `Expected units / month: ${parsed.expected_monthly_units}`
+      : null,
+    parsed.message ? `\nMessage:\n${parsed.message}` : null,
+    '',
+    'Review at /admin/wholesale.',
+  ].filter((line): line is string => line !== null);
+
+  await sendNotificationEmail({
+    to,
+    subject: `${isUpdate ? '[update] ' : ''}wholesale inquiry · ${parsed.business_name}`,
+    text: lines.join('\n'),
+    replyTo: parsed.contact_email,
+  });
+}
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -106,6 +142,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
+    await notifyFounder(parsed, true, user.email ?? null);
+
     return NextResponse.json({
       account: updated,
       status: existing.approval_status,
@@ -136,6 +174,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       { status: 500 }
     );
   }
+
+  await notifyFounder(parsed, false, user.email ?? null);
 
   return NextResponse.json(
     {
