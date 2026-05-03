@@ -644,7 +644,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             </Link>
           ))}
           {products.varietyHalfOff ? (
-            <Link href="/cart">variety pack · half off</Link>
+            <Link href="/cart">variety pack · 20% off</Link>
           ) : null}
         </div>
         <div className="col">

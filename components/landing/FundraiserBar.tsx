@@ -79,8 +79,8 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
           {adding
             ? 'ADDING…'
             : varietyHalfOff
-              ? `HALF-OFF VARIETY 12-PACK · PREORDER · ${formatCentsToUSD(varietyHalfOff.price_cents)}`
-              : 'HALF-OFF VARIETY 12-PACK · PREORDER'}
+              ? `20% OFF VARIETY 12-PACK · PREORDER · ${formatCentsToUSD(varietyHalfOff.price_cents)}`
+              : '20% OFF VARIETY 12-PACK · PREORDER'}
         </button>
         <Link className="kp-fr-cta" href="/wholesale/apply">
           WHOLESALE PREORDER · FUNDRAISER SPECIAL →
