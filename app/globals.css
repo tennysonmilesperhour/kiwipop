@@ -184,12 +184,18 @@ button { font: inherit; }
   border-bottom: 1px solid rgba(244, 240, 232, 0.06);
 }
 .nav-logo {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.02em;
-  text-transform: lowercase;
-  color: var(--lime);
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  line-height: 0;
+}
+.nav-logo-img {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.45));
 }
 .nav-links { display: flex; gap: 1.5rem; align-items: center; }
 .nav-link {
