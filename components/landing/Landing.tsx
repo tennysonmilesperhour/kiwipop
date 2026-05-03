@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
+import { FLAVOR_IMG, FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { FundraiserBar } from './FundraiserBar';
@@ -15,13 +15,6 @@ interface LandingProps {
   products: LandingProducts;
   fundraiser: FundraiserSnapshot;
 }
-
-const FLAVOR_IMG: Record<string, string> = {
-  'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
-  'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
-  'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
-  'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',
-};
 
 const FLAVOR_DOT_COLOR: Record<string, string> = {
   'KP-KIWI-KITTY': '#a8ff3c',

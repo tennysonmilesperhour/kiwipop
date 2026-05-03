@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useProduct, useProductsBySkus } from '@/lib/hooks';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FLAVORS_BY_SKU, FUNCTIONALS, TIMELINE } from '@/lib/flavors';
+import { FLAVORS_BY_SKU, FUNCTIONALS, TIMELINE, imageForProduct } from '@/lib/flavors';
 
 interface ProductPageProps {
   params: { id: string };
@@ -80,7 +80,13 @@ export default function ProductPage({ params }: ProductPageProps) {
   const flavor = pageProduct.sku ? FLAVORS_BY_SKU[pageProduct.sku] : undefined;
   const accent = flavor?.color ?? 'var(--lime)';
   const description = pageProduct.description || flavor?.description || '';
-  const heroImage = pageProduct.image_url || '/landing/img/kiwi-kitty-pop.webp';
+  // Resolve the hero image SKU-aware: prefer the DB image_url if set, else
+  // fall back to the brand asset for this flavor's SKU. Bundle SKUs (e.g.
+  // KP-PACK-6 / KP-PACK-20) inherit the page flavor's photo because there's
+  // no separate bundle photography yet.
+  const heroImage =
+    imageForProduct(pageProduct.sku, pageProduct.image_url) ??
+    '/landing/img/kiwi-kitty-pop.webp';
 
   const handleAddToCart = () => {
     if (!checkoutProduct) return;
@@ -89,7 +95,9 @@ export default function ProductPage({ params }: ProductPageProps) {
       name: checkoutProduct.name,
       price: checkoutProduct.price_cents,
       quantity,
-      image: checkoutProduct.image_url ?? heroImage,
+      // Bundles fall back to the page hero (the flavor photo) so the cart
+      // line item shows something recognizable.
+      image: imageForProduct(checkoutProduct.sku, checkoutProduct.image_url) ?? heroImage,
       isPreorder: checkoutProduct.preorder_only,
       preorderDeadline: checkoutProduct.preorder_deadline,
     });
