@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FUNCTIONALS, PULL_QUOTES, PACKS, FLAVOR_IMG } from '@/lib/flavors';
+import { FLAVOR_IMG, FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { FundraiserBar } from './FundraiserBar';
@@ -183,7 +183,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
-          <a href="#raffle">RAFFLE</a>
+          <Link href="/raffle">RAFFLE</Link>
           <Link href="/merch">MERCH</Link>
           <Link href="/find-us">FIND US</Link>
         </div>

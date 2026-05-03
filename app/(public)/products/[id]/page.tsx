@@ -9,11 +9,11 @@ import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
 import {
   FLAVORS_BY_SKU,
-  FLAVOR_IMG,
   FLAVOR_SKU_FOR,
   FUNCTIONALS,
   PACK_SKUS_BY_FLAVOR,
   TIMELINE,
+  imageForProduct,
 } from '@/lib/flavors';
 
 interface ProductPageProps {
@@ -97,11 +97,11 @@ export default function ProductPage({ params }: ProductPageProps) {
   const flavor = flavorSku ? FLAVORS_BY_SKU[flavorSku] : undefined;
   const accent = flavor?.color ?? 'var(--lime)';
   const description = pageProduct.description || flavor?.description || '';
-  // Use the home-page flavor photo as the hero so the purchase window
-  // matches the flavor card the customer just clicked from.
+  // Resolve the hero image SKU-aware (imageForProduct walks bundle SKUs
+  // back to their flavor SKU so KP-LUCY-LEMON-PACK-6 still shows the
+  // yellow-hair photo, etc.).
   const heroImage =
-    (flavorSku ? FLAVOR_IMG[flavorSku] : undefined) ??
-    pageProduct.image_url ??
+    imageForProduct(pageProduct.sku, pageProduct.image_url) ??
     '/landing/img/kiwi-kitty-pop.webp';
 
   const handleAddToCart = () => {
@@ -111,7 +111,9 @@ export default function ProductPage({ params }: ProductPageProps) {
       name: checkoutProduct.name,
       price: checkoutProduct.price_cents,
       quantity,
-      image: checkoutProduct.image_url ?? heroImage,
+      // Bundles fall back to the page hero (the flavor photo) so the cart
+      // line item shows something recognizable.
+      image: imageForProduct(checkoutProduct.sku, checkoutProduct.image_url) ?? heroImage,
       isPreorder: checkoutProduct.preorder_only,
       preorderDeadline: checkoutProduct.preorder_deadline,
     });

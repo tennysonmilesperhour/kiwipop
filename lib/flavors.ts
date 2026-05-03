@@ -71,9 +71,11 @@ export const FLAVORS_BY_SKU: Record<string, FlavorBrandInfo> = Object.fromEntrie
 );
 
 /**
- * Photo each flavor uses on the homepage card. Reused on /products/[id]
- * as the hero image so the purchase window stays visually consistent
- * with the home grid.
+ * Per-flavor product hero image, used wherever we render a flavor product
+ * (landing flavor rail, /products/[id] hero, cart line items). Keyed by SKU.
+ * Centralized here so the homepage and the product/preorder pages stay in
+ * sync — no more "placeholder on the product page, real photo on the home
+ * page" drift.
  */
 export const FLAVOR_IMG: Record<string, string> = {
   'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
@@ -129,6 +131,25 @@ export const FLAVOR_SKU_FOR: Record<string, string> = (() => {
   }
   return map;
 })();
+
+/**
+ * Resolves the best image for a product: prefer whatever the DB has on
+ * `image_url` (admin can upload one any time); fall back to the brand
+ * asset for that flavor (resolves bundle SKUs back to their flavor via
+ * FLAVOR_SKU_FOR); null if neither exists.
+ */
+export function imageForProduct(
+  sku: string | null | undefined,
+  imageUrl: string | null | undefined,
+): string | null {
+  if (imageUrl) return imageUrl;
+  if (!sku) return null;
+  if (FLAVOR_IMG[sku]) return FLAVOR_IMG[sku];
+  const flavorSku = FLAVOR_SKU_FOR[sku];
+  if (flavorSku && FLAVOR_IMG[flavorSku]) return FLAVOR_IMG[flavorSku];
+  return null;
+}
+
 
 /**
  * The six functional things doing real work, per the production recipe.
