@@ -93,6 +93,13 @@ const TOOLS: ToolCard[] = [
       'investor pitch · $5K and $50K plans with budget, milestones, projections.',
     accent: 'var(--cyan)',
   },
+  {
+    href: '/admin/cash-donations',
+    label: 'cash donations',
+    description:
+      'log cash / check / off-rail venmo received in person. adds to the homepage fundraiser progress bar alongside paid stripe orders.',
+    accent: 'var(--lime)',
+  },
 ];
 
 export default function AdminDashboard() {
