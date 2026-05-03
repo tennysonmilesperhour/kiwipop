@@ -237,3 +237,16 @@ export const returnUpdateSchema = z.object({
 });
 
 export type ReturnUpdate = z.infer<typeof returnUpdateSchema>;
+
+export const cashDonationCreateSchema = z.object({
+  amount_cents: z.number().int().min(1, 'amount must be at least $0.01'),
+  donor_name: z.string().trim().max(120).optional().or(z.literal('')),
+  note: z.string().trim().max(500).optional().or(z.literal('')),
+  // ISO date string (YYYY-MM-DD). Server defaults to today if absent.
+  received_at: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'expected YYYY-MM-DD')
+    .optional(),
+});
+
+export type CashDonationCreate = z.infer<typeof cashDonationCreateSchema>;

@@ -20,6 +20,7 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: '/admin/logistics', label: 'logistics' },
   { href: '/admin/sheets', label: 'sheets' },
   { href: '/admin/raffle', label: 'raffle' },
+  { href: '/admin/cash-donations', label: 'cash donations' },
   { href: '/admin/pitch', label: 'pitch deck' },
 ];
 
