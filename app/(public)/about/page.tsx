@@ -76,7 +76,7 @@ export default function AboutPage() {
             <strong style={{ color: 'var(--magenta)' }}>mango molly</strong>,{' '}
             <strong style={{ color: 'var(--sodium)' }}>lucy lemon</strong>,{' '}
             and{' '}
-            <strong style={{ color: 'var(--cyan)' }}>mary mint</strong>. each
+            <strong style={{ color: 'var(--cyan)' }}>merry mint</strong>. each
             built around a small obsession. same functional payload across
             the four. flavor does the work.
           </p>

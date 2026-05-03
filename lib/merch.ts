@@ -51,8 +51,8 @@ export const MERCH: readonly MerchItem[] = [
   {
     slug: 'mary-mint-tee',
     num: '/04',
-    name: 'mary mint tee',
-    display: 'mary\nmint\ntee',
+    name: 'merry mint tee',
+    display: 'merry\nmint\ntee',
     kind: '// the cool shirt',
     blurb: 'heavyweight cotton · cyan print on bone · unisex fit',
     priceCents: 3500,

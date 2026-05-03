@@ -54,8 +54,8 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-MARY-MINT',
-    name: 'mary mint',
-    display: 'mary\nmint',
+    name: 'merry mint',
+    display: 'merry\nmint',
     feeling: '// the cool down',
     fn: '6 functionals · luster dust',
     flavor: 'peppermint · clean, cold, sharp',
