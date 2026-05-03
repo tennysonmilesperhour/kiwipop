@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
+import { FLAVOR_IMG, FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { FundraiserBar } from './FundraiserBar';
@@ -15,13 +15,6 @@ interface LandingProps {
   products: LandingProducts;
   fundraiser: FundraiserSnapshot;
 }
-
-const FLAVOR_IMG: Record<string, string> = {
-  'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
-  'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
-  'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
-  'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',
-};
 
 const FLAVOR_DOT_COLOR: Record<string, string> = {
   'KP-KIWI-KITTY': '#a8ff3c',
@@ -190,7 +183,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
-          <a href="#raffle">RAFFLE</a>
+          <Link href="/raffle">RAFFLE</Link>
           <Link href="/merch">MERCH</Link>
           <Link href="/find-us">FIND US</Link>
         </div>
@@ -283,7 +276,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <br />
             FLAVORS,
             <br />
-            eternal&nbsp;<span className="lm">VIBES.</span>
+            eternal&nbsp;<span className="lm">VIBRATIONS.</span>
           </h2>
           <div className="right">
             SWIPE → · {liveFlavors.length} OF {products.flavors.length} LIVE

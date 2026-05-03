@@ -71,6 +71,87 @@ export const FLAVORS_BY_SKU: Record<string, FlavorBrandInfo> = Object.fromEntrie
 );
 
 /**
+ * Per-flavor product hero image, used wherever we render a flavor product
+ * (landing flavor rail, /products/[id] hero, cart line items). Keyed by SKU.
+ * Centralized here so the homepage and the product/preorder pages stay in
+ * sync — no more "placeholder on the product page, real photo on the home
+ * page" drift.
+ */
+export const FLAVOR_IMG: Record<string, string> = {
+  'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
+  'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
+  'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
+  'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',
+};
+
+/**
+ * Per-flavor pack SKUs for the [1, 6, 20] ladder. Single defaults to the
+ * flavor's own SKU; 6-pack and 20-pack point at flavor-specific bundle
+ * SKUs (preorder-only for the three preorder flavors, live for kiwi
+ * kitty via the existing KP-PACK-6 / KP-PACK-20 rows).
+ */
+export const PACK_SKUS_BY_FLAVOR: Record<
+  string,
+  { 1: string; 6: string; 20: string }
+> = {
+  'KP-KIWI-KITTY': {
+    1: 'KP-KIWI-KITTY',
+    6: 'KP-PACK-6',
+    20: 'KP-PACK-20',
+  },
+  'KP-LUCY-LEMON': {
+    1: 'KP-LUCY-LEMON',
+    6: 'KP-LUCY-LEMON-PACK-6',
+    20: 'KP-LUCY-LEMON-PACK-20',
+  },
+  'KP-MANGO-MOLLY': {
+    1: 'KP-MANGO-MOLLY',
+    6: 'KP-MANGO-MOLLY-PACK-6',
+    20: 'KP-MANGO-MOLLY-PACK-20',
+  },
+  'KP-MARY-MINT': {
+    1: 'KP-MARY-MINT',
+    6: 'KP-MARY-MINT-PACK-6',
+    20: 'KP-MARY-MINT-PACK-20',
+  },
+};
+
+/**
+ * Reverse map: any pack/flavor SKU -> the flavor SKU it belongs to.
+ * Lets a pack-specific product page (e.g. KP-PACK-6) resolve back to
+ * the flavor it represents so we can show the right hero photo and
+ * pack tiles.
+ */
+export const FLAVOR_SKU_FOR: Record<string, string> = (() => {
+  const map: Record<string, string> = {};
+  for (const [flavorSku, packs] of Object.entries(PACK_SKUS_BY_FLAVOR)) {
+    map[packs[1]] = flavorSku;
+    map[packs[6]] = flavorSku;
+    map[packs[20]] = flavorSku;
+  }
+  return map;
+})();
+
+/**
+ * Resolves the best image for a product: prefer whatever the DB has on
+ * `image_url` (admin can upload one any time); fall back to the brand
+ * asset for that flavor (resolves bundle SKUs back to their flavor via
+ * FLAVOR_SKU_FOR); null if neither exists.
+ */
+export function imageForProduct(
+  sku: string | null | undefined,
+  imageUrl: string | null | undefined,
+): string | null {
+  if (imageUrl) return imageUrl;
+  if (!sku) return null;
+  if (FLAVOR_IMG[sku]) return FLAVOR_IMG[sku];
+  const flavorSku = FLAVOR_SKU_FOR[sku];
+  if (flavorSku && FLAVOR_IMG[flavorSku]) return FLAVOR_IMG[flavorSku];
+  return null;
+}
+
+
+/**
  * The six functional things doing real work, per the production recipe.
  * Source: kiwi_pop_costing.xlsx (Recipes tab, shared columns).
  */
