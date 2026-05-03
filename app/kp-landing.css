@@ -510,11 +510,11 @@
 .kp-page .z1 .hero-pop {
   position: absolute;
   right: 27.5%;
-  top: 50%;
-  transform: translate(50%, -50%);
+  bottom: 0;
+  transform: translateX(50%);
   height: min(92vh, 100%);
   aspect-ratio: 800 / 1471;
-  background: url("/landing/img/kiwi-kitty-pop.webp") center/contain no-repeat;
+  background: url("/landing/img/kiwi-kitty-pop.webp") bottom center/contain no-repeat;
   filter: drop-shadow(0 0 50px rgba(0, 240, 255, 0.55)) drop-shadow(0 24px 70px rgba(0, 0, 0, 0.75));
   z-index: 2;
   pointer-events: none;
@@ -522,9 +522,7 @@
 @media (max-width: 900px) {
   .kp-page .z1 .hero-pop {
     right: 50%;
-    top: auto;
-    bottom: 80px;
-    transform: translateX(50%);
+    bottom: 0;
     height: 60vh;
   }
 }
