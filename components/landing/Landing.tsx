@@ -32,7 +32,7 @@ const FESTIVAL_TICKER = [
   'LIGHTNING IN A BOTTLE · 2026.08',
   '<1G SUGAR · ~35 CAL · VEGAN',
   'FREE SHIP $40+',
-  'MFD NEW SHIBUYA',
+  'MFD SALT LAKE',
 ];
 
 // Eight simple neon glyphs, one per functional ingredient slot. Index aligns
@@ -400,7 +400,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="item"><span className="dot" />&lt;1G SUGAR · ~35 CAL</div>
           <div className="item"><span className="dot" />VEGAN · GLUTEN FREE</div>
           <div className="item"><span className="dot" />KAVA · 750MG / POP</div>
-          <div className="item"><span className="dot" />MFD NEW SHIBUYA</div>
+          <div className="item"><span className="dot" />MFD SALT LAKE</div>
           <div className="item"><span className="dot" />DROP 001 · {new Date().getFullYear()}</div>
         </div>
       </section>
@@ -500,7 +500,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               drops sell out in <span className="em">11 minutes</span> on average. don&apos;t be late.
             </p>
             <span className="lab" style={{ borderColor: 'var(--lemon)', color: 'var(--lemon)' }}>
-              SHIPS FROM NEW SHIBUYA · DOMESTIC FIRST
+              SHIPS FROM SALT LAKE · DOMESTIC FIRST
             </span>
           </div>
         </div>
@@ -629,7 +629,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <div className="nm">KIWI<span className="pk">.</span>POP</div>
           </div>
           <p>
-            made small in new shibuya, dosed for the dance floor. shipping since {new Date().getFullYear()}.
+            made small in salt lake, dosed for the dance floor. shipping since {new Date().getFullYear()}.
             {launchProduct ? <> drop 001 · {launchProduct.in_stock} kiwi kitty in stock.</> : null}
           </p>
         </div>
@@ -666,7 +666,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="legal">
           <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS KAVA, THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES.
           <br />
-          <br />© KIWI POP · {new Date().getFullYear()} · DROP 001 · MFD NEW SHIBUYA · <span className="kw">舐 一下</span>
+          <br />© KIWI POP · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · <span className="kw">舐 一下</span>
         </div>
       </footer>
     </div>

@@ -6,7 +6,7 @@ export function Footer() {
       <div>
         <div className="footer-brand">kiwi pop</div>
         <div style={{ marginTop: '0.5rem', opacity: 0.6 }}>
-          © {new Date().getFullYear()} · new shibuya · do not eat the wrapper
+          © {new Date().getFullYear()} · salt lake · do not eat the wrapper
         </div>
         <div
           style={{

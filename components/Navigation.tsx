@@ -14,7 +14,11 @@ export function Navigation() {
   return (
     <nav className="nav">
       <Link href="/" className="nav-logo" aria-label="kiwi pop home">
-        kiwi pop
+        <img
+          src="/landing/img/kiwi-kitty-pop.webp"
+          alt="kiwi pop"
+          className="nav-logo-img"
+        />
       </Link>
       <div className="nav-links">
         <Link className="nav-link" href="/#drop">

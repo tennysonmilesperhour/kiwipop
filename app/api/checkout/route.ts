@@ -185,6 +185,7 @@ export async function POST(request: NextRequest) {
       isPreorder: isPreorderOrder,
     });
   } catch (err) {
+    console.error('[checkout] stripe session create failed', err);
     await supabaseAdmin
       .from('orders')
       .update({ status: 'cancelled' })
