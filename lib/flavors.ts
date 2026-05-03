@@ -18,8 +18,8 @@ export interface FlavorBrandInfo {
 export const FLAVORS: readonly FlavorBrandInfo[] = [
   {
     sku: 'KP-KIWI-KITTY',
-    name: 'kiwi kitty',
-    display: 'kiwi\nkitty',
+    name: 'kiwi pop',
+    display: 'kiwi\npop',
     feeling: '// the original',
     fn: '6 functionals · luster dust',
     flavor: 'kiwi · sweet, tart, clean',

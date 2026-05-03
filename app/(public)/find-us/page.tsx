@@ -91,7 +91,7 @@ export default function FindUsPage() {
 ─────────────────────────────────
 > retail:        soft launch
 > festivals:     in negotiation
-> dtc:           drops 001 — kiwi kitty
+> dtc:           drops 001 — kiwi pop
 > intl:          waitlist only · vienna · melbourne · london
 > next ship:     tbd · check the list
 ─────────────────────────────────
