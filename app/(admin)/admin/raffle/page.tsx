@@ -14,6 +14,7 @@ interface RaffleEntry {
   is_winner: boolean;
   won_at: string | null;
   created_at: string;
+  storage?: 'raffle_entries' | 'email_signups_fallback';
 }
 
 interface EntriesResponse {
@@ -21,6 +22,11 @@ interface EntriesResponse {
   count: number;
   winners: RaffleEntry[];
   entries: RaffleEntry[];
+  storage?: {
+    primary_available: boolean;
+    fallback_used: boolean;
+    migration_pending: boolean;
+  };
 }
 
 const SLUG = 'artwork-001';
@@ -121,6 +127,25 @@ export default function AdminRafflePage() {
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
 
+      {data?.storage?.migration_pending && (
+        <div
+          className="alert"
+          style={{
+            marginBottom: 16,
+            borderColor: 'var(--lemon, #f5ff3d)',
+            color: 'var(--lemon, #f5ff3d)',
+            background: 'rgba(245, 255, 61, 0.07)',
+          }}
+        >
+          <strong>migration 010 not applied yet.</strong> entries are being
+          captured into <code>email_signups</code> with the payload encoded
+          into <code>source</code>; they show up in this list. apply{' '}
+          <code>supabase/migrations/010_raffle_entries.sql</code> when you&apos;re
+          ready, then click &ldquo;draw a winner.&rdquo; the draw RPC needs
+          the real table.
+        </div>
+      )}
+
       <div className="card mb-6">
         <h2 className="card-title">Status</h2>
         <div
@@ -141,7 +166,12 @@ export default function AdminRafflePage() {
             type="button"
             className="btn btn-primary"
             onClick={drawWinner}
-            disabled={drawing || eligible === 0}
+            disabled={drawing || eligible === 0 || data?.storage?.migration_pending}
+            title={
+              data?.storage?.migration_pending
+                ? 'apply migration 010 to enable the draw RPC'
+                : undefined
+            }
           >
             {drawing ? 'drawing…' : 'draw a winner'}
           </button>
