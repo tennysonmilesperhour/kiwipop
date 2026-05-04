@@ -13,6 +13,13 @@ export interface FlavorBrandInfo {
   color: string;
   status: 'live' | 'soon';
   description: string;
+  /**
+   * Short label used by the comedown checkout flavor picker. We don't want
+   * to slice the marketing name (e.g. "lemon g. luci" → "g.") because
+   * those abbreviated tokens read like product codes. Spell out the flavor
+   * profile instead — "kiwi", "lemon ginger", "mango", "mint".
+   */
+  pickerLabel: string;
 }
 
 export const FLAVORS: readonly FlavorBrandInfo[] = [
@@ -27,6 +34,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     status: 'live',
     description:
       "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. sweetened with monk fruit and xylitol on an isomalt base. a little secret in your mouth.",
+    pickerLabel: 'kiwi',
   },
   {
     sku: 'KP-LUCY-LEMON',
@@ -39,6 +47,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     status: 'soon',
     description:
       "the g is for ginger. bright lemon out front, ginger snap on the back end — sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. coming soon.",
+    pickerLabel: 'lemon ginger',
   },
   {
     sku: 'KP-MANGO-MOLLY',
@@ -51,6 +60,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     status: 'soon',
     description:
       "ripe mango, glossy on the lips. freeze-dried mango powder cut with the LorAnn oil for full saturation. coming soon.",
+    pickerLabel: 'mango',
   },
   {
     sku: 'KP-MARY-MINT',
@@ -63,6 +73,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     status: 'soon',
     description:
       "cold peppermint, no sweetness on the back end. the mint that doesn't apologize. coming soon.",
+    pickerLabel: 'mint',
   },
 ] as const;
 
