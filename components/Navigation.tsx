@@ -36,6 +36,9 @@ export function Navigation() {
         <Link className="nav-link" href="/raffle">
           raffle
         </Link>
+        <Link className="nav-link" href="/variety">
+          variety
+        </Link>
         <Link className="nav-link" href="/merch">
           merch
         </Link>
