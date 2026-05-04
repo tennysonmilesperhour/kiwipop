@@ -2240,3 +2240,54 @@ select.form-input,
 .version-toast-content {
   border-radius: 8px;
 }
+
+/* =========================================================
+   GLOBAL CORNER ROUNDING
+   Rounds every box and button surface by ~10% so the layout
+   reads softer without losing the cyber edge. Pills (999px),
+   circles (50%), and intentionally squared content like the
+   sheet-embed iframe and the small dot accents are left alone.
+   ========================================================= */
+:root {
+  --radius-btn: 8px;
+  --radius-card: 12px;
+}
+
+/* buttons + inputs */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-full,
+.nav-cta,
+.nav-cta-admin,
+.form-input,
+.form-select,
+textarea.form-input,
+.kp-page .cta-take,
+.kp-page .pack-opt,
+.kp-page .flav-opt,
+.kp-page .kp-cart-btn,
+.kp-page .kp-fundraiser .kp-fr-cta,
+.zraffle .raffle-form button,
+.zraffle .raffle-form .field input,
+.zraffle .raffle-form .field textarea {
+  border-radius: var(--radius-btn);
+}
+
+/* boxes / cards */
+.card,
+.stat-card,
+.admin-tool-card,
+.alert,
+.comment-card,
+.product-image-wrap,
+.kp-page .fc,
+.kp-page .icd,
+.kp-page .rev,
+.kp-page .signup,
+.kp-page .merch-card,
+.kp-page .kp-fundraiser,
+.kp-page .kp-venmo-card {
+  border-radius: var(--radius-card);
+}
+
