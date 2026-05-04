@@ -140,6 +140,20 @@ export default function Landing({ products, fundraiser }: LandingProps) {
     setTimeout(() => setAddState('idle'), 1600);
   };
 
+  const handleAddVariety = (tier: LandingProducts['variety'][number]) => {
+    if (!tier.product) return;
+    addItem({
+      productId: tier.product.id,
+      name: tier.product.name,
+      price: tier.product.price_cents,
+      quantity: 1,
+      image: tier.product.image_url ?? FLAVOR_IMG['KP-KIWI-KITTY'],
+      isPreorder: tier.product.preorder_only,
+    });
+    setAddState('added');
+    setTimeout(() => setAddState('idle'), 1600);
+  };
+
   const handleSignup = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!signupEmail || signupStatus === 'sending') return;
@@ -362,6 +376,36 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="item"><span className="dot" />~35 CAL</span>
               <span className="item"><span className="dot" />VEGAN</span>
               <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
+            </div>
+
+            {/* ===== VARIETY PACK CTA ===== */}
+            <div className="row" style={{ marginTop: 28 }}>
+              <span className="label">OR · TRY ALL FOUR</span>
+              <span className="label">
+                <span className="kw">VARIETY PACK · PREORDER · EQUAL COUNTS</span>
+              </span>
+            </div>
+            <div className="pack-pick">
+              {products.variety.map((tier) => (
+                <button
+                  key={tier.sku}
+                  type="button"
+                  className="pack-opt"
+                  onClick={() => handleAddVariety(tier)}
+                  disabled={!tier.product}
+                  title={`${tier.perFlavor} of each of the four flavors`}
+                  aria-label={`add ${tier.label} (${tier.size} pops) to cart`}
+                >
+                  <span className="sz">{tier.size}×</span>
+                  <span className="pp">{tier.label.toUpperCase()}</span>
+                  <span className="pp">
+                    {formatCentsToUSD(tier.priceCents)}
+                    {tier.badge ? (
+                      <span style={{ marginLeft: 6, opacity: 0.85 }}>· {tier.badge.toUpperCase()}</span>
+                    ) : null}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
