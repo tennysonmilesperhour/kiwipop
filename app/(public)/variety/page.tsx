@@ -44,8 +44,9 @@ export default function VarietyPage() {
       isPreorder: selectedProduct.preorder_only,
       preorderDeadline: selectedProduct.preorder_deadline,
     });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    // Jump straight to the cart so the user can finish checkout — the brief
+    // "added" flash + 2s "view cart" button was easy to miss.
+    router.push('/cart');
   };
 
   return (
