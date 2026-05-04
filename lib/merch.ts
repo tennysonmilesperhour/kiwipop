@@ -31,8 +31,8 @@ export const MERCH: readonly MerchItem[] = [
   {
     slug: 'lucy-lemon-tee',
     num: '/02',
-    name: 'lucy lemon tee',
-    display: 'lucy\nlemon\ntee',
+    name: 'lemon g. luci tee',
+    display: 'lemon g.\nluci\ntee',
     kind: '// the bright shirt',
     blurb: 'heavyweight cotton · acid yellow print on bone · unisex fit',
     priceCents: 3500,
@@ -41,8 +41,8 @@ export const MERCH: readonly MerchItem[] = [
   {
     slug: 'mango-molly-tee',
     num: '/03',
-    name: 'mango molly tee',
-    display: 'mango\nmolly\ntee',
+    name: "mollie's mango tee",
+    display: "mollie's\nmango\ntee",
     kind: '// the warm shirt',
     blurb: 'heavyweight cotton · hot pink print on midnight · unisex fit',
     priceCents: 3500,
@@ -51,8 +51,8 @@ export const MERCH: readonly MerchItem[] = [
   {
     slug: 'mary-mint-tee',
     num: '/04',
-    name: 'mary mint tee',
-    display: 'mary\nmint\ntee',
+    name: 'merry mint tee',
+    display: 'merry\nmint\ntee',
     kind: '// the cool shirt',
     blurb: 'heavyweight cotton · cyan print on bone · unisex fit',
     priceCents: 3500,
