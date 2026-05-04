@@ -291,3 +291,55 @@ export const PACKS: readonly PackTier[] = [
     badge: 'best value',
   },
 ] as const;
+
+/**
+ * Variety pack tiers: equal amounts of every flavor in one bundle.
+ * The numbers below match the matching SKUs in the products table:
+ *
+ *   KP-VARIETY-PACK-8    8 pops  · 2 of each flavor   · $30 · price_1TSqZZ…
+ *   KP-VARIETY-PACK-20   20 pops · 5 of each flavor   · $60 · price_1TT4eR…
+ *   KP-VARIETY-PACK-40   40 pops · 10 of each flavor  · $100 · price_1TT4g6…
+ *
+ * The pre-pop math:
+ *   8  →  $3.75/pop
+ *   20 →  $3.00/pop  (matches the solo 20-pack)
+ *   40 →  $2.50/pop  (best value)
+ */
+export interface VarietyTier {
+  size: 8 | 20 | 40;
+  perFlavor: 2 | 5 | 10;
+  sku: string;
+  label: string;
+  priceCents: number;
+  perPopCents: number;
+  badge?: string;
+}
+
+export const VARIETY_TIERS: readonly VarietyTier[] = [
+  {
+    size: 8,
+    perFlavor: 2,
+    sku: 'KP-VARIETY-PACK-8',
+    label: 'starter variety',
+    priceCents: 3000,
+    perPopCents: 375,
+  },
+  {
+    size: 20,
+    perFlavor: 5,
+    sku: 'KP-VARIETY-PACK-20',
+    label: 'party variety',
+    priceCents: 6000,
+    perPopCents: 300,
+    badge: 'crowd size',
+  },
+  {
+    size: 40,
+    perFlavor: 10,
+    sku: 'KP-VARIETY-PACK-40',
+    label: 'mega variety',
+    priceCents: 10000,
+    perPopCents: 250,
+    badge: 'best value',
+  },
+] as const;
