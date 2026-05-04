@@ -477,7 +477,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
 
         <div className="ig-row">
-          <span className="item"><span className="dot" />TAG <span className="kw">@KIWIPOP</span> + #LICKTHENIGHT TO GET FEATURED</span>
+          <span className="item"><span className="dot" />TAG <span className="kw">@THE.KIWI.POP</span> + #POPOFF TO GET FEATURED</span>
           <span className="item">SOURCED FROM TIKTOK · INSTAGRAM · DMS</span>
           <span className="item">REAL REVIEWS WHEN DROP 001 SHIPS</span>
           <span className="item"><Link href="/about" className="kw">FOUNDER VOICE →</Link></span>
@@ -507,7 +507,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
         <div className="boxes">
           <div className="img-foot">
-            <span className="ig-handle">@kiwipop · the lineup</span>
+            <span className="ig-handle">@the.kiwi.pop · the lineup</span>
             <p className="quote">
               &ldquo;{PULL_QUOTES[0]?.text}&rdquo; <span className="em">{PULL_QUOTES[0]?.byline}</span>
             </p>

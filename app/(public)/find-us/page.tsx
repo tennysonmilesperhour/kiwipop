@@ -51,7 +51,7 @@ const RETAIL: RetailRow[] = [
 ];
 
 const SOCIAL = [
-  { handle: '@kiwipop', label: 'instagram', url: 'https://instagram.com/kiwipop' },
+  { handle: '@the.kiwi.pop', label: 'instagram', url: 'https://instagram.com/the.kiwi.pop' },
   { handle: '@kiwipop', label: 'tiktok', url: 'https://tiktok.com/@kiwipop' },
   { handle: '@kiwipop', label: 'discord', url: '#' },
   { handle: 'kiwipop.co', label: 'newsletter', url: '/#list' },
