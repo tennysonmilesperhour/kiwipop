@@ -560,15 +560,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <br />
             US <span className="glaze">HERE.</span>
           </h2>
-          <div className="agg">
-            <div className="agg-meta">
-              <span className="kw">INTEREST IN THE DMS FROM</span>
-              <br />
-              VIENNA · MELBOURNE · LONDON
-              <br />
-              <span className="kw">REPLACE WITH REAL COMMENTS</span> AS THEY COME IN
-            </div>
-          </div>
         </div>
 
         <div className="grid">
