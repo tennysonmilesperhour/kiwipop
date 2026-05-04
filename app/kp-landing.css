@@ -1493,6 +1493,179 @@
 }
 .kp-page .zr .ig-row .kw { color: var(--lemon); text-shadow: 0 0 6px rgba(245, 255, 61, 0.4); }
 
+/* ========= ZONE 5.6 · INSTAGRAM EMBED ========= */
+.kp-page .zig {
+  position: relative;
+  padding: 90px 40px 110px;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(255, 26, 140, 0.18), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(245, 255, 61, 0.12), transparent 55%),
+    linear-gradient(160deg, #14001a 0%, #1a002a 55%, #0a0014 100%);
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.kp-page .zig-head {
+  max-width: 720px;
+  margin: 0 auto 36px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.kp-page .zig-eyebrow {
+  font-family: var(--font-cyber);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--lemon);
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(245, 255, 61, 0.45);
+}
+.kp-page .zig-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 8vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin: 14px 0 16px;
+}
+.kp-page .zig-grad {
+  background: linear-gradient(90deg, #f58529 0%, #dd2a7b 35%, #8134af 70%, #515bd4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 22px rgba(221, 42, 123, 0.45));
+}
+.kp-page .zig-lede {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.55;
+  color: rgba(244, 236, 255, 0.85);
+  margin: 0 auto;
+  max-width: 560px;
+}
+.kp-page .zig-em {
+  color: var(--lemon);
+  font-style: normal;
+  font-weight: 500;
+}
+.kp-page .zig-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 28px;
+  background: linear-gradient(95deg, #f58529 0%, #dd2a7b 50%, #515bd4 100%);
+  color: #fff;
+  font-family: var(--font-cyber);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0;
+  box-shadow: 0 12px 40px rgba(221, 42, 123, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  transition: transform 220ms var(--ease-spring), box-shadow 220ms ease;
+  margin: 0 auto 56px;
+  position: relative;
+  z-index: 2;
+}
+.kp-page .zig-head + .zig-cta {
+  display: flex;
+  width: max-content;
+  max-width: 90%;
+}
+.kp-page .zig-cta:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(221, 42, 123, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+.kp-page .zig-cta:focus-visible {
+  outline: 2px solid var(--lemon);
+  outline-offset: 4px;
+}
+.kp-page .zig-ig-mark {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.kp-page .zig-handle {
+  letter-spacing: 0.14em;
+}
+.kp-page .zig-arrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0;
+}
+.kp-page .zig-grid {
+  position: relative;
+  z-index: 2;
+  max-width: 980px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.kp-page .zig-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+  text-decoration: none;
+  color: var(--bone);
+  border: 1.5px solid rgba(245, 255, 61, 0.25);
+  overflow: hidden;
+  transition: transform 240ms var(--ease-spring), border-color 240ms ease, box-shadow 240ms ease;
+}
+.kp-page .zig-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.18) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+  opacity: 0.35;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+.kp-page .zig-tile-0 { background: linear-gradient(140deg, #ff1a8c 0%, #2d4bff 100%); }
+.kp-page .zig-tile-1 { background: linear-gradient(140deg, #00f0ff 0%, #b6ff1a 100%); }
+.kp-page .zig-tile-2 { background: linear-gradient(140deg, #f5ff3d 0%, #ff1a8c 100%); }
+.kp-page .zig-tile-3 { background: linear-gradient(140deg, #8134af 0%, #f58529 100%); }
+.kp-page .zig-tile:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 255, 61, 0.7);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45), 0 0 28px rgba(245, 255, 61, 0.25);
+}
+.kp-page .zig-tile-label {
+  position: relative;
+  font-family: var(--font-cyber);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+.kp-page .zig-tile-icon {
+  position: relative;
+  align-self: flex-end;
+  width: 28px;
+  height: 28px;
+  color: rgba(255, 255, 255, 0.92);
+  z-index: 2;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
+}
+.kp-page .zig-tile-icon svg { width: 100%; height: 100%; }
+
+@media (max-width: 720px) {
+  .kp-page .zig { padding: 70px 20px 90px; }
+  .kp-page .zig-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .kp-page .zig-cta { padding: 14px 20px; font-size: 13px; }
+}
+
 /* ========= ZONE 6 · COMEDOWN / CHECKOUT ========= */
 .kp-page .z6 {
   position: relative;

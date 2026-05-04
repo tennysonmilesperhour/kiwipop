@@ -624,6 +624,77 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
       </section>
 
+      {/* ===== ZONE 5.6 · INSTAGRAM ===== */}
+      <section className="zig" id="instagram" data-screen-label="05c Instagram">
+        <div className="zig-head">
+          <span className="zig-eyebrow">// instagram · live feed</span>
+          <h2 className="zig-title">
+            FOLLOW ON
+            <br />
+            <span className="zig-grad">INSTAGRAM.</span>
+          </h2>
+          <p className="zig-lede">
+            posts · stills · drop announcements · festival activations.{' '}
+            <span className="zig-em">@the.kiwi.pop</span> on instagram. tag{' '}
+            <span className="zig-em">#popoff</span> to get featured here when
+            we ship.
+          </p>
+        </div>
+
+        <a
+          className="zig-cta"
+          href="https://www.instagram.com/the.kiwi.pop/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="follow @the.kiwi.pop on instagram"
+        >
+          <svg
+            className="zig-ig-mark"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            aria-hidden="true"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+          </svg>
+          <span className="zig-handle">@the.kiwi.pop</span>
+          <span className="zig-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <div className="zig-grid" role="list">
+          {[
+            'KIWI · DROP 001',
+            'BEHIND THE BATCH',
+            'FESTIVAL POP-UP',
+            'POP × LIPS',
+            'GLITTER MICA · MACRO',
+            '03:47 AM · SUNRISE',
+          ].map((label, idx) => (
+            <a
+              key={label}
+              className={`zig-tile zig-tile-${idx % 4}`}
+              href="https://www.instagram.com/the.kiwi.pop/"
+              target="_blank"
+              rel="noopener noreferrer"
+              role="listitem"
+              aria-label={`${label} — open @the.kiwi.pop`}
+            >
+              <span className="zig-tile-label">{label}</span>
+              <span className="zig-tile-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+                </svg>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+
       {/* ===== ZONE 6 · ENTER ===== */}
       <section className="z2" data-screen-label="06 Enter">
         <div className="copy">
