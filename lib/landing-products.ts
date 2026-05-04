@@ -1,6 +1,13 @@
 import 'server-only';
 import { supabaseAdmin } from './supabase-admin';
-import { FLAVORS, PACKS, type FlavorBrandInfo, type PackTier } from './flavors';
+import {
+  FLAVORS,
+  PACKS,
+  VARIETY_TIERS,
+  type FlavorBrandInfo,
+  type PackTier,
+  type VarietyTier,
+} from './flavors';
 
 export interface ProductRow {
   id: string;
@@ -21,9 +28,14 @@ export interface LandingPack extends PackTier {
   product: ProductRow | null;
 }
 
+export interface LandingVariety extends VarietyTier {
+  product: ProductRow | null;
+}
+
 export interface LandingProducts {
   flavors: LandingFlavor[];
   packs: LandingPack[];
+  variety: LandingVariety[];
   donation: ProductRow | null;
   varietyHalfOff: ProductRow | null;
 }
@@ -43,6 +55,7 @@ const ALL_SKUS = [
   ...FLAVORS.map((f) => f.sku),
   'KP-PACK-6',
   'KP-PACK-20',
+  ...VARIETY_TIERS.map((v) => v.sku),
   FUNDRAISER_SKUS.donation,
   FUNDRAISER_SKUS.varietyHalfOff,
 ];
@@ -83,9 +96,15 @@ export async function loadLandingProducts(): Promise<LandingProducts> {
     product: bySku.get(PACK_SKU_BY_SIZE[pack.size] ?? '') ?? null,
   }));
 
+  const variety: LandingVariety[] = VARIETY_TIERS.map((tier) => ({
+    ...tier,
+    product: bySku.get(tier.sku) ?? null,
+  }));
+
   return {
     flavors,
     packs,
+    variety,
     donation: bySku.get(FUNDRAISER_SKUS.donation) ?? null,
     varietyHalfOff: bySku.get(FUNDRAISER_SKUS.varietyHalfOff) ?? null,
   };
