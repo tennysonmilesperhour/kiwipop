@@ -38,11 +38,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'kiwi pop · sucker-shaped supplements you can party with',
+    default: 'kiwi pop · lollipop shaped party supplements',
     template: '%s · kiwi pop',
   },
   description:
-    "sucker-shaped supplements you can party with. <1g of sugar, vegan, functional lollipops with edible mica glitter and a six-ingredient functional payload (theobromine, kava, ginseng, b12, magnesium, taurine). candy for people who don't eat candy.",
+    "lollipop shaped party supplements. <1g of sugar, vegan, functional lollipops with edible mica glitter and a six-ingredient functional payload (theobromine, kava, ginseng, b12, magnesium, taurine). candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   keywords: [
@@ -58,24 +58,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'kiwi pop',
-    title: 'kiwi pop · sucker-shaped supplements you can party with',
+    title: 'kiwi pop · lollipop shaped party supplements',
     description:
-      'sucker-shaped supplements you can party with. <1g of sugar, vegan, functional lollipops.',
+      'lollipop shaped party supplements. <1g of sugar, vegan, functional lollipops.',
     url: siteUrl,
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'kiwi pop — sucker-shaped supplements you can party with',
+        alt: 'kiwi pop — lollipop shaped party supplements',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'kiwi pop · sucker-shaped supplements you can party with',
+    title: 'kiwi pop · lollipop shaped party supplements',
     description:
-      'sucker-shaped supplements you can party with. <1g of sugar, vegan, functional lollipops.',
+      'lollipop shaped party supplements. <1g of sugar, vegan, functional lollipops.',
     images: ['/og-image.png'],
   },
   robots: {

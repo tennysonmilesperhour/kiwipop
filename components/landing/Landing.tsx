@@ -211,7 +211,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="hero-pop" aria-hidden="true" />
         <div className="content">
           <span className="eyebrow">
-            <span className="cn">舐</span> SUCKER-SHAPED SUPPLEMENTS YOU CAN PARTY WITH
+            <span className="cn">舐</span> LOLLIPOP SHAPED PARTY SUPPLEMENTS
           </span>
           <h1>
             <span style={{ color: '#f4ecff', display: 'block' }}>put this</span>
@@ -591,9 +591,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="copy">
           <span className="lab">06 · ENTER</span>
           <h2>
-            SUCKER-SHAPED
+            LOLLIPOP SHAPED
             <br />
-            <span className="pk">SUPPLEMENTs.</span>
+            <span className="pk">PARTY SUPPLEMENTs.</span>
           </h2>
           <p className="lede">
             <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes.</span>{' '}
