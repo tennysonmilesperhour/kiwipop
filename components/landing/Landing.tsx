@@ -285,7 +285,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                     aria-pressed={flavorSku === flavor.sku}
                     title={flavor.status === 'soon' ? 'preorder' : 'in stock'}
                   >
-                    {flavor.name.split(' ')[1] ?? flavor.name}
+                    {flavor.pickerLabel}
                   </button>
                 );
               })}
