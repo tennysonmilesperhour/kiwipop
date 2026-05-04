@@ -233,34 +233,137 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
       </section>
 
-      {/* ===== ZONE 2 · ENTER ===== */}
-      <section className="z2" data-screen-label="02 Enter">
+      {/* ===== ZONE 2 · COMEDOWN / CHECKOUT ===== */}
+      <section className="z6" id="shop" data-screen-label="02 Comedown">
         <div className="copy">
-          <span className="lab">02 · ENTER</span>
-          <h2>
-            SUCKER-SHAPED
-            <br />
-            <span className="pk">SUPPLEMENTs.</span>
-          </h2>
-          <p className="lede">
-            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes.</span>{' '}
-            measured by gram, not by vibe. same payload, every pop.
-          </p>
-          <div className="ings">
-            {FUNCTIONALS.map((ing) => (
-              <span className="ing" key={ing.name}>
-                {ing.name} · <span className="mg">{ing.amount.split(' ').slice(0, 2).join(' ')}</span>
-              </span>
-            ))}
+          <div className="copy-left">
+            <span className="lab">02 · COMEDOWN</span>
+            <h2>
+              TAKE
+              <br />
+              <span className="lm">ONE.</span>
+            </h2>
           </div>
-          <a className="cta" href="#inside">
-            WHAT&apos;S INSIDE <span className="arr">→</span>
-          </a>
+          <div className="copy-right">
+            <p className="line">
+              drops sell out in <span className="em">11 minutes</span> on average. don&apos;t be late.
+            </p>
+            <span className="lab" style={{ borderColor: 'var(--lemon)', color: 'var(--lemon)' }}>
+              SHIPS FROM SALT LAKE · DOMESTIC FIRST
+            </span>
+          </div>
         </div>
-        <div className="img">
-          <div className="img-cap">
-            <span>001 · KIWI POP EDITION</span>
-            <span>DROP 001</span>
+
+        <div className="boxes">
+          <div className="img-foot">
+            <span className="ig-handle">@the.kiwi.pop · the lineup</span>
+            <p className="quote">
+              &ldquo;{PULL_QUOTES[0]?.text}&rdquo; <span className="em">{PULL_QUOTES[0]?.byline}</span>
+            </p>
+            <span className="who">— DROP 001 · KIWI POP · LIVE NOW</span>
+          </div>
+
+          <div className="checkout">
+            <div className="row">
+              <span className="label">FLAVOR</span>
+              <span className="label">
+                <span className="kw">{liveFlavors.length} LIVE · {products.flavors.length - liveFlavors.length} PREORDER</span>
+              </span>
+            </div>
+            <div className="flav-pick">
+              {products.flavors.map((flavor) => {
+                const disabled = !flavor.product;
+                return (
+                  <button
+                    key={flavor.sku}
+                    type="button"
+                    className={`flav-opt${flavorSku === flavor.sku ? ' on' : ''}`}
+                    onClick={() => flavor.product && setFlavorSku(flavor.sku)}
+                    disabled={disabled}
+                    style={{
+                      borderLeftColor: flavorSku === flavor.sku ? FLAVOR_DOT_COLOR[flavor.sku] : undefined,
+                    }}
+                    aria-pressed={flavorSku === flavor.sku}
+                    title={flavor.status === 'soon' ? 'preorder' : 'in stock'}
+                  >
+                    {flavor.name.split(' ')[1] ?? flavor.name}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="row">
+              <span className="label">PACK SIZE</span>
+              <span className="label">
+                <span className="kw">$5 SINGLE · 6 FOR $25 · 20 FOR $60</span>
+              </span>
+            </div>
+            <div className="pack-pick">
+              {PACKS.map((pack) => (
+                <button
+                  key={pack.size}
+                  type="button"
+                  className={`pack-opt${packSize === pack.size ? ' on' : ''}`}
+                  onClick={() => setPackSize(pack.size)}
+                  aria-pressed={packSize === pack.size}
+                >
+                  <span className="sz">{pack.size}×</span>
+                  <span className="pp">{pack.label.toUpperCase()}</span>
+                  <span className="pp">{formatCentsToUSD(pack.priceCents)}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="row">
+              <span className="label">{selectedPack ? selectedPack.label.toUpperCase() : 'PACK'} · {selectedPack?.badge?.toUpperCase() ?? '12CT'}</span>
+              <span className="label">
+                <span className="kw">FREE SHIP $40+</span>
+              </span>
+            </div>
+            <div className="qty-row">
+              <div className="qty">
+                <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="decrease quantity">−</button>
+                <span>{qty.toString().padStart(2, '0')}</span>
+                <button type="button" onClick={() => setQty((q) => q + 1)} aria-label="increase quantity">+</button>
+              </div>
+              <div className="price">
+                {formatCentsToUSD(livePriceCents > 0 ? livePriceCents : fallbackPriceCents)}
+                {strikeCents > livePriceCents && livePriceCents > 0 ? (
+                  <span className="strike">{formatCentsToUSD(strikeCents)}</span>
+                ) : null}
+                {selectedPack?.badge ? (
+                  <span className="save">{selectedPack.badge.toUpperCase()}</span>
+                ) : null}
+              </div>
+            </div>
+            <button
+              type="button"
+              className={`cta-take${addState === 'added' ? ' added' : ''}`}
+              onClick={handleAddToCart}
+              disabled={!checkoutProduct}
+            >
+              {addState === 'added'
+                ? 'ADDED → GO TO CART'
+                : checkoutProduct
+                  ? `TAKE ONE → ADD TO CART · ${formatCentsToUSD(livePriceCents)}`
+                  : 'NOTIFY ME →'}
+            </button>
+            {addState === 'added' ? (
+              <button
+                type="button"
+                className="kp-fr-cta primary"
+                onClick={() => router.push('/cart')}
+                style={{ alignSelf: 'flex-start' }}
+              >
+                GO TO CART →
+              </button>
+            ) : null}
+            <div className="meta-row">
+              <span className="item"><span className="dot" />&lt;1G SUGAR</span>
+              <span className="item"><span className="dot" />~35 CAL</span>
+              <span className="item"><span className="dot" />VEGAN</span>
+              <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
+            </div>
           </div>
         </div>
       </section>
@@ -484,137 +587,34 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
       </section>
 
-      {/* ===== ZONE 6 · COMEDOWN / CHECKOUT ===== */}
-      <section className="z6" id="shop" data-screen-label="06 Comedown">
+      {/* ===== ZONE 6 · ENTER ===== */}
+      <section className="z2" data-screen-label="06 Enter">
         <div className="copy">
-          <div className="copy-left">
-            <span className="lab">06 · COMEDOWN</span>
-            <h2>
-              TAKE
-              <br />
-              <span className="lm">ONE.</span>
-            </h2>
+          <span className="lab">06 · ENTER</span>
+          <h2>
+            SUCKER-SHAPED
+            <br />
+            <span className="pk">SUPPLEMENTs.</span>
+          </h2>
+          <p className="lede">
+            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes.</span>{' '}
+            measured by gram, not by vibe. same payload, every pop.
+          </p>
+          <div className="ings">
+            {FUNCTIONALS.map((ing) => (
+              <span className="ing" key={ing.name}>
+                {ing.name} · <span className="mg">{ing.amount.split(' ').slice(0, 2).join(' ')}</span>
+              </span>
+            ))}
           </div>
-          <div className="copy-right">
-            <p className="line">
-              drops sell out in <span className="em">11 minutes</span> on average. don&apos;t be late.
-            </p>
-            <span className="lab" style={{ borderColor: 'var(--lemon)', color: 'var(--lemon)' }}>
-              SHIPS FROM SALT LAKE · DOMESTIC FIRST
-            </span>
-          </div>
+          <a className="cta" href="#inside">
+            WHAT&apos;S INSIDE <span className="arr">→</span>
+          </a>
         </div>
-
-        <div className="boxes">
-          <div className="img-foot">
-            <span className="ig-handle">@the.kiwi.pop · the lineup</span>
-            <p className="quote">
-              &ldquo;{PULL_QUOTES[0]?.text}&rdquo; <span className="em">{PULL_QUOTES[0]?.byline}</span>
-            </p>
-            <span className="who">— DROP 001 · KIWI POP · LIVE NOW</span>
-          </div>
-
-          <div className="checkout">
-            <div className="row">
-              <span className="label">FLAVOR</span>
-              <span className="label">
-                <span className="kw">{liveFlavors.length} LIVE · {products.flavors.length - liveFlavors.length} PREORDER</span>
-              </span>
-            </div>
-            <div className="flav-pick">
-              {products.flavors.map((flavor) => {
-                const disabled = !flavor.product;
-                return (
-                  <button
-                    key={flavor.sku}
-                    type="button"
-                    className={`flav-opt${flavorSku === flavor.sku ? ' on' : ''}`}
-                    onClick={() => flavor.product && setFlavorSku(flavor.sku)}
-                    disabled={disabled}
-                    style={{
-                      borderLeftColor: flavorSku === flavor.sku ? FLAVOR_DOT_COLOR[flavor.sku] : undefined,
-                    }}
-                    aria-pressed={flavorSku === flavor.sku}
-                    title={flavor.status === 'soon' ? 'preorder' : 'in stock'}
-                  >
-                    {flavor.name.split(' ')[1] ?? flavor.name}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="row">
-              <span className="label">PACK SIZE</span>
-              <span className="label">
-                <span className="kw">$5 SINGLE · 6 FOR $25 · 20 FOR $60</span>
-              </span>
-            </div>
-            <div className="pack-pick">
-              {PACKS.map((pack) => (
-                <button
-                  key={pack.size}
-                  type="button"
-                  className={`pack-opt${packSize === pack.size ? ' on' : ''}`}
-                  onClick={() => setPackSize(pack.size)}
-                  aria-pressed={packSize === pack.size}
-                >
-                  <span className="sz">{pack.size}×</span>
-                  <span className="pp">{pack.label.toUpperCase()}</span>
-                  <span className="pp">{formatCentsToUSD(pack.priceCents)}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="row">
-              <span className="label">{selectedPack ? selectedPack.label.toUpperCase() : 'PACK'} · {selectedPack?.badge?.toUpperCase() ?? '12CT'}</span>
-              <span className="label">
-                <span className="kw">FREE SHIP $40+</span>
-              </span>
-            </div>
-            <div className="qty-row">
-              <div className="qty">
-                <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="decrease quantity">−</button>
-                <span>{qty.toString().padStart(2, '0')}</span>
-                <button type="button" onClick={() => setQty((q) => q + 1)} aria-label="increase quantity">+</button>
-              </div>
-              <div className="price">
-                {formatCentsToUSD(livePriceCents > 0 ? livePriceCents : fallbackPriceCents)}
-                {strikeCents > livePriceCents && livePriceCents > 0 ? (
-                  <span className="strike">{formatCentsToUSD(strikeCents)}</span>
-                ) : null}
-                {selectedPack?.badge ? (
-                  <span className="save">{selectedPack.badge.toUpperCase()}</span>
-                ) : null}
-              </div>
-            </div>
-            <button
-              type="button"
-              className={`cta-take${addState === 'added' ? ' added' : ''}`}
-              onClick={handleAddToCart}
-              disabled={!checkoutProduct}
-            >
-              {addState === 'added'
-                ? 'ADDED → GO TO CART'
-                : checkoutProduct
-                  ? `TAKE ONE → ADD TO CART · ${formatCentsToUSD(livePriceCents)}`
-                  : 'NOTIFY ME →'}
-            </button>
-            {addState === 'added' ? (
-              <button
-                type="button"
-                className="kp-fr-cta primary"
-                onClick={() => router.push('/cart')}
-                style={{ alignSelf: 'flex-start' }}
-              >
-                GO TO CART →
-              </button>
-            ) : null}
-            <div className="meta-row">
-              <span className="item"><span className="dot" />&lt;1G SUGAR</span>
-              <span className="item"><span className="dot" />~35 CAL</span>
-              <span className="item"><span className="dot" />VEGAN</span>
-              <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
-            </div>
+        <div className="img">
+          <div className="img-cap">
+            <span>001 · KIWI POP EDITION</span>
+            <span>DROP 001</span>
           </div>
         </div>
       </section>
