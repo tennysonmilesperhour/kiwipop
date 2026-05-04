@@ -150,8 +150,11 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       image: tier.product.image_url ?? FLAVOR_IMG['KP-KIWI-KITTY'],
       isPreorder: tier.product.preorder_only,
     });
-    setAddState('added');
-    setTimeout(() => setAddState('idle'), 1600);
+    // Variety tiles don't have a visible "added" flash like the main
+    // cta-take button does, so jump straight to /cart on click — the user
+    // came here explicitly to buy a variety pack, no reason to make them
+    // hunt for the cart icon afterwards.
+    router.push('/cart');
   };
 
   const handleSignup = async (event: FormEvent<HTMLFormElement>) => {
