@@ -79,12 +79,12 @@
   mix-blend-mode: screen;
 }
 
-/* ========= FUNDRAISER BAR (very top of page, scrolls away) ========= */
+/* ========= FUNDRAISER BAR (sits above the footer at the bottom) ========= */
 .kp-page .kp-fundraiser {
   position: relative;
   z-index: 101;
   background: linear-gradient(90deg, #050008 0%, #1a0028 50%, #050008 100%);
-  border-bottom: 1.5px solid var(--lemon);
+  border-top: 1.5px solid var(--lemon);
   padding: 16px 40px 18px;
   display: flex;
   flex-direction: column;

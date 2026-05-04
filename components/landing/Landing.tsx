@@ -168,8 +168,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
   return (
     <div className="kp-page">
-      <FundraiserBar snapshot={fundraiser} varietyHalfOff={products.varietyHalfOff} />
-
       {/* ===== NAV ===== */}
       <nav className="kp-nav">
         <Link href="/" className="kp-brand">
@@ -621,6 +619,10 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       </section>
 
       <RaffleForm />
+
+      {/* Fundraiser bar lives at the bottom now — moved out of the top of the
+          page so it doesn't dominate the hero. Sits flush above the footer. */}
+      <FundraiserBar snapshot={fundraiser} varietyHalfOff={products.varietyHalfOff} />
 
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
