@@ -4,9 +4,10 @@ export function Footer() {
   return (
     <footer className="footer">
       <div>
-        <div className="footer-brand">kiwi pop</div>
+        <div className="footer-brand">kiwi pop&trade;</div>
         <div style={{ marginTop: '0.5rem', opacity: 0.6 }}>
-          © {new Date().getFullYear()} · salt lake · do not eat the wrapper
+          © {new Date().getFullYear()} kiwi pop · salt lake · do not eat the
+          wrapper. all rights reserved.
         </div>
         <div
           style={{
@@ -36,6 +37,12 @@ export function Footer() {
           </Link>
           <Link href="/legal/refund" className="footer-link">
             refunds
+          </Link>
+          <Link href="/legal/fda-disclaimer" className="footer-link">
+            fda + safety
+          </Link>
+          <Link href="/legal/accessibility" className="footer-link">
+            accessibility
           </Link>
         </div>
       </div>

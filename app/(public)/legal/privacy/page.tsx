@@ -49,6 +49,47 @@ export default function PrivacyPage() {
           <li>store your card number anywhere</li>
         </ul>
 
+        <h2>marketing emails · consent + unsubscribe</h2>
+        <p>
+          when you sign up to &ldquo;the list&rdquo; or check out, you&apos;re
+          opting in to occasional marketing emails (drop announcements,
+          festival activations, restocks). you can unsubscribe at the bottom
+          of any email or by emailing{' '}
+          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>. transactional
+          emails (order confirmations, shipping notifications) keep coming
+          regardless — we have to send those.
+        </p>
+
+        <h2>cookies + tracking</h2>
+        <p>
+          we use vercel analytics and speed insights to understand which
+          pages people visit and how fast they load. those tools sample IPs
+          and basic device info but don&apos;t set marketing cookies and
+          don&apos;t link to identifiable individuals. we don&apos;t run
+          retargeting pixels or advertising trackers.
+        </p>
+
+        <h2>california residents (CCPA / CPRA)</h2>
+        <p>
+          we don&apos;t sell or share personal information for cross-context
+          behavioral advertising. you have the right to know what we have on
+          you, request deletion, and opt out of any future sale or sharing
+          (we don&apos;t do either, but the right is yours). email{' '}
+          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> with the
+          subject &ldquo;CCPA request&rdquo; and we&apos;ll handle it within
+          45 days.
+        </p>
+
+        <h2>kids · COPPA</h2>
+        <p>
+          this site and product are not directed at children under 13. we do
+          not knowingly collect personal information from anyone under 13.
+          if you believe a child has signed up, email us and we&apos;ll
+          delete the record. kiwi pop contains kava and is intended for
+          adults 18+ only — see the{' '}
+          <Link href="/legal/fda-disclaimer">fda + safety</Link> page.
+        </p>
+
         <h2>your rights</h2>
         <p>
           email{' '}
