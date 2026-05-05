@@ -356,6 +356,11 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
           </p>
+          <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
+            <span className="em">heads up · v1.</span>{' '}
+            this is the first version we&apos;re shipping — first batch of {launchProduct?.in_stock ?? 200}, made small.
+            we&apos;re already tuning the next one. tell us what hits and what doesn&apos;t.
+          </p>
           <div className="hero-ctas">
             <a href="#shop" className="hero-cta-primary">SHOP NOW · FROM $5</a>
           </div>
@@ -1001,9 +1006,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               {flavor.name} {flavor.status === 'soon' ? '· preorder' : null}
             </Link>
           ))}
-          {products.varietyHalfOff ? (
-            <Link href="/cart">variety pack · 20% off</Link>
-          ) : null}
         </div>
         <div className="col">
           <h4>BRAND</h4>
