@@ -290,6 +290,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
+          <Link href="/campaign">CAMPAIGN</Link>
           <Link href="/raffle">RAFFLE</Link>
           <Link href="/variety">VARIETY</Link>
           <Link href="/merch">MERCH</Link>

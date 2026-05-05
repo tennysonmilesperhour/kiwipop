@@ -611,3 +611,34 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================================
+   ROUNDED CORNERS — soften every box, button, input, and pill
+   on the campaign page. ~10% perceptual radius added across
+   the board. Buttons / inputs / pills get 10px; cards get
+   14px; the hero video gets 18px to match the larger surface;
+   progress bar + the time pill go fully rounded.
+   ========================================================= */
+.campaign-page .cp-video-wrap,
+.campaign-page .cp-video-placeholder { border-radius: 18px; }
+.campaign-page .cp-video-wrap iframe { border-radius: 18px; }
+
+.campaign-page .cp-bar-track,
+.campaign-page .cp-bar-fill { border-radius: 999px; }
+
+.campaign-page .cp-donate-card,
+.campaign-page .cp-stats-card,
+.campaign-page .cp-links-card,
+.campaign-page .cp-update-card,
+.campaign-page .cp-empty-feed { border-radius: 14px; }
+
+.campaign-page .cp-update-img { border-radius: 12px; }
+
+.campaign-page .cp-preset,
+.campaign-page .cp-input,
+.campaign-page .cp-cta,
+.campaign-page .cp-link { border-radius: 10px; }
+
+.campaign-page .cp-update-time,
+.campaign-page .cp-count,
+.campaign-page .cp-milestone-badge { border-radius: 999px; }
