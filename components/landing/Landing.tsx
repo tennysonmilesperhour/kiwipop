@@ -139,7 +139,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const cartCount = useCart((s) => s.getTotalItems());
   const [mounted, setMounted] = useState(false);
 
-  const liveFlavors = products.flavors.filter((f) => f.product);
+  const liveFlavors = products.flavors.filter(
+    (f) => f.product && !f.product.preorder_only,
+  );
   const initialFlavorSku = liveFlavors[0]?.sku ?? products.flavors[0]?.sku ?? '';
   const [flavorSku, setFlavorSku] = useState<string>(initialFlavorSku);
   // The flavor row has 5 buttons: the 4 single flavors plus VARIETY.
