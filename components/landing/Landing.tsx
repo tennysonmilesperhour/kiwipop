@@ -286,6 +286,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </Link>
         <div className="kp-nav-links">
           <a href="#shop">SHOP</a>
+          <a href="#reels">REELS</a>
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
@@ -537,6 +538,42 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ===== ZONE 2.5 · REELS / VIDEO ===== */}
+      <section className="zvid" id="reels" data-screen-label="02b Reels">
+        <div className="zvid-head">
+          <span className="zvid-eyebrow">// reels</span>
+          <h2 className="zvid-title">
+            SEE IT
+            <br />
+            <span className="zvid-grad">IN ACTION.</span>
+          </h2>
+          <p className="zvid-lede">
+            behind the scenes, the launch, the culture. real moments, straight from the source.
+          </p>
+        </div>
+        <div className="zvid-grid">
+          {[
+            { src: '/videos/kp-reel-1.mp4', label: 'FIRST VIRAL KP REEL' },
+            { src: '/videos/kp-reel-2.mp4', label: 'LAUNCH WEEK UPDATE' },
+            { src: '/videos/kp-reel-3.mp4', label: 'GRATITUDE IN THE MORNING' },
+            { src: '/videos/kp-reel-4.mp4', label: 'IS KAVA ILLEGAL?' },
+          ].map((vid) => (
+            <div key={vid.src} className="zvid-card">
+              <video
+                src={vid.src}
+                playsInline
+                muted
+                loop
+                autoPlay
+                preload="metadata"
+                aria-label={vid.label}
+              />
+              <span className="zvid-label">{vid.label}</span>
+            </div>
+          ))}
         </div>
       </section>
 
