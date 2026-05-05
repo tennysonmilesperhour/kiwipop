@@ -28,12 +28,12 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'kiwi pop',
     display: 'kiwi\npop',
     feeling: '// the original',
-    fn: '6 functionals · luster dust',
+    fn: 'full functional payload · luster dust',
     flavor: 'kiwi · sweet, tart, clean',
     color: '#a8ff3c',
     status: 'live',
     description:
-      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. sweetened with monk fruit and xylitol on an isomalt base. a little secret in your mouth.",
+      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. xylitol-sweetened (tooth-friendly, no insulin spike) with a touch of monk fruit on an isomalt base. a little secret in your mouth.",
     pickerLabel: 'kiwi',
   },
   {
@@ -41,7 +41,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'lemon g. luci',
     display: 'lemon g.\nluci',
     feeling: '// the bright one',
-    fn: '6 functionals · luster dust',
+    fn: 'full functional payload · luster dust',
     flavor: 'lemon + ginger · sharp and citrus',
     color: '#ffce1f',
     status: 'soon',
@@ -54,7 +54,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: "mollie's mango",
     display: "mollie's\nmango",
     feeling: '// the warm one',
-    fn: '6 functionals · luster dust',
+    fn: 'full functional payload · luster dust',
     flavor: 'mango · ripe, glossy, sticky',
     color: '#ff2d8a',
     status: 'soon',
@@ -67,7 +67,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'merry mint',
     display: 'merry\nmint',
     feeling: '// the cool down',
-    fn: '6 functionals · luster dust',
+    fn: 'full functional payload · luster dust',
     flavor: 'peppermint · clean, cold, sharp',
     color: '#00f0ff',
     status: 'soon',
@@ -163,7 +163,7 @@ export function imageForProduct(
 
 
 /**
- * The six functional things doing real work, per the production recipe.
+ * The functional ingredients doing real work, per the production recipe.
  * Source: kiwi_pop_costing.xlsx (Recipes tab, shared columns).
  */
 export interface FunctionalIngredient {
@@ -212,6 +212,11 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     name: 'blue spirulina',
     amount: '125 mg',
     why: 'where the color comes from. trace nutrition, real pigment.',
+  },
+  {
+    name: 'xylitol',
+    amount: '~1.2 g',
+    why: 'tooth-friendly sweetener. starves cavity bacteria, low-glycemic, no insulin spike.',
   },
 ] as const;
 

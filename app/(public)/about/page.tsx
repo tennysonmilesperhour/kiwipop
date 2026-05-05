@@ -67,8 +67,9 @@ export default function AboutPage() {
             sugar. edible mica glitter swirled through so it catches
             light when you lick it. theobromine, kava, ginseng, b12,
             magnesium, taurine, electrolytes — the functional payload —
-            measured by gram, not by vibe. monk fruit and a touch of xylitol
-            do the sweet, no insulin spike. isomalt does the body. one stick.
+            measured by gram, not by vibe. xylitol does the sweet —
+            tooth-friendly, low-glycemic, no insulin spike — with a touch
+            of monk fruit. isomalt does the body. one stick.
             small batch. you can taste the small batch.
           </p>
           <p>

@@ -45,11 +45,15 @@ const FESTIVAL_TICKER = [
 const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string }> = [
   {
     q: 'What is Kiwi Pop?',
-    a: 'Kiwi Pop is a lollipop-shaped party supplement — a functional candy with less than 1 gram of sugar, approximately 35 calories, made with theobromine, kava (750mg), ginseng, B12, magnesium, taurine, and electrolytes. It’s vegan, contains edible mica glitter, and is manufactured in Salt Lake City, Utah.',
+    a: 'Kiwi Pop is a lollipop-shaped party supplement — a functional candy with less than 1 gram of sugar, approximately 35 calories, made with theobromine, kava (750mg), ginseng, B12, magnesium, taurine, and electrolytes. It is sweetened with xylitol (tooth-friendly, no insulin spike) and a touch of monk fruit on an isomalt base. Vegan, contains edible mica glitter, and manufactured in Salt Lake City, Utah.',
   },
   {
     q: 'What ingredients are in Kiwi Pop?',
-    a: 'Each Kiwi Pop contains theobromine, kava (750mg), ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. It’s sweetened with monk fruit and xylitol on an isomalt base.',
+    a: 'Each Kiwi Pop contains theobromine, kava (750mg), ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. It is sweetened primarily with xylitol — a tooth-friendly, low-glycemic sugar alcohol that starves cavity-causing bacteria and does not spike blood sugar — plus a touch of monk fruit extract on an isomalt base.',
+  },
+  {
+    q: 'Why does Kiwi Pop use xylitol?',
+    a: 'Xylitol is a naturally occurring sugar alcohol that tastes like sugar but is tooth-friendly: cavity-causing bacteria cannot metabolize it, so it does not feed decay the way sucrose does. It is also low-glycemic, meaning it does not spike blood sugar or insulin. Xylitol is toxic to dogs, so keep Kiwi Pop away from pets.',
   },
   {
     q: 'Is Kiwi Pop vegan?',
@@ -82,7 +86,7 @@ const FAQ_LD = {
   })),
 };
 
-// Eight simple neon glyphs, one per functional ingredient slot. Index aligns
+// Simple neon glyphs, one per functional ingredient slot. Index aligns
 // with the FUNCTIONALS array order in lib/flavors.ts.
 const FUNCTIONAL_ICONS = [
   // theobromine — chocolate square
@@ -122,6 +126,10 @@ const FUNCTIONAL_ICONS = [
   // spirulina — spiral
   <g key="i7">
     <path d="M12 4a8 8 0 1 1-7.9 9.5A6 6 0 1 1 16 14a4 4 0 1 1-7-1.5" />
+  </g>,
+  // xylitol — tooth (tooth-friendly sweetener)
+  <g key="i8">
+    <path d="M8 3c-2 0-4 2-4 5 0 3 1 4 2 7s1 6 3 6 2-3 3-6 2-3 3 0 1 6 3 6 2-3 3-6 2-4 2-7c0-3-2-5-4-5-2 0-3 1-4 1s-2-1-4-1z" />
   </g>,
 ];
 
@@ -343,7 +351,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">refreshing club lolli.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · edible mica glitter swirled inside.
+              &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
           </p>
           <div className="hero-ctas">
@@ -643,7 +651,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             YOUR <span className="lm">MOUTH.</span>
           </h2>
           <div className="right">
-            six functionals doing real work, doses on the wrapper.{' '}
+            every functional doing real work, doses on the wrapper.{' '}
             <span className="em">measured by gram · not by vibe.</span>
           </div>
         </div>
@@ -926,7 +934,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="pk">PARTY SUPPLEMENTs.</span>
           </h2>
           <p className="lede">
-            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes.</span>{' '}
+            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes, xylitol.</span>{' '}
             measured by gram, not by vibe. same payload, every pop.
           </p>
           <div className="ings">

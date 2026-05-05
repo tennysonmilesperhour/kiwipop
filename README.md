@@ -125,8 +125,8 @@ If you're picking this up cold, read in this order:
 
 Kiwi pop is a **<1g of sugar, vegan, functional lollipop** at ~35 calories per pop. Built from:
 
-- **Isomalt + xylitol base** — the low-sugar hard-candy carrier (sugar alcohols, ~50% absorbed → ~9g net digestible carbs per pop)
-- **Monk fruit extract** — the sweetener finish, no insulin spike
+- **Isomalt + xylitol base** — the low-sugar hard-candy carrier (sugar alcohols, ~50% absorbed → ~9g net digestible carbs per pop). Xylitol is the headline sweetener: tooth-friendly (cavity-causing bacteria can't metabolize it), low-glycemic, no insulin spike. **Toxic to dogs — keep away from pets.**
+- **Monk fruit extract** — the high-intensity sweetener finish, rounds the xylitol
 - **Edible mica glitter** swirled through the center — the shimmer
 - **Kiwi powder** (1g) + a touch of coconut oil for body
 - **Functional payload:** theobromine (175mg), instant kava (0.75g), ginseng (150mg), magnesium glycinate (300mg), taurine (250mg), B12 methylcobalamin (1mg), electrolyte blend (250mg), spirulina (125mg), citric acid (200mg)

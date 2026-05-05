@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     template: '%s · kiwi pop',
   },
   description:
-    "lollipop shaped party supplements. <1g of sugar, vegan, functional lollipops with edible mica glitter and a six-ingredient functional payload (theobromine, kava, ginseng, b12, magnesium, taurine). candy for people who don't eat candy.",
+    "lollipop shaped party supplements. <1g of sugar, vegan, xylitol-sweetened (tooth-friendly, low-glycemic), functional lollipops with edible mica glitter and a real functional payload (theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes). candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   alternates: {
@@ -133,7 +133,7 @@ const ORGANIZATION_LD = {
   url: siteUrl,
   logo: `${siteUrl}/landing/img/kiwi-kitty-pop.webp`,
   description:
-    'Lollipop shaped party supplements. Functional candy with kava, theobromine, ginseng, B12, magnesium, taurine, and electrolytes. Less than 1g of sugar, vegan, ~35 calories per pop.',
+    'Lollipop shaped party supplements. Functional candy with kava, theobromine, ginseng, B12, magnesium, taurine, and electrolytes. Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.',
   foundingLocation: {
     '@type': 'Place',
     name: 'Salt Lake City, Utah',
