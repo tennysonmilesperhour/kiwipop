@@ -23,6 +23,7 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: '/admin/cash-donations', label: 'cash donations' },
   { href: '/admin/list', label: 'marketing list' },
   { href: '/admin/pitch', label: 'pitch deck' },
+  { href: '/admin/campaign', label: 'campaign updates' },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {
