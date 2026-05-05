@@ -133,6 +133,10 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const liveFlavors = products.flavors.filter((f) => f.product);
   const initialFlavorSku = liveFlavors[0]?.sku ?? products.flavors[0]?.sku ?? '';
   const [flavorSku, setFlavorSku] = useState<string>(initialFlavorSku);
+  // The flavor row has 5 buttons: the 4 single flavors plus VARIETY.
+  // 'flavor' mode → pack-size row shows [1, 6, 20] tiers tied to flavorSku.
+  // 'variety' mode → pack-size row shows the [8, 20, 40] variety tiers.
+  const [kind, setKind] = useState<'flavor' | 'variety'>('flavor');
   const [packSize, setPackSize] = useState<number>(20);
   const [qty, setQty] = useState<number>(1);
   const [addState, setAddState] = useState<'idle' | 'added'>('idle');
@@ -156,13 +160,56 @@ export default function Landing({ products, fundraiser }: LandingProps) {
     [packSize, products.packs],
   );
 
-  // For pack size 1, use the selected flavor's product directly (each flavor
-  // is a single-pop SKU). For larger packs, fall back to the bundle SKU
-  // since bundles aren't flavor-specific in production.
-  const checkoutProduct = packSize === 1 ? selectedFlavor?.product : selectedPack?.product;
-  const fallbackPriceCents = (selectedPack?.priceCents ?? 0) * qty;
-  const livePriceCents = (checkoutProduct?.price_cents ?? selectedPack?.priceCents ?? 0) * qty;
-  const strikeCents = packSize === 1 ? 0 : (selectedPack?.size ?? 0) * 500 * qty;
+  const selectedVariety = useMemo(
+    () =>
+      products.variety.find((v) => v.size === packSize) ??
+      products.variety[products.variety.length - 1] ??
+      products.variety[0],
+    [packSize, products.variety],
+  );
+
+  // Unified "active tier" — picks from flavor packs or variety tiers based
+  // on kind. Both shapes carry size / priceCents / label / badge / product
+  // so the price + badge + strike math below works without branching.
+  const activeTier = kind === 'variety' ? selectedVariety : selectedPack;
+
+  // For flavor + size 1, use the selected flavor's own SKU (each flavor is a
+  // single-pop SKU). For flavor packs, use the bundle SKU. For variety, use
+  // the variety tier SKU directly.
+  const checkoutProduct =
+    kind === 'variety'
+      ? selectedVariety?.product
+      : packSize === 1
+        ? selectedFlavor?.product
+        : selectedPack?.product;
+  const fallbackPriceCents = (activeTier?.priceCents ?? 0) * qty;
+  const livePriceCents =
+    (checkoutProduct?.price_cents ?? activeTier?.priceCents ?? 0) * qty;
+  // Single flavor (1-pop) has no strike-through; everything else strikes
+  // size × $5/pop so the discount is visible.
+  const strikeCents =
+    kind === 'flavor' && packSize === 1
+      ? 0
+      : (activeTier?.size ?? 0) * 500 * qty;
+
+  // Switching between flavor and variety modes — make sure the current
+  // pack size still exists in the new mode's tier list, otherwise reset
+  // to a sensible default (20 is shared by both).
+  const FLAVOR_SIZES = [1, 6, 20] as const;
+  const VARIETY_SIZES = [8, 20, 40] as const;
+  const handleSelectFlavor = (sku: string) => {
+    setKind('flavor');
+    setFlavorSku(sku);
+    if (!FLAVOR_SIZES.includes(packSize as (typeof FLAVOR_SIZES)[number])) {
+      setPackSize(20);
+    }
+  };
+  const handleSelectVariety = () => {
+    setKind('variety');
+    if (!VARIETY_SIZES.includes(packSize as (typeof VARIETY_SIZES)[number])) {
+      setPackSize(20);
+    }
+  };
 
   const stockLine = (() => {
     const launch = products.flavors.find((f) => f.sku === 'KP-KIWI-KITTY');
@@ -184,23 +231,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
     });
     setAddState('added');
     setTimeout(() => setAddState('idle'), 1600);
-  };
-
-  const handleAddVariety = (tier: LandingProducts['variety'][number]) => {
-    if (!tier.product) return;
-    addItem({
-      productId: tier.product.id,
-      name: tier.product.name,
-      price: tier.product.price_cents,
-      quantity: 1,
-      image: tier.product.image_url ?? FLAVOR_IMG['KP-KIWI-KITTY'],
-      isPreorder: tier.product.preorder_only,
-    });
-    // Variety tiles don't have a visible "added" flash like the main
-    // cta-take button does, so jump straight to /cart on click — the user
-    // came here explicitly to buy a variety pack, no reason to make them
-    // hunt for the cart icon afterwards.
-    router.push('/cart');
   };
 
   const handleSignup = async (event: FormEvent<HTMLFormElement>) => {
@@ -363,51 +393,82 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <div className="flav-pick">
               {products.flavors.map((flavor) => {
                 const disabled = !flavor.product;
+                const selected = kind === 'flavor' && flavorSku === flavor.sku;
                 return (
                   <button
                     key={flavor.sku}
                     type="button"
-                    className={`flav-opt${flavorSku === flavor.sku ? ' on' : ''}`}
-                    onClick={() => flavor.product && setFlavorSku(flavor.sku)}
+                    className={`flav-opt${selected ? ' on' : ''}`}
+                    onClick={() => flavor.product && handleSelectFlavor(flavor.sku)}
                     disabled={disabled}
                     aria-label={`select ${flavor.pickerLabel} flavor`}
                     style={{
-                      borderLeftColor: flavorSku === flavor.sku ? FLAVOR_DOT_COLOR[flavor.sku] : undefined,
+                      borderLeftColor: selected ? FLAVOR_DOT_COLOR[flavor.sku] : undefined,
                     }}
-                    aria-pressed={flavorSku === flavor.sku}
+                    aria-pressed={selected}
                     title={flavor.status === 'soon' ? 'preorder' : 'in stock'}
                   >
                     {flavor.pickerLabel}
                   </button>
                 );
               })}
+              {/* 5th option: variety. Selecting it swaps the pack-size row
+                  to the variety tiers (8 / 20 / 40) and the take-one button
+                  pushes the variety SKU into the cart instead of a flavor. */}
+              <button
+                key="variety"
+                type="button"
+                className={`flav-opt${kind === 'variety' ? ' on' : ''}`}
+                onClick={handleSelectVariety}
+                aria-label="select variety pack"
+                aria-pressed={kind === 'variety'}
+                title="all four flavors, equal counts"
+                style={{
+                  borderLeftColor:
+                    kind === 'variety' ? 'var(--lemon, #f5ff3d)' : undefined,
+                }}
+              >
+                variety
+              </button>
             </div>
 
             <div className="row">
               <span className="label">PACK SIZE</span>
               <span className="label">
-                <span className="kw">$5 SINGLE · 6 FOR $25 · 20 FOR $60</span>
+                <span className="kw">
+                  {kind === 'variety'
+                    ? '8 FOR $30 · 20 FOR $60 · 40 FOR $100 · PREORDER'
+                    : '$5 SINGLE · 6 FOR $25 · 20 FOR $60'}
+                </span>
               </span>
             </div>
             <div className="pack-pick">
-              {PACKS.map((pack) => (
+              {(kind === 'variety' ? products.variety : PACKS).map((tier) => (
                 <button
-                  key={pack.size}
+                  key={tier.size}
                   type="button"
-                  className={`pack-opt${packSize === pack.size ? ' on' : ''}`}
-                  onClick={() => setPackSize(pack.size)}
-                  aria-pressed={packSize === pack.size}
-                  aria-label={`select ${pack.label} (${pack.size} pops, ${formatCentsToUSD(pack.priceCents)})`}
+                  className={`pack-opt${packSize === tier.size ? ' on' : ''}`}
+                  onClick={() => setPackSize(tier.size)}
+                  aria-pressed={packSize === tier.size}
+                  aria-label={`select ${tier.label} (${tier.size} pops, ${formatCentsToUSD(tier.priceCents)})`}
+                  title={
+                    kind === 'variety' && 'perFlavor' in tier
+                      ? `${tier.perFlavor} of each flavor`
+                      : undefined
+                  }
                 >
-                  <span className="sz">{pack.size}×</span>
-                  <span className="pp">{pack.label.toUpperCase()}</span>
-                  <span className="pp">{formatCentsToUSD(pack.priceCents)}</span>
+                  <span className="sz">{tier.size}×</span>
+                  <span className="pp">{tier.label.toUpperCase()}</span>
+                  <span className="pp">{formatCentsToUSD(tier.priceCents)}</span>
                 </button>
               ))}
             </div>
 
             <div className="row">
-              <span className="label">{selectedPack ? selectedPack.label.toUpperCase() : 'PACK'} · {selectedPack?.badge?.toUpperCase() ?? '12CT'}</span>
+              <span className="label">
+                {activeTier ? activeTier.label.toUpperCase() : 'PACK'}
+                {activeTier?.badge ? ` · ${activeTier.badge.toUpperCase()}` : ''}
+              </span>
               <span className="label">
                 <span className="kw">FREE SHIP $40+</span>
               </span>
@@ -423,8 +484,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                 {strikeCents > livePriceCents && livePriceCents > 0 ? (
                   <span className="strike">{formatCentsToUSD(strikeCents)}</span>
                 ) : null}
-                {selectedPack?.badge ? (
-                  <span className="save">{selectedPack.badge.toUpperCase()}</span>
+                {activeTier?.badge ? (
+                  <span className="save">{activeTier.badge.toUpperCase()}</span>
                 ) : null}
               </div>
             </div>
@@ -455,36 +516,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="item"><span className="dot" />~35 CAL</span>
               <span className="item"><span className="dot" />VEGAN</span>
               <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
-            </div>
-
-            {/* ===== VARIETY PACK CTA ===== */}
-            <div className="row" style={{ marginTop: 28 }}>
-              <span className="label">OR · TRY ALL FOUR</span>
-              <span className="label">
-                <span className="kw">VARIETY PACK · PREORDER · EQUAL COUNTS</span>
-              </span>
-            </div>
-            <div className="pack-pick">
-              {products.variety.map((tier) => (
-                <button
-                  key={tier.sku}
-                  type="button"
-                  className="pack-opt"
-                  onClick={() => handleAddVariety(tier)}
-                  disabled={!tier.product}
-                  title={`${tier.perFlavor} of each of the four flavors`}
-                  aria-label={`add ${tier.label} (${tier.size} pops) to cart`}
-                >
-                  <span className="sz">{tier.size}×</span>
-                  <span className="pp">{tier.label.toUpperCase()}</span>
-                  <span className="pp">
-                    {formatCentsToUSD(tier.priceCents)}
-                    {tier.badge ? (
-                      <span style={{ marginLeft: 6, opacity: 0.85 }}>· {tier.badge.toUpperCase()}</span>
-                    ) : null}
-                  </span>
-                </button>
-              ))}
             </div>
           </div>
         </div>
