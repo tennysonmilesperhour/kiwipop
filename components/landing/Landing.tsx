@@ -795,12 +795,20 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <a href="mailto:wholesale@kiwipop.co">wholesale@kiwipop.co</a>
           <a href="mailto:events@kiwipop.co">events@kiwipop.co</a>
           <a href="mailto:press@kiwipop.co">press@kiwipop.co</a>
+        </div>
+        <div className="col">
+          <h4>LEGAL</h4>
+          <Link href="/legal/fda-disclaimer">fda + safety</Link>
+          <Link href="/legal/terms">terms</Link>
+          <Link href="/legal/privacy">privacy</Link>
           <Link href="/legal/shipping">shipping</Link>
+          <Link href="/legal/refund">refunds</Link>
+          <Link href="/legal/accessibility">accessibility</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS KAVA, THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT, NURSING, OR ANYONE WITH LIVER CONDITIONS SHOULD NOT CONSUME — KIWI POP CONTAINS KAVA. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS KAVA, THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> KAVA RESTRICTED IN SOME JURISDICTIONS — KNOW YOUR LOCAL LAW. CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
-          <br />© KIWI POP · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · <span className="kw">舐 一下</span>
+          <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>
       </footer>
     </div>

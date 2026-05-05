@@ -24,8 +24,16 @@ export default function TermsPage() {
 
         <h2>using the site</h2>
         <p>
-          you have to be old enough to legally enter a contract where you
-          live (typically 18). if you&apos;re younger, get a parent.
+          you must be at least <strong>18 years old</strong> to buy from
+          us. kiwi pop contains kava, which is restricted to adults; the
+          site, the product, and any marketing communication is not
+          intended for anyone under 18. by placing an order you affirm
+          you&apos;re 18+. if you&apos;re younger, get a parent or
+          guardian to handle it.
+        </p>
+        <p>
+          you also have to be old enough to legally enter a contract where
+          you live, which is typically 18 in most US states.
         </p>
 
         <h2>orders + payment</h2>
@@ -57,8 +65,25 @@ export default function TermsPage() {
           (isomalt, xylitol). it is candy with a payload, not a drug, and
           not medical advice. if you have a condition, are pregnant, are on
           medication, or have a sensitivity to sugar alcohols, ask your
-          doctor before eating functional candy. we&apos;re not them. xylitol
-          is toxic to dogs — keep these away from pets.
+          doctor before eating functional candy. we&apos;re not them.
+          xylitol is toxic to dogs — keep these away from pets.
+        </p>
+        <p>
+          full ingredient safety information, the FDA disclaimer, the kava
+          advisory, and the california prop 65 reservation live on the{' '}
+          <Link href="/legal/fda-disclaimer">fda + safety</Link> page.
+        </p>
+
+        <h2>intellectual property</h2>
+        <p>
+          &ldquo;kiwi pop&rdquo;, &ldquo;cyberpop&rdquo;, the kiwi pop
+          wordmark, the lollipop hero photography, the four-flavor naming
+          (kiwi pop · lemon g. luci · mollie&apos;s mango · merry mint), the
+          functional payload labeling, and the visual identity (color
+          system, layout, copy) are kiwi pop&apos;s intellectual property.
+          you can share screenshots and tag us; you can&apos;t lift our copy
+          or imagery for a competing product. trademarks are claimed in
+          common-law use; registration is in progress.
         </p>
 
         <h2>liability</h2>
@@ -66,6 +91,24 @@ export default function TermsPage() {
           to the extent the law allows, our liability for anything related to
           the site or the product is capped at what you paid. we don&apos;t
           warrant the site is bug-free or always available.
+        </p>
+
+        <h2>governing law</h2>
+        <p>
+          these terms are governed by the law of the state of utah, USA,
+          without regard to conflict-of-laws principles. disputes go through
+          the state or federal courts located in salt lake county, utah,
+          unless your local consumer-protection law gives you a non-waivable
+          right to a different forum.
+        </p>
+
+        <h2>changes to these terms</h2>
+        <p>
+          we may update these terms occasionally. the &ldquo;last updated&rdquo;
+          date above changes when we do. continued use of the site after that
+          date counts as acceptance of the new version. material changes
+          will get an email to anyone with an active order in the last 12
+          months.
         </p>
 
         <h2>contact</h2>
