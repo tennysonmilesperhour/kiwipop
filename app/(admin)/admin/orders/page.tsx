@@ -146,14 +146,14 @@ export default function OrdersPage() {
               lineHeight: 1.6,
             }}
           >
-            <strong style={{ color: 'var(--lime)' }}>RESULT →</strong>{' '}
+            <strong style={{ color: 'var(--c-lime-text)' }}>RESULT →</strong>{' '}
             scanned <b>{reconcileResult.scanned_sessions}</b> stripe sessions ·
             checked <b>{reconcileResult.pending_orders_before}</b> pending
             orders · matched <b>{reconcileResult.matched}</b> · marked paid{' '}
             <b>{reconcileResult.marked_paid}</b> · cancelled{' '}
             <b>{reconcileResult.marked_cancelled}</b>
             {reconcileResult.errors.length > 0 ? (
-              <div style={{ color: 'var(--magenta)', marginTop: 6 }}>
+              <div style={{ color: 'var(--c-magenta-text)', marginTop: 6 }}>
                 errors: {reconcileResult.errors.join(' · ')}
               </div>
             ) : null}

@@ -1141,28 +1141,50 @@ button { font: inherit; }
 .btn-full { width: 100%; display: flex; }
 
 /* =========================================================
-   17. ADMIN LAYOUT — light & colorful (Bricolage Grotesque)
-   Soft lavender page bg, white cards w/ purple-tinted shadows,
-   vibrant gradient stat tiles, modern sans-serif throughout
-   (no monospace anywhere in admin). Scoped via .admin-layout
-   so the public storefront stays untouched.
+   17. ADMIN LAYOUT — cyber-dark (Bricolage Grotesque)
+   Midnight page bg matching the storefront, near-black cards
+   with crisp neon left-stripes + colored glow shadows. All
+   accent colors pull from the storefront brand palette (lime,
+   cyan, magenta, ultraviolet, sodium) so admin reads as the
+   same product. Light text (paper) drives contrast against
+   the dark surfaces; the neons drive the accents and the
+   key numerals. Scoped via .admin-layout so the public
+   storefront stays untouched.
    ========================================================= */
 .admin-layout {
-  --admin-bg-1: #f5f3ff;
-  --admin-bg-2: #ece9fe;
-  --admin-bg-3: #f3eafe;
-  --admin-surface: #ffffff;
-  --admin-surface-soft: #faf8ff;
-  --admin-border: #e7e2f5;
-  --admin-border-strong: #d6cef0;
-  --admin-text: #1c1530;
-  --admin-text-soft: #5b5475;
-  --admin-text-muted: #8a83a3;
-  --admin-accent: #7c3aed;
-  --admin-accent-soft: #a78bfa;
-  --admin-accent-tint: rgba(124, 58, 237, 0.08);
-  --admin-shadow: 0 4px 20px rgba(124, 58, 237, 0.06);
-  --admin-shadow-hover: 0 12px 32px rgba(124, 58, 237, 0.14);
+  /* Brand neons from the storefront — re-aliased so this block
+     reads as a self-contained palette. */
+  --c-lime: #a8ff3c;
+  --c-cyan: #00f0ff;
+  --c-magenta: #ff2d8a;
+  --c-uv: #7b2dff;
+  --c-sodium: #ffce1f;
+  --c-cherry: #ff1f3d;
+
+  --admin-bg-1: #050510;
+  --admin-bg-2: #0c0c1a;
+  --admin-bg-3: #11111e;
+  --admin-surface: #14141f;
+  --admin-surface-soft: #1c1c2a;
+  --admin-surface-elev: #1f1f30;
+  --admin-border: rgba(244, 240, 232, 0.08);
+  --admin-border-strong: rgba(244, 240, 232, 0.18);
+  --admin-text: #f4f0e8;
+  --admin-text-soft: #b4afa1;
+  --admin-text-muted: #7d7a70;
+  --admin-accent: var(--c-lime);
+  --admin-accent-soft: var(--c-cyan);
+  --admin-accent-tint: rgba(168, 255, 60, 0.10);
+  --admin-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+  --admin-shadow-hover: 0 12px 40px rgba(168, 255, 60, 0.18);
+  /* Brand neons read fine as text on dark surfaces — no
+     darkened variants needed; alias them through so existing
+     inline styles using --c-*-text keep working. */
+  --c-lime-text: var(--c-lime);
+  --c-cyan-text: var(--c-cyan);
+  --c-magenta-text: var(--c-magenta);
+  --c-uv-text: #b89aff;
+  --c-sodium-text: var(--c-sodium);
 
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -1193,11 +1215,11 @@ button { font: inherit; }
 }
 .sidebar-header h2 {
   font-family: var(--display);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1.05rem;
   letter-spacing: -0.02em;
   text-transform: lowercase;
-  color: var(--admin-accent);
+  color: var(--admin-text);
 }
 .sidebar-nav { display: flex; flex-direction: column; gap: 0.15rem; }
 .nav-item {
@@ -1214,18 +1236,19 @@ button { font: inherit; }
   text-decoration: none;
 }
 .nav-item:hover {
-  background: var(--admin-accent-tint);
-  color: var(--admin-accent);
+  background: rgba(0, 240, 255, 0.08);
+  color: var(--c-cyan);
 }
 .nav-item-active {
-  background: linear-gradient(135deg, var(--admin-accent) 0%, var(--admin-accent-soft) 100%);
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.28);
+  background: rgba(168, 255, 60, 0.12);
+  color: var(--c-lime);
+  font-weight: 700;
+  box-shadow: 0 0 0 1px var(--c-lime) inset,
+    -8px 0 22px -10px var(--c-lime);
 }
 .nav-item-active:hover {
-  background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%);
-  color: #ffffff;
+  background: rgba(168, 255, 60, 0.16);
+  color: var(--c-lime);
 }
 .admin-content { padding: 0; min-width: 0; color: var(--admin-text); }
 .admin-content,
@@ -1245,7 +1268,7 @@ button { font: inherit; }
 }
 
 /* =========================================================
-   18. TABLES — light surface, lavender header, gentle hover
+   18. TABLES — terminal surface, lifted header, neon hover
    ========================================================= */
 .admin-content .table,
 .admin-layout .table {
@@ -1294,7 +1317,7 @@ button { font: inherit; }
 .admin-layout .bg-light { background: var(--admin-surface-soft) !important; }
 
 /* =========================================================
-   19. CARDS — white surfaces, soft purple shadow
+   19. CARDS — terminal surfaces, lime-tinted hover glow
    ========================================================= */
 .admin-content .card,
 .admin-layout .card {
@@ -1331,14 +1354,18 @@ button { font: inherit; }
   display: inline-block;
   width: 4px;
   height: 20px;
-  background: linear-gradient(180deg, var(--admin-accent) 0%, var(--admin-accent-soft) 100%);
+  background: var(--c-lime);
   border-radius: 2px;
+  box-shadow: 0 0 10px var(--c-lime);
 }
 
 /* =========================================================
-   STAT CARDS — vibrant gradient tiles, bold white numbers
-   Each tile cycles through the palette: purple, teal, orange,
-   pink, lime — pulled from the reference dashboards.
+   STAT CARDS — white surface, neon left-stripe + glow shadow.
+   Each tile cycles through the brand neons. Numbers stay
+   near-black on white so contrast passes regardless of which
+   neon is on the stripe (a saturated neon fill would force
+   per-color text contrast logic; this design sidesteps that
+   while still reading as cyberpunk).
    ========================================================= */
 .admin-layout .dashboard-grid {
   display: grid;
@@ -1348,54 +1375,71 @@ button { font: inherit; }
 }
 .admin-layout .stat-card {
   position: relative;
-  background: linear-gradient(135deg, var(--g1, #a78bfa) 0%, var(--g2, #7c3aed) 100%);
-  border: none;
-  padding: 1.4rem 1.55rem 1.5rem;
+  background: linear-gradient(135deg,
+    var(--admin-surface) 0%,
+    var(--admin-surface-elev) 100%);
+  border: 1px solid var(--admin-border);
+  padding: 1.4rem 1.55rem 1.5rem 1.85rem;
   border-radius: 14px;
   overflow: hidden;
-  color: #ffffff;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--g2, #7c3aed), transparent 70%);
+  color: var(--admin-text);
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45),
+    0 0 0 1px color-mix(in srgb, var(--g1, var(--c-lime)) 28%, transparent) inset,
+    -10px 0 28px -10px var(--g1, var(--c-lime));
   transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.admin-layout .stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--g1, var(--c-lime));
+  box-shadow: 0 0 18px var(--g1, var(--c-lime));
 }
 .admin-layout .stat-card::after {
   content: "";
   position: absolute;
-  top: -30%;
-  right: -20%;
-  width: 70%;
-  height: 140%;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.18), transparent 70%);
+  inset: 0;
+  background: radial-gradient(circle at top right,
+    color-mix(in srgb, var(--g1, var(--c-lime)) 16%, transparent),
+    transparent 65%);
   pointer-events: none;
 }
 .admin-layout .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 32px color-mix(in srgb, var(--g2, #7c3aed), transparent 55%);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55),
+    0 0 0 1px var(--g1, var(--c-lime)) inset,
+    -14px 0 40px -8px var(--g1, var(--c-lime));
 }
-.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 1) { --g1: #a78bfa; --g2: #7c3aed; }
-.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 2) { --g1: #5eead4; --g2: #0d9488; }
-.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 3) { --g1: #fdba74; --g2: #ea580c; }
-.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 4) { --g1: #f0abfc; --g2: #c026d3; }
-.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 5) { --g1: #bef264; --g2: #65a30d; }
+/* Brand-neon palette cycle. Each tile gets one accent neon. */
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 1) { --g1: var(--c-lime); }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 2) { --g1: var(--c-cyan); }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 3) { --g1: var(--c-sodium); }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 4) { --g1: var(--c-magenta); }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 5) { --g1: var(--c-uv); }
 .admin-layout .stat-label {
-  color: rgba(255, 255, 255, 0.85);
-  font-family: var(--display);
+  color: var(--admin-text-soft);
+  font-family: var(--mono);
   font-weight: 500;
-  font-size: 12.5px;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  margin-bottom: 0.5rem;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.55rem;
   position: relative;
   z-index: 1;
 }
 .admin-layout .stat-value {
   font-family: var(--display);
-  font-weight: 700;
-  font-size: 2.25rem;
-  color: #ffffff;
-  letter-spacing: -0.03em;
+  font-weight: 800;
+  font-size: 2.1rem;
+  color: var(--admin-text);
+  letter-spacing: -0.035em;
   line-height: 1.05;
   position: relative;
   z-index: 1;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--g1, var(--c-lime)) 35%, transparent);
 }
 
 /* =========================================================
@@ -1460,17 +1504,19 @@ button { font: inherit; }
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, var(--g1, #a78bfa) 0%, var(--g2, #7c3aed) 100%);
+  background: var(--g1, var(--c-lime));
+  box-shadow: 0 0 12px var(--g1, var(--c-lime));
 }
-.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 1) { --g1: #a78bfa; --g2: #7c3aed; }
-.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 2) { --g1: #5eead4; --g2: #0d9488; }
-.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 3) { --g1: #fdba74; --g2: #ea580c; }
-.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 4) { --g1: #f0abfc; --g2: #c026d3; }
-.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 5) { --g1: #bef264; --g2: #65a30d; }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 1) { --g1: var(--c-lime); }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 2) { --g1: var(--c-cyan); }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 3) { --g1: var(--c-sodium); }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 4) { --g1: var(--c-magenta); }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 5) { --g1: var(--c-uv); }
 .admin-layout .admin-tool-card:hover {
-  border-color: var(--admin-border-strong);
+  border-color: var(--g1, var(--c-lime));
   transform: translateY(-3px);
-  box-shadow: var(--admin-shadow-hover);
+  box-shadow: 0 10px 28px rgba(5, 5, 16, 0.08),
+    -14px 0 32px -8px var(--g1, var(--c-lime));
 }
 .admin-layout .admin-tool-label {
   font-family: var(--display);
@@ -1484,12 +1530,16 @@ button { font: inherit; }
 }
 .admin-layout .admin-tool-arrow {
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.3rem;
-  color: var(--g2, var(--admin-accent));
+  color: var(--admin-text);
   grid-column: 2;
   grid-row: 1;
-  transition: transform 0.18s ease;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+.admin-layout .admin-tool-card:hover .admin-tool-label,
+.admin-layout .admin-tool-card:hover .admin-tool-arrow {
+  color: var(--admin-text);
 }
 .admin-layout .admin-tool-card:hover .admin-tool-arrow {
   transform: translateX(6px);
@@ -1508,7 +1558,110 @@ button { font: inherit; }
   margin-top: 2rem;
 }
 
-/* Admin form inputs · white surface, purple focus ring */
+/* =========================================================
+   DASHBOARD RECENCY ROW — today / 7d / 30d / inventory
+   ========================================================= */
+.admin-layout .dashboard-recency {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.1rem;
+  margin-top: -1rem;
+  margin-bottom: 1.75rem;
+}
+.admin-layout .recency-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.admin-layout .recency-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--admin-text-muted);
+  margin: 0;
+}
+.admin-layout .recency-value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--admin-text);
+  letter-spacing: -0.02em;
+  margin: 0.15rem 0 0;
+}
+.admin-layout .recency-meta {
+  font-family: var(--display);
+  font-size: 12px;
+  color: var(--admin-text-soft);
+  margin: 0;
+}
+
+/* =========================================================
+   ATTENTION STRIP — surfaces in-flight ops on the dashboard
+   ========================================================= */
+.admin-layout .attention-strip {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-left: 3px solid var(--c-sodium);
+  border-radius: 12px;
+  padding: 0.95rem 1.1rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: -10px 0 28px -12px var(--c-sodium);
+}
+.admin-layout .attention-strip-title {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-sodium);
+  margin: 0;
+}
+.admin-layout .attention-strip-items {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.admin-layout .attention-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: transparent;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.admin-layout .attention-chip:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateX(2px);
+}
+.admin-layout .attention-chip--warn {
+  color: var(--c-sodium);
+  box-shadow: 0 0 14px -4px var(--c-sodium);
+}
+.admin-layout .attention-chip--alert {
+  color: var(--c-magenta);
+  box-shadow: 0 0 14px -4px var(--c-magenta);
+}
+.admin-layout .attention-chip--info {
+  color: var(--c-cyan);
+  box-shadow: 0 0 14px -4px var(--c-cyan);
+}
+
+/* Admin form inputs · terminal surface, cyan focus ring */
 .admin-content .form-input,
 .admin-content .form-select,
 .admin-content input[type="text"],
@@ -1536,8 +1689,8 @@ button { font: inherit; }
 .admin-content select:focus,
 .admin-content textarea:focus {
   outline: none;
-  border-color: var(--admin-accent);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+  border-color: var(--c-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.22);
 }
 .admin-content .form-label {
   font-family: var(--display);
@@ -1563,28 +1716,33 @@ button { font: inherit; }
 }
 .admin-content .btn-primary,
 .admin-layout .btn-primary {
-  background: linear-gradient(135deg, var(--admin-accent) 0%, var(--admin-accent-soft) 100%);
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+  background: var(--c-lime);
+  color: var(--admin-bg-1);
+  border: 1px solid var(--c-lime);
+  box-shadow: 0 4px 18px rgba(168, 255, 60, 0.32);
+  font-weight: 700;
 }
 .admin-content .btn-primary:hover,
 .admin-layout .btn-primary:hover {
-  background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%);
-  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.32);
-  color: #ffffff;
+  background: transparent;
+  color: var(--c-lime);
+  border-color: var(--c-lime);
+  box-shadow: 0 6px 22px rgba(168, 255, 60, 0.5),
+    0 0 0 1px var(--c-lime) inset;
 }
 .admin-content .btn-secondary,
 .admin-layout .btn-secondary {
-  background: var(--admin-surface);
-  color: var(--admin-accent);
+  background: transparent;
+  color: var(--admin-text);
   border: 1px solid var(--admin-border-strong);
+  font-weight: 600;
 }
 .admin-content .btn-secondary:hover,
 .admin-layout .btn-secondary:hover {
-  background: var(--admin-accent-tint);
-  color: var(--admin-accent);
-  border-color: var(--admin-accent-soft);
+  background: var(--admin-surface-elev);
+  color: var(--c-cyan);
+  border-color: var(--c-cyan);
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.22);
 }
 
 /* =========================================================
@@ -1603,7 +1761,9 @@ button { font: inherit; }
 .alert-success { border-color: var(--lime); color: var(--lime); }
 .alert-info { border-color: var(--cyan); color: var(--cyan); }
 
-/* Admin-scoped alert reskin: soft tinted backgrounds, real readable text */
+/* Admin-scoped alert reskin: white surface, neon left-stripe, dark
+   readable text. Color cues come from the stripe + accent text, not
+   from a tinted fill — keeps body copy reading at full contrast. */
 .admin-layout .alert {
   font-family: var(--display);
   font-size: 14px;
@@ -1611,22 +1771,26 @@ button { font: inherit; }
   border-radius: 10px;
   background: var(--admin-surface);
   border: 1px solid var(--admin-border);
+  border-left: 4px solid var(--admin-text);
   color: var(--admin-text);
 }
 .admin-layout .alert-error {
-  background: #fef2f4;
-  border-color: #fecdd3;
-  color: #be123c;
+  border-color: var(--admin-border);
+  border-left-color: var(--c-magenta);
+  color: var(--c-magenta-text);
+  box-shadow: -8px 0 22px -10px var(--c-magenta);
 }
 .admin-layout .alert-success {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
-  color: #15803d;
+  border-color: var(--admin-border);
+  border-left-color: var(--c-lime);
+  color: var(--c-lime-text);
+  box-shadow: -8px 0 22px -10px var(--c-lime);
 }
 .admin-layout .alert-info {
-  background: #f5f3ff;
-  border-color: #ddd6fe;
-  color: var(--admin-accent);
+  border-color: var(--admin-border);
+  border-left-color: var(--c-cyan);
+  color: var(--c-cyan-text);
+  box-shadow: -8px 0 22px -10px var(--c-cyan);
 }
 
 /* Misc tailwind-shape helpers used by older pages */
@@ -1642,17 +1806,18 @@ button { font: inherit; }
 .text-yellow-800 { color: var(--sodium) !important; }
 
 /* Same helpers, re-skinned inside admin so old pages (orders,
-   inventory) get readable status colors against the light bg. */
-.admin-layout .text-primary { color: var(--admin-accent) !important; }
-.admin-layout .text-red-600 { color: #dc2626 !important; }
-.admin-layout .text-green-600 { color: #16a34a !important; }
+   inventory) get readable status colors against the light bg.
+   Uses darkened brand neons that pass contrast on white. */
+.admin-layout .text-primary { color: var(--c-uv-text) !important; }
+.admin-layout .text-red-600 { color: var(--c-magenta-text) !important; }
+.admin-layout .text-green-600 { color: var(--c-lime-text) !important; }
 .admin-layout .text-gray-600 { color: var(--admin-text-soft) !important; }
-.admin-layout .bg-green-100 { background: #dcfce7 !important; }
-.admin-layout .bg-red-100 { background: #fee2e2 !important; }
-.admin-layout .bg-yellow-100 { background: #fef3c7 !important; }
-.admin-layout .text-green-800 { color: #166534 !important; }
-.admin-layout .text-red-800 { color: #991b1b !important; }
-.admin-layout .text-yellow-800 { color: #92400e !important; }
+.admin-layout .bg-green-100 { background: rgba(168, 255, 60, 0.18) !important; }
+.admin-layout .bg-red-100 { background: rgba(255, 45, 138, 0.14) !important; }
+.admin-layout .bg-yellow-100 { background: rgba(255, 206, 31, 0.22) !important; }
+.admin-layout .text-green-800 { color: var(--c-lime-text) !important; }
+.admin-layout .text-red-800 { color: var(--c-magenta-text) !important; }
+.admin-layout .text-yellow-800 { color: var(--c-sodium-text) !important; }
 
 /* =========================================================
    21. RESPONSIVE

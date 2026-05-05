@@ -313,7 +313,7 @@ export default function AdminCashDonationsPage() {
                           type="button"
                           className="btn"
                           onClick={() => onDelete(row.id)}
-                          style={{ color: 'var(--magenta)' }}
+                          style={{ color: 'var(--c-magenta-text)' }}
                         >
                           remove
                         </button>

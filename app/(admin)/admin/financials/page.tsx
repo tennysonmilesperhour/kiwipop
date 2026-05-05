@@ -260,7 +260,12 @@ export default function FinancialsPage() {
           <p className="stat-label">Net Profit</p>
           <p
             className="stat-value"
-            style={{ color: stats.grossMargin >= 0 ? 'var(--primary)' : 'red' }}
+            style={{
+              color:
+                stats.grossMargin >= 0
+                  ? 'var(--c-lime-text)'
+                  : 'var(--c-magenta-text)',
+            }}
           >
             {formatCentsToUSD(stats.grossMargin)}
           </p>
@@ -296,7 +301,12 @@ export default function FinancialsPage() {
               <span className="font-bold">Net Income</span>
               <span
                 className="font-bold"
-                style={{ color: stats.grossMargin >= 0 ? 'green' : 'red' }}
+                style={{
+                  color:
+                    stats.grossMargin >= 0
+                      ? 'var(--c-lime-text)'
+                      : 'var(--c-magenta-text)',
+                }}
               >
                 {formatCentsToUSD(stats.grossMargin)}
               </span>
@@ -308,7 +318,7 @@ export default function FinancialsPage() {
           <h2 className="card-title">Gross Margin</h2>
 
           <div className="text-center py-6">
-            <p className="text-4xl font-bold" style={{ color: 'var(--primary)' }}>
+            <p className="text-4xl font-bold" style={{ color: 'var(--c-lime-text)' }}>
               {stats.totalRevenue > 0
                 ? (((stats.totalRevenue - stats.totalCOGS) / stats.totalRevenue) * 100).toFixed(1)
                 : 0}
