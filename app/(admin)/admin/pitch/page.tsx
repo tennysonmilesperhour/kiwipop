@@ -38,10 +38,11 @@ const PLAN_5K: PitchPlan = {
   id: 'seed-5k',
   raise: '$5,000',
   raiseCents: 500_000,
-  thesis: 'prove someone will pay $5 for a refreshing club lolli — in 90 days, in one city.',
+  thesis:
+    "the first lollipop that makes you feel good while you party. like willy wonka actually made functional candy for adults.",
   hypothesis:
-    'with a hand-made first batch, one festival booth, and a low-budget online drop, kiwi pop can sell 500 pops and recover 40% of cash in the first quarter.',
-  why: 'this is a "is anyone willing to pay?" budget. it produces a yes/no in 90 days and a real email list either way. no co-packer minimums, no shopify partner fees, no commissioned art.',
+    "kiwi pop is a functional, sensual lollipop for the night scene. it cleans your palate, makes you feel relaxed and present, and tastes incredible. it's not a supplement pretending to be candy — it's candy that happens to support you.",
+  why: "this is the smallest cheque that proves it: one hand-rolled batch, one festival, one online drop. enough to put kiwi pop in real mouths in real environments and watch what people do next. no co-packer minimums, no shopify partner fees, no commissioned art. a yes/no answer in 90 days and a real email list either way.",
   budget: [
     {
       label: 'first batch · 1,000 pops',
@@ -127,13 +128,13 @@ const PLAN_5K: PitchPlan = {
     { metric: 'repeat-purchase signal', value: 'measurable in 90 days' },
   ],
   risks: [
+    "biggest risk: reformulation. we're swapping kava's mouthfeel for a compliant alternative without losing the sensory experience that drives early product love. actively testing alternatives. a kava SKU stays for direct channels where permissible.",
     'one festival can flop on weather or foot traffic — no backup booth in this budget',
-    'kitchen-batch COGS assumes the founder\'s own kitchen — labor not priced',
-    'no money for second batch if the first sells out before paid ads have run',
-    'kava-containing products are regulated in some states · 1hr legal review may flag formula',
+    "kitchen-batch COGS assumes the founder's own kitchen — labor not priced",
+    "no money for second batch if the first sells out before paid ads have run",
   ],
   exits:
-    'success looks like: 500 pops sold, repeat ≥ 15%, an email list of 500+, and one short founder note ready to send to the next $50K check.',
+    'success at this check size: 500 pops sold, repeat ≥ 15%, an email list of 500+, and one short founder note ready to send to the next $50K cheque. the 18-month vision (1M pops, 200 retail doors, 6 festival activations) is a separate slide — this cheque is the receipt that says it can happen.',
 };
 
 const PLAN_50K: PitchPlan = {
@@ -141,10 +142,10 @@ const PLAN_50K: PitchPlan = {
   raise: '$50,000',
   raiseCents: 5_000_000,
   thesis:
-    'launch kiwi pop as a real CPG brand · custom theme · co-packer batch · three festival activations · 8K–10K pops shipped year one.',
+    "the first lollipop that makes you feel good while you party. like willy wonka actually made functional candy for adults.",
   hypothesis:
-    "with professional theme, photography, and the festival circuit, kiwi pop hits $40K–$60K dtc revenue in 12 months and lands the first boutique-retail conversation.",
-  why: 'this is the gap between "founder side project" and "real CPG brand with proof of demand." it funds the move from kitchen to co-packer, gets the brand its visual identity from a single illustrator, and buys the festival circuit that powers everything that follows (the GHOST playbook).',
+    "gen z is drinking less. festivals are going wellness-curious. the night scene and the yoga scene already overlap. kiwi pop is the obvious product for where culture is already heading — where health and partying stop being opposites — and we're the magical, sensory entry point.",
+  why: 'this is the gap between "founder side project" and "real CPG brand with proof of demand." it funds the move from kitchen to co-packer, the brand identity, and the festival circuit where word-of-mouth compounds in the product\'s native environment. the GHOST playbook: one limited-edition flavor drop per major festival, with collectible packaging.',
   budget: [
     {
       label: 'co-packer batch · 8,000 pops',
@@ -250,17 +251,159 @@ const PLAN_50K: PitchPlan = {
     },
   ],
   risks: [
+    "biggest risk: reformulation. we're swapping kava's mouthfeel for a compliant alternative at scale without losing the sensory experience that drives early product love. actively testing nootropic blends; a kava SKU stays for direct channels where permissible.",
     'co-packer minimum order quantities may push first batch above $7K',
     'festival activations are weather- and crowd-dependent · one bad weekend',
-    'FDA labeling review may require formula tweaks (kava is restricted in some states)',
-    'shopify partner build takes 4–8 weeks · slip eats into first festival window',
-    'illustrator delivery on the crew is the long-pole creative item',
+    "shopify partner build takes 4–8 weeks · slip eats into first festival window",
+    "illustrator delivery on the crew mascots is the long-pole creative item",
   ],
   exits:
-    'success looks like: 10K pops shipped, 30% margin after all costs, an active subscription cohort, and a cleaner-than-pitch story for either a $250K seed or a wholesale-led growth path.',
+    'success at this check size: 10K pops shipped, 30% margin after all costs, an active subscription cohort, and a cleaner-than-pitch story for either a $250K seed or a wholesale-led growth path. the 18-month target is on the vision slide.',
 };
 
 const PLANS: PitchPlan[] = [PLAN_5K, PLAN_50K];
+
+// ---------------------------------------------------------------------------
+// Brand-positioning content (shared between both check sizes — the soul of
+// the company doesn't change with the cheque). Sourced from the founder
+// strategy README. All financial slides (budget, projections, raise) are
+// kept per-plan above.
+// ---------------------------------------------------------------------------
+
+const MACRO_THESIS = {
+  headline: 'health is inevitable.',
+  framing: "it's more fun to be healthy.",
+  bullets: [
+    'gen z alcohol consumption is in measurable decline.',
+    'sober-curious and wellness-curious movements are mainstream and growing.',
+    'the night scene (clubs, festivals, afterparties) and the holistic-health scene (yoga, wellness, biohacking-adjacent) share more demographic overlap than people assume.',
+    'people want to feel vividly alive. the same impulse drives both communities.',
+    'current functional/wellness products are either sterile-clinical (biohacker aesthetic) or smug-ironic (cool-kid aesthetic). no one is doing enchantment, wonder, or sensuality.',
+    'kiwi pop is the obvious next product for a generation already in motion away from alcohol and toward feel-good alternatives.',
+  ],
+};
+
+const BRAND_POSITIONING = {
+  promise:
+    'we want to support you the way you already are, so you can have fun and feel good doing it sustainably.',
+  promiseFraming:
+    'intentionally subversive of the optimization industry, which sells inadequacy. kiwi pop sells permission and pleasure.',
+  weAre: [
+    'sensual, magical, enchanted',
+    'pre-cynical wonder · willy wonka, but real, not gimmicky',
+    'genuinely supportive of who you already are',
+    'built for the night scene · expandable to wellness-adjacent communities',
+    'a category of one: the magical functional candy',
+  ],
+  weAreNot: [
+    'not a biohacker optimization product',
+    'not an "ultimate human" or "peak performance" play',
+    'not ironic, detached, or edgelord-coded',
+    'not a sterile wellness brand',
+    'not a gimmick chocolate bar with a fantasy wrapper',
+  ],
+};
+
+interface CompetitorRow {
+  category: string;
+  example: string;
+  why_not: string;
+}
+
+const COMPETITIVE_LANDSCAPE: { intro: string; rows: CompetitorRow[]; punchline: string } = {
+  intro:
+    'no one is doing a functional party lollipop. our adjacent competitors fall into three categories — none of them serve the night scene as a sensory and social product.',
+  rows: [
+    {
+      category: 'functional candy',
+      example: 'sourse',
+      why_not: 'clinical · daytime · supplement-coded',
+    },
+    {
+      category: 'party recovery',
+      example: 'liquid IV · liquid death',
+      why_not: 'hydration and edge · not sensory or social',
+    },
+    {
+      category: 'mints / gum',
+      example: 'altoids · listerine · etc.',
+      why_not: 'sugar-based · feeds oral bacteria · gross aftertaste · not sexy or social',
+    },
+  ],
+  punchline: "that's the gap kiwi pop owns.",
+};
+
+const TARGET_CUSTOMER = {
+  primary:
+    'adults in the night scene — clubs, festivals, afterparties — who want a clean palate, a functional lift, and a sensual experience while partying.',
+  expansion:
+    'wellness-curious adults (yoga, holistic health) who already overlap with the night scene demographically. the coachella → erewhon distribution arc.',
+  insight:
+    'the venn diagram: night scene and wellness scene share more overlap than most brands recognize, because both communities are driven by the same impulse — the desire to feel vividly alive.',
+};
+
+const GO_TO_MARKET = {
+  intro:
+    'three-channel adaptive strategy with early traction in all three. festivals + clubs are the highest-conviction wedge for brand-building (native demonstration, word-of-mouth compounds). retail is the scaling channel after that.',
+  channels: [
+    {
+      label: 'festivals',
+      detail: 'primary brand-building wedge · native demonstration environment',
+    },
+    {
+      label: 'clubs',
+      detail: 'sensory and social product fit',
+    },
+    {
+      label: 'retail / wholesale pre-orders',
+      detail: 'already happening · scaling channel',
+    },
+  ],
+  traction: 'approached by erewhon for product placement.',
+};
+
+interface FounderProfile {
+  name: string;
+  blurb: string;
+  bullets: string[];
+}
+
+const FOUNDERS: FounderProfile[] = [
+  {
+    name: 'tennyson',
+    blurb: 'operator · approachable, transparent, values-aligned',
+    bullets: [
+      'track record building first-of-their-kind functional products with non-sterile, non-biohacker branding',
+      'approached by erewhon to carry products',
+      'deep, authentic embedding in every level of the party scene',
+      'long history of helping people return to baseline and beyond using food, functional nutrition, and case-by-case nootropic blends — near-perfect track record',
+    ],
+  },
+  {
+    name: 'kiwi',
+    blurb: "creator · cutesy queer party baddie with native scene credibility",
+    bullets: [
+      'creator of the original product · built from a "i wish i had this" moment',
+      'exceptional on-camera energy and genuine, continuous excitement that translates to content',
+      'connected to models, photographers, and curators in event spaces',
+      'lives the customer; the marketing will never feel like marketing',
+    ],
+  },
+];
+
+const FOUNDER_DUO_NOTE =
+  'the two founders together are uniquely positioned. anyone else attempting a sensual, magical functional party lollipop would feel like they were cosplaying it. tennyson and kiwi are documenting their actual lives — the product is downstream of who they already are. the brand voice will never feel forced. the marketing will never feel like marketing. the community will form around them because it already has.';
+
+const VISION_18_MONTHS = {
+  framing:
+    "the 18-month target — credible numbers we'll be measured against. global distribution is a year-3 vision, not on this slide.",
+  bullets: [
+    '1,000,000 lollipops sold',
+    '200 retail locations',
+    '6 festival activations',
+    'continued product line expansion · functional cotton candy and other formats that extend the "functional partying + palate cleansing" thesis',
+  ],
+};
 
 type ItemKind = 'budget' | 'milestone';
 type Status = 'todo' | 'in_progress' | 'done' | 'blocked';
@@ -457,12 +600,239 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/03 why this size of check</div>
-          <p className="pitch-prose">{plan.why}</p>
+          <div className="pitch-slide-tag">/03 macro thesis · health is inevitable</div>
+          <p className="pitch-thesis" style={{ marginBottom: '0.6rem' }}>
+            {MACRO_THESIS.headline}
+          </p>
+          <p
+            className="pitch-prose"
+            style={{
+              fontStyle: 'italic',
+              color: 'var(--lime, #a8ff3c)',
+              marginBottom: '1.4rem',
+            }}
+          >
+            {MACRO_THESIS.framing}
+          </p>
+          <ul className="pitch-risks">
+            {MACRO_THESIS.bullets.map((b, idx) => (
+              <li key={idx}>{b}</li>
+            ))}
+          </ul>
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/04 use of funds</div>
+          <div className="pitch-slide-tag">/04 brand positioning</div>
+          <p
+            className="pitch-thesis"
+            style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', marginBottom: '0.4rem' }}
+          >
+            {BRAND_POSITIONING.promise}
+          </p>
+          <p
+            className="pitch-prose"
+            style={{
+              opacity: 0.8,
+              marginBottom: '1.6rem',
+              fontStyle: 'italic',
+            }}
+          >
+            {BRAND_POSITIONING.promiseFraming}
+          </p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '1.2rem',
+            }}
+          >
+            <div>
+              <p
+                className="stat-label"
+                style={{ marginBottom: '0.6rem', color: 'var(--lime, #a8ff3c)' }}
+              >
+                // what we are
+              </p>
+              <ul className="pitch-risks">
+                {BRAND_POSITIONING.weAre.map((b, idx) => (
+                  <li key={idx}>{b}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p
+                className="stat-label"
+                style={{ marginBottom: '0.6rem', color: 'var(--magenta, #ff2d8a)' }}
+              >
+                // what we are NOT
+              </p>
+              <ul className="pitch-risks">
+                {BRAND_POSITIONING.weAreNot.map((b, idx) => (
+                  <li key={idx}>{b}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="pitch-slide">
+          <div className="pitch-slide-tag">/05 competitive landscape</div>
+          <p className="pitch-prose" style={{ marginBottom: '1.4rem' }}>
+            {COMPETITIVE_LANDSCAPE.intro}
+          </p>
+          <table className="table pitch-table">
+            <thead>
+              <tr>
+                <th>category</th>
+                <th>example</th>
+                <th>why it doesn&apos;t serve the night scene</th>
+              </tr>
+            </thead>
+            <tbody>
+              {COMPETITIVE_LANDSCAPE.rows.map((row) => (
+                <tr key={row.category}>
+                  <td className="pitch-budget-label">{row.category}</td>
+                  <td className="pitch-budget-detail">{row.example}</td>
+                  <td className="pitch-budget-detail">{row.why_not}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p
+            className="pitch-thesis"
+            style={{
+              fontSize: 'clamp(1.2rem, 2.4vw, 1.6rem)',
+              marginTop: '1.4rem',
+              color: 'var(--lime, #a8ff3c)',
+            }}
+          >
+            {COMPETITIVE_LANDSCAPE.punchline}
+          </p>
+        </section>
+
+        <section className="pitch-slide">
+          <div className="pitch-slide-tag">/06 target customer</div>
+          <p
+            className="stat-label"
+            style={{ marginBottom: '0.4rem', color: 'var(--lime, #a8ff3c)' }}
+          >
+            // primary
+          </p>
+          <p className="pitch-prose" style={{ marginBottom: '1.4rem' }}>
+            {TARGET_CUSTOMER.primary}
+          </p>
+          <p
+            className="stat-label"
+            style={{ marginBottom: '0.4rem', color: 'var(--cyan, #00f0ff)' }}
+          >
+            // expansion
+          </p>
+          <p className="pitch-prose" style={{ marginBottom: '1.4rem' }}>
+            {TARGET_CUSTOMER.expansion}
+          </p>
+          <p
+            className="pitch-prose"
+            style={{
+              fontStyle: 'italic',
+              opacity: 0.85,
+              borderLeft: '2px solid var(--lime, #a8ff3c)',
+              paddingLeft: '1rem',
+            }}
+          >
+            {TARGET_CUSTOMER.insight}
+          </p>
+        </section>
+
+        <section className="pitch-slide">
+          <div className="pitch-slide-tag">/07 go-to-market</div>
+          <p className="pitch-prose" style={{ marginBottom: '1.4rem' }}>
+            {GO_TO_MARKET.intro}
+          </p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '1rem',
+              marginBottom: '1.4rem',
+            }}
+          >
+            {GO_TO_MARKET.channels.map((ch) => (
+              <div
+                key={ch.label}
+                className="pitch-projection-card"
+                style={{ padding: '1rem 1.2rem' }}
+              >
+                <div className="pitch-projection-metric">{ch.label}</div>
+                <div
+                  className="pitch-projection-value"
+                  style={{ fontSize: '0.95rem' }}
+                >
+                  {ch.detail}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p
+            className="pitch-prose"
+            style={{
+              color: 'var(--lime, #a8ff3c)',
+              fontWeight: 500,
+            }}
+          >
+            // traction · {GO_TO_MARKET.traction}
+          </p>
+        </section>
+
+        <section className="pitch-slide">
+          <div className="pitch-slide-tag">/08 founders</div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1.6rem',
+              marginBottom: '1.4rem',
+            }}
+          >
+            {FOUNDERS.map((f) => (
+              <div key={f.name}>
+                <p
+                  className="pitch-thesis"
+                  style={{
+                    fontSize: 'clamp(1.4rem, 2.4vw, 1.8rem)',
+                    marginBottom: '0.2rem',
+                  }}
+                >
+                  {f.name}
+                </p>
+                <p
+                  className="stat-label"
+                  style={{ marginBottom: '0.8rem', color: 'var(--bone)' }}
+                >
+                  // {f.blurb}
+                </p>
+                <ul className="pitch-risks">
+                  {f.bullets.map((b, idx) => (
+                    <li key={idx}>{b}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p
+            className="pitch-prose"
+            style={{
+              fontStyle: 'italic',
+              opacity: 0.9,
+              borderLeft: '2px solid var(--lime, #a8ff3c)',
+              paddingLeft: '1rem',
+            }}
+          >
+            {FOUNDER_DUO_NOTE}
+          </p>
+        </section>
+
+        <section className="pitch-slide">
+          <div className="pitch-slide-tag">/09 use of funds</div>
           <table className="table pitch-table">
             <thead>
               <tr>
@@ -550,7 +920,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/05 milestones</div>
+          <div className="pitch-slide-tag">/10 milestones</div>
           <ol className="pitch-timeline">
             {plan.milestones.map((m) => {
               const compositeKey = progressKey(plan.id, 'milestone', m.when);
@@ -608,7 +978,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/06 projections</div>
+          <div className="pitch-slide-tag">/11 projections</div>
           <div className="pitch-projection-grid">
             {plan.projections.map((p) => (
               <div className="pitch-projection-card" key={p.metric}>
@@ -620,7 +990,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/07 risks</div>
+          <div className="pitch-slide-tag">/12 risks</div>
           <ul className="pitch-risks">
             {plan.risks.map((r, idx) => (
               <li key={idx}>{r}</li>
@@ -628,8 +998,30 @@ export default function PitchPage() {
           </ul>
         </section>
 
+        <section className="pitch-slide">
+          <div className="pitch-slide-tag">/13 18-month vision</div>
+          <p className="pitch-prose" style={{ marginBottom: '1.4rem' }}>
+            {VISION_18_MONTHS.framing}
+          </p>
+          <div
+            className="pitch-projection-grid"
+            style={{ gap: '1rem' }}
+          >
+            {VISION_18_MONTHS.bullets.map((b, idx) => (
+              <div key={idx} className="pitch-projection-card">
+                <div
+                  className="pitch-projection-value"
+                  style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}
+                >
+                  {b}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="pitch-slide pitch-slide--exit">
-          <div className="pitch-slide-tag">/08 success looks like</div>
+          <div className="pitch-slide-tag">/14 success at this check size</div>
           <p className="pitch-thesis pitch-thesis--exit">{plan.exits}</p>
         </section>
 
