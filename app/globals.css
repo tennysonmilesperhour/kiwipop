@@ -1143,120 +1143,223 @@ button { font: inherit; }
 /* =========================================================
    17. ADMIN LAYOUT
    ========================================================= */
+/* =========================================================
+   17. ADMIN — readability pass
+   Inspiration: card-based dashboards with rotating-accent stat
+   tiles, generous breathing room, bigger numbers + smaller labels,
+   sticky / contrasted nav. Keeps the brand's neon-on-dark
+   vocabulary (lime, cyan, magenta, ultraviolet, sodium) but eases
+   the eye with softer surfaces and clearer hierarchy.
+   ========================================================= */
 .admin-layout {
   display: grid;
   grid-template-columns: 240px 1fr;
-  gap: 2rem;
+  gap: 2.25rem;
   padding: 2rem var(--pad-page);
   align-items: start;
+  background:
+    radial-gradient(ellipse 60% 60% at 0% 0%, rgba(123, 45, 255, 0.06), transparent 55%),
+    radial-gradient(ellipse 70% 60% at 100% 100%, rgba(0, 240, 255, 0.04), transparent 55%),
+    var(--midnight);
+  min-height: 100vh;
 }
 .admin-sidebar {
-  background: var(--terminal);
+  background: linear-gradient(180deg, #11111c 0%, #0c0c14 100%);
   border: 1px solid rgba(244, 240, 232, 0.08);
-  padding: 1.5rem;
+  padding: 1.5rem 1rem;
   position: sticky;
   top: 80px;
+  border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 .sidebar-header {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 0.25rem 0.5rem 1rem;
   border-bottom: 1px solid rgba(244, 240, 232, 0.08);
 }
 .sidebar-header h2 {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   letter-spacing: -0.02em;
   text-transform: lowercase;
   color: var(--lime);
 }
-.sidebar-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 0.2rem; }
 .nav-item {
-  padding: 0.6rem 0.8rem;
+  padding: 0.7rem 0.85rem;
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--bone);
-  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+  border-radius: 2px;
+  transition: background 0.15s ease, color 0.15s ease,
+    border-left-color 0.15s ease, padding-left 0.15s ease;
 }
-.nav-item:hover { background: var(--midnight); color: var(--lime); }
-.admin-content { padding: 0; }
+.nav-item:hover {
+  background: rgba(168, 255, 60, 0.06);
+  color: var(--lime);
+  border-left-color: rgba(168, 255, 60, 0.4);
+  padding-left: 1rem;
+}
+.admin-content { padding: 0; min-width: 0; }
 
 /* =========================================================
-   18. TABLES
+   18. TABLES — bigger row padding, alternating tint, sticky header
    ========================================================= */
 .table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
 }
 .table th {
-  background: var(--midnight);
-  padding: 0.75rem 1rem;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, #18181f 0%, #14141c 100%);
+  padding: 0.9rem 1.1rem;
   text-align: left;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--bone);
-  border-bottom: 1px solid rgba(244, 240, 232, 0.15);
+  color: var(--paper);
+  border-bottom: 1px solid rgba(168, 255, 60, 0.25);
+  font-size: 10.5px;
+  z-index: 1;
 }
-.table td { padding: 0.75rem 1rem; border-bottom: 1px solid rgba(244, 240, 232, 0.06); }
-.table tr:hover { background: rgba(168, 255, 60, 0.04); }
+.table td {
+  padding: 0.95rem 1.1rem;
+  border-bottom: 1px solid rgba(244, 240, 232, 0.06);
+  color: var(--paper);
+}
+.table tbody tr:nth-child(odd) { background: rgba(244, 240, 232, 0.015); }
+.table tbody tr:hover { background: rgba(168, 255, 60, 0.06); }
 .bg-light { background: rgba(168, 255, 60, 0.08) !important; }
 
 /* =========================================================
-   19. CARDS
+   19. CARDS — softer surface, accent stripe, subtle hover lift
    ========================================================= */
 .card {
-  background: var(--terminal);
-  border: 1px solid rgba(244, 240, 232, 0.08);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  background: linear-gradient(180deg, #15151d 0%, #11111a 100%);
+  border: 1px solid rgba(244, 240, 232, 0.07);
+  padding: 1.6rem 1.75rem;
+  margin-bottom: 1.25rem;
+  border-radius: 4px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover {
+  border-color: rgba(244, 240, 232, 0.12);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.42);
 }
 .card-title {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: -0.01em;
   text-transform: lowercase;
-  margin-bottom: 1rem;
+  margin-bottom: 1.1rem;
   color: var(--paper);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
+.card-title::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 18px;
+  background: var(--lime);
+  border-radius: 1px;
+}
+
+/* =========================================================
+   STAT CARDS — rotating gradient accents, bigger numbers
+   Inspired by the gradient-tile dashboards in the references.
+   Each stat gets its own accent color cycling through the
+   neon palette so the eye can pre-attentively distinguish them.
+   ========================================================= */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.1rem;
+  margin-bottom: 2.25rem;
 }
 .stat-card {
-  background: var(--terminal);
+  position: relative;
+  background: linear-gradient(180deg, #16161e 0%, #10101a 100%);
   border: 1px solid rgba(244, 240, 232, 0.08);
-  padding: 1.2rem;
+  padding: 1.35rem 1.5rem 1.4rem;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--c, var(--lime));
+  opacity: 0.95;
+}
+.stat-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -40%;
+  width: 80%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at top right,
+    color-mix(in srgb, var(--c, var(--lime)), transparent 80%),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px
+    color-mix(in srgb, var(--c, var(--lime)), transparent 80%);
+}
+.dashboard-grid > .stat-card:nth-child(5n + 1) { --c: var(--lime); }
+.dashboard-grid > .stat-card:nth-child(5n + 2) { --c: var(--cyan); }
+.dashboard-grid > .stat-card:nth-child(5n + 3) { --c: var(--magenta); }
+.dashboard-grid > .stat-card:nth-child(5n + 4) { --c: var(--sodium); }
+.dashboard-grid > .stat-card:nth-child(5n + 5) { --c: var(--ultraviolet); }
 .stat-label {
   color: var(--bone);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  position: relative;
+  z-index: 1;
 }
 .stat-value {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 1.8rem;
-  color: var(--lime);
-  letter-spacing: -0.02em;
+  font-size: 2.2rem;
+  color: var(--c, var(--lime));
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================================================
-   ADMIN HOME (dashboard)
+   ADMIN HOME (dashboard) — bigger header, more breathing room
    ========================================================= */
 .admin-home-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(244, 240, 232, 0.08);
 }
 .admin-home-header h1 {
   font-family: var(--display);
@@ -1269,11 +1372,12 @@ button { font: inherit; }
 }
 .admin-home-meta {
   font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.05em;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
   color: var(--bone);
-  margin-top: 0.6rem;
+  margin-top: 0.8rem;
   max-width: 720px;
+  line-height: 1.6;
 }
 
 .admin-tools {
@@ -1282,42 +1386,59 @@ button { font: inherit; }
 }
 .admin-tool-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.1rem;
+  margin-top: 1.1rem;
 }
 .admin-tool-card {
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
-  gap: 0.4rem 0.6rem;
-  padding: 1.25rem 1.4rem;
-  background: var(--terminal);
-  border: 1px solid rgba(244, 240, 232, 0.1);
+  gap: 0.5rem 0.6rem;
+  padding: 1.4rem 1.5rem;
+  background: linear-gradient(180deg, #15151e 0%, #11111a 100%);
+  border: 1px solid rgba(244, 240, 232, 0.08);
   border-left: 3px solid var(--c, var(--lime));
+  border-radius: 4px;
   text-decoration: none;
   color: var(--paper);
-  transition: background 0.2s, border-color 0.2s, transform 0.15s,
-    box-shadow 0.2s;
+  transition: background 0.18s ease, border-color 0.18s ease,
+    transform 0.15s ease, box-shadow 0.18s ease;
   overflow: hidden;
 }
+.admin-tool-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -50%;
+  width: 90%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at top right,
+    color-mix(in srgb, var(--c, var(--lime)), transparent 88%),
+    transparent 70%
+  );
+  pointer-events: none;
+}
 .admin-tool-card:hover {
-  background: var(--midnight);
+  background: linear-gradient(180deg, #1a1a24 0%, #14141d 100%);
   border-color: var(--c, var(--lime));
-  transform: translateY(-2px);
-  box-shadow: 0 0 28px
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px
     color-mix(in srgb, var(--c, var(--lime)), transparent 70%);
 }
 .admin-tool-label {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 1.6rem;
+  font-size: 1.65rem;
   letter-spacing: -0.02em;
   text-transform: lowercase;
   color: var(--c, var(--lime));
   grid-column: 1;
   grid-row: 1;
+  position: relative;
+  z-index: 1;
 }
 .admin-tool-arrow {
   font-family: var(--display);
@@ -1326,22 +1447,63 @@ button { font: inherit; }
   color: var(--c, var(--lime));
   grid-column: 2;
   grid-row: 1;
-  transition: transform 0.15s;
+  transition: transform 0.18s ease;
+  position: relative;
+  z-index: 1;
 }
 .admin-tool-card:hover .admin-tool-arrow {
-  transform: translateX(4px);
+  transform: translateX(6px);
 }
 .admin-tool-description {
   font-family: var(--mono);
   font-size: 12px;
-  line-height: 1.55;
+  line-height: 1.65;
   color: var(--bone);
   grid-column: 1 / -1;
   grid-row: 2;
+  position: relative;
+  z-index: 1;
 }
 
 .admin-home-tables {
   margin-top: 2rem;
+}
+
+/* Admin form inputs · clearer focus, taller hit area */
+.admin-content .form-input,
+.admin-content .form-select,
+.admin-content input[type="text"],
+.admin-content input[type="number"],
+.admin-content input[type="email"],
+.admin-content input[type="date"],
+.admin-content select,
+.admin-content textarea {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(244, 240, 232, 0.14);
+  color: var(--paper);
+  padding: 0.7rem 0.9rem;
+  font-family: var(--mono);
+  font-size: 13px;
+  border-radius: 3px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.admin-content .form-input:focus,
+.admin-content .form-select:focus,
+.admin-content input:focus,
+.admin-content select:focus,
+.admin-content textarea:focus {
+  outline: none;
+  border-color: var(--lime);
+  box-shadow: 0 0 0 1px var(--lime), 0 0 14px rgba(168, 255, 60, 0.18);
+}
+.admin-content .form-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-bottom: 0.4rem;
+  display: block;
 }
 
 /* =========================================================
