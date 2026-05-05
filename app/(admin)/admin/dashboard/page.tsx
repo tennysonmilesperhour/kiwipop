@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AdminLayout } from '@/components/AdminLayout';
 import { useOrders, useProducts } from '@/lib/hooks';
 import { formatCentsToUSD } from '@/lib/format';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface OrderRow {
   id: string;
@@ -20,6 +21,24 @@ interface ProductRow {
   price_cents: number;
   in_stock: number;
   preorder_only: boolean;
+}
+
+interface FinancialsSummary {
+  stripe: {
+    grossCents: number;
+    refundedCents: number;
+    netCents: number;
+    chargeCount: number;
+  };
+  reconcile: {
+    marked_paid: number;
+    marked_cancelled: number;
+  };
+  derived: {
+    revenueCents: number;
+    netIncomeCents: number;
+  };
+  generatedAt: string;
 }
 
 interface ToolCard {
@@ -103,8 +122,9 @@ const TOOLS: ToolCard[] = [
 ];
 
 export default function AdminDashboard() {
-  const { data: orders, isLoading: ordersLoading } = useOrders();
+  const { data: orders, isLoading: ordersLoading, refetch: refetchOrders } = useOrders();
   const { data: products, isLoading: productsLoading } = useProducts();
+  const queryClient = useQueryClient();
   const [stats, setStats] = useState({
     totalRevenue: 0,
     paidRevenue: 0,
@@ -113,6 +133,38 @@ export default function AdminDashboard() {
     totalProducts: 0,
     pendingOrders: 0,
   });
+  const [financials, setFinancials] = useState<FinancialsSummary | null>(null);
+
+  // Auto-reconcile + pull live Stripe totals on every dashboard mount. This
+  // self-heals any orders the webhook missed and keeps the revenue cards
+  // accurate without admins having to remember to hit the orders page.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const response = await fetch('/api/admin/financials/summary', {
+          cache: 'no-store',
+        });
+        if (!response.ok) return;
+        const json = (await response.json()) as FinancialsSummary;
+        if (cancelled) return;
+        setFinancials(json);
+        // If reconcile flipped any orders, the local orders cache is stale.
+        if (
+          json.reconcile.marked_paid > 0 ||
+          json.reconcile.marked_cancelled > 0
+        ) {
+          await queryClient.invalidateQueries({ queryKey: ['orders'] });
+          await refetchOrders();
+        }
+      } catch {
+        // Soft-fail: dashboard still works off DB-only numbers below.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [queryClient, refetchOrders]);
 
   useEffect(() => {
     if (orders && products) {
@@ -142,6 +194,11 @@ export default function AdminDashboard() {
     }
   }, [orders, products]);
 
+  // Stripe is the source of truth for "money actually collected" — fall back
+  // to the DB-derived number only if the Stripe call failed.
+  const paidRevenueDisplay =
+    financials !== null ? financials.stripe.netCents : stats.paidRevenue;
+
   return (
     <AdminLayout>
       <div className="admin-home">
@@ -156,8 +213,16 @@ export default function AdminDashboard() {
 
         <div className="dashboard-grid">
           <div className="stat-card">
-            <p className="stat-label">paid revenue</p>
-            <p className="stat-value">{formatCentsToUSD(stats.paidRevenue)}</p>
+            <p className="stat-label">
+              paid revenue {financials ? '· stripe' : ''}
+            </p>
+            <p className="stat-value">{formatCentsToUSD(paidRevenueDisplay)}</p>
+            {financials && financials.stripe.refundedCents > 0 ? (
+              <p className="stat-label" style={{ marginTop: '0.25rem' }}>
+                gross {formatCentsToUSD(financials.stripe.grossCents)} − refunds{' '}
+                {formatCentsToUSD(financials.stripe.refundedCents)}
+              </p>
+            ) : null}
           </div>
           <div className="stat-card">
             <p className="stat-label">pending revenue</p>
