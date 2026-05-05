@@ -236,7 +236,10 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="respect" style={{ color: 'rgb(155, 237, 255)' }}>respectfully</span>
           </h1>
           <p className="sub">
-            <span className="em">refreshing club lolli.</span> &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · edible mica glitter swirled inside.
+            <span className="em">refreshing club lolli.</span>{' '}
+            <span className="sub-hl">
+              &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · edible mica glitter swirled inside.
+            </span>
           </p>
         </div>
         <div className="below">

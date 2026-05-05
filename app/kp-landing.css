@@ -606,6 +606,21 @@
   line-height: 1.4;
 }
 .kp-page .z1 .sub .em { color: var(--lemon); font-style: normal; font-weight: 500; }
+/* Highlighter strip for the spec line — flips to a near-opaque white slab
+   with dark text so the legibility doesn't fight the hero photo. Wraps with
+   the line via box-decoration-break so each line gets its own pill. */
+.kp-page .z1 .sub .sub-hl {
+  background: rgba(255, 255, 255, 0.94);
+  color: #0a0014;
+  padding: 0.18em 0.45em;
+  margin-left: 0.1em;
+  border-radius: 3px;
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.35);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  font-weight: 500;
+  text-shadow: none;
+}
 .kp-page .z1 .below {
   position: absolute;
   bottom: 30px;
