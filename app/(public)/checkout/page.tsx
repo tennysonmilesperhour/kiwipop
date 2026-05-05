@@ -28,6 +28,7 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
   const [hasEditedEmail, setHasEditedEmail] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(true);
 
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState<ShippingAddress>({
@@ -83,6 +84,7 @@ export default function CheckoutPage() {
     const payload = {
       email,
       shippingAddress: address,
+      marketingOptIn,
       items: items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
@@ -269,6 +271,31 @@ export default function CheckoutPage() {
                 <option value="CA">Canada</option>
                 <option value="MX">Mexico</option>
               </select>
+            </div>
+
+            <div
+              className="form-group"
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '0.6rem',
+                marginTop: '0.25rem',
+              }}
+            >
+              <input
+                id="marketing-opt-in"
+                type="checkbox"
+                checked={marketingOptIn}
+                onChange={(e) => setMarketingOptIn(e.target.checked)}
+                style={{ marginTop: '0.25rem' }}
+              />
+              <label
+                htmlFor="marketing-opt-in"
+                style={{ fontSize: '0.85rem', lineHeight: 1.5 }}
+              >
+                email me about new flavors, drops, and the occasional
+                discount. unsubscribe any time — we never share your email.
+              </label>
             </div>
 
             <button

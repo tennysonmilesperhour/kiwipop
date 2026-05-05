@@ -119,6 +119,13 @@ const TOOLS: ToolCard[] = [
       'log cash / check / off-rail venmo received in person. adds to the homepage fundraiser progress bar alongside paid stripe orders.',
     accent: 'var(--lime)',
   },
+  {
+    href: '/admin/list',
+    label: 'marketing list',
+    description:
+      'every email captured · opt-in flag · order history · CSV export for klaviyo / mailchimp / resend.',
+    accent: 'var(--cyan)',
+  },
 ];
 
 export default function AdminDashboard() {
