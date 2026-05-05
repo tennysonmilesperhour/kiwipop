@@ -236,7 +236,10 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="respect" style={{ color: 'rgb(155, 237, 255)' }}>respectfully</span>
           </h1>
           <p className="sub">
-            <span className="em">refreshing club lolli.</span> &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · edible mica glitter swirled inside.
+            <span className="em">refreshing club lolli.</span>{' '}
+            <span className="sub-hl">
+              &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · edible mica glitter swirled inside.
+            </span>
           </p>
         </div>
         <div className="below">
@@ -692,6 +695,27 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               </span>
             </a>
           ))}
+        </div>
+      </section>
+
+      {/* ===== ZONE 5.7 · MANIFESTO ===== */}
+      <section className="zmf" data-screen-label="05d Manifesto">
+        <div className="zmf-cn" aria-hidden="true">舐</div>
+        <div className="zmf-inner">
+          <span className="zmf-eyebrow">// manifesto</span>
+          <h2 className="zmf-pull">
+            a taste of <span className="zmf-pull-glow">magic.</span>
+          </h2>
+          <p className="zmf-body">
+            <span className="zmf-em">kiwi pop is the first functional candy built for the night scene</span>{' '}
+            — where health and partying stop being opposites. younger people are
+            waking up and drinking less, festivals are getting more
+            wellness-curious, and the night and yoga scenes already overlap.
+            this is{' '}
+            <span className="zmf-em">the magical, sensory spark that lives in that intersection</span>
+            . not a biohacker supplement. not just another sterile healthy
+            whatever. it&apos;s a taste of magic.
+          </p>
         </div>
       </section>
 
