@@ -494,10 +494,12 @@
   top: 0;
   bottom: 0;
   width: 55%;
-  background: url("/landing/img/lips-lollipop.jpg") center/cover no-repeat;
+  /* Image source moved to a Next.js <Image> child for SEO/GEO
+     crawl-ability. Layout, mask, and filters stay here. */
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 18%);
   mask-image: linear-gradient(90deg, transparent 0%, black 18%);
   filter: saturate(1.15) contrast(1.05);
+  overflow: hidden;
 }
 .kp-page .z1 .hero-img::after {
   content: "";
@@ -513,7 +515,9 @@
   transform: translateX(50%);
   height: min(92vh, 100%);
   aspect-ratio: 800 / 1471;
-  background: url("/landing/img/kiwi-kitty-pop.webp") bottom center/contain no-repeat;
+  /* Image source moved to a Next.js <Image> child for SEO/GEO
+     crawl-ability. The drop shadow + z-index still apply via the
+     parent. */
   filter: drop-shadow(0 0 50px rgba(0, 240, 255, 0.55)) drop-shadow(0 24px 70px rgba(0, 0, 0, 0.75));
   z-index: 2;
   pointer-events: none;
@@ -760,7 +764,9 @@
   z-index: 2;
   aspect-ratio: 9/16;
   max-height: 680px;
-  background: url("/landing/img/snake-magenta.jpg") center/cover no-repeat;
+  /* Image source moved to a Next.js <Image> child for SEO/GEO
+     crawl-ability. Aspect-ratio + box-shadow stay here. */
+  overflow: hidden;
   box-shadow: 0 0 60px rgba(255, 26, 140, 0.35), 0 0 0 1px rgba(245, 255, 61, 0.4), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
 .kp-page .z2 .img::after {
@@ -895,9 +901,11 @@
 .kp-page .fc .img {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  /* Image moved into a Next.js <Image fill> child for SEO/GEO
+     crawl-ability. The saturate filter still applies through the
+     parent so the existing flavor-card vibe is preserved. */
   filter: saturate(1.1);
+  overflow: hidden;
 }
 .kp-page .fc::after {
   content: "";
