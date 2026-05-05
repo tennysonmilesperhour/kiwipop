@@ -371,23 +371,16 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .kp-page .kp-brand { display: flex; align-items: center; gap: 12px; }
+/* Brand mark — actual product photo cropped to the lollipop ball at the
+   top of the image. Matches the global Navigation logo treatment so admin
+   and storefront wear the same face. */
 .kp-page .kp-mark {
   width: 26px;
   height: 26px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #dcff8a, #b6ff1a 60%, #5a8800);
-  box-shadow: var(--glow-kiwi);
-  position: relative;
-}
-.kp-page .kp-mark::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 2px;
-  height: 20px;
-  background: var(--bone);
-  transform: translateX(-50%);
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.45));
 }
 .kp-page .kp-brand .nm {
   font-family: var(--font-display);

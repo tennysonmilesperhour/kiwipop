@@ -189,7 +189,12 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       {/* ===== NAV ===== */}
       <nav className="kp-nav">
         <Link href="/" className="kp-brand">
-          <div className="kp-mark" />
+          <img
+            src="/landing/img/kiwi-kitty-pop.webp"
+            alt=""
+            className="kp-mark"
+            aria-hidden="true"
+          />
           <div className="nm">
             KIWI POP <span className="cn">舐</span>
           </div>
@@ -759,7 +764,13 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       <footer className="kp-foot">
         <div className="col">
           <div className="brand-foot">
-            <div className="kp-mark" style={{ width: 36, height: 36 }} />
+            <img
+              src="/landing/img/kiwi-kitty-pop.webp"
+              alt=""
+              className="kp-mark"
+              aria-hidden="true"
+              style={{ width: 36, height: 36 }}
+            />
             <div className="nm">KIWI<span className="pk">.</span>POP</div>
           </div>
           <p>
