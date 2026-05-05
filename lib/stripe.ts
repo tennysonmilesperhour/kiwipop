@@ -63,7 +63,7 @@ interface CreateCheckoutSessionParams {
  * missing env var doesn't silently disable shipping.
  */
 const STANDARD_DOMESTIC_SHIPPING_RATE =
-  process.env.STRIPE_SHIPPING_RATE_DOMESTIC ?? 'shr_1TTXRlLMKed5UHTWZHbdtDEM';
+  process.env.STRIPE_SHIPPING_RATE_DOMESTIC ?? 'shr_1TTXXlLMKed5UHTWC8xs9zTm';
 
 /**
  * Free shipping kicks in once subtotal hits this threshold (matches the
