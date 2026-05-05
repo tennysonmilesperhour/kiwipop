@@ -165,6 +165,7 @@ export async function POST(request: NextRequest) {
       customerEmail: parsed.email,
       successUrl: `${origin}/checkout/success?order_id=${order.id}&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${origin}/checkout/cancelled?order_id=${order.id}`,
+      subtotalCents: totalCents,
       items: parsed.items.map((item) => {
         const product = productsById.get(item.productId)!;
         return {

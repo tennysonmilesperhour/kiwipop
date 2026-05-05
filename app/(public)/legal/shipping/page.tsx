@@ -37,7 +37,7 @@ export default function ShippingPage() {
           </li>
           <li>
             free shipping over <strong>$40</strong>. otherwise flat{' '}
-            <strong>$5</strong> standard. order more pops.
+            <strong>$4.99</strong> standard. order more pops.
           </li>
           <li>
             we ship within 1–3 business days. small batch · sometimes the
