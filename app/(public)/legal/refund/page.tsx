@@ -56,6 +56,61 @@ export default function RefundPage() {
           refunds go back to the original card via stripe. usually 3–5
           business days to land, depending on your bank.
         </p>
+
+        <h2>return policy for consumables</h2>
+        <p>
+          kiwi pop is a consumable dietary supplement. for food safety
+          reasons, we cannot accept returns of opened or partially consumed
+          products. unopened products in original packaging may be returned
+          within <strong>30 days</strong> of delivery for a full refund,
+          minus original shipping costs.
+        </p>
+        <p>
+          to initiate a return of unopened product:
+        </p>
+        <ul>
+          <li>email <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> with your order number</li>
+          <li>we&apos;ll provide a return shipping address</li>
+          <li>you are responsible for return shipping costs</li>
+          <li>refund is issued within 5 business days of receiving the return</li>
+        </ul>
+
+        <h2>exchanges</h2>
+        <p>
+          we don&apos;t do direct exchanges. if you want a different flavor
+          or product, return the original for a refund and place a new order.
+        </p>
+
+        <h2>order cancellation</h2>
+        <p>
+          you can cancel an order for a full refund if it hasn&apos;t shipped
+          yet. once an order is in transit, it cannot be cancelled — you
+          would need to refuse delivery or return it upon arrival.
+        </p>
+
+        <h2>adverse reactions</h2>
+        <p>
+          if you experience an adverse reaction to kiwi pop, discontinue use
+          immediately and consult a healthcare provider. please also report
+          the reaction to us at{' '}
+          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> and to the
+          FDA via{' '}
+          <a
+            href="https://www.fda.gov/safety/medwatch-fda-safety-information-and-adverse-event-reporting-program"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            MedWatch
+          </a>
+          . we take safety seriously and will work with you on refunds or
+          replacements as appropriate.
+        </p>
+
+        <h2>contact</h2>
+        <p>
+          all refund and return requests:{' '}
+          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>
+        </p>
       </div>
 
       <Link href="/" className="btn">

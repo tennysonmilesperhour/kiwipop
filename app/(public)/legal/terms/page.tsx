@@ -59,19 +59,60 @@ export default function TermsPage() {
         </p>
 
         <h2>health + medical</h2>
+        <p
+          style={{
+            padding: '1rem 1.25rem',
+            borderLeft: '3px solid var(--lemon, #f5ff3d)',
+            background: 'rgba(245, 255, 61, 0.08)',
+            fontWeight: 500,
+          }}
+        >
+          <strong>FDA notice:</strong> these statements have not been
+          evaluated by the food and drug administration. this product is not
+          intended to diagnose, treat, cure, or prevent any disease.
+        </p>
         <p>
-          kiwi pop contains real functional ingredients (theobromine, kava,
-          ginseng, b12, magnesium, taurine, electrolytes) and sugar alcohols
-          (isomalt, xylitol). it is candy with a payload, not a drug, and
-          not medical advice. if you have a condition, are pregnant, are on
-          medication, or have a sensitivity to sugar alcohols, ask your
-          doctor before eating functional candy. we&apos;re not them.
-          xylitol is toxic to dogs — keep these away from pets.
+          kiwi pop is a dietary supplement in confection form. it contains
+          functional ingredients (theobromine, kava, ginseng, b12, magnesium,
+          taurine, electrolytes) and sugar alcohols (isomalt, xylitol). any
+          claims we make about our ingredients are structure/function claims
+          — they describe how nutrients may support normal body functions,
+          not treat or cure medical conditions.
+        </p>
+        <p>
+          kiwi pop is not a drug, not a substitute for medical treatment, and
+          not medical advice. if you have a medical condition, are pregnant
+          or nursing, are taking prescription medication (especially
+          sedatives, benzodiazepines, or hepatotoxic drugs), or have a
+          sensitivity to sugar alcohols, consult a licensed healthcare
+          provider before use.
+        </p>
+        <p>
+          <strong>xylitol warning:</strong> xylitol is highly toxic to dogs
+          and other pets. keep kiwi pop away from animals.
         </p>
         <p>
           full ingredient safety information, the FDA disclaimer, the kava
           advisory, and the california prop 65 reservation live on the{' '}
           <Link href="/legal/fda-disclaimer">fda + safety</Link> page.
+        </p>
+
+        <h2>disclaimer of warranties</h2>
+        <p>
+          kiwi pop is provided &ldquo;as is&rdquo; without warranties of any
+          kind, express or implied, including but not limited to implied
+          warranties of merchantability, fitness for a particular purpose,
+          or non-infringement. we do not warrant that the product will meet
+          your specific health needs or produce any particular result.
+          individual responses to dietary supplements vary.
+        </p>
+
+        <h2>assumption of risk</h2>
+        <p>
+          by purchasing and consuming kiwi pop, you acknowledge that dietary
+          supplements carry inherent risks, that you have read the ingredient
+          list and safety warnings, and that you assume full responsibility
+          for your decision to consume this product.
         </p>
 
         <h2>intellectual property</h2>
@@ -86,11 +127,36 @@ export default function TermsPage() {
           common-law use; registration is in progress.
         </p>
 
-        <h2>liability</h2>
+        <h2>limitation of liability</h2>
         <p>
-          to the extent the law allows, our liability for anything related to
-          the site or the product is capped at what you paid. we don&apos;t
-          warrant the site is bug-free or always available.
+          to the maximum extent permitted by applicable law, kiwi pop and its
+          officers, directors, employees, and agents shall not be liable for
+          any indirect, incidental, special, consequential, or punitive
+          damages, including but not limited to loss of profits, data, use,
+          or goodwill, arising out of or related to your use of the site or
+          product.
+        </p>
+        <p>
+          our total liability for any claim arising from or related to the
+          site or product is limited to the amount you paid for the specific
+          product giving rise to the claim. this limitation applies regardless
+          of the form of action, whether in contract, tort, strict liability,
+          or otherwise.
+        </p>
+        <p>
+          some jurisdictions do not allow limitations on implied warranties or
+          exclusion of certain damages. if these laws apply to you, some or
+          all of the above limitations may not apply, and you may have
+          additional rights.
+        </p>
+
+        <h2>indemnification</h2>
+        <p>
+          you agree to indemnify, defend, and hold harmless kiwi pop and its
+          affiliates from any claims, damages, losses, or expenses (including
+          reasonable attorneys&apos; fees) arising from your use of the site
+          or product, your violation of these terms, or your violation of any
+          rights of a third party.
         </p>
 
         <h2>governing law</h2>
