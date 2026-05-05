@@ -971,7 +971,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
       {/* Fundraiser bar lives at the bottom now — moved out of the top of the
           page so it doesn't dominate the hero. Sits flush above the footer. */}
-      <FundraiserBar snapshot={fundraiser} varietyHalfOff={products.varietyHalfOff} />
+      <FundraiserBar snapshot={fundraiser} />
 
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">

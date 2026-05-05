@@ -1,38 +1,13 @@
-'use client';
-
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
-import type { ProductRow } from '@/lib/landing-products';
-import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
 
 interface FundraiserBarProps {
   snapshot: FundraiserSnapshot;
-  varietyHalfOff: ProductRow | null;
 }
 
-export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) {
-  const addItem = useCart((s) => s.addItem);
-  const router = useRouter();
-  const [adding, setAdding] = useState(false);
-
+export function FundraiserBar({ snapshot }: FundraiserBarProps) {
   const percentLabel = snapshot.percent < 1 ? '<1%' : `${Math.round(snapshot.percent)}%`;
-
-  const handleHalfOff = () => {
-    if (!varietyHalfOff || adding) return;
-    setAdding(true);
-    addItem({
-      productId: varietyHalfOff.id,
-      name: varietyHalfOff.name,
-      price: varietyHalfOff.price_cents,
-      quantity: 1,
-      image: varietyHalfOff.image_url ?? undefined,
-      isPreorder: varietyHalfOff.preorder_only,
-    });
-    router.push('/cart');
-  };
 
   return (
     <div className="kp-fundraiser" role="region" aria-label="launch fundraiser progress">
@@ -69,21 +44,11 @@ export function FundraiserBar({ snapshot, varietyHalfOff }: FundraiserBarProps) 
         >
           DONATE → VENMO @TENNYSON-TAGGART
         </a>
-        <button
-          type="button"
-          className="kp-fr-cta pink"
-          onClick={handleHalfOff}
-          disabled={!varietyHalfOff || adding}
-          aria-disabled={!varietyHalfOff || adding}
-        >
-          {adding
-            ? 'ADDING…'
-            : varietyHalfOff
-              ? `20% OFF VARIETY 12-PACK · PREORDER · ${formatCentsToUSD(varietyHalfOff.price_cents)}`
-              : '20% OFF VARIETY 12-PACK · PREORDER'}
-        </button>
+        <Link className="kp-fr-cta pink" href="/#shop">
+          PRE-ORDER →
+        </Link>
         <Link className="kp-fr-cta" href="/wholesale/apply">
-          WHOLESALE PREORDER · FUNDRAISER SPECIAL →
+          ORDER SAMPLES FOR WHOLESALE →
         </Link>
       </div>
 
