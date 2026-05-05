@@ -264,9 +264,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             </h2>
           </div>
           <div className="copy-right">
-            <p className="line">
-              drops sell out in <span className="em">11 minutes</span> on average. don&apos;t be late.
-            </p>
             <span className="lab" style={{ borderColor: 'var(--lemon)', color: 'var(--lemon)' }}>
               SHIPS FROM SALT LAKE · DOMESTIC FIRST
             </span>
@@ -593,7 +590,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="verified" style={{ color: 'var(--lemon)' }}>JOIN</span>
             </div>
             <blockquote>
-              <span className="em">get on the list.</span> drops sell out in 11 minutes on average — don&apos;t be late.
+              <span className="em">get on the list.</span> first to know when a new flavor drops, when we hit a festival, when there&apos;s anything worth a tap.
             </blockquote>
             <form onSubmit={handleSignup}>
               <input
