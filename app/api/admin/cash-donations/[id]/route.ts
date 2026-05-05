@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
@@ -38,6 +39,11 @@ export async function DELETE(_request: NextRequest, { params }: RouteContext) {
       { status: 500 },
     );
   }
+
+  // Homepage uses ISR (revalidate = 60) — bust the cache so the progress
+  // bar reflects the removed donation on the next request.
+  revalidatePath('/');
+  revalidatePath('/donate');
 
   return NextResponse.json({ ok: true });
 }

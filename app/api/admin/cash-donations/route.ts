@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { ZodError } from 'zod';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
@@ -109,6 +110,12 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
+
+  // Homepage uses ISR (revalidate = 60) — bust the cache so the progress
+  // bar reflects the new donation on the next request instead of waiting
+  // out the cache window.
+  revalidatePath('/');
+  revalidatePath('/donate');
 
   return NextResponse.json({ donation: data }, { status: 201 });
 }
