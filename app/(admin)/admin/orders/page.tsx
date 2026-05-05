@@ -6,13 +6,55 @@ import { formatCentsToUSD } from '@/lib/format';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
+interface ReconcileSummary {
+  scanned_sessions: number;
+  pending_orders_before: number;
+  matched: number;
+  marked_paid: number;
+  marked_cancelled: number;
+  errors: string[];
+  changes: Array<{
+    order_id: string;
+    new_status: string;
+    payment_intent_id: string | null;
+  }>;
+}
+
 export default function OrdersPage() {
   const { data: orders, isLoading, refetch } = useOrders();
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const { data: selectedOrder } = useOrderWithItems(selectedOrderId || '');
   const [statusError, setStatusError] = useState<string>('');
   const [pendingStatus, setPendingStatus] = useState<string | null>(null);
+  const [reconciling, setReconciling] = useState(false);
+  const [reconcileResult, setReconcileResult] = useState<ReconcileSummary | null>(null);
+  const [reconcileError, setReconcileError] = useState<string>('');
   const queryClient = useQueryClient();
+
+  const handleReconcile = async () => {
+    if (reconciling) return;
+    if (!confirm("Pull the last 7 days of Stripe Checkout Sessions and update any pending orders whose payment actually completed? Safe to run repeatedly.")) return;
+    setReconciling(true);
+    setReconcileError('');
+    setReconcileResult(null);
+    try {
+      const response = await fetch('/api/admin/orders/reconcile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error ?? 'reconcile failed');
+      }
+      setReconcileResult(json.summary as ReconcileSummary);
+      await refetch();
+      await queryClient.invalidateQueries({ queryKey: ['orders'] });
+    } catch (err) {
+      setReconcileError(err instanceof Error ? err.message : 'reconcile failed');
+    } finally {
+      setReconciling(false);
+    }
+  };
 
   const handleStatusUpdate = async (orderId: string, newStatus: string) => {
     setStatusError('');
@@ -45,6 +87,77 @@ export default function OrdersPage() {
       {statusError && (
         <div className="alert alert-error mb-4">{statusError}</div>
       )}
+
+      <div className="card mb-4" style={{ padding: '1rem 1.25rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ flex: '1 1 320px', minWidth: 0 }}>
+            <p className="card-title" style={{ margin: 0 }}>
+              reconcile with stripe
+            </p>
+            <p
+              style={{
+                margin: '0.4rem 0 0',
+                fontSize: 12,
+                color: 'var(--bone)',
+                lineHeight: 1.5,
+              }}
+            >
+              pulls the last 7 days of stripe checkout sessions and flips any
+              order still <code>pending</code> locally that&apos;s actually paid
+              (or expired) on stripe. use this when the webhook hasn&apos;t
+              fired but you know money landed.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleReconcile}
+            disabled={reconciling}
+          >
+            {reconciling ? 'reconciling…' : 'reconcile now'}
+          </button>
+        </div>
+
+        {reconcileError ? (
+          <div className="alert alert-error" style={{ marginTop: 12 }}>
+            {reconcileError}
+          </div>
+        ) : null}
+
+        {reconcileResult ? (
+          <div
+            style={{
+              marginTop: 14,
+              padding: 12,
+              border: '1px solid var(--lime)',
+              background: 'rgba(168, 255, 60, 0.06)',
+              fontFamily: 'var(--mono)',
+              fontSize: 12,
+              lineHeight: 1.6,
+            }}
+          >
+            <strong style={{ color: 'var(--lime)' }}>RESULT →</strong>{' '}
+            scanned <b>{reconcileResult.scanned_sessions}</b> stripe sessions ·
+            checked <b>{reconcileResult.pending_orders_before}</b> pending
+            orders · matched <b>{reconcileResult.matched}</b> · marked paid{' '}
+            <b>{reconcileResult.marked_paid}</b> · cancelled{' '}
+            <b>{reconcileResult.marked_cancelled}</b>
+            {reconcileResult.errors.length > 0 ? (
+              <div style={{ color: 'var(--magenta)', marginTop: 6 }}>
+                errors: {reconcileResult.errors.join(' · ')}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">

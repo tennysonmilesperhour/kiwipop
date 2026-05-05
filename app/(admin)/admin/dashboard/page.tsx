@@ -108,6 +108,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({
     totalRevenue: 0,
     paidRevenue: 0,
+    pendingRevenue: 0,
     totalOrders: 0,
     totalProducts: 0,
     pendingOrders: 0,
@@ -122,16 +123,21 @@ export default function AdminDashboard() {
       const paidRevenue = (orders as OrderRow[])
         .filter((o) => o.status === 'paid' || o.status === 'completed' || o.status === 'shipped')
         .reduce((sum, o) => sum + (o.total_cents || 0), 0);
-      const pendingOrders = (orders as OrderRow[]).filter(
+      const pendingRows = (orders as OrderRow[]).filter(
         (order) => order.status === 'pending'
-      ).length;
+      );
+      const pendingRevenue = pendingRows.reduce(
+        (sum, o) => sum + (o.total_cents || 0),
+        0,
+      );
 
       setStats({
         totalRevenue,
         paidRevenue,
+        pendingRevenue,
         totalOrders: orders.length,
         totalProducts: products.length,
-        pendingOrders,
+        pendingOrders: pendingRows.length,
       });
     }
   }, [orders, products]);
@@ -154,16 +160,20 @@ export default function AdminDashboard() {
             <p className="stat-value">{formatCentsToUSD(stats.paidRevenue)}</p>
           </div>
           <div className="stat-card">
+            <p className="stat-label">pending revenue</p>
+            <p className="stat-value">{formatCentsToUSD(stats.pendingRevenue)}</p>
+          </div>
+          <div className="stat-card">
             <p className="stat-label">orders (all)</p>
             <p className="stat-value">{stats.totalOrders}</p>
           </div>
           <div className="stat-card">
-            <p className="stat-label">products live</p>
-            <p className="stat-value">{stats.totalProducts}</p>
-          </div>
-          <div className="stat-card">
             <p className="stat-label">pending orders</p>
             <p className="stat-value">{stats.pendingOrders}</p>
+          </div>
+          <div className="stat-card">
+            <p className="stat-label">products live</p>
+            <p className="stat-value">{stats.totalProducts}</p>
           </div>
         </div>
 
