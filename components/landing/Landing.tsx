@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
@@ -274,8 +275,31 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       <section className="z1" data-screen-label="01 Arrival">
         <div className="cn-bg">舐夜</div>
         <div className="cn-bg2">糖</div>
-        <div className="hero-img" />
-        <div className="hero-pop" aria-hidden="true" />
+        {/* Hero portrait + lollipop product photo, swapped from CSS
+            background-image to <Image> tags so crawlers (and AI crawlers
+            like GPTBot/PerplexityBot) can read the product imagery.
+            The CSS classes keep the same layout, mask, drop-shadows. */}
+        <div className="hero-img">
+          <Image
+            src="/landing/img/lips-lollipop.jpg"
+            alt="Kiwi Pop hero — anime portrait holding a swirl lollipop"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 55vw"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
+        <div className="hero-pop" aria-hidden="true">
+          <Image
+            src="/landing/img/kiwi-kitty-pop.webp"
+            alt=""
+            fill
+            priority
+            aria-hidden="true"
+            sizes="(max-width: 1024px) 80vw, 40vw"
+            style={{ objectFit: 'contain', objectPosition: 'bottom center' }}
+          />
+        </div>
         <div className="content">
           <span className="eyebrow">
             <span className="cn">舐</span> LOLLIPOP SHAPED PARTY SUPPLEMENTS
@@ -503,10 +527,18 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                 className={`fc ${cardSkuKey}`}
                 aria-label={`${flavor.name} — ${isLive ? 'shop' : 'preorder'}`}
               >
-                <div
-                  className="img"
-                  style={{ backgroundImage: `url(${FLAVOR_IMG[flavor.sku] ?? '/landing/img/lips-lollipop.jpg'})` }}
-                />
+                <div className="img">
+                  {/* CSS-bg → <Image> swap. The .img class keeps
+                      position: absolute / inset: 0 / saturate filter,
+                      and Image fills it with object-fit: cover. */}
+                  <Image
+                    src={FLAVOR_IMG[flavor.sku] ?? '/landing/img/lips-lollipop.jpg'}
+                    alt={`${flavor.name} kiwi pop flavor — ${flavor.flavor}`}
+                    fill
+                    sizes="(max-width: 768px) 80vw, 25vw"
+                    style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  />
+                </div>
                 <span className={`status-pill ${isLive ? 'live' : 'soon'}`}>
                   {isLive ? `LIVE · ${inStock} LEFT` : 'PREORDER'}
                 </span>
@@ -874,6 +906,15 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </a>
         </div>
         <div className="img">
+          {/* CSS-bg → <Image> swap. .z2 .img keeps the aspect-ratio,
+              shadow, and "002" pseudo-element. */}
+          <Image
+            src="/landing/img/snake-magenta.jpg"
+            alt="kiwi pop product moment — magenta-lit dance shot"
+            fill
+            sizes="(max-width: 1024px) 100vw, 40vw"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
           <div className="img-cap">
             <span>001 · KIWI POP EDITION</span>
             <span>DROP 001</span>
