@@ -40,6 +40,13 @@ interface FinancialsSummary {
     cogsCents: number;
     expensesCents: number;
     cashDonationCents: number;
+    cashDonations: Array<{
+      id: string;
+      amount_cents: number;
+      donor_name: string | null;
+      note: string | null;
+      received_at: string;
+    }>;
   };
   derived: {
     revenueCents: number;
@@ -328,6 +335,69 @@ export default function FinancialsPage() {
           </div>
         </div>
       </div>
+
+      {summary && (
+        <div className="card mt-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="card-title">Revenue line items</h2>
+            <span className="text-sm text-gray-500">
+              {formatCentsToUSD(summary.derived.revenueCents)} total · stripe
+              net + cash
+            </span>
+          </div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Amount</th>
+                <th>Note</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="font-medium">Stripe — net of refunds</td>
+                <td>{formatCentsToUSD(summary.stripe.netCents)}</td>
+                <td className="text-sm text-gray-600">
+                  {summary.stripe.chargeCount} charge
+                  {summary.stripe.chargeCount === 1 ? '' : 's'}
+                  {summary.stripe.refundedChargeCount > 0
+                    ? ` · ${summary.stripe.refundedChargeCount} refunded`
+                    : ''}
+                </td>
+                <td className="text-sm">
+                  {summary.stripe.earliestChargeMs
+                    ? `${new Date(summary.stripe.earliestChargeMs).toLocaleDateString()} – ${new Date(summary.stripe.latestChargeMs ?? summary.stripe.earliestChargeMs).toLocaleDateString()}`
+                    : '—'}
+                </td>
+              </tr>
+              {summary.db.cashDonations.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="text-sm text-gray-500">
+                    No cash donations logged yet.
+                  </td>
+                </tr>
+              ) : (
+                summary.db.cashDonations.map((c) => (
+                  <tr key={c.id}>
+                    <td className="font-medium">
+                      Cash donation
+                      {c.donor_name ? ` · ${c.donor_name}` : ''}
+                    </td>
+                    <td>{formatCentsToUSD(c.amount_cents)}</td>
+                    <td className="text-sm text-gray-700">
+                      {c.note?.trim() ? c.note : 'cash donation'}
+                    </td>
+                    <td className="text-sm">
+                      {new Date(c.received_at).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <div className="card mt-6">
         <div className="flex justify-between items-center mb-4">

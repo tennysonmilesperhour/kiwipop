@@ -22,7 +22,11 @@ interface BatchRow {
   cost_cents: number | null;
 }
 interface CashDonationRow {
+  id: string;
   amount_cents: number | null;
+  donor_name: string | null;
+  note: string | null;
+  received_at: string;
 }
 
 export interface FinancialsSummary {
@@ -38,6 +42,13 @@ export interface FinancialsSummary {
     cogsCents: number;
     expensesCents: number;
     cashDonationCents: number;
+    cashDonations: Array<{
+      id: string;
+      amount_cents: number;
+      donor_name: string | null;
+      note: string | null;
+      received_at: string;
+    }>;
   };
   derived: {
     /** Stripe-net + cash donations — what actually came in. */
@@ -80,7 +91,8 @@ export async function GET() {
         .returns<BatchRow[]>(),
       supabaseAdmin
         .from('cash_donations')
-        .select('amount_cents')
+        .select('id, amount_cents, donor_name, note, received_at')
+        .order('received_at', { ascending: false })
         .returns<CashDonationRow[]>(),
     ]);
 
@@ -141,6 +153,13 @@ export async function GET() {
       cogsCents,
       expensesCents,
       cashDonationCents,
+      cashDonations: cash.map((c) => ({
+        id: c.id,
+        amount_cents: c.amount_cents ?? 0,
+        donor_name: c.donor_name,
+        note: c.note,
+        received_at: c.received_at,
+      })),
     },
     derived: {
       revenueCents,
