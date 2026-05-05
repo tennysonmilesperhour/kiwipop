@@ -1141,212 +1141,257 @@ button { font: inherit; }
 .btn-full { width: 100%; display: flex; }
 
 /* =========================================================
-   17. ADMIN LAYOUT
-   ========================================================= */
-/* =========================================================
-   17. ADMIN — readability pass
-   Inspiration: card-based dashboards with rotating-accent stat
-   tiles, generous breathing room, bigger numbers + smaller labels,
-   sticky / contrasted nav. Keeps the brand's neon-on-dark
-   vocabulary (lime, cyan, magenta, ultraviolet, sodium) but eases
-   the eye with softer surfaces and clearer hierarchy.
+   17. ADMIN LAYOUT — light & colorful (Bricolage Grotesque)
+   Soft lavender page bg, white cards w/ purple-tinted shadows,
+   vibrant gradient stat tiles, modern sans-serif throughout
+   (no monospace anywhere in admin). Scoped via .admin-layout
+   so the public storefront stays untouched.
    ========================================================= */
 .admin-layout {
+  --admin-bg-1: #f5f3ff;
+  --admin-bg-2: #ece9fe;
+  --admin-bg-3: #f3eafe;
+  --admin-surface: #ffffff;
+  --admin-surface-soft: #faf8ff;
+  --admin-border: #e7e2f5;
+  --admin-border-strong: #d6cef0;
+  --admin-text: #1c1530;
+  --admin-text-soft: #5b5475;
+  --admin-text-muted: #8a83a3;
+  --admin-accent: #7c3aed;
+  --admin-accent-soft: #a78bfa;
+  --admin-accent-tint: rgba(124, 58, 237, 0.08);
+  --admin-shadow: 0 4px 20px rgba(124, 58, 237, 0.06);
+  --admin-shadow-hover: 0 12px 32px rgba(124, 58, 237, 0.14);
+
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: 2.25rem;
   padding: 2rem var(--pad-page);
   align-items: start;
-  background:
-    radial-gradient(ellipse 60% 60% at 0% 0%, rgba(123, 45, 255, 0.06), transparent 55%),
-    radial-gradient(ellipse 70% 60% at 100% 100%, rgba(0, 240, 255, 0.04), transparent 55%),
-    var(--midnight);
+  background: linear-gradient(135deg,
+    var(--admin-bg-1) 0%,
+    var(--admin-bg-2) 50%,
+    var(--admin-bg-3) 100%);
   min-height: 100vh;
+  font-family: var(--display);
+  color: var(--admin-text);
 }
 .admin-sidebar {
-  background: linear-gradient(180deg, #11111c 0%, #0c0c14 100%);
-  border: 1px solid rgba(244, 240, 232, 0.08);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
   padding: 1.5rem 1rem;
   position: sticky;
   top: 80px;
-  border-radius: 4px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-radius: 14px;
+  box-shadow: var(--admin-shadow);
 }
 .sidebar-header {
   margin-bottom: 1.25rem;
   padding: 0.25rem 0.5rem 1rem;
-  border-bottom: 1px solid rgba(244, 240, 232, 0.08);
+  border-bottom: 1px solid var(--admin-border);
 }
 .sidebar-header h2 {
   font-family: var(--display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1.05rem;
   letter-spacing: -0.02em;
   text-transform: lowercase;
-  color: var(--lime);
+  color: var(--admin-accent);
 }
-.sidebar-nav { display: flex; flex-direction: column; gap: 0.2rem; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 0.15rem; }
 .nav-item {
-  padding: 0.7rem 0.85rem;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--bone);
-  border-left: 2px solid transparent;
-  border-radius: 2px;
+  padding: 0.7rem 0.9rem;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  text-transform: lowercase;
+  color: var(--admin-text-soft);
+  border-radius: 8px;
   transition: background 0.15s ease, color 0.15s ease,
-    border-left-color 0.15s ease, padding-left 0.15s ease;
+    transform 0.15s ease;
+  text-decoration: none;
 }
 .nav-item:hover {
-  background: rgba(168, 255, 60, 0.06);
-  color: var(--lime);
-  border-left-color: rgba(168, 255, 60, 0.4);
-  padding-left: 1rem;
+  background: var(--admin-accent-tint);
+  color: var(--admin-accent);
 }
-.admin-content { padding: 0; min-width: 0; }
+.nav-item-active {
+  background: linear-gradient(135deg, var(--admin-accent) 0%, var(--admin-accent-soft) 100%);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.28);
+}
+.nav-item-active:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%);
+  color: #ffffff;
+}
+.admin-content { padding: 0; min-width: 0; color: var(--admin-text); }
+.admin-content,
+.admin-content h1,
+.admin-content h2,
+.admin-content h3,
+.admin-content h4,
+.admin-content h5,
+.admin-content h6,
+.admin-content p,
+.admin-content span,
+.admin-content div,
+.admin-content button,
+.admin-content a,
+.admin-content label {
+  font-family: var(--display);
+}
 
 /* =========================================================
-   18. TABLES — bigger row padding, alternating tint, sticky header
+   18. TABLES — light surface, lavender header, gentle hover
    ========================================================= */
-.table {
+.admin-content .table,
+.admin-layout .table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin-top: 1rem;
-  font-family: var(--mono);
-  font-size: 12.5px;
+  font-family: var(--display);
+  font-size: 14px;
   line-height: 1.5;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--admin-shadow);
 }
-.table th {
+.admin-content .table th,
+.admin-layout .table th {
   position: sticky;
   top: 0;
-  background: linear-gradient(180deg, #18181f 0%, #14141c 100%);
-  padding: 0.9rem 1.1rem;
+  background: var(--admin-surface-soft);
+  padding: 0.95rem 1.1rem;
   text-align: left;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--paper);
-  border-bottom: 1px solid rgba(168, 255, 60, 0.25);
-  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--admin-text-soft);
+  border-bottom: 1px solid var(--admin-border);
+  font-size: 12.5px;
   z-index: 1;
 }
-.table td {
+.admin-content .table td,
+.admin-layout .table td {
   padding: 0.95rem 1.1rem;
-  border-bottom: 1px solid rgba(244, 240, 232, 0.06);
-  color: var(--paper);
+  border-bottom: 1px solid var(--admin-border);
+  color: var(--admin-text);
 }
-.table tbody tr:nth-child(odd) { background: rgba(244, 240, 232, 0.015); }
-.table tbody tr:hover { background: rgba(168, 255, 60, 0.06); }
-.bg-light { background: rgba(168, 255, 60, 0.08) !important; }
+.admin-content .table tbody tr:last-child td,
+.admin-layout .table tbody tr:last-child td {
+  border-bottom: none;
+}
+.admin-content .table tbody tr:hover,
+.admin-layout .table tbody tr:hover {
+  background: var(--admin-accent-tint);
+}
+.admin-layout .bg-light { background: var(--admin-surface-soft) !important; }
 
 /* =========================================================
-   19. CARDS — softer surface, accent stripe, subtle hover lift
+   19. CARDS — white surfaces, soft purple shadow
    ========================================================= */
-.card {
-  background: linear-gradient(180deg, #15151d 0%, #11111a 100%);
-  border: 1px solid rgba(244, 240, 232, 0.07);
+.admin-content .card,
+.admin-layout .card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
   padding: 1.6rem 1.75rem;
   margin-bottom: 1.25rem;
-  border-radius: 4px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 14px;
+  box-shadow: var(--admin-shadow);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+  color: var(--admin-text);
 }
-.card:hover {
-  border-color: rgba(244, 240, 232, 0.12);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.42);
+.admin-content .card:hover,
+.admin-layout .card:hover {
+  box-shadow: var(--admin-shadow-hover);
+  transform: translateY(-1px);
 }
-.card-title {
+.admin-content .card-title,
+.admin-layout .card-title {
   font-family: var(--display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1.2rem;
-  letter-spacing: -0.01em;
-  text-transform: lowercase;
+  letter-spacing: -0.015em;
+  text-transform: none;
   margin-bottom: 1.1rem;
-  color: var(--paper);
+  color: var(--admin-text);
   display: flex;
   align-items: center;
   gap: 0.6rem;
 }
-.card-title::before {
+.admin-content .card-title::before,
+.admin-layout .card-title::before {
   content: "";
   display: inline-block;
-  width: 3px;
-  height: 18px;
-  background: var(--lime);
-  border-radius: 1px;
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(180deg, var(--admin-accent) 0%, var(--admin-accent-soft) 100%);
+  border-radius: 2px;
 }
 
 /* =========================================================
-   STAT CARDS — rotating gradient accents, bigger numbers
-   Inspired by the gradient-tile dashboards in the references.
-   Each stat gets its own accent color cycling through the
-   neon palette so the eye can pre-attentively distinguish them.
+   STAT CARDS — vibrant gradient tiles, bold white numbers
+   Each tile cycles through the palette: purple, teal, orange,
+   pink, lime — pulled from the reference dashboards.
    ========================================================= */
-.dashboard-grid {
+.admin-layout .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.1rem;
   margin-bottom: 2.25rem;
 }
-.stat-card {
+.admin-layout .stat-card {
   position: relative;
-  background: linear-gradient(180deg, #16161e 0%, #10101a 100%);
-  border: 1px solid rgba(244, 240, 232, 0.08);
-  padding: 1.35rem 1.5rem 1.4rem;
-  border-radius: 4px;
+  background: linear-gradient(135deg, var(--g1, #a78bfa) 0%, var(--g2, #7c3aed) 100%);
+  border: none;
+  padding: 1.4rem 1.55rem 1.5rem;
+  border-radius: 14px;
   overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  color: #ffffff;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--g2, #7c3aed), transparent 70%);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-.stat-card::before {
+.admin-layout .stat-card::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--c, var(--lime));
-  opacity: 0.95;
-}
-.stat-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -40%;
-  width: 80%;
-  height: 100%;
-  background: radial-gradient(
-    ellipse at top right,
-    color-mix(in srgb, var(--c, var(--lime)), transparent 80%),
-    transparent 70%
-  );
+  top: -30%;
+  right: -20%;
+  width: 70%;
+  height: 140%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.18), transparent 70%);
   pointer-events: none;
 }
-.stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 36px
-    color-mix(in srgb, var(--c, var(--lime)), transparent 80%);
+.admin-layout .stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--g2, #7c3aed), transparent 55%);
 }
-.dashboard-grid > .stat-card:nth-child(5n + 1) { --c: var(--lime); }
-.dashboard-grid > .stat-card:nth-child(5n + 2) { --c: var(--cyan); }
-.dashboard-grid > .stat-card:nth-child(5n + 3) { --c: var(--magenta); }
-.dashboard-grid > .stat-card:nth-child(5n + 4) { --c: var(--sodium); }
-.dashboard-grid > .stat-card:nth-child(5n + 5) { --c: var(--ultraviolet); }
-.stat-label {
-  color: var(--bone);
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  margin-bottom: 0.6rem;
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 1) { --g1: #a78bfa; --g2: #7c3aed; }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 2) { --g1: #5eead4; --g2: #0d9488; }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 3) { --g1: #fdba74; --g2: #ea580c; }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 4) { --g1: #f0abfc; --g2: #c026d3; }
+.admin-layout .dashboard-grid > .stat-card:nth-child(5n + 5) { --g1: #bef264; --g2: #65a30d; }
+.admin-layout .stat-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin-bottom: 0.5rem;
   position: relative;
   z-index: 1;
 }
-.stat-value {
+.admin-layout .stat-value {
   font-family: var(--display);
-  font-weight: 800;
-  font-size: 2.2rem;
-  color: var(--c, var(--lime));
+  font-weight: 700;
+  font-size: 2.25rem;
+  color: #ffffff;
   letter-spacing: -0.03em;
   line-height: 1.05;
   position: relative;
@@ -1354,137 +1399,135 @@ button { font: inherit; }
 }
 
 /* =========================================================
-   ADMIN HOME (dashboard) — bigger header, more breathing room
+   ADMIN HOME (dashboard) — bold sans header, soft divider
    ========================================================= */
-.admin-home-header {
+.admin-layout .admin-home-header {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(244, 240, 232, 0.08);
+  border-bottom: 1px solid var(--admin-border);
 }
-.admin-home-header h1 {
+.admin-layout .admin-home-header h1 {
   font-family: var(--display);
-  font-weight: 800;
-  font-size: clamp(2.4rem, 6vw, 4rem);
-  letter-spacing: -0.04em;
-  text-transform: lowercase;
-  color: var(--lime);
-  line-height: 0.95;
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5.5vw, 3.5rem);
+  letter-spacing: -0.035em;
+  text-transform: none;
+  color: var(--admin-text);
+  line-height: 1;
 }
-.admin-home-meta {
-  font-family: var(--mono);
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  color: var(--bone);
+.admin-layout .admin-home-meta {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: var(--admin-text-soft);
   margin-top: 0.8rem;
   max-width: 720px;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
-.admin-tools {
+.admin-layout .admin-tools {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
 }
-.admin-tool-grid {
+.admin-layout .admin-tool-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.1rem;
   margin-top: 1.1rem;
 }
-.admin-tool-card {
+.admin-layout .admin-tool-card {
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
   gap: 0.5rem 0.6rem;
-  padding: 1.4rem 1.5rem;
-  background: linear-gradient(180deg, #15151e 0%, #11111a 100%);
-  border: 1px solid rgba(244, 240, 232, 0.08);
-  border-left: 3px solid var(--c, var(--lime));
-  border-radius: 4px;
+  padding: 1.5rem 1.6rem;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 14px;
   text-decoration: none;
-  color: var(--paper);
-  transition: background 0.18s ease, border-color 0.18s ease,
-    transform 0.15s ease, box-shadow 0.18s ease;
+  color: var(--admin-text);
+  transition: border-color 0.18s ease,
+    transform 0.18s ease, box-shadow 0.18s ease;
   overflow: hidden;
+  box-shadow: var(--admin-shadow);
 }
-.admin-tool-card::before {
+.admin-layout .admin-tool-card::before {
   content: "";
   position: absolute;
   top: 0;
-  right: -50%;
-  width: 90%;
+  left: 0;
+  width: 4px;
   height: 100%;
-  background: radial-gradient(
-    ellipse at top right,
-    color-mix(in srgb, var(--c, var(--lime)), transparent 88%),
-    transparent 70%
-  );
-  pointer-events: none;
+  background: linear-gradient(180deg, var(--g1, #a78bfa) 0%, var(--g2, #7c3aed) 100%);
 }
-.admin-tool-card:hover {
-  background: linear-gradient(180deg, #1a1a24 0%, #14141d 100%);
-  border-color: var(--c, var(--lime));
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 1) { --g1: #a78bfa; --g2: #7c3aed; }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 2) { --g1: #5eead4; --g2: #0d9488; }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 3) { --g1: #fdba74; --g2: #ea580c; }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 4) { --g1: #f0abfc; --g2: #c026d3; }
+.admin-layout .admin-tool-grid > .admin-tool-card:nth-child(5n + 5) { --g1: #bef264; --g2: #65a30d; }
+.admin-layout .admin-tool-card:hover {
+  border-color: var(--admin-border-strong);
   transform: translateY(-3px);
-  box-shadow: 0 16px 40px
-    color-mix(in srgb, var(--c, var(--lime)), transparent 70%);
+  box-shadow: var(--admin-shadow-hover);
 }
-.admin-tool-label {
+.admin-layout .admin-tool-label {
   font-family: var(--display);
-  font-weight: 800;
-  font-size: 1.65rem;
+  font-weight: 700;
+  font-size: 1.4rem;
   letter-spacing: -0.02em;
-  text-transform: lowercase;
-  color: var(--c, var(--lime));
+  text-transform: none;
+  color: var(--admin-text);
   grid-column: 1;
   grid-row: 1;
-  position: relative;
-  z-index: 1;
 }
-.admin-tool-arrow {
+.admin-layout .admin-tool-arrow {
   font-family: var(--display);
-  font-weight: 800;
-  font-size: 1.4rem;
-  color: var(--c, var(--lime));
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--g2, var(--admin-accent));
   grid-column: 2;
   grid-row: 1;
   transition: transform 0.18s ease;
-  position: relative;
-  z-index: 1;
 }
-.admin-tool-card:hover .admin-tool-arrow {
+.admin-layout .admin-tool-card:hover .admin-tool-arrow {
   transform: translateX(6px);
 }
-.admin-tool-description {
-  font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1.65;
-  color: var(--bone);
+.admin-layout .admin-tool-description {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--admin-text-soft);
   grid-column: 1 / -1;
   grid-row: 2;
-  position: relative;
-  z-index: 1;
 }
 
-.admin-home-tables {
+.admin-layout .admin-home-tables {
   margin-top: 2rem;
 }
 
-/* Admin form inputs · clearer focus, taller hit area */
+/* Admin form inputs · white surface, purple focus ring */
 .admin-content .form-input,
 .admin-content .form-select,
 .admin-content input[type="text"],
 .admin-content input[type="number"],
 .admin-content input[type="email"],
 .admin-content input[type="date"],
+.admin-content input[type="search"],
+.admin-content input[type="tel"],
+.admin-content input[type="url"],
+.admin-content input[type="password"],
 .admin-content select,
 .admin-content textarea {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(244, 240, 232, 0.14);
-  color: var(--paper);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border-strong);
+  color: var(--admin-text);
   padding: 0.7rem 0.9rem;
-  font-family: var(--mono);
-  font-size: 13px;
-  border-radius: 3px;
+  font-family: var(--display);
+  font-size: 14px;
+  border-radius: 8px;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .admin-content .form-input:focus,
@@ -1493,17 +1536,55 @@ button { font: inherit; }
 .admin-content select:focus,
 .admin-content textarea:focus {
   outline: none;
-  border-color: var(--lime);
-  box-shadow: 0 0 0 1px var(--lime), 0 0 14px rgba(168, 255, 60, 0.18);
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
 }
 .admin-content .form-label {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--bone);
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--admin-text-soft);
   margin-bottom: 0.4rem;
   display: block;
+}
+
+/* Admin buttons — keep storefront btn classes, just re-skin
+   inside the admin layout so primary becomes purple and
+   secondary becomes a soft outlined chip. */
+.admin-content .btn,
+.admin-layout .btn {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  border-radius: 10px;
+}
+.admin-content .btn-primary,
+.admin-layout .btn-primary {
+  background: linear-gradient(135deg, var(--admin-accent) 0%, var(--admin-accent-soft) 100%);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+}
+.admin-content .btn-primary:hover,
+.admin-layout .btn-primary:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%);
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.32);
+  color: #ffffff;
+}
+.admin-content .btn-secondary,
+.admin-layout .btn-secondary {
+  background: var(--admin-surface);
+  color: var(--admin-accent);
+  border: 1px solid var(--admin-border-strong);
+}
+.admin-content .btn-secondary:hover,
+.admin-layout .btn-secondary:hover {
+  background: var(--admin-accent-tint);
+  color: var(--admin-accent);
+  border-color: var(--admin-accent-soft);
 }
 
 /* =========================================================
@@ -1522,6 +1603,32 @@ button { font: inherit; }
 .alert-success { border-color: var(--lime); color: var(--lime); }
 .alert-info { border-color: var(--cyan); color: var(--cyan); }
 
+/* Admin-scoped alert reskin: soft tinted backgrounds, real readable text */
+.admin-layout .alert {
+  font-family: var(--display);
+  font-size: 14px;
+  letter-spacing: 0;
+  border-radius: 10px;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+}
+.admin-layout .alert-error {
+  background: #fef2f4;
+  border-color: #fecdd3;
+  color: #be123c;
+}
+.admin-layout .alert-success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+.admin-layout .alert-info {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+  color: var(--admin-accent);
+}
+
 /* Misc tailwind-shape helpers used by older pages */
 .text-primary { color: var(--lime) !important; }
 .text-red-600 { color: var(--magenta) !important; }
@@ -1533,6 +1640,19 @@ button { font: inherit; }
 .text-green-800 { color: var(--lime) !important; }
 .text-red-800 { color: var(--magenta) !important; }
 .text-yellow-800 { color: var(--sodium) !important; }
+
+/* Same helpers, re-skinned inside admin so old pages (orders,
+   inventory) get readable status colors against the light bg. */
+.admin-layout .text-primary { color: var(--admin-accent) !important; }
+.admin-layout .text-red-600 { color: #dc2626 !important; }
+.admin-layout .text-green-600 { color: #16a34a !important; }
+.admin-layout .text-gray-600 { color: var(--admin-text-soft) !important; }
+.admin-layout .bg-green-100 { background: #dcfce7 !important; }
+.admin-layout .bg-red-100 { background: #fee2e2 !important; }
+.admin-layout .bg-yellow-100 { background: #fef3c7 !important; }
+.admin-layout .text-green-800 { color: #166534 !important; }
+.admin-layout .text-red-800 { color: #991b1b !important; }
+.admin-layout .text-yellow-800 { color: #92400e !important; }
 
 /* =========================================================
    21. RESPONSIVE

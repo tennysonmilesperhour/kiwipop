@@ -39,15 +39,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   if (loading) {
     return (
       <div className="page-container">
-        <p
-          style={{
-            color: 'var(--bone)',
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-          }}
-        >
-          loading…
-        </p>
+        <p style={{ color: 'var(--bone)' }}>loading…</p>
       </div>
     );
   }
@@ -67,16 +59,8 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className="nav-item"
-                style={
-                  active
-                    ? {
-                        background: 'var(--midnight)',
-                        color: 'var(--lime)',
-                        borderLeft: '2px solid var(--lime)',
-                      }
-                    : undefined
-                }
+                className={`nav-item${active ? ' nav-item-active' : ''}`}
+                aria-current={active ? 'page' : undefined}
               >
                 {item.label}
               </Link>
