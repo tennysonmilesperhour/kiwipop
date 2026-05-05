@@ -15,6 +15,7 @@ import { VersionWatcher } from '@/components/VersionWatcher';
 import { Providers } from './providers';
 import './globals.css';
 import './kp-landing.css';
+import './campaign.css';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
