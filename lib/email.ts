@@ -15,6 +15,8 @@ export interface SendEmailParams {
   to: string;
   subject: string;
   text: string;
+  /** Optional HTML body. When provided, Resend sends a multipart email. */
+  html?: string;
   replyTo?: string;
 }
 
@@ -34,6 +36,7 @@ export async function sendNotificationEmail(params: SendEmailParams): Promise<{
       to: params.to,
       subject: params.subject,
       text: params.text,
+      ...(params.html ? { html: params.html } : {}),
       replyTo: params.replyTo,
     });
     if (error) {
