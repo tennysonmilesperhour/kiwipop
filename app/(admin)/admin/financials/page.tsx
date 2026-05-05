@@ -14,6 +14,50 @@ interface ExpenseRow {
   expense_date: string;
 }
 
+interface FinancialsSummary {
+  stripe: {
+    grossCents: number;
+    refundedCents: number;
+    netCents: number;
+    chargeCount: number;
+    refundedChargeCount: number;
+    earliestChargeMs: number | null;
+    latestChargeMs: number | null;
+    errors: string[];
+  };
+  reconcile: {
+    scanned_sessions: number;
+    matched: number;
+    marked_paid: number;
+    marked_cancelled: number;
+    errors: string[];
+  };
+  db: {
+    paidOrderCents: number;
+    paidOrderCount: number;
+    pendingOrderCents: number;
+    pendingOrderCount: number;
+    cogsCents: number;
+    expensesCents: number;
+    cashDonationCents: number;
+    cashDonations: Array<{
+      id: string;
+      amount_cents: number;
+      donor_name: string | null;
+      note: string | null;
+      received_at: string;
+    }>;
+  };
+  derived: {
+    revenueCents: number;
+    cogsCents: number;
+    expensesCents: number;
+    grossProfitCents: number;
+    netIncomeCents: number;
+  };
+  generatedAt: string;
+}
+
 const EXPENSE_CATEGORIES = [
   'materials',
   'labor',
@@ -38,18 +82,14 @@ const EMPTY_EXPENSE: ExpenseFormState = {
 };
 
 export default function FinancialsPage() {
-  const [stats, setStats] = useState({
-    totalRevenue: 0,
-    totalExpenses: 0,
-    totalCOGS: 0,
-    grossMargin: 0,
-  });
+  const [summary, setSummary] = useState<FinancialsSummary | null>(null);
   const [expenses, setExpenses] = useState<ExpenseRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<ExpenseFormState>(EMPTY_EXPENSE);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
+  const [summaryError, setSummaryError] = useState<string>('');
 
   useEffect(() => {
     fetchFinancials();
@@ -57,45 +97,45 @@ export default function FinancialsPage() {
 
   const fetchFinancials = async () => {
     setLoading(true);
-    const { data: orders } = await supabase
-      .from('orders')
-      .select('total_cents, status')
-      .eq('status', 'paid');
+    setSummaryError('');
 
-    const { data: expenseData } = await supabase
+    const summaryPromise = (async () => {
+      try {
+        const response = await fetch('/api/admin/financials/summary', {
+          cache: 'no-store',
+        });
+        const json = await response.json();
+        if (!response.ok) {
+          throw new Error(json.error ?? 'Failed to load financials');
+        }
+        setSummary(json as FinancialsSummary);
+      } catch (err) {
+        setSummaryError(
+          err instanceof Error ? err.message : 'Failed to load financials',
+        );
+      }
+    })();
+
+    const expensesPromise = supabase
       .from('expenses')
       .select('id, category, amount_cents, description, expense_date')
-      .order('expense_date', { ascending: false });
+      .order('expense_date', { ascending: false })
+      .then(({ data }) => {
+        setExpenses((data as ExpenseRow[]) ?? []);
+      });
 
-    const { data: batches } = await supabase
-      .from('manufacturing_batches')
-      .select('cost_cents, status')
-      .eq('status', 'completed');
-
-    const revenue = (orders ?? []).reduce(
-      (sum, order) => sum + (order.total_cents || 0),
-      0
-    );
-    const batchCosts = (batches ?? []).reduce(
-      (sum, batch) => sum + (batch.cost_cents || 0),
-      0
-    );
-    const totalExpenses = (expenseData ?? []).reduce(
-      (sum, exp) => sum + (exp.amount_cents || 0),
-      0
-    );
-    const totalCOGS = batchCosts;
-    const grossMargin = revenue - totalCOGS - totalExpenses;
-
-    setStats({
-      totalRevenue: revenue,
-      totalExpenses,
-      totalCOGS,
-      grossMargin,
-    });
-    setExpenses((expenseData as ExpenseRow[]) ?? []);
+    await Promise.all([summaryPromise, expensesPromise]);
     setLoading(false);
   };
+
+  const stats = summary
+    ? {
+        totalRevenue: summary.derived.revenueCents,
+        totalExpenses: summary.derived.expensesCents,
+        totalCOGS: summary.derived.cogsCents,
+        grossMargin: summary.derived.netIncomeCents,
+      }
+    : { totalRevenue: 0, totalExpenses: 0, totalCOGS: 0, grossMargin: 0 };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,6 +190,58 @@ export default function FinancialsPage() {
   return (
     <AdminLayout>
       <h1 className="text-3xl font-bold mb-6">Financials</h1>
+
+      {summaryError && (
+        <div className="alert alert-error mb-4">
+          Stripe sync failed: {summaryError}
+        </div>
+      )}
+
+      {summary && (
+        <div className="card mb-6">
+          <h2 className="card-title">Stripe — live</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+            <div>
+              <p className="text-gray-600">Gross collected</p>
+              <p className="text-lg font-bold">
+                {formatCentsToUSD(summary.stripe.grossCents)}
+              </p>
+              <p className="text-xs text-gray-500">
+                {summary.stripe.chargeCount} charge
+                {summary.stripe.chargeCount === 1 ? '' : 's'}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600">Refunded</p>
+              <p className="text-lg font-bold text-red-600">
+                ({formatCentsToUSD(summary.stripe.refundedCents)})
+              </p>
+              <p className="text-xs text-gray-500">
+                {summary.stripe.refundedChargeCount} refund
+                {summary.stripe.refundedChargeCount === 1 ? '' : 's'}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600">Net (Stripe)</p>
+              <p className="text-lg font-bold">
+                {formatCentsToUSD(summary.stripe.netCents)}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600">Cash donations</p>
+              <p className="text-lg font-bold">
+                {formatCentsToUSD(summary.db.cashDonationCents)}
+              </p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-3">
+            auto-reconciled · scanned {summary.reconcile.scanned_sessions} stripe
+            sessions · marked paid {summary.reconcile.marked_paid} · cancelled{' '}
+            {summary.reconcile.marked_cancelled} · generated{' '}
+            {new Date(summary.generatedAt).toLocaleTimeString()}
+          </p>
+        </div>
+      )}
 
       <div className="dashboard-grid mb-6">
         <div className="stat-card">
@@ -243,6 +335,69 @@ export default function FinancialsPage() {
           </div>
         </div>
       </div>
+
+      {summary && (
+        <div className="card mt-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="card-title">Revenue line items</h2>
+            <span className="text-sm text-gray-500">
+              {formatCentsToUSD(summary.derived.revenueCents)} total · stripe
+              net + cash
+            </span>
+          </div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Amount</th>
+                <th>Note</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="font-medium">Stripe — net of refunds</td>
+                <td>{formatCentsToUSD(summary.stripe.netCents)}</td>
+                <td className="text-sm text-gray-600">
+                  {summary.stripe.chargeCount} charge
+                  {summary.stripe.chargeCount === 1 ? '' : 's'}
+                  {summary.stripe.refundedChargeCount > 0
+                    ? ` · ${summary.stripe.refundedChargeCount} refunded`
+                    : ''}
+                </td>
+                <td className="text-sm">
+                  {summary.stripe.earliestChargeMs
+                    ? `${new Date(summary.stripe.earliestChargeMs).toLocaleDateString()} – ${new Date(summary.stripe.latestChargeMs ?? summary.stripe.earliestChargeMs).toLocaleDateString()}`
+                    : '—'}
+                </td>
+              </tr>
+              {summary.db.cashDonations.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="text-sm text-gray-500">
+                    No cash donations logged yet.
+                  </td>
+                </tr>
+              ) : (
+                summary.db.cashDonations.map((c) => (
+                  <tr key={c.id}>
+                    <td className="font-medium">
+                      Cash donation
+                      {c.donor_name ? ` · ${c.donor_name}` : ''}
+                    </td>
+                    <td>{formatCentsToUSD(c.amount_cents)}</td>
+                    <td className="text-sm text-gray-700">
+                      {c.note?.trim() ? c.note : 'cash donation'}
+                    </td>
+                    <td className="text-sm">
+                      {new Date(c.received_at).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <div className="card mt-6">
         <div className="flex justify-between items-center mb-4">

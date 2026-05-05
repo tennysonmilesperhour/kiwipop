@@ -156,6 +156,53 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Marketing list capture: if the customer ticked the opt-in box, upsert
+  // them into email_signups with their first/last name from shipping. Failure
+  // here must NOT block checkout — the order is already paid-pending and the
+  // most important thing is to get them to Stripe.
+  try {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      request.headers.get('x-real-ip') ??
+      null;
+    const userAgent = request.headers.get('user-agent') ?? null;
+    const nowIso = new Date().toISOString();
+
+    if (parsed.marketingOptIn) {
+      await supabaseAdmin.from('email_signups').upsert(
+        {
+          email: parsed.email.toLowerCase(),
+          source: 'checkout',
+          first_name: parsed.shippingAddress.firstName,
+          last_name: parsed.shippingAddress.lastName,
+          marketing_opt_in: true,
+          opted_in_at: nowIso,
+          ip_address: ip,
+          user_agent: userAgent,
+        },
+        { onConflict: 'email' },
+      );
+    } else {
+      // Even without opt-in we record the contact (no marketing_opt_in flag)
+      // so admins can see who has bought without ever subscribing — but only
+      // if they aren't already in the table. Never overwrite an existing
+      // opt-in flag from a prior signup.
+      await supabaseAdmin.from('email_signups').upsert(
+        {
+          email: parsed.email.toLowerCase(),
+          source: 'checkout',
+          first_name: parsed.shippingAddress.firstName,
+          last_name: parsed.shippingAddress.lastName,
+          ip_address: ip,
+          user_agent: userAgent,
+        },
+        { onConflict: 'email', ignoreDuplicates: true },
+      );
+    }
+  } catch (err) {
+    console.error('[checkout] email_signups upsert failed', err);
+  }
+
   const origin =
     process.env.NEXT_PUBLIC_SITE_URL ?? request.nextUrl.origin;
 

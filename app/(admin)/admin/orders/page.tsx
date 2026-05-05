@@ -33,7 +33,7 @@ export default function OrdersPage() {
 
   const handleReconcile = async () => {
     if (reconciling) return;
-    if (!confirm("Pull the last 7 days of Stripe Checkout Sessions and update any pending orders whose payment actually completed? Safe to run repeatedly.")) return;
+    if (!confirm("Pull recent Stripe Checkout Sessions (last 60 days) and update any pending orders whose payment actually completed? Safe to run repeatedly.")) return;
     setReconciling(true);
     setReconcileError('');
     setReconcileResult(null);
@@ -110,10 +110,12 @@ export default function OrdersPage() {
                 lineHeight: 1.5,
               }}
             >
-              pulls the last 7 days of stripe checkout sessions and flips any
+              pulls the last 60 days of stripe checkout sessions and flips any
               order still <code>pending</code> locally that&apos;s actually paid
               (or expired) on stripe. use this when the webhook hasn&apos;t
-              fired but you know money landed.
+              fired but you know money landed. the dashboard + financials
+              pages auto-run this on every visit, so this button is a manual
+              backstop.
             </p>
           </div>
           <button
