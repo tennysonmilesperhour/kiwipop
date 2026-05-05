@@ -30,12 +30,6 @@ interface CampaignPageProps {
 /* ------------------------------------------------------------------ */
 
 const PRESETS = [10, 25, 50, 100, 500];
-const VENMO_HANDLE = 'tennyson-taggart';
-
-function buildVenmoUrl(amount: number): string {
-  const note = encodeURIComponent('kiwi pop launch fundraiser');
-  return `https://venmo.com/u/${VENMO_HANDLE}?txn=pay&amount=${amount}&note=${note}`;
-}
 
 function timeAgo(dateStr: string): string {
   const now = Date.now();
@@ -73,7 +67,6 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
   }, [amount, custom]);
 
   const percent = Math.min(100, snapshot.percent);
-  const venmoUrl = buildVenmoUrl(effectiveAmount);
 
   const handleStripe = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -121,7 +114,6 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
           <span className="cn">舐</span> KIWI POP
         </Link>
         <div className="cp-nav-links">
-          <Link href="/donate">DONATE</Link>
           <Link href="/">SHOP</Link>
         </div>
       </nav>
@@ -316,17 +308,8 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
               >
                 {stripeStatus === 'sending'
                   ? 'STARTING…'
-                  : `DONATE ${formatCentsToUSD(effectiveAmount * 100)} → STRIPE`}
+                  : `DONATE ${formatCentsToUSD(effectiveAmount * 100)}`}
               </button>
-
-              <a
-                className="cp-cta venmo"
-                href={venmoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                VENMO ${effectiveAmount} → @{VENMO_HANDLE.toUpperCase()}
-              </a>
 
               {stripeError && (
                 <p className="cp-error">{stripeError}</p>
@@ -334,8 +317,8 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
             </form>
 
             <p className="cp-fine-print">
-              <strong>stripe:</strong> ~2.9% + 30¢ processing.{' '}
-              <strong>venmo:</strong> no-fee — 100% lands.
+              secure card checkout via stripe · ~2.9% + 30¢ processing fee.
+              donate any amount you like.
             </p>
           </div>
 

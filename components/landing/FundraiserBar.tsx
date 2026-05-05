@@ -36,14 +36,9 @@ export function FundraiserBar({ snapshot }: FundraiserBarProps) {
       </div>
 
       <div className="kp-fr-ctas">
-        <a
-          className="kp-fr-cta primary"
-          href="https://venmo.com/u/tennyson-taggart"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          DONATE → VENMO @TENNYSON-TAGGART
-        </a>
+        <Link className="kp-fr-cta primary" href="/campaign">
+          DONATE · BACK THE LAUNCH →
+        </Link>
         <Link className="kp-fr-cta pink" href="/#shop">
           PRE-ORDER →
         </Link>
@@ -53,7 +48,7 @@ export function FundraiserBar({ snapshot }: FundraiserBarProps) {
       </div>
 
       <div className="kp-fr-flash">
-        <span className="em">VENMO IS LIVE</span> · tap donate to send to <strong>@tennyson-taggart</strong> · every dollar feeds the {formatCentsToUSD(snapshot.goalCents)} launch fundraiser
+        <span className="em">CAMPAIGN IS LIVE</span> · custom-amount card donations via stripe · every dollar feeds the {formatCentsToUSD(snapshot.goalCents)} launch fundraiser
       </div>
     </div>
   );
