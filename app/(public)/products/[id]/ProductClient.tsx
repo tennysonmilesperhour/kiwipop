@@ -419,7 +419,7 @@ export default function ProductClient({ params }: ProductClientProps) {
 
       <div className="card" style={{ marginTop: '1rem' }}>
         <p className="stat-label" style={{ marginBottom: '1.2rem' }}>
-          // six things, doing real work
+          // every ingredient, doing real work
         </p>
         <div
           style={{
