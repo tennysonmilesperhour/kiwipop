@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { queuePostPurchaseSeries } from '@/lib/email-queue';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -88,6 +89,35 @@ async function handleCheckoutSessionCompleted(
   }
 
   await decrementInventoryForOrder(orderId);
+
+  // ---- Post-purchase email series ----
+  // Fire-and-forget: send order confirmation + queue review request.
+  const customerEmail = session.customer_details?.email ?? session.customer_email;
+  if (customerEmail) {
+    // Load order items with product names for the confirmation email
+    const { data: orderItems } = await supabaseAdmin
+      .from('order_items')
+      .select('quantity, price_cents, products(name)')
+      .eq('order_id', orderId);
+
+    const emailItems = (orderItems ?? []).map((item: Record<string, unknown>) => ({
+      name: (item.products as { name: string } | null)?.name ?? 'Kiwi Pop',
+      quantity: item.quantity as number,
+      priceCents: (item.price_cents as number) * (item.quantity as number),
+    }));
+
+    queuePostPurchaseSeries({
+      email: customerEmail,
+      orderId,
+      totalCents: amountTotal ?? 0,
+      items: emailItems,
+    }).catch((err) => {
+      console.error('[stripe-webhook] failed to queue post-purchase emails', {
+        orderId,
+        err,
+      });
+    });
+  }
 }
 
 async function handlePaymentIntentFailed(
