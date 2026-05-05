@@ -139,7 +139,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const cartCount = useCart((s) => s.getTotalItems());
   const [mounted, setMounted] = useState(false);
 
-  const liveFlavors = products.flavors.filter((f) => f.product);
+  const liveFlavors = products.flavors.filter(
+    (f) => f.product && !f.product.preorder_only,
+  );
   const initialFlavorSku = liveFlavors[0]?.sku ?? products.flavors[0]?.sku ?? '';
   const [flavorSku, setFlavorSku] = useState<string>(initialFlavorSku);
   // The flavor row has 5 buttons: the 4 single flavors plus VARIETY.
@@ -913,7 +915,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </h2>
           <p className="zmf-body">
             <span className="zmf-em">kiwi pop is the first functional candy built for the night scene</span>{' '}
-            — where health and partying stop being opposites. younger people are
+            — where health and partying stop being opposites. people are
             waking up and drinking less, festivals are getting more
             wellness-curious, and the night and yoga scenes already overlap.
             this is{' '}
@@ -969,7 +971,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
       {/* Fundraiser bar lives at the bottom now — moved out of the top of the
           page so it doesn't dominate the hero. Sits flush above the footer. */}
-      <FundraiserBar snapshot={fundraiser} varietyHalfOff={products.varietyHalfOff} />
+      <FundraiserBar snapshot={fundraiser} />
 
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
