@@ -78,11 +78,15 @@ export default function CartPage() {
           </div>
           <div className="summary-row">
             <span>shipping</span>
-            <span>at checkout</span>
+            <span>
+              {total >= 4000 ? 'free · over $40' : '$5 standard · US'}
+            </span>
           </div>
           <div className="summary-row summary-total">
             <span>total</span>
-            <span>{formatCentsToUSD(total)}</span>
+            <span>
+              {formatCentsToUSD(total + (total >= 4000 ? 0 : 500))}
+            </span>
           </div>
 
           <Link

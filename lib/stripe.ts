@@ -48,7 +48,29 @@ interface CreateCheckoutSessionParams {
   customerEmail?: string;
   successUrl: string;
   cancelUrl: string;
+  /**
+   * Sum of line items in cents. Used to decide whether to apply a paid
+   * shipping rate vs free-shipping over the threshold. Optional; if
+   * omitted, no shipping_options are attached (current behavior).
+   */
+  subtotalCents?: number;
 }
+
+/**
+ * Stripe Shipping Rate ID for the standard US-domestic option. Pulled
+ * from STRIPE_SHIPPING_RATE_DOMESTIC if set, otherwise falls back to the
+ * production rate created in the Stripe dashboard. Kept in code so a
+ * missing env var doesn't silently disable shipping.
+ */
+const STANDARD_DOMESTIC_SHIPPING_RATE =
+  process.env.STRIPE_SHIPPING_RATE_DOMESTIC ?? 'shr_1TTXRlLMKed5UHTWZHbdtDEM';
+
+/**
+ * Free shipping kicks in once subtotal hits this threshold (matches the
+ * promise on /legal/shipping). Override via FREE_SHIPPING_THRESHOLD_CENTS.
+ */
+const FREE_SHIPPING_THRESHOLD_CENTS =
+  Number(process.env.FREE_SHIPPING_THRESHOLD_CENTS ?? '4000') || 4000;
 
 export async function createCheckoutSession(params: CreateCheckoutSessionParams) {
   const inlineLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
@@ -75,6 +97,18 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
         )
       : inlineLineItems;
 
+  // Shipping: free over the threshold, $5 standard otherwise. Stripe collects
+  // the shipping address so the rate can be applied + so we get a
+  // delivery-grade address attached to the session/payment_intent.
+  const subtotal = params.subtotalCents ?? null;
+  const needsShippingCharge =
+    subtotal !== null && subtotal < FREE_SHIPPING_THRESHOLD_CENTS;
+
+  const shippingOptions: Stripe.Checkout.SessionCreateParams.ShippingOption[] =
+    needsShippingCharge
+      ? [{ shipping_rate: STANDARD_DOMESTIC_SHIPPING_RATE }]
+      : [];
+
   const sessionBase: Omit<Stripe.Checkout.SessionCreateParams, 'line_items'> = {
     mode: 'payment',
     payment_method_types: ['card'],
@@ -85,6 +119,8 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
     payment_intent_data: {
       metadata: { orderId: params.orderId },
     },
+    shipping_address_collection: { allowed_countries: ['US'] },
+    ...(shippingOptions.length > 0 ? { shipping_options: shippingOptions } : {}),
   };
 
   try {

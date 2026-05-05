@@ -65,11 +65,19 @@ async function handleCheckoutSessionCompleted(
       ? session.payment_intent
       : session.payment_intent?.id ?? null;
 
+  // Capture the actual paid amount (subtotal + shipping + any future taxes).
+  // The order row was created with subtotal-only at /api/checkout time, so
+  // overwrite with session.amount_total here so revenue dashboards are
+  // accurate. session.amount_total is already in cents.
+  const amountTotal =
+    typeof session.amount_total === 'number' ? session.amount_total : null;
+
   const { error } = await supabaseAdmin
     .from('orders')
     .update({
       status: 'paid',
       stripe_payment_intent_id: paymentIntentId,
+      ...(amountTotal !== null ? { total_cents: amountTotal } : {}),
       updated_at: new Date().toISOString(),
     })
     .eq('id', orderId);

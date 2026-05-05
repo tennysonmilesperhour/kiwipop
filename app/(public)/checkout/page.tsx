@@ -302,11 +302,15 @@ export default function CheckoutPage() {
             </div>
             <div className="summary-row">
               <span>Shipping:</span>
-              <span>Calculated at next step</span>
+              <span>
+                {total >= 4000 ? 'free · over $40' : '$5 standard · US'}
+              </span>
             </div>
             <div className="summary-row summary-total">
               <span>Total:</span>
-              <span>{formatCentsToUSD(total)}</span>
+              <span>
+                {formatCentsToUSD(total + (total >= 4000 ? 0 : 500))}
+              </span>
             </div>
           </div>
         </div>
