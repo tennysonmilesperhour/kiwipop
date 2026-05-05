@@ -5,7 +5,13 @@
    of the app's tokens / nav / footer styles.
    ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Orbitron:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap");
+/*
+ * Fonts (Space Grotesk, Orbitron, JetBrains Mono) are loaded by
+ * app/layout.tsx via next/font/google so they're self-hosted, preloaded,
+ * and don't render-block. Don't @import from fonts.googleapis.com here.
+ * Noto Serif/Sans SC are not currently used; if they come back,
+ * add them via next/font/google in layout.tsx as well.
+ */
 
 .kp-page {
   /* Foundations */

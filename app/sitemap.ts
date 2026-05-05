@@ -1,11 +1,29 @@
 import type { MetadataRoute } from 'next';
 
-const STATIC_PATHS = ['', '/cart', '/auth/signin', '/auth/signup'] as const;
+// Public, indexable pages only. Transactional surfaces (/cart, /auth/*,
+// /checkout/*) are intentionally omitted — robots.ts disallows them and
+// they don't help search.
+const STATIC_PATHS = [
+  '',
+  '/about',
+  '/find-us',
+  '/variety',
+  '/merch',
+  '/wholesale',
+  '/raffle',
+  '/donate',
+  '/legal/terms',
+  '/legal/privacy',
+  '/legal/shipping',
+  '/legal/refund',
+  '/legal/fda-disclaimer',
+  '/legal/accessibility',
+] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base =
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
-    'http://localhost:3000';
+    'https://www.kiwipop.fun';
 
   const lastModified = new Date();
   const staticEntries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({

@@ -1,13 +1,23 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { JsonLd } from '@/components/JsonLd';
 import { formatCentsToUSD } from '@/lib/format';
+import { buildBreadcrumbLd } from '@/lib/seo';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
+const title = 'wholesale · refreshing club lolli';
+const description =
+  'kiwi pop on your shelf. tiered pricing, low MOQ, festival-ready. apply and we email you back.';
+
 export const metadata: Metadata = {
-  title: 'wholesale · refreshing club lolli',
-  description:
-    'kiwi pop on your shelf. tiered pricing, low MOQ, festival-ready. apply and we email you back.',
+  title,
+  description,
+  alternates: { canonical: '/wholesale' },
+  openGraph: { title: `${title} · kiwi pop`, description, url: '/wholesale', type: 'website' },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
 };
+
+const breadcrumbLd = buildBreadcrumbLd([{ name: 'Wholesale', url: '/wholesale' }]);
 
 export const dynamic = 'force-dynamic';
 
@@ -77,6 +87,7 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
 
   return (
     <div className="page-container">
+      <JsonLd data={breadcrumbLd} />
       <p
         className="hero-tagline"
         style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}

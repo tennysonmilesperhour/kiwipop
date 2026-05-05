@@ -1,11 +1,21 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { JsonLd } from '@/components/JsonLd';
+import { buildBreadcrumbLd } from '@/lib/seo';
+
+const title = 'find us · events + retail';
+const description =
+  'where to find kiwi pop irl. festivals, retail, dms. ships domestic first from salt lake city, utah.';
 
 export const metadata: Metadata = {
-  title: 'find us · events + retail',
-  description:
-    'where to find kiwi pop irl. festivals, retail, dms. ships domestic first.',
+  title,
+  description,
+  alternates: { canonical: '/find-us' },
+  openGraph: { title: `${title} · kiwi pop`, description, url: '/find-us', type: 'website' },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
 };
+
+const breadcrumbLd = buildBreadcrumbLd([{ name: 'Find Us', url: '/find-us' }]);
 
 interface EventRow {
   date: string;
@@ -66,6 +76,7 @@ const STATUS_COLOR: Record<EventRow['status'], string> = {
 export default function FindUsPage() {
   return (
     <div className="page-container">
+      <JsonLd data={breadcrumbLd} />
       <p
         className="hero-tagline"
         style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
