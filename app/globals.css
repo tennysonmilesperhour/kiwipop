@@ -1141,15 +1141,15 @@ button { font: inherit; }
 .btn-full { width: 100%; display: flex; }
 
 /* =========================================================
-   17. ADMIN LAYOUT — cyber-light (Bricolage Grotesque)
-   Near-white page bg with subtle neon tint, white cards with
-   crisp neon left-stripes + colored glow shadows. All accent
-   colors pull from the storefront brand palette (lime, cyan,
-   magenta, ultraviolet, sodium) so admin reads as the same
-   product. Dark, near-black text everywhere on the white
-   surfaces — the neons drive the vibe, the type carries the
-   contrast. Scoped via .admin-layout so the public storefront
-   stays untouched.
+   17. ADMIN LAYOUT — cyber-dark (Bricolage Grotesque)
+   Midnight page bg matching the storefront, near-black cards
+   with crisp neon left-stripes + colored glow shadows. All
+   accent colors pull from the storefront brand palette (lime,
+   cyan, magenta, ultraviolet, sodium) so admin reads as the
+   same product. Light text (paper) drives contrast against
+   the dark surfaces; the neons drive the accents and the
+   key numerals. Scoped via .admin-layout so the public
+   storefront stays untouched.
    ========================================================= */
 .admin-layout {
   /* Brand neons from the storefront — re-aliased so this block
@@ -1161,28 +1161,30 @@ button { font: inherit; }
   --c-sodium: #ffce1f;
   --c-cherry: #ff1f3d;
 
-  --admin-bg-1: #fafbff;
-  --admin-bg-2: #f3f5fc;
-  --admin-bg-3: #f7f3fb;
-  --admin-surface: #ffffff;
-  --admin-surface-soft: #f5f7fb;
-  --admin-border: #e3e6ef;
-  --admin-border-strong: #cdd2e0;
-  --admin-text: #050510;
-  --admin-text-soft: #3b3b52;
-  --admin-text-muted: #6a6a82;
-  --admin-accent: #7b2dff;
-  --admin-accent-soft: #b89aff;
-  --admin-accent-tint: rgba(123, 45, 255, 0.08);
-  --admin-shadow: 0 4px 18px rgba(5, 5, 16, 0.06);
-  --admin-shadow-hover: 0 12px 32px rgba(123, 45, 255, 0.18);
-  /* Darker variants of the brand neons for use as TEXT on white
-     surfaces, where the pure neons would fail contrast. */
-  --c-lime-text: #2d6f00;
-  --c-cyan-text: #006e7a;
-  --c-magenta-text: #c30062;
-  --c-uv-text: #4f1bb3;
-  --c-sodium-text: #806400;
+  --admin-bg-1: #050510;
+  --admin-bg-2: #0c0c1a;
+  --admin-bg-3: #11111e;
+  --admin-surface: #14141f;
+  --admin-surface-soft: #1c1c2a;
+  --admin-surface-elev: #1f1f30;
+  --admin-border: rgba(244, 240, 232, 0.08);
+  --admin-border-strong: rgba(244, 240, 232, 0.18);
+  --admin-text: #f4f0e8;
+  --admin-text-soft: #b4afa1;
+  --admin-text-muted: #7d7a70;
+  --admin-accent: var(--c-lime);
+  --admin-accent-soft: var(--c-cyan);
+  --admin-accent-tint: rgba(168, 255, 60, 0.10);
+  --admin-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+  --admin-shadow-hover: 0 12px 40px rgba(168, 255, 60, 0.18);
+  /* Brand neons read fine as text on dark surfaces — no
+     darkened variants needed; alias them through so existing
+     inline styles using --c-*-text keep working. */
+  --c-lime-text: var(--c-lime);
+  --c-cyan-text: var(--c-cyan);
+  --c-magenta-text: var(--c-magenta);
+  --c-uv-text: #b89aff;
+  --c-sodium-text: var(--c-sodium);
 
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -1235,17 +1237,17 @@ button { font: inherit; }
 }
 .nav-item:hover {
   background: rgba(0, 240, 255, 0.08);
-  color: var(--c-cyan-text);
+  color: var(--c-cyan);
 }
 .nav-item-active {
-  background: var(--admin-text);
+  background: rgba(168, 255, 60, 0.12);
   color: var(--c-lime);
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(168, 255, 60, 0.28),
-    0 0 0 1px var(--c-lime) inset;
+  box-shadow: 0 0 0 1px var(--c-lime) inset,
+    -8px 0 22px -10px var(--c-lime);
 }
 .nav-item-active:hover {
-  background: var(--admin-text);
+  background: rgba(168, 255, 60, 0.16);
   color: var(--c-lime);
 }
 .admin-content { padding: 0; min-width: 0; color: var(--admin-text); }
@@ -1266,7 +1268,7 @@ button { font: inherit; }
 }
 
 /* =========================================================
-   18. TABLES — light surface, lavender header, gentle hover
+   18. TABLES — terminal surface, lifted header, neon hover
    ========================================================= */
 .admin-content .table,
 .admin-layout .table {
@@ -1315,7 +1317,7 @@ button { font: inherit; }
 .admin-layout .bg-light { background: var(--admin-surface-soft) !important; }
 
 /* =========================================================
-   19. CARDS — white surfaces, soft purple shadow
+   19. CARDS — terminal surfaces, lime-tinted hover glow
    ========================================================= */
 .admin-content .card,
 .admin-layout .card {
@@ -1373,15 +1375,17 @@ button { font: inherit; }
 }
 .admin-layout .stat-card {
   position: relative;
-  background: var(--admin-surface);
+  background: linear-gradient(135deg,
+    var(--admin-surface) 0%,
+    var(--admin-surface-elev) 100%);
   border: 1px solid var(--admin-border);
   padding: 1.4rem 1.55rem 1.5rem 1.85rem;
   border-radius: 14px;
   overflow: hidden;
   color: var(--admin-text);
-  box-shadow: 0 4px 18px rgba(5, 5, 16, 0.06),
-    0 0 0 1px var(--g1, var(--c-lime)) inset,
-    -10px 0 24px -10px var(--g1, var(--c-lime));
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45),
+    0 0 0 1px color-mix(in srgb, var(--g1, var(--c-lime)) 28%, transparent) inset,
+    -10px 0 28px -10px var(--g1, var(--c-lime));
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .admin-layout .stat-card::before {
@@ -1392,22 +1396,22 @@ button { font: inherit; }
   width: 5px;
   height: 100%;
   background: var(--g1, var(--c-lime));
-  box-shadow: 0 0 14px var(--g1, var(--c-lime));
+  box-shadow: 0 0 18px var(--g1, var(--c-lime));
 }
 .admin-layout .stat-card::after {
   content: "";
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at top right,
-    color-mix(in srgb, var(--g1, var(--c-lime)) 18%, transparent),
-    transparent 60%);
+    color-mix(in srgb, var(--g1, var(--c-lime)) 16%, transparent),
+    transparent 65%);
   pointer-events: none;
 }
 .admin-layout .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(5, 5, 16, 0.08),
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55),
     0 0 0 1px var(--g1, var(--c-lime)) inset,
-    -14px 0 36px -10px var(--g1, var(--c-lime));
+    -14px 0 40px -8px var(--g1, var(--c-lime));
 }
 /* Brand-neon palette cycle. Each tile gets one accent neon. */
 .admin-layout .dashboard-grid > .stat-card:nth-child(5n + 1) { --g1: var(--c-lime); }
@@ -1417,12 +1421,12 @@ button { font: inherit; }
 .admin-layout .dashboard-grid > .stat-card:nth-child(5n + 5) { --g1: var(--c-uv); }
 .admin-layout .stat-label {
   color: var(--admin-text-soft);
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 11.5px;
-  letter-spacing: 0.06em;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
   position: relative;
   z-index: 1;
 }
@@ -1435,6 +1439,7 @@ button { font: inherit; }
   line-height: 1.05;
   position: relative;
   z-index: 1;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--g1, var(--c-lime)) 35%, transparent);
 }
 
 /* =========================================================
@@ -1553,7 +1558,110 @@ button { font: inherit; }
   margin-top: 2rem;
 }
 
-/* Admin form inputs · white surface, purple focus ring */
+/* =========================================================
+   DASHBOARD RECENCY ROW — today / 7d / 30d / inventory
+   ========================================================= */
+.admin-layout .dashboard-recency {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.1rem;
+  margin-top: -1rem;
+  margin-bottom: 1.75rem;
+}
+.admin-layout .recency-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.admin-layout .recency-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--admin-text-muted);
+  margin: 0;
+}
+.admin-layout .recency-value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--admin-text);
+  letter-spacing: -0.02em;
+  margin: 0.15rem 0 0;
+}
+.admin-layout .recency-meta {
+  font-family: var(--display);
+  font-size: 12px;
+  color: var(--admin-text-soft);
+  margin: 0;
+}
+
+/* =========================================================
+   ATTENTION STRIP — surfaces in-flight ops on the dashboard
+   ========================================================= */
+.admin-layout .attention-strip {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-left: 3px solid var(--c-sodium);
+  border-radius: 12px;
+  padding: 0.95rem 1.1rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: -10px 0 28px -12px var(--c-sodium);
+}
+.admin-layout .attention-strip-title {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-sodium);
+  margin: 0;
+}
+.admin-layout .attention-strip-items {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.admin-layout .attention-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: transparent;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.admin-layout .attention-chip:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateX(2px);
+}
+.admin-layout .attention-chip--warn {
+  color: var(--c-sodium);
+  box-shadow: 0 0 14px -4px var(--c-sodium);
+}
+.admin-layout .attention-chip--alert {
+  color: var(--c-magenta);
+  box-shadow: 0 0 14px -4px var(--c-magenta);
+}
+.admin-layout .attention-chip--info {
+  color: var(--c-cyan);
+  box-shadow: 0 0 14px -4px var(--c-cyan);
+}
+
+/* Admin form inputs · terminal surface, cyan focus ring */
 .admin-content .form-input,
 .admin-content .form-select,
 .admin-content input[type="text"],
@@ -1609,30 +1717,32 @@ button { font: inherit; }
 .admin-content .btn-primary,
 .admin-layout .btn-primary {
   background: var(--c-lime);
-  color: var(--admin-text);
-  border: 1px solid var(--admin-text);
-  box-shadow: 0 4px 14px rgba(168, 255, 60, 0.35);
+  color: var(--admin-bg-1);
+  border: 1px solid var(--c-lime);
+  box-shadow: 0 4px 18px rgba(168, 255, 60, 0.32);
   font-weight: 700;
 }
 .admin-content .btn-primary:hover,
 .admin-layout .btn-primary:hover {
-  background: var(--admin-text);
+  background: transparent;
   color: var(--c-lime);
   border-color: var(--c-lime);
-  box-shadow: 0 6px 20px rgba(168, 255, 60, 0.42);
+  box-shadow: 0 6px 22px rgba(168, 255, 60, 0.5),
+    0 0 0 1px var(--c-lime) inset;
 }
 .admin-content .btn-secondary,
 .admin-layout .btn-secondary {
-  background: var(--admin-surface);
+  background: transparent;
   color: var(--admin-text);
-  border: 1px solid var(--admin-text);
+  border: 1px solid var(--admin-border-strong);
   font-weight: 600;
 }
 .admin-content .btn-secondary:hover,
 .admin-layout .btn-secondary:hover {
-  background: var(--admin-text);
+  background: var(--admin-surface-elev);
   color: var(--c-cyan);
-  border-color: var(--admin-text);
+  border-color: var(--c-cyan);
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.22);
 }
 
 /* =========================================================

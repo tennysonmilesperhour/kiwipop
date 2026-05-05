@@ -29,16 +29,36 @@ interface FinancialsSummary {
     refundedCents: number;
     netCents: number;
     chargeCount: number;
+    refundedChargeCount: number;
   };
   reconcile: {
     marked_paid: number;
     marked_cancelled: number;
   };
+  db: {
+    paidOrderCents: number;
+    paidOrderCount: number;
+    pendingOrderCents: number;
+    pendingOrderCount: number;
+    cogsCents: number;
+    expensesCents: number;
+    cashDonationCents: number;
+  };
   derived: {
     revenueCents: number;
+    cogsCents: number;
+    expensesCents: number;
+    grossProfitCents: number;
     netIncomeCents: number;
   };
   generatedAt: string;
+}
+
+interface ListTotals {
+  total: number;
+  opted_in: number;
+  buyers: number;
+  buyers_opted_in: number;
 }
 
 interface ToolCard {
@@ -141,6 +161,7 @@ export default function AdminDashboard() {
     pendingOrders: 0,
   });
   const [financials, setFinancials] = useState<FinancialsSummary | null>(null);
+  const [listTotals, setListTotals] = useState<ListTotals | null>(null);
 
   // Auto-reconcile + pull live Stripe totals on every dashboard mount. This
   // self-heals any orders the webhook missed and keeps the revenue cards
@@ -148,15 +169,16 @@ export default function AdminDashboard() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      try {
-        const response = await fetch('/api/admin/financials/summary', {
-          cache: 'no-store',
-        });
-        if (!response.ok) return;
-        const json = (await response.json()) as FinancialsSummary;
+      const [summaryResp, listResp] = await Promise.allSettled([
+        fetch('/api/admin/financials/summary', { cache: 'no-store' }),
+        fetch('/api/admin/list', { cache: 'no-store' }),
+      ]);
+      if (cancelled) return;
+
+      if (summaryResp.status === 'fulfilled' && summaryResp.value.ok) {
+        const json = (await summaryResp.value.json()) as FinancialsSummary;
         if (cancelled) return;
         setFinancials(json);
-        // If reconcile flipped any orders, the local orders cache is stale.
         if (
           json.reconcile.marked_paid > 0 ||
           json.reconcile.marked_cancelled > 0
@@ -164,8 +186,12 @@ export default function AdminDashboard() {
           await queryClient.invalidateQueries({ queryKey: ['orders'] });
           await refetchOrders();
         }
-      } catch {
-        // Soft-fail: dashboard still works off DB-only numbers below.
+      }
+
+      if (listResp.status === 'fulfilled' && listResp.value.ok) {
+        const json = (await listResp.value.json()) as { totals: ListTotals };
+        if (cancelled) return;
+        setListTotals(json.totals);
       }
     })();
     return () => {
@@ -205,6 +231,46 @@ export default function AdminDashboard() {
   // to the DB-derived number only if the Stripe call failed.
   const paidRevenueDisplay =
     financials !== null ? financials.stripe.netCents : stats.paidRevenue;
+  const netProfitCents = financials?.derived.netIncomeCents ?? 0;
+  const cashDonationCents = financials?.db.cashDonationCents ?? 0;
+
+  // Recency buckets — split paid orders into today / 7d / 30d so admins
+  // can read momentum at a glance without bouncing to the financials page.
+  const PAID_STATUSES = new Set(['paid', 'shipped', 'completed']);
+  const now = Date.now();
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+  const todayStart = new Date(now);
+  todayStart.setHours(0, 0, 0, 0);
+  const todayStartMs = todayStart.getTime();
+
+  const orderRows = (orders ?? []) as OrderRow[];
+  const paidOrders = orderRows.filter((o) => PAID_STATUSES.has(o.status));
+  const sumIn = (windowMs: number) =>
+    paidOrders
+      .filter((o) => Date.parse(o.created_at) >= now - windowMs)
+      .reduce((s, o) => s + (o.total_cents || 0), 0);
+  const countIn = (windowMs: number) =>
+    paidOrders.filter((o) => Date.parse(o.created_at) >= now - windowMs).length;
+
+  const todayCents = paidOrders
+    .filter((o) => Date.parse(o.created_at) >= todayStartMs)
+    .reduce((s, o) => s + (o.total_cents || 0), 0);
+  const todayCount = paidOrders.filter(
+    (o) => Date.parse(o.created_at) >= todayStartMs,
+  ).length;
+  const sevenDayCents = sumIn(7 * ONE_DAY);
+  const sevenDayCount = countIn(7 * ONE_DAY);
+  const thirtyDayCents = sumIn(30 * ONE_DAY);
+  const thirtyDayCount = countIn(30 * ONE_DAY);
+
+  // Attention strip — highlight things that need an admin's eyes.
+  const productRows = (products ?? []) as ProductRow[];
+  const outOfStock = productRows.filter(
+    (p) => p.in_stock === 0 && !p.preorder_only,
+  );
+  const lowStock = productRows.filter(
+    (p) => p.in_stock > 0 && p.in_stock < 50 && !p.preorder_only,
+  );
 
   return (
     <AdminLayout>
@@ -225,29 +291,124 @@ export default function AdminDashboard() {
             </p>
             <p className="stat-value">{formatCentsToUSD(paidRevenueDisplay)}</p>
             {financials && financials.stripe.refundedCents > 0 ? (
-              <p className="stat-label" style={{ marginTop: '0.25rem' }}>
+              <p className="stat-label" style={{ marginTop: '0.35rem' }}>
                 gross {formatCentsToUSD(financials.stripe.grossCents)} − refunds{' '}
                 {formatCentsToUSD(financials.stripe.refundedCents)}
               </p>
             ) : null}
           </div>
           <div className="stat-card">
-            <p className="stat-label">pending revenue</p>
-            <p className="stat-value">{formatCentsToUSD(stats.pendingRevenue)}</p>
+            <p className="stat-label">net profit</p>
+            <p
+              className="stat-value"
+              style={{
+                color:
+                  netProfitCents >= 0
+                    ? 'var(--c-lime)'
+                    : 'var(--c-magenta)',
+              }}
+            >
+              {formatCentsToUSD(netProfitCents)}
+            </p>
+            <p className="stat-label" style={{ marginTop: '0.35rem' }}>
+              after cogs + expenses
+            </p>
           </div>
           <div className="stat-card">
-            <p className="stat-label">orders (all)</p>
-            <p className="stat-value">{stats.totalOrders}</p>
+            <p className="stat-label">cash donations</p>
+            <p className="stat-value">{formatCentsToUSD(cashDonationCents)}</p>
+            <p className="stat-label" style={{ marginTop: '0.35rem' }}>
+              logged manually
+            </p>
           </div>
           <div className="stat-card">
-            <p className="stat-label">pending orders</p>
-            <p className="stat-value">{stats.pendingOrders}</p>
+            <p className="stat-label">orders (paid · pending)</p>
+            <p className="stat-value">
+              {stats.totalOrders - stats.pendingOrders} ·{' '}
+              <span style={{ color: 'var(--c-sodium)' }}>
+                {stats.pendingOrders}
+              </span>
+            </p>
+            <p className="stat-label" style={{ marginTop: '0.35rem' }}>
+              pending = {formatCentsToUSD(stats.pendingRevenue)} on the table
+            </p>
           </div>
           <div className="stat-card">
-            <p className="stat-label">products live</p>
-            <p className="stat-value">{stats.totalProducts}</p>
+            <p className="stat-label">marketing list</p>
+            <p className="stat-value">
+              {listTotals ? listTotals.opted_in : '—'}{' '}
+              <span style={{ color: 'var(--admin-text-soft)', fontSize: '0.55em' }}>
+                / {listTotals ? listTotals.total : '—'}
+              </span>
+            </p>
+            <p className="stat-label" style={{ marginTop: '0.35rem' }}>
+              opted-in / total contacts
+            </p>
           </div>
         </div>
+
+        <div className="dashboard-recency">
+          <div className="recency-card">
+            <p className="recency-label">today</p>
+            <p className="recency-value">{formatCentsToUSD(todayCents)}</p>
+            <p className="recency-meta">
+              {todayCount} order{todayCount === 1 ? '' : 's'}
+            </p>
+          </div>
+          <div className="recency-card">
+            <p className="recency-label">last 7 days</p>
+            <p className="recency-value">{formatCentsToUSD(sevenDayCents)}</p>
+            <p className="recency-meta">
+              {sevenDayCount} order{sevenDayCount === 1 ? '' : 's'}
+            </p>
+          </div>
+          <div className="recency-card">
+            <p className="recency-label">last 30 days</p>
+            <p className="recency-value">{formatCentsToUSD(thirtyDayCents)}</p>
+            <p className="recency-meta">
+              {thirtyDayCount} order{thirtyDayCount === 1 ? '' : 's'}
+            </p>
+          </div>
+          <div className="recency-card">
+            <p className="recency-label">products live</p>
+            <p className="recency-value">{stats.totalProducts}</p>
+            <p className="recency-meta">
+              {outOfStock.length} out of stock · {lowStock.length} low
+            </p>
+          </div>
+        </div>
+
+        {(stats.pendingOrders > 0 ||
+          outOfStock.length > 0 ||
+          lowStock.length > 0) && (
+          <div className="attention-strip">
+            <p className="attention-strip-title">needs attention</p>
+            <div className="attention-strip-items">
+              {stats.pendingOrders > 0 && (
+                <Link href="/admin/orders" className="attention-chip attention-chip--warn">
+                  {stats.pendingOrders} pending order
+                  {stats.pendingOrders === 1 ? '' : 's'} ›
+                </Link>
+              )}
+              {outOfStock.length > 0 && (
+                <Link
+                  href="/admin/inventory"
+                  className="attention-chip attention-chip--alert"
+                >
+                  {outOfStock.length} out of stock ›
+                </Link>
+              )}
+              {lowStock.length > 0 && (
+                <Link
+                  href="/admin/inventory"
+                  className="attention-chip attention-chip--info"
+                >
+                  {lowStock.length} low stock ›
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
 
         <section className="admin-tools">
           <h2 className="card-title">tools</h2>
@@ -287,25 +448,39 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(orders as OrderRow[]).slice(0, 5).map((order) => (
-                    <tr key={order.id}>
-                      <td className="font-mono text-sm">
-                        {order.id.slice(0, 8)}…
-                      </td>
-                      <td>
-                        <span
-                          className="px-2 py-1 text-xs font-bold rounded"
-                          style={{ background: 'rgba(168,255,60,0.1)' }}
-                        >
-                          {order.status}
-                        </span>
-                      </td>
-                      <td>{formatCentsToUSD(order.total_cents)}</td>
-                      <td className="text-sm">
-                        {new Date(order.created_at).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
+                  {(orders as OrderRow[]).slice(0, 5).map((order) => {
+                    const statusColor =
+                      order.status === 'paid' || order.status === 'completed'
+                        ? 'var(--c-lime)'
+                        : order.status === 'shipped'
+                          ? 'var(--c-cyan)'
+                          : order.status === 'cancelled'
+                            ? 'var(--c-magenta)'
+                            : 'var(--c-sodium)';
+                    return (
+                      <tr key={order.id}>
+                        <td className="font-mono text-sm">
+                          {order.id.slice(0, 8)}…
+                        </td>
+                        <td>
+                          <span
+                            className="px-2 py-1 text-xs font-bold rounded"
+                            style={{
+                              color: statusColor,
+                              background: `color-mix(in srgb, ${statusColor} 12%, transparent)`,
+                              border: `1px solid color-mix(in srgb, ${statusColor} 35%, transparent)`,
+                            }}
+                          >
+                            {order.status}
+                          </span>
+                        </td>
+                        <td>{formatCentsToUSD(order.total_cents)}</td>
+                        <td className="text-sm">
+                          {new Date(order.created_at).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             ) : (
