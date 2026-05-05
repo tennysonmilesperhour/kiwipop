@@ -12,7 +12,6 @@ import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { JsonLd } from '@/components/JsonLd';
 import { FundraiserBar } from './FundraiserBar';
 import { RaffleForm } from './RaffleForm';
-import { EmailPopup } from './EmailPopup';
 
 interface LandingProps {
   products: LandingProducts;
@@ -1033,7 +1032,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>
       </footer>
-      <EmailPopup />
     </div>
   );
 }
