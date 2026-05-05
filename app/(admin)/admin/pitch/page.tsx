@@ -288,12 +288,16 @@ const BRAND_POSITIONING = {
     'we want to support you the way you already are, so you can have fun and feel good doing it sustainably.',
   promiseFraming:
     'intentionally subversive of the optimization industry, which sells inadequacy. kiwi pop sells permission and pleasure.',
+  genre: 'cyberpop',
+  genreFraming:
+    "we're not just launching a product — we're naming a subculture genre. cyberpop: the magical, sensory, post-cynical scene where health and partying stop being opposites. kiwi pop is the first artifact of the genre.",
   weAre: [
     'sensual, magical, enchanted',
     'pre-cynical wonder · willy wonka, but real, not gimmicky',
     'genuinely supportive of who you already are',
     'built for the night scene · expandable to wellness-adjacent communities',
     'a category of one: the magical functional candy',
+    'the founding artifact of a new subculture genre · cyberpop',
   ],
   weAreNot: [
     'not a biohacker optimization product',
@@ -639,6 +643,45 @@ export default function PitchPage() {
           >
             {BRAND_POSITIONING.promiseFraming}
           </p>
+
+          <div
+            style={{
+              padding: '1rem 1.2rem',
+              marginBottom: '1.6rem',
+              border: '1.5px solid var(--lime, #a8ff3c)',
+              background:
+                'linear-gradient(135deg, rgba(168, 255, 60, 0.08) 0%, rgba(255, 26, 140, 0.08) 100%)',
+              borderRadius: 4,
+            }}
+          >
+            <p
+              className="stat-label"
+              style={{
+                marginBottom: '0.4rem',
+                color: 'var(--lime, #a8ff3c)',
+                letterSpacing: '0.22em',
+              }}
+            >
+              // the genre we&apos;re making
+            </p>
+            <p
+              className="pitch-thesis"
+              style={{
+                fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+                marginBottom: '0.6rem',
+                background:
+                  'linear-gradient(95deg, #a8ff3c 0%, #f5ff3d 50%, #ff1a8c 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              {BRAND_POSITIONING.genre}.
+            </p>
+            <p className="pitch-prose" style={{ margin: 0 }}>
+              {BRAND_POSITIONING.genreFraming}
+            </p>
+          </div>
           <div
             style={{
               display: 'grid',
