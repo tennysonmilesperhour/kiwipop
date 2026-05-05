@@ -8,6 +8,7 @@ import {
 } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { PostHogScript } from '@/components/PostHogScript';
 import { JsonLd } from '@/components/JsonLd';
 import { SiteChrome } from '@/components/SiteChrome';
 import { VersionWatcher } from '@/components/VersionWatcher';
@@ -175,6 +176,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </Providers>
         <Analytics />
         <SpeedInsights />
+        <PostHogScript />
       </body>
     </html>
   );

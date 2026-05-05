@@ -12,6 +12,7 @@ import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { JsonLd } from '@/components/JsonLd';
 import { FundraiserBar } from './FundraiserBar';
 import { RaffleForm } from './RaffleForm';
+import { EmailPopup } from './EmailPopup';
 
 interface LandingProps {
   products: LandingProducts;
@@ -137,7 +138,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   // 'flavor' mode → pack-size row shows [1, 6, 20] tiers tied to flavorSku.
   // 'variety' mode → pack-size row shows the [8, 20, 40] variety tiers.
   const [kind, setKind] = useState<'flavor' | 'variety'>('flavor');
-  const [packSize, setPackSize] = useState<number>(20);
+  const [packSize, setPackSize] = useState<number>(1);
   const [qty, setQty] = useState<number>(1);
   const [addState, setAddState] = useState<'idle' | 'added'>('idle');
 
@@ -345,6 +346,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · edible mica glitter swirled inside.
             </span>
           </p>
+          <div className="hero-ctas">
+            <a href="#shop" className="hero-cta-primary">SHOP NOW · FROM $5</a>
+          </div>
         </div>
         <div className="below">
           <div className="scroll">SCROLL TO ENTER</div>
@@ -1021,6 +1025,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>
       </footer>
+      <EmailPopup />
     </div>
   );
 }
