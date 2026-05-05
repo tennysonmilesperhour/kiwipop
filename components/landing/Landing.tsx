@@ -8,6 +8,7 @@ import { formatCentsToUSD } from '@/lib/format';
 import { FLAVOR_IMG, FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
+import { JsonLd } from '@/components/JsonLd';
 import { FundraiserBar } from './FundraiserBar';
 import { RaffleForm } from './RaffleForm';
 
@@ -35,6 +36,49 @@ const FESTIVAL_TICKER = [
   'FREE SHIP $40+',
   'MFD SALT LAKE',
 ];
+
+// FAQ entries surfaced to humans (visible <details>/<summary> below) and
+// to AI / search crawlers via FAQPage JSON-LD. Keep questions phrased the
+// way a real person would ask them — that's what AI search engines extract.
+const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string }> = [
+  {
+    q: 'What is Kiwi Pop?',
+    a: 'Kiwi Pop is a lollipop-shaped party supplement — a functional candy with less than 1 gram of sugar, approximately 35 calories, made with theobromine, kava (750mg), ginseng, B12, magnesium, taurine, and electrolytes. It’s vegan, contains edible mica glitter, and is manufactured in Salt Lake City, Utah.',
+  },
+  {
+    q: 'What ingredients are in Kiwi Pop?',
+    a: 'Each Kiwi Pop contains theobromine, kava (750mg), ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. It’s sweetened with monk fruit and xylitol on an isomalt base.',
+  },
+  {
+    q: 'Is Kiwi Pop vegan?',
+    a: 'Yes, Kiwi Pop is 100% vegan.',
+  },
+  {
+    q: 'How much sugar is in Kiwi Pop?',
+    a: 'Each Kiwi Pop contains less than 1 gram of sugar and approximately 35 calories.',
+  },
+  {
+    q: 'Where is Kiwi Pop made?',
+    a: 'Kiwi Pop is manufactured in small batches in Salt Lake City, Utah.',
+  },
+  {
+    q: 'How much does Kiwi Pop cost?',
+    a: 'A single Kiwi Pop is $5.00. A 6-pack is $25.00 and a 20-pack party pack is $60.00. Free shipping on orders over $40.',
+  },
+];
+
+const FAQ_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a,
+    },
+  })),
+};
 
 // Eight simple neon glyphs, one per functional ingredient slot. Index aligns
 // with the FUNCTIONALS array order in lib/flavors.ts.
@@ -302,6 +346,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                     className={`flav-opt${flavorSku === flavor.sku ? ' on' : ''}`}
                     onClick={() => flavor.product && setFlavorSku(flavor.sku)}
                     disabled={disabled}
+                    aria-label={`select ${flavor.pickerLabel} flavor`}
                     style={{
                       borderLeftColor: flavorSku === flavor.sku ? FLAVOR_DOT_COLOR[flavor.sku] : undefined,
                     }}
@@ -328,6 +373,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                   className={`pack-opt${packSize === pack.size ? ' on' : ''}`}
                   onClick={() => setPackSize(pack.size)}
                   aria-pressed={packSize === pack.size}
+                  aria-label={`select ${pack.label} (${pack.size} pops, ${formatCentsToUSD(pack.priceCents)})`}
                 >
                   <span className="sz">{pack.size}×</span>
                   <span className="pp">{pack.label.toUpperCase()}</span>
@@ -504,11 +550,14 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
         <div className="peak-content">
           <span className="lab">04 · PEAK · 03:47 AM</span>
-          <h1 className="mega">
+          {/* This was an h1; demoted to h2 because the homepage already
+              has a true h1 in the arrival hero. One h1 per page is the
+              SEO rule, plus the section is semantically a sub-heading. */}
+          <h2 className="mega">
             UNTIL
             <br />
             <span className="lm">SUNRISE.</span>
-          </h1>
+          </h2>
           <p className="quote">
             gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick.
           </p>
@@ -557,6 +606,80 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="item"><span className="dot" />KAVA · 750MG / POP</div>
           <div className="item"><span className="dot" />MFD SALT LAKE</div>
           <div className="item"><span className="dot" />DROP 001 · {new Date().getFullYear()}</div>
+        </div>
+      </section>
+
+      {/* ===== ZONE 5b · FAQ ===== */}
+      <section
+        className="zfaq"
+        id="faq"
+        data-screen-label="05c FAQ"
+        style={{
+          padding: 'clamp(48px, 8vw, 96px) clamp(20px, 5vw, 64px)',
+          background: 'var(--ink, #0a0014)',
+          color: 'var(--bone, #f4ecff)',
+          fontFamily: 'var(--mono)',
+        }}
+      >
+        <JsonLd data={FAQ_LD} />
+        <div style={{ maxWidth: 880, margin: '0 auto' }}>
+          <span
+            className="lab"
+            style={{ display: 'inline-block', marginBottom: 16 }}
+          >
+            05c · FAQ
+          </span>
+          <h2
+            style={{
+              fontFamily: 'var(--display)',
+              fontWeight: 800,
+              fontSize: 'clamp(2.2rem, 6vw, 4rem)',
+              letterSpacing: '-0.03em',
+              lineHeight: 1,
+              textTransform: 'lowercase',
+              marginBottom: '1.5rem',
+            }}
+          >
+            asked &amp;
+            <br />
+            <span style={{ color: 'var(--lemon, #f5ff3d)' }}>answered.</span>
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {FAQ_ITEMS.map((item) => (
+              <details
+                key={item.q}
+                style={{
+                  border: '1px solid rgba(244, 236, 255, 0.16)',
+                  borderRadius: 'var(--radius-card, 12px)',
+                  padding: '14px 18px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                }}
+              >
+                <summary
+                  style={{
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    fontSize: 15,
+                    letterSpacing: '0.02em',
+                    listStyle: 'none',
+                    color: 'var(--paper, #f4ecff)',
+                  }}
+                >
+                  {item.q}
+                </summary>
+                <p
+                  style={{
+                    marginTop: 12,
+                    fontSize: 14,
+                    lineHeight: 1.65,
+                    color: 'var(--bone, #c8c0db)',
+                  }}
+                >
+                  {item.a}
+                </p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -610,7 +733,11 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                 inputMode="email"
                 aria-label="email address"
               />
-              <button type="submit" disabled={signupStatus === 'sending' || signupStatus === 'ok'}>
+              <button
+                type="submit"
+                disabled={signupStatus === 'sending' || signupStatus === 'ok'}
+                aria-label="join the kiwi pop email list"
+              >
                 {signupStatus === 'sending' ? 'WAIT…' : signupStatus === 'ok' ? "YOU'RE IN" : 'GET ON THE LIST →'}
               </button>
               {signupMsg ? (

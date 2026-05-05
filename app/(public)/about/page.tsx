@@ -1,16 +1,27 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { JsonLd } from '@/components/JsonLd';
 import { PULL_QUOTES } from '@/lib/flavors';
+import { buildBreadcrumbLd } from '@/lib/seo';
+
+const title = 'about · the story';
+const description =
+  "the founder's voice on why a refreshing club lolli exists. gum and mints just don't hit the way they used to.";
 
 export const metadata: Metadata = {
-  title: 'about · the story',
-  description:
-    "the founder's voice on why a refreshing club lolli exists. gum and mints just don't hit the way they used to.",
+  title,
+  description,
+  alternates: { canonical: '/about' },
+  openGraph: { title: `${title} · kiwi pop`, description, url: '/about', type: 'article' },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
 };
+
+const breadcrumbLd = buildBreadcrumbLd([{ name: 'About', url: '/about' }]);
 
 export default function AboutPage() {
   return (
     <div className="page-container">
+      <JsonLd data={breadcrumbLd} />
       <p
         className="hero-tagline"
         style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}

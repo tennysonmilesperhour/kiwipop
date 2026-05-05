@@ -2,10 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MerchSection } from '@/components/home/MerchSection';
 
+const title = 'merch · launch fundraiser';
+const description =
+  'placeholder merch tees to fund the kiwi pop launch drop. five shirts, every dollar funds production.';
+
 export const metadata: Metadata = {
-  title: 'merch · launch fundraiser',
-  description:
-    'placeholder merch tees to fund the kiwi pop launch drop. five shirts, every dollar funds production.',
+  title,
+  description,
+  alternates: { canonical: '/merch' },
+  openGraph: { title: `${title} · kiwi pop`, description, url: '/merch', type: 'website' },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
 };
 
 export default function MerchPage() {
