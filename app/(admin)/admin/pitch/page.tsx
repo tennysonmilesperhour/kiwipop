@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { formatCentsToUSD } from '@/lib/format';
 
@@ -262,11 +262,133 @@ const PLAN_50K: PitchPlan = {
 
 const PLANS: PitchPlan[] = [PLAN_5K, PLAN_50K];
 
+type ItemKind = 'budget' | 'milestone';
+type Status = 'todo' | 'in_progress' | 'done' | 'blocked';
+
+interface ProgressRow {
+  plan_id: string;
+  item_kind: ItemKind;
+  item_key: string;
+  status: Status;
+  checked: boolean;
+}
+
+function progressKey(plan: string, kind: ItemKind, key: string): string {
+  return `${plan}::${kind}::${key}`;
+}
+
+const STATUS_LABEL: Record<Status, string> = {
+  todo: 'todo',
+  in_progress: 'in progress',
+  done: 'done',
+  blocked: 'blocked',
+};
+
+const STATUS_COLOR: Record<Status, string> = {
+  todo: 'var(--bone)',
+  in_progress: 'var(--sodium, #f5ff3d)',
+  done: 'var(--lime, #a8ff3c)',
+  blocked: 'var(--magenta, #ff2d8a)',
+};
+
 export default function PitchPage() {
   const [planId, setPlanId] = useState<PitchPlan['id']>('seed-5k');
   const plan = PLANS.find((p) => p.id === planId)!;
 
   const totalCents = plan.budget.reduce((sum, l) => sum + l.cents, 0);
+
+  const [progress, setProgress] = useState<Map<string, ProgressRow>>(new Map());
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+  const [pendingKey, setPendingKey] = useState<string | null>(null);
+
+  const reload = useCallback(async () => {
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/pitch-progress');
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'failed to load progress');
+      const rows = (json.rows ?? []) as ProgressRow[];
+      const map = new Map<string, ProgressRow>();
+      for (const r of rows) {
+        map.set(progressKey(r.plan_id, r.item_kind, r.item_key), r);
+      }
+      setProgress(map);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'failed to load progress');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void reload();
+  }, [reload]);
+
+  const updateRow = async (
+    kind: ItemKind,
+    itemKey: string,
+    patch: { checked?: boolean; status?: Status },
+  ) => {
+    const compositeKey = progressKey(planId, kind, itemKey);
+    setPendingKey(compositeKey);
+
+    // Optimistic update
+    const previous = progress.get(compositeKey);
+    const next: ProgressRow = {
+      plan_id: planId,
+      item_kind: kind,
+      item_key: itemKey,
+      status: patch.status ?? previous?.status ?? 'todo',
+      checked: patch.checked ?? previous?.checked ?? false,
+    };
+    const optimistic = new Map(progress);
+    optimistic.set(compositeKey, next);
+    setProgress(optimistic);
+
+    try {
+      const res = await fetch('/api/admin/pitch-progress', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plan_id: planId,
+          item_kind: kind,
+          item_key: itemKey,
+          ...patch,
+        }),
+      });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error ?? 'save failed');
+      }
+    } catch (err) {
+      // Rollback
+      const rolled = new Map(progress);
+      if (previous) rolled.set(compositeKey, previous);
+      else rolled.delete(compositeKey);
+      setProgress(rolled);
+      setError(err instanceof Error ? err.message : 'save failed');
+    } finally {
+      setPendingKey(null);
+    }
+  };
+
+  const budgetProgress = useMemo(() => {
+    const checked = plan.budget.filter((b) => {
+      const row = progress.get(progressKey(plan.id, 'budget', b.label));
+      return row?.checked === true;
+    });
+    return { checked: checked.length, total: plan.budget.length };
+  }, [plan, progress]);
+
+  const milestoneProgress = useMemo(() => {
+    const done = plan.milestones.filter((m) => {
+      const row = progress.get(progressKey(plan.id, 'milestone', m.when));
+      return row?.status === 'done';
+    });
+    return { done: done.length, total: plan.milestones.length };
+  }, [plan, progress]);
 
   return (
     <AdminLayout>
@@ -277,6 +399,33 @@ export default function PitchPage() {
           <p className="pitch-subtitle">
             two budgets, two outcomes. pick the floor.
           </p>
+          {!loading && !error ? (
+            <p
+              className="stat-label"
+              style={{
+                marginTop: '0.5rem',
+                fontSize: 11,
+                color: 'var(--bone)',
+              }}
+            >
+              progress · budget {budgetProgress.checked}/{budgetProgress.total}{' '}
+              · milestones {milestoneProgress.done}/{milestoneProgress.total}{' '}
+              done
+            </p>
+          ) : null}
+          {loading ? (
+            <p className="stat-label" style={{ marginTop: '0.5rem', fontSize: 11 }}>
+              loading progress…
+            </p>
+          ) : null}
+          {error ? (
+            <div
+              className="alert alert-error"
+              style={{ marginTop: '0.5rem', fontSize: 12 }}
+            >
+              {error}
+            </div>
+          ) : null}
         </div>
 
         <div className="pitch-tabs" role="tablist">
@@ -317,6 +466,7 @@ export default function PitchPage() {
           <table className="table pitch-table">
             <thead>
               <tr>
+                <th style={{ width: 36 }}>✓</th>
                 <th>line</th>
                 <th>amount</th>
                 <th>%</th>
@@ -327,8 +477,37 @@ export default function PitchPage() {
               {plan.budget.map((line) => {
                 const pct =
                   totalCents > 0 ? (line.cents / totalCents) * 100 : 0;
+                const compositeKey = progressKey(plan.id, 'budget', line.label);
+                const row = progress.get(compositeKey);
+                const checked = row?.checked ?? false;
+                const busy = pendingKey === compositeKey;
                 return (
-                  <tr key={line.label}>
+                  <tr
+                    key={line.label}
+                    style={{
+                      opacity: checked ? 0.55 : 1,
+                      textDecoration: checked ? 'line-through' : 'none',
+                    }}
+                  >
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(e) =>
+                          updateRow('budget', line.label, {
+                            checked: e.target.checked,
+                          })
+                        }
+                        disabled={busy}
+                        aria-label={`mark ${line.label} done`}
+                        style={{
+                          accentColor: 'var(--lime, #a8ff3c)',
+                          cursor: busy ? 'wait' : 'pointer',
+                          width: 18,
+                          height: 18,
+                        }}
+                      />
+                    </td>
                     <td className="pitch-budget-label">{line.label}</td>
                     <td className="pitch-budget-amount">
                       {formatCentsToUSD(line.cents)}
@@ -350,6 +529,7 @@ export default function PitchPage() {
             </tbody>
             <tfoot>
               <tr>
+                <td />
                 <td>
                   <strong>total</strong>
                 </td>
@@ -372,12 +552,58 @@ export default function PitchPage() {
         <section className="pitch-slide">
           <div className="pitch-slide-tag">/05 milestones</div>
           <ol className="pitch-timeline">
-            {plan.milestones.map((m) => (
-              <li key={m.when}>
-                <span className="pitch-timeline-when">{m.when}</span>
-                <span className="pitch-timeline-what">{m.what}</span>
-              </li>
-            ))}
+            {plan.milestones.map((m) => {
+              const compositeKey = progressKey(plan.id, 'milestone', m.when);
+              const row = progress.get(compositeKey);
+              const status: Status = row?.status ?? 'todo';
+              const busy = pendingKey === compositeKey;
+              return (
+                <li
+                  key={m.when}
+                  style={{
+                    opacity: status === 'done' ? 0.7 : 1,
+                  }}
+                >
+                  <span className="pitch-timeline-when">{m.when}</span>
+                  <span
+                    className="pitch-timeline-what"
+                    style={{
+                      textDecoration: status === 'done' ? 'line-through' : 'none',
+                    }}
+                  >
+                    {m.what}
+                  </span>
+                  <select
+                    value={status}
+                    disabled={busy}
+                    onChange={(e) =>
+                      updateRow('milestone', m.when, {
+                        status: e.target.value as Status,
+                      })
+                    }
+                    aria-label={`status for ${m.when}`}
+                    style={{
+                      marginLeft: 'auto',
+                      padding: '4px 8px',
+                      fontFamily: 'var(--mono)',
+                      fontSize: 11,
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      background: 'rgba(0,0,0,0.45)',
+                      color: STATUS_COLOR[status],
+                      border: `1px solid ${STATUS_COLOR[status]}`,
+                      cursor: busy ? 'wait' : 'pointer',
+                    }}
+                  >
+                    {(Object.keys(STATUS_LABEL) as Status[]).map((s) => (
+                      <option key={s} value={s}>
+                        {STATUS_LABEL[s]}
+                      </option>
+                    ))}
+                  </select>
+                </li>
+              );
+            })}
           </ol>
         </section>
 
