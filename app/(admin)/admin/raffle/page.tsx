@@ -208,7 +208,7 @@ export default function AdminRafflePage() {
               background: 'rgba(168, 255, 60, 0.06)',
             }}
           >
-            <strong style={{ color: 'var(--lime)' }}>NEW WINNER →</strong>{' '}
+            <strong style={{ color: 'var(--c-lime-text)' }}>NEW WINNER →</strong>{' '}
             {justDrawn.name} · {justDrawn.email}
             {justDrawn.social_handle ? ` · ${justDrawn.social_handle}` : ''}
             {justDrawn.phone ? ` · ${justDrawn.phone}` : ''}
@@ -274,7 +274,7 @@ export default function AdminRafflePage() {
                   <td>{new Date(e.created_at).toLocaleString()}</td>
                   <td>
                     {e.is_winner ? (
-                      <span style={{ color: 'var(--lime)' }}>★ WON</span>
+                      <span style={{ color: 'var(--c-lime-text)', fontWeight: 700 }}>★ WON</span>
                     ) : (
                       '—'
                     )}
