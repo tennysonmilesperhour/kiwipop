@@ -133,6 +133,39 @@ const FUNCTIONAL_ICONS = [
   </g>,
 ];
 
+// Founder-story videos. The section auto-renders one row per entry,
+// alternating video on the left/right by index. After the last entry,
+// a "Coming soon" placeholder + email-capture row gets appended on
+// the next side of the alternation. To add a new video: drop a new
+// entry on the end and the placeholder shifts down a stage.
+type FounderVideo = {
+  src: string;
+  label: string;
+  tag: string;
+  titleLines: [string, string];
+  body: string;
+  cta?: string;
+};
+
+const FOUNDER_VIDEOS: FounderVideo[] = [
+  {
+    src: '/videos/kp-reel-1.mp4',
+    label: 'FIRST VIRAL KP REEL',
+    tag: '// the one that did it',
+    titleLines: ['this is how', 'it started.'],
+    body:
+      "one little reel, zero plan, and then the internet absolutely lost it. we did NOT see this coming — but we're running with it full speed.",
+    cta: 'tap play, flip the sound on, scrub around. check it out →',
+  },
+  {
+    src: '/videos/not-ai-just-tennyson.mp4',
+    label: 'COFOUNDER · TENNYSON',
+    tag: '// cofounder · tennyson',
+    titleLines: ['Is my wizard', 'friend AI?'],
+    body: 'nope — just my cofounder Tennyson.',
+  },
+];
+
 export default function Landing({ products, fundraiser }: LandingProps) {
   const router = useRouter();
   const addItem = useCart((s) => s.addItem);
@@ -156,7 +189,33 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const [signupStatus, setSignupStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle');
   const [signupMsg, setSignupMsg] = useState<string>('');
 
+  const [foundersEmail, setFoundersEmail] = useState('');
+  const [foundersStatus, setFoundersStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle');
+  const [foundersMsg, setFoundersMsg] = useState<string>('');
+
   useEffect(() => setMounted(true), []);
+
+  // Reveal each founders-section stage as it scrolls into view. Adds
+  // .is-visible to anything tagged data-journey-stage; the CSS handles
+  // the actual slide+fade transition.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    const stages = document.querySelectorAll<HTMLElement>('[data-journey-stage]');
+    if (stages.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+    );
+    stages.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const selectedFlavor = useMemo(
     () => products.flavors.find((f) => f.sku === flavorSku) ?? products.flavors[0],
@@ -265,6 +324,30 @@ export default function Landing({ products, fundraiser }: LandingProps) {
     } catch (err) {
       setSignupStatus('err');
       setSignupMsg(err instanceof Error ? err.message : 'something broke');
+    }
+  };
+
+  const handleFoundersSignup = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!foundersEmail || foundersStatus === 'sending') return;
+    setFoundersStatus('sending');
+    setFoundersMsg('');
+    try {
+      const response = await fetch('/api/list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: foundersEmail, source: 'founders-journey' }),
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error ?? 'something broke. try again.');
+      }
+      setFoundersStatus('ok');
+      setFoundersMsg("you're in. we'll holler.");
+      setFoundersEmail('');
+    } catch (err) {
+      setFoundersStatus('err');
+      setFoundersMsg(err instanceof Error ? err.message : 'something broke');
     }
   };
 
@@ -545,47 +628,97 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       {/* ===== ZONE 2.5 · FOUNDERS / STORY ===== */}
       <section className="zvid" id="founders" data-screen-label="02b Founders">
         <div className="zvid-head">
-          <span className="zvid-eyebrow">// founders</span>
+          <span className="zvid-eyebrow">// founders · the journey</span>
           <h2 className="zvid-title">
             A story unfolding.
             <br />
             <span className="zvid-grad">Meet our founders.</span>
           </h2>
         </div>
-        <div className="zvid-feature">
-          <ReelPlayer src="/videos/kp-reel-1.mp4" label="FIRST VIRAL KP REEL" />
-          <div className="zvid-copy">
-            <span className="zvid-copy-tag">// the one that did it</span>
-            <h3 className="zvid-copy-h">
-              this is how
-              <br />
-              <span className="zvid-grad">it started.</span>
-            </h3>
-            <p>
-              one little reel, zero plan, and then the internet absolutely lost it. we did NOT see this coming —
-              but we&apos;re running with it full speed.
-            </p>
-            <p className="zvid-copy-cta">
-              tap play, flip the sound on, scrub around. check it out →
-            </p>
-          </div>
-        </div>
 
-        <div className="zvid-feature is-reversed">
-          <div className="zvid-placeholder" aria-label="founder reel placeholder">
-            <span>Coming soon</span>
-          </div>
-          <div className="zvid-copy">
-            <span className="zvid-copy-tag">// cofounder · tennyson</span>
-            <h3 className="zvid-copy-h">
-              Is my wizard
-              <br />
-              <span className="zvid-grad">friend AI?</span>
-            </h3>
-            <p>
-              nope — just my cofounder Tennyson.
-            </p>
-          </div>
+        <div className="zvid-journey">
+          {FOUNDER_VIDEOS.map((video, i) => {
+            const reversed = i % 2 === 1;
+            return (
+              <div
+                key={video.src}
+                className={`zvid-feature${reversed ? ' is-reversed' : ''}`}
+                data-journey-stage
+                data-stage-index={i + 1}
+              >
+                <ReelPlayer src={video.src} label={video.label} />
+                <div className="zvid-copy">
+                  <span className="zvid-copy-tag">{video.tag}</span>
+                  <h3 className="zvid-copy-h">
+                    {video.titleLines[0]}
+                    <br />
+                    <span className="zvid-grad">{video.titleLines[1]}</span>
+                  </h3>
+                  <p>{video.body}</p>
+                  {video.cta ? <p className="zvid-copy-cta">{video.cta}</p> : null}
+                </div>
+              </div>
+            );
+          })}
+
+          {(() => {
+            const placeholderReversed = FOUNDER_VIDEOS.length % 2 === 1;
+            return (
+              <div
+                className={`zvid-feature is-placeholder${placeholderReversed ? ' is-reversed' : ''}`}
+                data-journey-stage
+                data-stage-index={FOUNDER_VIDEOS.length + 1}
+              >
+                <div className="zvid-placeholder" aria-label="next founder reel — coming soon">
+                  <span className="zvid-placeholder-pulse" aria-hidden="true" />
+                  <span className="zvid-placeholder-label">New video coming soon</span>
+                  <span className="zvid-placeholder-sub" aria-hidden="true">// next stop</span>
+                </div>
+                <div className="zvid-emailcap">
+                  <span className="zvid-copy-tag">// stay in the loop</span>
+                  <h3 className="zvid-copy-h">
+                    don&apos;t miss the
+                    <br />
+                    <span className="zvid-grad">next chapter.</span>
+                  </h3>
+                  <p>
+                    we&apos;re posting new videos as the journey unfolds — drops, founder voice notes, festival moments. drop your email and we&apos;ll ping you when the next one&apos;s live.
+                  </p>
+                  <form className="zvid-emailcap-form" onSubmit={handleFoundersSignup}>
+                    <input
+                      type="email"
+                      placeholder="your email · all lowercase"
+                      value={foundersEmail}
+                      onChange={(e) => setFoundersEmail(e.target.value)}
+                      required
+                      disabled={foundersStatus === 'sending' || foundersStatus === 'ok'}
+                      autoComplete="email"
+                      inputMode="email"
+                      aria-label="email address for new-video updates"
+                    />
+                    <button
+                      type="submit"
+                      disabled={foundersStatus === 'sending' || foundersStatus === 'ok'}
+                      aria-label="get notified about new founder videos"
+                    >
+                      {foundersStatus === 'sending'
+                        ? 'WAIT…'
+                        : foundersStatus === 'ok'
+                          ? "YOU'RE IN"
+                          : 'TELL ME WHEN →'}
+                    </button>
+                    {foundersMsg ? (
+                      <span
+                        className={`zvid-emailcap-msg ${foundersStatus === 'ok' ? 'ok' : foundersStatus === 'err' ? 'err' : ''}`}
+                      >
+                        {foundersMsg}
+                      </span>
+                    ) : null}
+                  </form>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
 
