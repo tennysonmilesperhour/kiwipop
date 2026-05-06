@@ -69,6 +69,48 @@ export default function PrivacyPage() {
           retargeting pixels or advertising trackers.
         </p>
 
+        <h2>third-party service providers</h2>
+        <p>
+          we share data only with service providers necessary to operate the
+          business:
+        </p>
+        <ul>
+          <li><strong>stripe</strong> — payment processing (PCI-DSS compliant)</li>
+          <li><strong>supabase</strong> — database and authentication</li>
+          <li><strong>vercel</strong> — hosting and analytics</li>
+          <li><strong>resend</strong> — transactional email</li>
+          <li><strong>usps / shipping carriers</strong> — order fulfillment</li>
+        </ul>
+        <p>
+          these providers are contractually bound to use your data only for
+          the services they provide to us and to maintain appropriate
+          security measures.
+        </p>
+
+        <h2>data retention</h2>
+        <p>
+          we retain your personal information for as long as necessary to
+          fulfill the purposes described in this policy:
+        </p>
+        <ul>
+          <li>order data — 7 years (tax and legal compliance)</li>
+          <li>email list data — until you unsubscribe</li>
+          <li>analytics data — 26 months (aggregated)</li>
+        </ul>
+        <p>
+          you can request deletion at any time; we&apos;ll delete what we
+          legally can and tell you what we have to keep and why.
+        </p>
+
+        <h2>data security</h2>
+        <p>
+          we implement industry-standard security measures including HTTPS
+          encryption, secure authentication, and access controls. payment
+          data is handled entirely by stripe and never touches our servers.
+          no system is 100% secure — if we ever experience a breach affecting
+          your data, we&apos;ll notify you as required by law.
+        </p>
+
         <h2>california residents (CCPA / CPRA)</h2>
         <p>
           we don&apos;t sell or share personal information for cross-context
@@ -102,9 +144,38 @@ export default function PrivacyPage() {
           <li>opt out of analytics</li>
         </ul>
 
+        <h2>do not track</h2>
+        <p>
+          our site does not respond to &ldquo;do not track&rdquo; browser
+          signals because there&apos;s no industry standard for what that
+          means. however, we don&apos;t track you across other sites anyway.
+        </p>
+
+        <h2>international users</h2>
+        <p>
+          we currently ship only within the united states. if you access the
+          site from outside the US, your data will be transferred to and
+          processed in the united states, which may have different data
+          protection laws than your jurisdiction. by using the site, you
+          consent to this transfer.
+        </p>
+
+        <h2>changes to this policy</h2>
+        <p>
+          we may update this privacy policy periodically. the &ldquo;last
+          updated&rdquo; date at the top reflects the most recent revision.
+          continued use of the site after changes constitutes acceptance.
+          material changes will be communicated via email to customers with
+          orders in the past 12 months.
+        </p>
+
         <h2>contact</h2>
         <p>
-          questions: <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>
+          questions about this privacy policy or your data:{' '}
+          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>
+        </p>
+        <p>
+          mailing address: kiwi pop, salt lake city, utah, USA
         </p>
       </div>
 
