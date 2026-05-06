@@ -9,7 +9,7 @@ This repo holds the **kiwi pop** webapp — storefront, admin cockpit, financial
 
 ## What kiwi pop is
 
-A functional lollipop. Low-sugar hard candy (isomalt + xylitol base, **<1g of sugar per pop**), edible mica glitter swirled through the middle, and a real functional payload — theobromine, instant kava, ginseng, magnesium glycinate, taurine, B12, electrolytes, kiwi powder, spirulina. **~35 cal per pop (~9g net digestible carbs).** Sweetened with monk fruit extract and xylitol.
+A functional lollipop. Low-sugar hard candy (isomalt + xylitol base, **<1g of sugar per pop**), edible mica glitter swirled through the middle, and a real functional payload — theobromine, ginseng, magnesium glycinate, taurine, B12, electrolytes, kiwi powder, spirulina. **~35 cal per pop (~9g net digestible carbs).** Sweetened with monk fruit extract and xylitol.
 
 Positioned for the rave / festival / party scene as a "candy that does something" — built to occupy a structural gap in the functional-confectionery market currently dominated by calm, pastel, wellness-coded brands.
 
@@ -129,9 +129,9 @@ Kiwi pop is a **<1g of sugar, vegan, functional lollipop** at ~35 calories per p
 - **Monk fruit extract** — the high-intensity sweetener finish, rounds the xylitol
 - **Edible mica glitter** swirled through the center — the shimmer
 - **Kiwi powder** (1g) + a touch of coconut oil for body
-- **Functional payload:** theobromine (175mg), instant kava (0.75g), ginseng (150mg), magnesium glycinate (300mg), taurine (250mg), B12 methylcobalamin (1mg), electrolyte blend (250mg), spirulina (125mg), citric acid (200mg)
+- **Functional payload:** theobromine (175mg), ginseng (150mg), magnesium glycinate (300mg), taurine (250mg), B12 methylcobalamin (1mg), electrolyte blend (250mg), spirulina (125mg), citric acid (200mg)
 
-The functional payload is the thing the category doesn't have. Wellness candy is calm and beige. Energy candy is loud and chemical. Kiwi pop is a small private pleasure with real ingredients doing real things — kava-relaxed, theobromine-lifted, hydrated, glittery.
+The functional payload is the thing the category doesn't have. Wellness candy is calm and beige. Energy candy is loud and chemical. Kiwi pop is a small private pleasure with real ingredients doing real things — theobromine-lifted, ginseng-steady, hydrated, glittery.
 
 ---
 
@@ -241,7 +241,7 @@ The direct sensual register works in casual social formats. On the website it ge
 
 ### Customer voices
 
-Floor 3 (basement) features real-style comment pull-quotes. The featured one is **"kava in a lollipop. GENIUS."** — a position statement someone wrote for free in the comments. Replace these with real attributed comments as they come in.
+Floor 3 (basement) features real-style comment pull-quotes. Replace these with real attributed comments as they come in.
 
 The international demand callout on Floor 4 references actual interest from Austria, Australia, and the UK. Update with real specifics as they firm up.
 
@@ -282,7 +282,7 @@ Total monthly cost while small: **$0–$25/month.**
 **Admin cockpit (private):**
 - Dashboard — today's orders, current inventory, this drop's burn rate, cash position
 - Orders — every order, status, fulfillment, refunds
-- Inventory — finished pops *and* raw ingredients (isomalt, xylitol, monk fruit extract, coconut oil, kiwi powder, theobromine, instant kava, ginseng, magnesium glycinate, taurine, B12 methylcobalamin, electrolyte blend, spirulina, citric acid, mica, wrappers, sticks)
+- Inventory — finished pops *and* raw ingredients (isomalt, xylitol, monk fruit extract, coconut oil, kiwi powder, theobromine, ginseng, magnesium glycinate, taurine, B12 methylcobalamin, electrolyte blend, spirulina, citric acid, mica, wrappers, sticks)
 - Drops — schedule a drop, set quantity caps, set go-live date, write copy, set color story
 - Customers — full list with order count, lifetime value, last order date
 - Financials — live P&L, cost-per-pop, margin per flavor, break-even quantities, runway

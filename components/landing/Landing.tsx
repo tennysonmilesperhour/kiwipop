@@ -45,11 +45,11 @@ const FESTIVAL_TICKER = [
 const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string }> = [
   {
     q: 'What is Kiwi Pop?',
-    a: 'Kiwi Pop is a lollipop-shaped party supplement — a functional candy with less than 1 gram of sugar, approximately 35 calories, made with theobromine, kava (750mg), ginseng, B12, magnesium, taurine, and electrolytes. It is sweetened with xylitol (tooth-friendly, no insulin spike) and a touch of monk fruit on an isomalt base. Vegan, contains edible mica glitter, and manufactured in Salt Lake City, Utah.',
+    a: 'Kiwi Pop is a lollipop-shaped party supplement — a functional candy with less than 1 gram of sugar, approximately 35 calories, made with theobromine, ginseng, B12, magnesium, taurine, and electrolytes. It is sweetened with xylitol (tooth-friendly, no insulin spike) and a touch of monk fruit on an isomalt base. Vegan, contains edible mica glitter, and manufactured in Salt Lake City, Utah.',
   },
   {
     q: 'What ingredients are in Kiwi Pop?',
-    a: 'Each Kiwi Pop contains theobromine, kava (750mg), ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. It is sweetened primarily with xylitol — a tooth-friendly, low-glycemic sugar alcohol that starves cavity-causing bacteria and does not spike blood sugar — plus a touch of monk fruit extract on an isomalt base.',
+    a: 'Each Kiwi Pop contains theobromine, ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. It is sweetened primarily with xylitol — a tooth-friendly, low-glycemic sugar alcohol that starves cavity-causing bacteria and does not spike blood sugar — plus a touch of monk fruit extract on an isomalt base.',
   },
   {
     q: 'Why does Kiwi Pop use xylitol?',
@@ -93,11 +93,6 @@ const FUNCTIONAL_ICONS = [
   <g key="i0">
     <rect x="5" y="5" width="14" height="14" rx="1" />
     <path d="M9 5v14M14 5v14M5 9h14M5 14h14" />
-  </g>,
-  // kava — calm wave
-  <g key="i1">
-    <path d="M3 14c2-3 4-3 6 0s4 3 6 0 4-3 6 0" />
-    <path d="M3 9c2-3 4-3 6 0s4 3 6 0 4-3 6 0" opacity="0.6" />
   </g>,
   // ginseng — root
   <g key="i2">
@@ -356,7 +351,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">refreshing club lolli.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · theobromine + kava + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
+              &lt;1g of sugar · vegan · ~35 cal · theobromine + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
@@ -537,7 +532,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="item"><span className="dot" />&lt;1G SUGAR</span>
               <span className="item"><span className="dot" />~35 CAL</span>
               <span className="item"><span className="dot" />VEGAN</span>
-              <span className="item"><span className="dot" />KAVA + THEOBROMINE</span>
+              <span className="item"><span className="dot" />THEOBROMINE + GINSENG</span>
             </div>
           </div>
         </div>
@@ -735,7 +730,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="lab-band">
           <div className="item"><span className="dot" />&lt;1G SUGAR · ~35 CAL</div>
           <div className="item"><span className="dot" />VEGAN · GLUTEN FREE</div>
-          <div className="item"><span className="dot" />KAVA · 750MG / POP</div>
           <div className="item"><span className="dot" />MFD SALT LAKE</div>
           <div className="item"><span className="dot" />DROP 001 · {new Date().getFullYear()}</div>
         </div>
@@ -991,7 +985,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="pk">PARTY SUPPLEMENTs.</span>
           </h2>
           <p className="lede">
-            <span className="em">theobromine, kava, ginseng, b12, magnesium, taurine, electrolytes, xylitol.</span>{' '}
+            <span className="em">theobromine, ginseng, b12, magnesium, taurine, electrolytes, xylitol.</span>{' '}
             measured by gram, not by vibe. same payload, every pop.
           </p>
           <div className="ings">
@@ -1079,7 +1073,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/accessibility">accessibility</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT, NURSING, OR ANYONE WITH LIVER CONDITIONS SHOULD NOT CONSUME — KIWI POP CONTAINS KAVA. CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS KAVA, THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> KAVA RESTRICTED IN SOME JURISDICTIONS — KNOW YOUR LOCAL LAW. CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>

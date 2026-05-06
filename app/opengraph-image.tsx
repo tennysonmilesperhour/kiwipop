@@ -78,7 +78,7 @@ export default function OGImage() {
               letterSpacing: '0.06em',
             }}
           >
-            kava · theobromine · ginseng · b12 · magnesium · taurine
+            theobromine · ginseng · b12 · magnesium · taurine · electrolytes
           </div>
         </div>
 

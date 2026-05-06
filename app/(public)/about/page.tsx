@@ -64,7 +64,7 @@ export default function AboutPage() {
           <p>
             so i made one. about thirty-five calories. less than a gram of
             sugar. edible mica glitter swirled through so it catches
-            light when you lick it. theobromine, kava, ginseng, b12,
+            light when you lick it. theobromine, ginseng, b12,
             magnesium, taurine, electrolytes — the functional payload —
             measured by gram, not by vibe. xylitol does the sweet —
             tooth-friendly, low-glycemic, no insulin spike — with a touch

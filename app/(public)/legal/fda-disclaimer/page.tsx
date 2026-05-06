@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'fda disclaimer + ingredient safety',
   description:
-    'fda dietary supplement disclaimer, kava advisory, sugar-alcohol notice, allergen and prop-65 disclosures.',
+    'fda dietary supplement disclaimer, sugar-alcohol notice, allergen and prop-65 disclosures.',
 };
 
 export default function FdaDisclaimerPage() {
@@ -36,32 +36,11 @@ export default function FdaDisclaimerPage() {
         <ul>
           <li>anyone under 18</li>
           <li>anyone pregnant or nursing</li>
-          <li>anyone with liver disease, liver dysfunction, or a history of
-              liver problems (kava advisory — see below)</li>
-          <li>anyone on prescription medication, especially benzodiazepines,
-              alcohol, sedatives, or anything metabolized by the liver</li>
+          <li>anyone on prescription medication that may interact with the
+              functional ingredients listed below</li>
           <li>anyone with a sensitivity to sugar alcohols (isomalt, xylitol)
               that causes GI distress</li>
         </ul>
-
-        <h2>kava advisory</h2>
-        <p>
-          kiwi pop contains <strong>kava</strong> (piper methysticum,
-          0.75 g per pop). the FDA has issued a consumer advisory about
-          kava-containing products and a rare association with severe
-          liver injury. do not consume kava if you have liver disease,
-          liver dysfunction, or a history of liver problems. do not combine
-          with alcohol, benzodiazepines, sedatives, or hepatotoxic
-          medications. discontinue use and consult a doctor if you experience
-          jaundice, dark urine, fatigue, or right-upper-quadrant abdominal
-          pain.
-        </p>
-        <p>
-          kava sales and possession are restricted, regulated, or prohibited
-          in some jurisdictions. you are responsible for knowing your local
-          law. we ship domestic US only — we may decline orders to states
-          that restrict kava.
-        </p>
 
         <h2>sugar alcohols</h2>
         <p>
@@ -82,7 +61,6 @@ export default function FdaDisclaimerPage() {
         <h2>functional ingredients · per pop</h2>
         <ul>
           <li>theobromine — 175 mg</li>
-          <li>kava (instant) — 0.75 g</li>
           <li>ginseng — 150 mg</li>
           <li>magnesium glycinate — 300 mg</li>
           <li>taurine — 250 mg</li>
