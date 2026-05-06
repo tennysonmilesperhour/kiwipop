@@ -1716,6 +1716,64 @@ button { font: inherit; }
   font-size: 11px;
 }
 
+/* Bulk action bar — sticky toolbar that pops in when 1+ rows are
+   selected on the to-fulfill tab. */
+.admin-layout .orders-bulk-bar {
+  position: sticky;
+  top: 12px;
+  z-index: 30;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: var(--admin-surface-elev);
+  border: 1px solid var(--c-lime);
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--c-lime) inset,
+    -10px 0 30px -10px var(--c-lime);
+}
+.admin-layout .orders-bulk-bar-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--admin-text);
+}
+.admin-layout .orders-bulk-bar-count strong {
+  color: var(--c-lime);
+}
+.admin-layout .orders-bulk-bar-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.admin-layout .orders-bulk-bar-clear {
+  background: transparent;
+  border: 0;
+  color: var(--admin-text-soft);
+  font-family: var(--display);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0.5rem 0.6rem;
+}
+.admin-layout .orders-bulk-bar-clear:hover {
+  color: var(--c-magenta);
+}
+
+/* Denser row + checkbox styling */
+.admin-layout .orders-table tbody tr.is-selected {
+  background: rgba(168, 255, 60, 0.06);
+  box-shadow: inset 3px 0 0 var(--c-lime);
+}
+.admin-layout .orders-table input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: var(--c-lime);
+}
+
 .admin-layout .orders-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1739,10 +1797,39 @@ button { font: inherit; }
     0 0 0 1px var(--c-lime) inset,
     -10px 0 40px -8px var(--c-lime);
 }
-.admin-layout .orders-modal-close {
+.admin-layout .orders-modal-nav {
   position: absolute;
   top: 0.7rem;
   right: 0.95rem;
+  display: flex;
+  gap: 6px;
+  z-index: 1;
+}
+.admin-layout .orders-modal-nav-btn {
+  background: transparent;
+  border: 1px solid var(--admin-border-strong);
+  color: var(--admin-text);
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.admin-layout .orders-modal-nav-btn:hover:not(:disabled) {
+  border-color: var(--c-cyan);
+  color: var(--c-cyan);
+}
+.admin-layout .orders-modal-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.admin-layout .orders-modal-close {
+  position: static;
   background: transparent;
   border: 1px solid var(--admin-border-strong);
   color: var(--admin-text);

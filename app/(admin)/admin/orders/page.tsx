@@ -54,6 +54,22 @@ interface ReconcileSummary {
   }>;
 }
 
+interface BulkLabelResult {
+  orderId: string;
+  ok: boolean;
+  trackingNumber?: string;
+  rateCents?: number;
+  error?: string;
+  reused?: boolean;
+}
+
+interface BulkLabelResponse {
+  results: BulkLabelResult[];
+  pdfB64: string | null;
+  succeeded: number;
+  failed: number;
+}
+
 type SectionKey =
   | 'to_fulfill'
   | 'shipped'
@@ -89,6 +105,8 @@ const SECTION_COLORS: Record<SectionKey, string> = {
   cancelled: 'var(--admin-text-soft)',
 };
 
+const SECTION_STORAGE_KEY = 'kp-admin-orders-section';
+
 function categorize(o: OrderRow): SectionKey {
   if (o.shipping_address?.kind === 'donation') return 'donations';
   if (o.status === 'pending') return 'pending';
@@ -101,10 +119,35 @@ function categorize(o: OrderRow): SectionKey {
 
 function fullName(addr: ShippingAddress | null | undefined): string {
   if (!addr) return '';
-  if (addr.kind === 'donation') {
-    return addr.donorName?.trim() || '';
-  }
+  if (addr.kind === 'donation') return addr.donorName?.trim() || '';
   return [addr.firstName, addr.lastName].filter(Boolean).join(' ').trim();
+}
+
+function ageLabel(iso: string): string {
+  const ms = Date.now() - Date.parse(iso);
+  const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+  if (days >= 1) return `${days}d`;
+  const hrs = Math.floor(ms / (60 * 60 * 1000));
+  if (hrs >= 1) return `${hrs}h`;
+  const mins = Math.max(1, Math.floor(ms / 60_000));
+  return `${mins}m`;
+}
+
+function downloadBase64Pdf(b64: string, filename: string) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+    a.remove();
+  }, 200);
 }
 
 export default function OrdersPage() {
@@ -113,11 +156,46 @@ export default function OrdersPage() {
 
   const [section, setSection] = useState<SectionKey>('to_fulfill');
   const [modalOrderId, setModalOrderId] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const [reconciling, setReconciling] = useState(false);
   const [reconcileResult, setReconcileResult] =
     useState<ReconcileSummary | null>(null);
   const [reconcileError, setReconcileError] = useState<string>('');
+
+  const [bulkBusy, setBulkBusy] = useState<
+    'labels' | 'shipped' | 'completed' | null
+  >(null);
+  const [bulkResult, setBulkResult] = useState<BulkLabelResponse | null>(null);
+  const [bulkError, setBulkError] = useState<string>('');
+
+  // Restore last-active section from localStorage so admins land where they
+  // left off (usually 'to_fulfill').
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(SECTION_STORAGE_KEY);
+      if (
+        stored &&
+        (SECTION_ORDER as string[]).includes(stored)
+      ) {
+        setSection(stored as SectionKey);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SECTION_STORAGE_KEY, section);
+    } catch {
+      // ignore
+    }
+    // Selection only makes sense within the current section; clear when
+    // jumping tabs.
+    setSelected(new Set());
+    setBulkResult(null);
+    setBulkError('');
+  }, [section]);
 
   const grouped = useMemo(() => {
     const buckets: Record<SectionKey, OrderRow[]> = {
@@ -131,8 +209,30 @@ export default function OrdersPage() {
     ((orders ?? []) as OrderRow[]).forEach((o) => {
       buckets[categorize(o)].push(o);
     });
+    // FIFO on to_fulfill (oldest first — that's the order to ship them).
+    buckets.to_fulfill.sort(
+      (a, b) => Date.parse(a.created_at) - Date.parse(b.created_at),
+    );
     return buckets;
   }, [orders]);
+
+  const sectionOrders = grouped[section];
+  const showCheckboxes = section === 'to_fulfill';
+
+  const toggleOne = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+  const toggleAll = () => {
+    setSelected((prev) => {
+      if (prev.size === sectionOrders.length) return new Set();
+      return new Set(sectionOrders.map((o) => o.id));
+    });
+  };
 
   const handleReconcile = async () => {
     if (reconciling) return;
@@ -151,9 +251,7 @@ export default function OrdersPage() {
         headers: { 'Content-Type': 'application/json' },
       });
       const json = await response.json();
-      if (!response.ok) {
-        throw new Error(json.error ?? 'reconcile failed');
-      }
+      if (!response.ok) throw new Error(json.error ?? 'reconcile failed');
       setReconcileResult(json.summary as ReconcileSummary);
       await refetch();
       await queryClient.invalidateQueries({ queryKey: ['orders'] });
@@ -164,7 +262,86 @@ export default function OrdersPage() {
     }
   };
 
-  const sectionOrders = grouped[section];
+  const handleBulkLabels = async () => {
+    if (bulkBusy || selected.size === 0) return;
+    setBulkBusy('labels');
+    setBulkError('');
+    setBulkResult(null);
+    try {
+      const response = await fetch('/api/admin/orders/bulk-buy-labels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderIds: [...selected] }),
+      });
+      const json = (await response.json()) as
+        | BulkLabelResponse
+        | { error: string };
+      if (!response.ok) {
+        throw new Error(
+          'error' in json ? json.error : 'bulk-buy-labels failed',
+        );
+      }
+      const result = json as BulkLabelResponse;
+      setBulkResult(result);
+      if (result.pdfB64) {
+        const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+        downloadBase64Pdf(result.pdfB64, `kiwipop-labels-${stamp}.pdf`);
+      }
+      await refetch();
+      await queryClient.invalidateQueries({ queryKey: ['orders'] });
+      setSelected(new Set());
+    } catch (err) {
+      setBulkError(err instanceof Error ? err.message : 'bulk-buy-labels failed');
+    } finally {
+      setBulkBusy(null);
+    }
+  };
+
+  const handleBulkStatus = async (status: 'shipped' | 'completed') => {
+    if (bulkBusy || selected.size === 0) return;
+    setBulkBusy(status);
+    setBulkError('');
+    setBulkResult(null);
+    try {
+      const response = await fetch('/api/admin/orders/bulk-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderIds: [...selected], status }),
+      });
+      const json = await response.json();
+      if (!response.ok) throw new Error(json.error ?? 'bulk status failed');
+      await refetch();
+      await queryClient.invalidateQueries({ queryKey: ['orders'] });
+      setSelected(new Set());
+    } catch (err) {
+      setBulkError(err instanceof Error ? err.message : 'bulk status failed');
+    } finally {
+      setBulkBusy(null);
+    }
+  };
+
+  const handlePackingSlips = () => {
+    if (selected.size === 0) return;
+    const ids = [...selected].join(',');
+    window.open(
+      `/api/admin/orders/packing-slips?ids=${encodeURIComponent(ids)}`,
+      '_blank',
+    );
+  };
+
+  // Prev/next nav inside the modal — walks through the currently-visible
+  // section orders.
+  const sectionIds = useMemo(
+    () => sectionOrders.map((o) => o.id),
+    [sectionOrders],
+  );
+  const goToOrder = (delta: 1 | -1) => {
+    if (!modalOrderId) return;
+    const idx = sectionIds.indexOf(modalOrderId);
+    if (idx < 0) return;
+    const next = sectionIds[idx + delta];
+    if (next) setModalOrderId(next);
+  };
 
   return (
     <AdminLayout>
@@ -195,24 +372,9 @@ export default function OrdersPage() {
         </div>
       )}
       {reconcileResult && (
-        <div
-          style={{
-            marginBottom: 14,
-            padding: 12,
-            border: '1px solid var(--admin-border)',
-            borderLeft: '3px solid var(--c-lime)',
-            background: 'var(--admin-surface)',
-            fontFamily: 'var(--mono)',
-            fontSize: 12,
-            lineHeight: 1.6,
-            borderRadius: 10,
-          }}
-        >
-          <strong style={{ color: 'var(--c-lime-text)' }}>RESULT →</strong>{' '}
+        <div className="alert alert-success" style={{ marginBottom: 12 }}>
           scanned <b>{reconcileResult.scanned_sessions}</b> stripe sessions ·
-          checked <b>{reconcileResult.pending_orders_before}</b> pending orders
-          · matched <b>{reconcileResult.matched}</b> · marked paid{' '}
-          <b>{reconcileResult.marked_paid}</b> · cancelled{' '}
+          marked paid <b>{reconcileResult.marked_paid}</b> · cancelled{' '}
           <b>{reconcileResult.marked_cancelled}</b>
         </div>
       )}
@@ -243,6 +405,73 @@ export default function OrdersPage() {
         })}
       </div>
 
+      {/* Bulk action bar — only on to_fulfill, only when something selected */}
+      {showCheckboxes && selected.size > 0 && (
+        <div className="orders-bulk-bar">
+          <div className="orders-bulk-bar-count">
+            <strong>{selected.size}</strong> selected
+          </div>
+          <div className="orders-bulk-bar-actions">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleBulkLabels}
+              disabled={!!bulkBusy}
+            >
+              {bulkBusy === 'labels'
+                ? 'buying & merging…'
+                : `buy ${selected.size} USPS label${selected.size === 1 ? '' : 's'}`}
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handlePackingSlips}
+              disabled={!!bulkBusy}
+            >
+              print packing slips
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => handleBulkStatus('shipped')}
+              disabled={!!bulkBusy}
+            >
+              {bulkBusy === 'shipped' ? '…' : 'mark shipped'}
+            </button>
+            <button
+              type="button"
+              className="orders-bulk-bar-clear"
+              onClick={() => setSelected(new Set())}
+            >
+              clear
+            </button>
+          </div>
+        </div>
+      )}
+
+      {bulkError && (
+        <div className="alert alert-error" style={{ marginBottom: 12 }}>
+          {bulkError}
+        </div>
+      )}
+      {bulkResult && (
+        <div className="alert alert-success" style={{ marginBottom: 12 }}>
+          bought <b>{bulkResult.succeeded}</b> label
+          {bulkResult.succeeded === 1 ? '' : 's'}
+          {bulkResult.failed > 0 ? (
+            <>
+              {' '}
+              · <b>{bulkResult.failed}</b> failed:{' '}
+              {bulkResult.results
+                .filter((r) => !r.ok)
+                .map((r) => `${r.orderId.slice(0, 8)} (${r.error})`)
+                .join(' · ')}
+            </>
+          ) : null}
+          {bulkResult.pdfB64 ? ' · combined PDF downloading' : ''}
+        </div>
+      )}
+
       <div className="card">
         {isLoading ? (
           <p>Loading…</p>
@@ -251,38 +480,71 @@ export default function OrdersPage() {
             No {SECTION_LABELS[section]} orders.
           </p>
         ) : (
-          <table className="table">
+          <table className="table orders-table">
             <thead>
               <tr>
-                <th>Order</th>
+                {showCheckboxes && (
+                  <th style={{ width: 32 }}>
+                    <input
+                      type="checkbox"
+                      aria-label="select all"
+                      checked={
+                        selected.size === sectionOrders.length &&
+                        sectionOrders.length > 0
+                      }
+                      onChange={toggleAll}
+                    />
+                  </th>
+                )}
                 <th>Customer</th>
+                <th>Location</th>
                 <th>Email</th>
                 <th>Total</th>
-                <th>Date</th>
+                <th>Age</th>
+                <th>Order</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {sectionOrders.map((order) => (
-                <tr
-                  key={order.id}
-                  onClick={() => setModalOrderId(order.id)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <td className="text-sm font-mono">
-                    {order.id.slice(0, 8)}…
-                  </td>
-                  <td className="text-sm">{fullName(order.shipping_address) || '—'}</td>
-                  <td className="text-sm">{order.user_email || 'N/A'}</td>
-                  <td>{formatCentsToUSD(order.total_cents)}</td>
-                  <td className="text-sm">
-                    {new Date(order.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="text-sm" style={{ color: 'var(--admin-text-soft)' }}>
-                    open ›
-                  </td>
-                </tr>
-              ))}
+              {sectionOrders.map((order) => {
+                const checked = selected.has(order.id);
+                return (
+                  <tr
+                    key={order.id}
+                    onClick={() => setModalOrderId(order.id)}
+                    style={{ cursor: 'pointer' }}
+                    className={checked ? 'is-selected' : ''}
+                  >
+                    {showCheckboxes && (
+                      <td onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleOne(order.id)}
+                          aria-label={`select order ${order.id.slice(0, 8)}`}
+                        />
+                      </td>
+                    )}
+                    <td className="text-sm">
+                      {fullName(order.shipping_address) || '—'}
+                    </td>
+                    <td className="text-sm">
+                      {order.shipping_address?.city
+                        ? `${order.shipping_address.city}, ${order.shipping_address.state ?? ''}`
+                        : '—'}
+                    </td>
+                    <td className="text-sm">{order.user_email || 'N/A'}</td>
+                    <td>{formatCentsToUSD(order.total_cents)}</td>
+                    <td className="text-sm">{ageLabel(order.created_at)}</td>
+                    <td className="text-sm font-mono" style={{ opacity: 0.65 }}>
+                      {order.id.slice(0, 8)}…
+                    </td>
+                    <td className="text-sm" style={{ color: 'var(--admin-text-soft)' }}>
+                      open ›
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
@@ -296,6 +558,17 @@ export default function OrdersPage() {
             await refetch();
             await queryClient.invalidateQueries({ queryKey: ['orders'] });
           }}
+          onPrev={
+            sectionIds.indexOf(modalOrderId) > 0
+              ? () => goToOrder(-1)
+              : null
+          }
+          onNext={
+            sectionIds.indexOf(modalOrderId) <
+            sectionIds.length - 1
+              ? () => goToOrder(1)
+              : null
+          }
         />
       )}
     </AdminLayout>
@@ -303,16 +576,24 @@ export default function OrdersPage() {
 }
 
 /* -----------------------------------------------------------
-   ORDER MODAL — full shipping/items detail + actions
+   ORDER MODAL — full shipping/items detail + actions + nav
    ----------------------------------------------------------- */
 
 interface OrderModalProps {
   orderId: string;
   onClose: () => void;
   onChanged: () => Promise<void> | void;
+  onPrev: (() => void) | null;
+  onNext: (() => void) | null;
 }
 
-function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
+function OrderModal({
+  orderId,
+  onClose,
+  onChanged,
+  onPrev,
+  onNext,
+}: OrderModalProps) {
   const queryClient = useQueryClient();
   const { data: order, refetch: refetchOrder } = useOrderWithItems(orderId);
 
@@ -329,10 +610,12 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
     serviceLevel?: string;
   }>({});
 
-  // Esc to close, lock scroll
+  // Esc to close, ←/→ to nav, lock scroll
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft' && onPrev) onPrev();
+      if (e.key === 'ArrowRight' && onNext) onNext();
     };
     window.addEventListener('keydown', onKey);
     const prevOverflow = document.body.style.overflow;
@@ -341,7 +624,17 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [onClose]);
+  }, [onClose, onPrev, onNext]);
+
+  // Reset modal state when navigating between orders
+  useEffect(() => {
+    setShipment(null);
+    setShipmentLoading(true);
+    setLabelError('');
+    setLabelMeta({});
+    setStatusError('');
+    setPendingStatus(null);
+  }, [orderId]);
 
   // Fetch existing shipment record
   useEffect(() => {
@@ -405,9 +698,7 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
         { method: 'POST' },
       );
       const json = await response.json();
-      if (!response.ok) {
-        throw new Error(json.error ?? 'failed to buy label');
-      }
+      if (!response.ok) throw new Error(json.error ?? 'failed to buy label');
       setShipment(json.shipment as ShipmentRow);
       setLabelMeta({
         rateCents: json.rateCents,
@@ -431,14 +722,37 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
         aria-modal="true"
         aria-label="order details"
       >
-        <button
-          type="button"
-          className="orders-modal-close"
-          onClick={onClose}
-          aria-label="close"
-        >
-          ×
-        </button>
+        <div className="orders-modal-nav">
+          <button
+            type="button"
+            className="orders-modal-nav-btn"
+            onClick={() => onPrev && onPrev()}
+            disabled={!onPrev}
+            aria-label="previous order"
+            title="previous (←)"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            className="orders-modal-nav-btn"
+            onClick={() => onNext && onNext()}
+            disabled={!onNext}
+            aria-label="next order"
+            title="next (→)"
+          >
+            ›
+          </button>
+          <button
+            type="button"
+            className="orders-modal-close"
+            onClick={onClose}
+            aria-label="close"
+            title="close (Esc)"
+          >
+            ×
+          </button>
+        </div>
 
         {!order ? (
           <p style={{ padding: '2rem' }}>loading…</p>
@@ -470,7 +784,6 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
             </header>
 
             <div className="orders-modal-grid">
-              {/* CUSTOMER + ADDRESS */}
               <section>
                 <h3 className="orders-modal-section-title">Customer</h3>
                 <p style={{ margin: '0 0 4px' }}>
@@ -523,7 +836,6 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
                 )}
               </section>
 
-              {/* ITEMS + TOTAL */}
               <section>
                 <h3 className="orders-modal-section-title">Items</h3>
                 <div className="orders-modal-items">
@@ -576,7 +888,6 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
               </section>
             </div>
 
-            {/* SHIPPING ACTIONS */}
             {!isDonation && (
               <section className="orders-modal-shipping">
                 <h3 className="orders-modal-section-title" style={{ marginTop: 0 }}>
@@ -608,6 +919,14 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
                       className="btn btn-primary"
                     >
                       Print label (PDF) →
+                    </a>{' '}
+                    <a
+                      href={`/api/admin/orders/packing-slips?ids=${order.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-secondary"
+                    >
+                      Packing slip
                     </a>
                   </div>
                 ) : (
@@ -619,7 +938,7 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
                         color: 'var(--admin-text-soft)',
                       }}
                     >
-                      Buy the cheapest USPS service via Shippo. Fulfills the
+                      Buy the cheapest USPS service via ShipStation. Fulfills the
                       order and stamps it as shipped.
                     </p>
                     <button
@@ -636,7 +955,15 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
                         : order.status === 'paid' || order.status === 'shipped'
                           ? 'buy USPS label'
                           : `cannot buy — order is ${order.status}`}
-                    </button>
+                    </button>{' '}
+                    <a
+                      href={`/api/admin/orders/packing-slips?ids=${order.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-secondary"
+                    >
+                      Packing slip
+                    </a>
                     {labelError && (
                       <p
                         style={{
@@ -665,7 +992,6 @@ function OrderModal({ orderId, onClose, onChanged }: OrderModalProps) {
               </section>
             )}
 
-            {/* STATUS CONTROLS */}
             <section className="orders-modal-status">
               <h3 className="orders-modal-section-title" style={{ marginTop: 0 }}>
                 Status
