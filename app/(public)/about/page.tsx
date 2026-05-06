@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/JsonLd';
-import { PULL_QUOTES } from '@/lib/flavors';
 import { buildBreadcrumbLd } from '@/lib/seo';
 
 const title = 'about · the story';
@@ -95,23 +94,6 @@ export default function AboutPage() {
           <p>
             we&apos;re launching soooon.
           </p>
-        </div>
-      </div>
-
-      <div className="card" style={{ padding: '2rem' }}>
-        <p className="stat-label" style={{ marginBottom: '1.2rem' }}>
-          // what people keep saying
-        </p>
-        <div className="comments-grid">
-          {PULL_QUOTES.map((q, idx) => (
-            <blockquote
-              key={idx}
-              className={`comment-card${q.highlight ? ' comment-card--highlight' : ''}`}
-            >
-              <p className="comment-text">{q.text}</p>
-              <cite className="comment-byline">{q.byline}</cite>
-            </blockquote>
-          ))}
         </div>
       </div>
 
