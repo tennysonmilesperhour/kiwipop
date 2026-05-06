@@ -179,6 +179,19 @@ export function Onepager({ fontVars }: OnepagerProps) {
       </div>
 
       <div className="page">
+        {/* PRODUCT PORTFOLIO */}
+        <section className="portfolio reveal" aria-label="Product portfolio">
+          <div className="portfolio-grid">
+            {PORTFOLIO_IMAGES.map((img) => (
+              <div key={img.src} className="portfolio-tile">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={img.src} alt={img.alt} loading="lazy" />
+                <span className="portfolio-cap">{img.caption}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* HERO */}
         <section className="hero reveal">
           <div className="eyebrow">
@@ -1042,6 +1055,37 @@ export function Onepager({ fontVars }: OnepagerProps) {
     </div>
   );
 }
+
+interface PortfolioImage {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+// Placeholder shots — using existing flavor / lifestyle imagery from the
+// landing page until proper EU product photography is available.
+const PORTFOLIO_IMAGES: PortfolioImage[] = [
+  {
+    src: '/landing/img/kiwi-kitty-pop.webp',
+    alt: 'Kiwi Pop · Kiwi Kitty flavor',
+    caption: 'KIWI KITTY · 舐',
+  },
+  {
+    src: '/landing/img/yellow-hair.jpg',
+    alt: 'Kiwi Pop · Lucy Lemon flavor',
+    caption: 'LUCY LEMON',
+  },
+  {
+    src: '/landing/img/lips-lollipop.jpg',
+    alt: 'Kiwi Pop · Mango Molly flavor',
+    caption: 'MANGO MOLLY',
+  },
+  {
+    src: '/landing/img/eye-galaxy.jpg',
+    alt: 'Kiwi Pop · Mary Mint flavor',
+    caption: 'MARY MINT',
+  },
+];
 
 type SpecStatus = 'confirmed' | 'estimate' | 'tbd';
 
