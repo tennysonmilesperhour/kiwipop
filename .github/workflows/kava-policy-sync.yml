@@ -1,0 +1,74 @@
+name: kava policy sync
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-kava-state:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: check whether kava removal triggers policy update
+        id: check
+        run: node scripts/check-kava-state.js
+        continue-on-error: true
+
+      - name: open or update tracking issue when kava is removed
+        if: steps.check.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[automated] kava removed from product copy — policies need updating';
+            const body = [
+              'The `kava policy sync` workflow detected that kava is no longer present',
+              'in canonical product-copy files but still appears in policy or marketing',
+              'files.',
+              '',
+              'Run `node scripts/check-kava-state.js` locally for the exact list of',
+              'files that need updating.',
+              '',
+              'Action items:',
+              '- [ ] remove kava references from all flagged files',
+              '- [ ] introduce jambu (Acmella oleracea) where appropriate',
+              '- [ ] drop the FDA kava advisory section from /legal/fda-disclaimer',
+              '- [ ] re-evaluate the 18+ age gate (was justified by kava)',
+              '- [ ] update product feed CSV and re-upload to Stripe',
+              '- [ ] update agent-facing product descriptions',
+              '',
+              'Workflow run: ' + (process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID),
+            ].join('\n');
+
+            const { data: existing } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'kava-policy-sync',
+            });
+
+            if (existing.length > 0) {
+              core.info('tracking issue already open: #' + existing[0].number);
+              return;
+            }
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['kava-policy-sync', 'automated'],
+            });
+
+      - name: fail job if kava state is inconsistent
+        if: steps.check.outcome == 'failure'
+        run: |
+          echo "::error::Kava removed from product copy but legal/marketing files still reference it. See open issue with the kava-policy-sync label."
+          exit 1
