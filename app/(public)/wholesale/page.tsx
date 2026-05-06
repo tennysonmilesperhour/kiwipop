@@ -242,6 +242,44 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
           questions · email us
         </a>
       </div>
+
+      <Link
+        href="/wholesale/barcelona"
+        style={{
+          marginTop: '2rem',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.6rem',
+          padding: '0.85rem 1.4rem',
+          fontFamily: 'var(--mono)',
+          fontSize: 12,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          textDecoration: 'none',
+          color: 'var(--paper)',
+          background: 'transparent',
+          border: '1px solid var(--magenta)',
+          borderRadius: 999,
+          width: 'fit-content',
+        }}
+      >
+        <span aria-hidden="true" style={{ color: 'var(--magenta)' }}>
+          ◆
+        </span>
+        EU / Spain · UE / España →
+      </Link>
+      <p
+        style={{
+          marginTop: '0.5rem',
+          fontFamily: 'var(--mono)',
+          fontSize: 11,
+          letterSpacing: '0.05em',
+          color: 'var(--bone)',
+          opacity: 0.7,
+        }}
+      >
+        // dedicated mayorista program for Barcelona &amp; EU venues
+      </p>
     </div>
   );
 }
