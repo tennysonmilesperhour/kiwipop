@@ -12,6 +12,7 @@ import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { JsonLd } from '@/components/JsonLd';
 import { FundraiserBar } from './FundraiserBar';
 import { RaffleForm } from './RaffleForm';
+import { ReelPlayer } from './ReelPlayer';
 
 interface LandingProps {
   products: LandingProducts;
@@ -554,26 +555,23 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             behind the scenes, the launch, the culture. real moments, straight from the source.
           </p>
         </div>
-        <div className="zvid-grid">
-          {[
-            { src: '/videos/kp-reel-1.mp4', label: 'FIRST VIRAL KP REEL' },
-            { src: '/videos/kp-reel-2.mp4', label: 'LAUNCH WEEK UPDATE' },
-            { src: '/videos/kp-reel-3.mp4', label: 'GRATITUDE IN THE MORNING' },
-            { src: '/videos/kp-reel-4.mp4', label: 'IS KAVA ILLEGAL?' },
-          ].map((vid) => (
-            <div key={vid.src} className="zvid-card">
-              <video
-                src={vid.src}
-                playsInline
-                muted
-                loop
-                autoPlay
-                preload="metadata"
-                aria-label={vid.label}
-              />
-              <span className="zvid-label">{vid.label}</span>
-            </div>
-          ))}
+        <div className="zvid-feature">
+          <ReelPlayer src="/videos/kp-reel-1.mp4" label="FIRST VIRAL KP REEL" />
+          <div className="zvid-copy">
+            <span className="zvid-copy-tag">// the one that did it</span>
+            <h3 className="zvid-copy-h">
+              this is how
+              <br />
+              <span className="zvid-grad">it started.</span>
+            </h3>
+            <p>
+              one little reel, zero plan, and then the internet absolutely lost it. we did NOT see this coming —
+              but we&apos;re running with it full speed.
+            </p>
+            <p className="zvid-copy-cta">
+              tap play, flip the sound on, scrub around. check it out →
+            </p>
+          </div>
         </div>
       </section>
 
