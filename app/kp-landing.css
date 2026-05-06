@@ -894,25 +894,68 @@
   color: rgba(255, 255, 255, 0.55);
   margin-top: 14px;
 }
-.kp-page .zvid-grid {
+.kp-page .zvid-feature {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
 }
-.kp-page .zvid-card {
+.kp-page .zvid-player {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.kp-page .zvid-stage {
   position: relative;
   aspect-ratio: 9 / 16;
   border-radius: 14px;
   overflow: hidden;
   background: #111;
-  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
-.kp-page .zvid-card video {
+.kp-page .zvid-stage:hover {
+  border-color: rgba(255, 26, 140, 0.4);
+  box-shadow: 0 0 24px rgba(255, 26, 140, 0.15);
+}
+.kp-page .zvid-stage video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  cursor: pointer;
+}
+.kp-page .zvid-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.kp-page .zvid-stage:hover .zvid-overlay,
+.kp-page .zvid-overlay:not(.is-playing) {
+  opacity: 1;
+  pointer-events: auto;
+}
+.kp-page .zvid-overlay-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .kp-page .zvid-label {
   position: absolute;
@@ -925,53 +968,153 @@
   font-size: 0.65rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   pointer-events: none;
+  z-index: 1;
 }
-/* Hover: slight scale + glow */
-.kp-page .zvid-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  pointer-events: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+.kp-page .zvid-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.kp-page .zvid-card:hover::after {
-  border-color: rgba(255, 26, 140, 0.4);
-  box-shadow: 0 0 24px rgba(255, 26, 140, 0.15);
+.kp-page .zvid-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
-.kp-page .zvid-card:hover video {
-  transform: scale(1.02);
-  transition: transform 0.4s ease;
+.kp-page .zvid-btn:hover {
+  background: rgba(255, 26, 140, 0.25);
+  border-color: rgba(255, 26, 140, 0.5);
+}
+.kp-page .zvid-btn:active { transform: scale(0.94); }
+.kp-page .zvid-time {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-variant-numeric: tabular-nums;
+  min-width: 32px;
+  text-align: center;
+}
+.kp-page .zvid-seek {
+  flex: 1 1 auto;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  height: 16px;
+  cursor: pointer;
+  margin: 0;
+  --p: 0%;
+}
+.kp-page .zvid-seek:disabled { cursor: default; }
+.kp-page .zvid-seek::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--hot-pink, #ff1a8c) 0%,
+    var(--lemon, #f5ff3d) var(--p),
+    rgba(255, 255, 255, 0.15) var(--p),
+    rgba(255, 255, 255, 0.15) 100%
+  );
+}
+.kp-page .zvid-seek::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+.kp-page .zvid-seek::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--hot-pink, #ff1a8c), var(--lemon, #f5ff3d));
+}
+.kp-page .zvid-seek::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--hot-pink, #ff1a8c);
+  margin-top: -5px;
+  box-shadow: 0 0 8px rgba(255, 26, 140, 0.5);
+  cursor: pointer;
+}
+.kp-page .zvid-seek::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--hot-pink, #ff1a8c);
+  box-shadow: 0 0 8px rgba(255, 26, 140, 0.5);
+  cursor: pointer;
+}
+.kp-page .zvid-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+}
+.kp-page .zvid-copy-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+.kp-page .zvid-copy-h {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+.kp-page .zvid-copy p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+.kp-page .zvid-copy-cta {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85) !important;
 }
 
-/* Tablet: 2 columns */
+/* Tablet: stack */
 @media (max-width: 900px) {
-  .kp-page .zvid-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  .kp-page .zvid-feature {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    max-width: 480px;
+    margin: 0 auto;
   }
   .kp-page .zvid { padding: 72px 20px 80px; }
 }
-/* Mobile: horizontal scroll */
+/* Mobile */
 @media (max-width: 540px) {
-  .kp-page .zvid-grid {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-  }
-  .kp-page .zvid-grid::-webkit-scrollbar { display: none; }
-  .kp-page .zvid-card {
-    flex: 0 0 72vw;
-    scroll-snap-align: start;
-  }
   .kp-page .zvid { padding: 56px 16px 64px; }
   .kp-page .zvid-title { font-size: 2rem; }
+  .kp-page .zvid-controls { padding: 8px 10px; gap: 8px; }
+  .kp-page .zvid-time { font-size: 0.65rem; min-width: 28px; }
 }
 
 /* ========= ZONE 3 · DANCE / FLAVORS ========= */
