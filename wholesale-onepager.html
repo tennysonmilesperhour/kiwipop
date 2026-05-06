@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiwi Pop · Mayorista · Barcelona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --bg: #060610;
+    --bg-2: #0c0c18;
+    --ink: #f5f5f0;
+    --ink-dim: #9a9aab;
+    --magenta: #ff2a8a;
+    --cyan: #00f0ff;
+    --lime: #c8ff2d;
+    --line: rgba(245, 245, 240, 0.10);
+    --line-strong: rgba(245, 245, 240, 0.20);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; font-style: normal !important; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(255, 42, 138, 0.08), transparent 55%),
+      radial-gradient(ellipse at bottom right, rgba(0, 240, 255, 0.05), transparent 55%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    z-index: 100;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .mono { font-family: 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.02em; }
+  .jp { font-family: 'Noto Serif JP', serif; }
+
+  /* STICKY TOP BAR */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(6, 6, 16, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 40px;
+  }
+  .topbar-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 14px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logo {
+    color: var(--ink);
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.18em;
+  }
+  .logo .jp { color: var(--magenta); margin-left: 6px; font-size: 18px; }
+
+  .topbar .right { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .topbar .live {
+    color: var(--lime);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .topbar .live::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--lime);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--lime);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .lang-toggle {
+    display: inline-flex;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    overflow: hidden;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--ink-dim);
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+  .lang-toggle button.active {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .lang-toggle button:hover:not(.active) { color: var(--ink); }
+
+  /* PAGE */
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 36px 80px;
+    position: relative;
+  }
+
+  /* HERO */
+  .hero { margin-bottom: 64px; }
+
+  .eyebrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--cyan);
+  }
+
+  h1.hero-title {
+    font-family: 'Geist', sans-serif;
+    font-weight: 800;
+    font-size: clamp(38px, 6.5vw, 60px);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+  h1.hero-title .accent { color: var(--magenta); }
+  h1.hero-title .jp {
+    font-size: 0.65em;
+    color: var(--cyan);
+    margin-left: 10px;
+    font-weight: 700;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink-dim);
+    max-width: 620px;
+    margin-bottom: 32px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  .hero-sub strong { color: var(--ink); font-weight: 600; }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+  }
+  .hero-stats .stat {
+    text-align: center;
+    border-right: 1px solid var(--line);
+  }
+  .hero-stats .stat:last-child { border-right: none; }
+  .hero-stats .num {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .hero-stats .lbl {
+    font-family: 'Geist Mono', monospace;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-dim);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  .section { margin-bottom: 56px; scroll-margin-top: 80px; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+  }
+  .section-num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--magenta);
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .section-title .accent { color: var(--cyan); }
+
+  /* WHY CARDS */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .why-card {
+    border: 1px solid var(--line);
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.012);
+    border-radius: 8px;
+    position: relative;
+  }
+  .why-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 22px;
+    width: 24px; height: 1px;
+    background: var(--magenta);
+  }
+  .why-card h3 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .why-card p {
+    font-size: 14px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+  }
+
+  /* INSIDE GRID */
+  .inside-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .ing {
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ing .name {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    font-weight: 500;
+  }
+  .ing .dose {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .ing .role {
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .ing.featured {
+    border-color: var(--magenta);
+    background: rgba(255, 42, 138, 0.06);
+  }
+  .ing.featured .dose { color: var(--magenta); }
+
+  .estimate-note {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(0, 240, 255, 0.04);
+    border-left: 2px solid var(--cyan);
+    font-family: 'Geist', sans-serif;
+    font-size: 13px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    border-radius: 4px;
+  }
+  .estimate-note strong { color: var(--cyan); font-weight: 600; }
+
+  /* DEAL TABLE */
+  .deal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Geist', sans-serif;
+  }
+  .deal-table tr { border-bottom: 1px solid var(--line); }
+  .deal-table td { padding: 14px 8px; vertical-align: top; }
+  .deal-table td:first-child {
+    color: var(--ink-dim);
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    width: 38%;
+    font-weight: 500;
+  }
+  .deal-table td:last-child {
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .deal-table .small {
+    font-family: 'Geist', sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    font-weight: 400;
+    margin-top: 4px;
+    display: block;
+    line-height: 1.5;
+  }
+
+  /* FOUNDING PARTNERS */
+  .early {
+    border: 1px solid var(--magenta);
+    padding: 28px;
+    background: linear-gradient(135deg, rgba(255, 42, 138, 0.06), rgba(0, 240, 255, 0.03));
+    border-radius: 10px;
+  }
+  .early h3 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .early h3 .accent { color: var(--magenta); }
+  .early > p {
+    color: var(--ink-dim);
+    font-size: 14.5px;
+    margin-bottom: 8px;
+    line-height: 1.65;
+  }
+  .early ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+    margin-top: 18px;
+  }
+  .early li {
+    font-size: 14px;
+    color: var(--ink);
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .early li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    font-family: 'Geist Mono', monospace;
+    font-weight: 600;
+  }
+  .early li strong { font-weight: 600; }
+
+  /* FOUNDERS */
+  .founders {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .founder {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .founder-photo {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--bg);
+    flex-shrink: 0;
+  }
+  .founder-photo.kiwi { background: linear-gradient(135deg, var(--magenta), var(--cyan)); }
+  .founder-photo.tennyson { background: linear-gradient(135deg, var(--cyan), var(--lime)); }
+  .founder-text h4 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .founder-text .role {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--cyan);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .founder-text p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-dim);
+  }
+
+  /* FAQ */
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+  }
+  .faq-item:first-child { border-top: 1px solid var(--line); }
+  .faq-q {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Geist', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    user-select: none;
+  }
+  .faq-q::after {
+    content: "+";
+    font-family: 'Geist Mono', monospace;
+    color: var(--magenta);
+    font-size: 22px;
+    font-weight: 400;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-q::after { content: "−"; }
+  .faq-a {
+    font-size: 14.5px;
+    color: var(--ink-dim);
+    line-height: 1.65;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, margin-top 0.3s ease, padding-bottom 0.3s ease;
+  }
+  .faq-item.open .faq-a {
+    max-height: 600px;
+    margin-top: 10px;
+    padding-bottom: 4px;
+  }
+
+  /* CTA */
+  .cta {
+    margin-top: 56px;
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    border-radius: 4px;
+  }
+  .cta-eyebrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .cta h2 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 4.5vw, 36px);
+    margin-bottom: 12px;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+  .cta-sub {
+    font-size: 15px;
+    color: var(--ink-dim);
+    margin-bottom: 24px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 26px;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--magenta);
+    color: var(--bg);
+    background: var(--magenta);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border-radius: 999px;
+  }
+  .btn:hover {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--bg);
+  }
+
+  /* CONTACT */
+  .contact {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    text-align: center;
+  }
+  .contact .item {
+    border: 1px solid var(--line);
+    padding: 14px 12px;
+    border-radius: 6px;
+  }
+  .contact .item .lbl {
+    font-family: 'Geist Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .contact .item .val {
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    word-break: break-word;
+    font-weight: 500;
+  }
+  .contact .item a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .contact .item a:hover {
+    color: var(--magenta);
+  }
+
+  /* QR BLOCK */
+  .qr-block {
+    margin-top: 56px;
+    padding: 32px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.012);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .qr-code {
+    width: 140px;
+    height: 140px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-code canvas, .qr-code img { display: block; max-width: 100%; height: auto; }
+  .qr-text h3 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    margin-bottom: 8px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .qr-text p {
+    font-size: 14px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .qr-text .url {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    word-break: break-all;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 200;
+    display: none;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: block; }
+  .modal {
+    max-width: 720px;
+    margin: 40px auto;
+    background: var(--bg-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    padding: 32px;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-family: 'Geist Mono', monospace;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .modal h2 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.025em;
+    margin-bottom: 8px;
+    padding-right: 40px;
+  }
+  .modal-sub {
+    font-size: 14px;
+    color: var(--ink-dim);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .modal-section-head {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--magenta);
+    margin: 24px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  .modal-section-head:first-of-type { margin-top: 8px; }
+
+  .field {
+    margin-bottom: 14px;
+  }
+  .field label {
+    display: block;
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .field label .req { color: var(--magenta); }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 11px 13px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    outline: none;
+    border-color: var(--cyan);
+  }
+  .field .hint {
+    display: block;
+    margin-top: 5px;
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .checkbox-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .checkbox-field input { width: auto; margin-top: 2px; flex-shrink: 0; }
+  .checkbox-field label {
+    margin-bottom: 0;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: 'Geist', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  .submit-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: var(--magenta);
+    border: 1px solid var(--magenta);
+    color: var(--bg);
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: all 0.2s;
+    margin-top: 24px;
+  }
+  .submit-btn:hover {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--bg);
+  }
+  .form-note {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  .modal-success {
+    text-align: center;
+    padding: 32px 16px;
+    display: none;
+  }
+  .modal-success.active { display: block; }
+  .modal-success .check {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 56px;
+    color: var(--lime);
+    margin-bottom: 16px;
+  }
+  .modal-success h3 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .modal-success p { color: var(--ink-dim); font-size: 14px; }
+
+  /* FOOTER */
+  .foot {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-weight: 500;
+  }
+  .foot .disclaimer {
+    flex: 1 0 100%;
+    margin-top: 12px;
+    font-size: 10px;
+    line-height: 1.65;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: rgba(154, 154, 171, 0.65);
+    font-weight: 400;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .topbar-inner { padding: 12px 20px; font-size: 10px; gap: 10px; }
+    .topbar .right { gap: 12px; }
+    .page { padding: 0 20px 60px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .hero-stats .stat { padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .hero-stats .stat:nth-child(2) { border-right: none; }
+    .hero-stats .stat:nth-last-child(-n+2) { border-bottom: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .inside-grid { grid-template-columns: repeat(2, 1fr); }
+    .early ul { grid-template-columns: 1fr; }
+    .founders { grid-template-columns: 1fr; gap: 24px; }
+    .founder { grid-template-columns: 64px 1fr; gap: 14px; }
+    .founder-photo { width: 64px; height: 64px; font-size: 24px; }
+    .contact { grid-template-columns: 1fr; }
+    h1.hero-title { font-size: 36px; }
+    .qr-block { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+    .modal { padding: 24px 20px; margin: 20px auto; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; color: black; }
+    body::before { display: none; }
+    .topbar, .btn, .modal-overlay { display: none; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: reveal 0.5s ease forwards;
+  }
+  @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+  .reveal.d1 { animation-delay: 0.08s; }
+  .reveal.d2 { animation-delay: 0.16s; }
+  .reveal.d3 { animation-delay: 0.24s; }
+  .reveal.d4 { animation-delay: 0.32s; }
+
+  [data-lang]:not([data-active]) { display: none; }
+</style>
+</head>
+<body>
+
+  <!-- STICKY TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">KIWI POP <span class="jp">舐</span></div>
+      <div class="right">
+        <span class="live">
+          <span data-lang="en" data-active>DROP 001 · LIVE</span>
+          <span data-lang="es">DROP 001 · ACTIVO</span>
+        </span>
+        <div class="lang-toggle" role="tablist">
+          <button class="active" data-set-lang="en">EN</button>
+          <button data-set-lang="es">ES</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero reveal">
+    <div class="eyebrow">
+      <span data-lang="en" data-active>A FUNCTIONAL LOLLIPOP · FOR CLUBS &amp; EVENTS</span>
+      <span data-lang="es">UNA PIRULETA FUNCIONAL · PARA SALAS Y EVENTOS</span>
+    </div>
+
+    <h1 class="hero-title" data-lang="en" data-active>
+      A small thing<br>that does <span class="accent">something</span>.<span class="jp">舐</span>
+    </h1>
+    <h1 class="hero-title" data-lang="es">
+      Algo pequeño<br>que hace <span class="accent">algo</span>.<span class="jp">舐</span>
+    </h1>
+
+    <p class="hero-sub" data-lang="en" data-active>
+      <strong>Kiwi Pop is a functional lollipop, made for the night.</strong>
+      Less than 1g of sugar. Around 35 calories. Vegan. A measured blend of botanicals and electrolytes (jambu, theobromine, ginseng, B12, magnesium, taurine, electrolytes), thought through for long hours and warm rooms. Honest about what's in it. Honest about what it isn't.
+    </p>
+    <p class="hero-sub" data-lang="es">
+      <strong>Kiwi Pop es una piruleta funcional, pensada para la noche.</strong>
+      Menos de 1g de azúcar. Alrededor de 35 calorías. Vegana. Una mezcla medida de plantas y electrolitos (jambú, teobromina, ginseng, B12, magnesio, taurina, electrolitos), pensada para horas largas y salas con ritmo. Transparente con lo que lleva. Transparente con lo que no.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat"><div class="num">&lt;1g</div><div class="lbl"><span data-lang="en" data-active>Sugar</span><span data-lang="es">Azúcar</span></div></div>
+      <div class="stat"><div class="num">~35</div><div class="lbl"><span data-lang="en" data-active>Calories</span><span data-lang="es">Calorías</span></div></div>
+      <div class="stat"><div class="num">7+</div><div class="lbl"><span data-lang="en" data-active>Functionals</span><span data-lang="es">Activos</span></div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl"><span data-lang="en" data-active>Vegan</span><span data-lang="es">Vegana</span></div></div>
+    </div>
+  </section>
+
+  <!-- WHAT IT BRINGS -->
+  <section class="section reveal d1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">
+        <span data-lang="en" data-active>What it brings to your <span class="accent">floor</span>.</span>
+        <span data-lang="es">Lo que aporta a tu <span class="accent">sala</span>.</span>
+      </h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <h3 data-lang="en" data-active>Looks like fun, not medicine.</h3>
+        <h3 data-lang="es">Parece diversión, no medicina.</h3>
+        <p data-lang="en" data-active>Bright wrapper, edible mica glitter, a swirl on a stick. It reads as a treat. The functional payload is real, but the moment is light.</p>
+        <p data-lang="es">Envoltorio vivo, brillo de mica comestible, espiral en un palo. Se lee como un capricho. La carga funcional es real, pero el momento es ligero.</p>
+      </div>
+      <div class="why-card">
+        <h3 data-lang="en" data-active>Designed for long nights.</h3>
+        <h3 data-lang="es">Pensada para noches largas.</h3>
+        <p data-lang="en" data-active>Magnesium for the legs. Electrolytes for sweat. Theobromine and B12 for steady energy. A small mouth tingle from jambu that wakes the palate. The chemistry of a long night, in a lollipop.</p>
+        <p data-lang="es">Magnesio para las piernas. Electrolitos para el sudor. Teobromina y B12 para una energía estable. Un cosquilleo en la boca por el jambú que despierta el paladar. La química de una noche larga, en una piruleta.</p>
+      </div>
+      <div class="why-card">
+        <h3 data-lang="en" data-active>Sits next to what you already sell.</h3>
+        <h3 data-lang="es">Convive con lo que ya tenéis.</h3>
+        <p data-lang="en" data-active>Counter-display ready. No fridge. Individually wrapped. We won't pretend to know your numbers better than you do; we'd rather hear how it actually performs on your floor than guess at it from outside.</p>
+        <p data-lang="es">Lista para mostrador. Sin frío. Envasada individualmente. No vamos a pretender que conocemos vuestros números mejor que vosotros. Preferimos escuchar cómo funciona en vuestra sala antes que adivinarlo desde fuera.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT'S INSIDE -->
+  <section class="section reveal d2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">
+        <span data-lang="en" data-active>What's <span class="accent">inside</span>.</span>
+        <span data-lang="es">Qué <span class="accent">lleva</span>.</span>
+      </h2>
+    </div>
+    <div class="inside-grid">
+      <div class="ing featured">
+        <span class="name"><span data-lang="en" data-active>Jambu extract</span><span data-lang="es">Extracto de jambú</span></span>
+        <span class="dose">~30 mg*</span>
+        <span class="role"><span data-lang="en" data-active>mouth tingle, salivation</span><span data-lang="es">cosquilleo, salivación</span></span>
+      </div>
+      <div class="ing">
+        <span class="name">Theobromine</span>
+        <span class="dose">175 mg*</span>
+        <span class="role"><span data-lang="en" data-active>clean lift</span><span data-lang="es">empuje limpio</span></span>
+      </div>
+      <div class="ing">
+        <span class="name">Ginseng</span>
+        <span class="dose">150 mg*</span>
+        <span class="role"><span data-lang="en" data-active>steady wake</span><span data-lang="es">vigilia estable</span></span>
+      </div>
+      <div class="ing">
+        <span class="name"><span data-lang="en" data-active>Magnesium glycinate</span><span data-lang="es">Magnesio glicinato</span></span>
+        <span class="dose">300 mg*</span>
+        <span class="role"><span data-lang="en" data-active>muscle support</span><span data-lang="es">soporte muscular</span></span>
+      </div>
+      <div class="ing">
+        <span class="name">Taurine</span>
+        <span class="dose">250 mg*</span>
+        <span class="role"><span data-lang="en" data-active>focus current</span><span data-lang="es">concentración</span></span>
+      </div>
+      <div class="ing">
+        <span class="name"><span data-lang="en" data-active>Electrolytes</span><span data-lang="es">Electrolitos</span></span>
+        <span class="dose">250 mg*</span>
+        <span class="role"><span data-lang="en" data-active>sodium + potassium</span><span data-lang="es">sodio + potasio</span></span>
+      </div>
+      <div class="ing">
+        <span class="name"><span data-lang="en" data-active>B12 (methyl)</span><span data-lang="es">B12 (metilada)</span></span>
+        <span class="dose">1 mg*</span>
+        <span class="role"><span data-lang="en" data-active>brain on</span><span data-lang="es">claridad mental</span></span>
+      </div>
+      <div class="ing">
+        <span class="name"><span data-lang="en" data-active>Blue spirulina</span><span data-lang="es">Espirulina azul</span></span>
+        <span class="dose">125 mg*</span>
+        <span class="role"><span data-lang="en" data-active>natural color</span><span data-lang="es">color natural</span></span>
+      </div>
+      <div class="ing">
+        <span class="name"><span data-lang="en" data-active>Xylitol base</span><span data-lang="es">Base de xilitol</span></span>
+        <span class="dose">~1.2 g*</span>
+        <span class="role"><span data-lang="en" data-active>tooth-friendly sweetener</span><span data-lang="es">edulcorante dental</span></span>
+      </div>
+    </div>
+
+    <div class="estimate-note">
+      <span data-lang="en" data-active>
+        <strong>* On the formula.</strong> The European version of Kiwi Pop is still being finalized. Doses shown above are current estimates based on the US version and the standard food-flavor use of jambu extract; the exact final amounts will be confirmed once we complete EU regulatory review and a small-batch trial. We'll share the final spec sheet with you in writing before any wholesale order is fulfilled.
+      </span>
+      <span data-lang="es">
+        <strong>* Sobre la fórmula.</strong> La versión europea de Kiwi Pop todavía se está terminando de definir. Las dosis indicadas son estimaciones actuales basadas en la versión estadounidense y en el uso habitual del extracto de jambú como aromatizante alimentario. Las cantidades definitivas se confirmarán cuando completemos la revisión regulatoria en la UE y una prueba de lote pequeño. Compartiremos contigo la ficha técnica definitiva por escrito antes de servir cualquier pedido al por mayor.
+      </span>
+    </div>
+  </section>
+
+  <!-- TERMS -->
+  <section class="section reveal d3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">
+        <span data-lang="en" data-active>The <span class="accent">terms</span>.</span>
+        <span data-lang="es">Las <span class="accent">condiciones</span>.</span>
+      </h2>
+    </div>
+    <table class="deal-table">
+      <tr>
+        <td><span data-lang="en" data-active>Format</span><span data-lang="es">Formato</span></td>
+        <td>
+          <span data-lang="en" data-active>Individually wrapped, branded, around 10g per pop.<span class="small">No refrigeration. Ready for counter display.</span></span>
+          <span data-lang="es">Envasada individualmente, personalizada, alrededor de 10g por unidad.<span class="small">Sin necesidad de frío. Lista para mostrador.</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td><span data-lang="en" data-active>Suggested retail</span><span data-lang="es">Precio sugerido</span></td>
+        <td>
+          <span data-lang="en" data-active>€5 single · €25 / 6-pack · €60 / 20-pack<span class="small">A starting point only. You set the final price for your floor.</span></span>
+          <span data-lang="es">5 € unidad · 25 € pack de 6 · 60 € pack de 20<span class="small">Solo un punto de partida. Tú decides el precio final para tu sala.</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td><span data-lang="en" data-active>Wholesale price</span><span data-lang="es">Precio mayorista</span></td>
+        <td>
+          <span data-lang="en" data-active>To be confirmed in writing<span class="small">We're finalizing EU production costs. We'll share the wholesale price as soon as the EU formula and co-packer are confirmed, before asking for any commitment.</span></span>
+          <span data-lang="es">Por confirmar por escrito<span class="small">Estamos terminando de cerrar los costes de producción en la UE. Compartiremos el precio mayorista en cuanto la fórmula europea y el envasador estén confirmados, antes de pedir ningún compromiso.</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td><span data-lang="en" data-active>Minimum order</span><span data-lang="es">Pedido mínimo</span></td>
+        <td>
+          <span data-lang="en" data-active>To be agreed per partner<span class="small">We'd rather understand your floor's pace before fixing a number that doesn't fit it.</span></span>
+          <span data-lang="es">A acordar con cada socio<span class="small">Preferimos entender el ritmo de vuestra sala antes de fijar un número que no le encaje.</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td><span data-lang="en" data-active>Delivery date</span><span data-lang="es">Fecha de entrega</span></td>
+        <td>
+          <span data-lang="en" data-active>Not yet confirmed<span class="small">EU production is in progress. We don't have a delivery date yet, and we'd rather say so than promise something we can't hit. The founding-partner program below is how early venues stay first in line for the first batch when it lands.</span></span>
+          <span data-lang="es">Pendiente de confirmar<span class="small">La producción europea está en marcha. Aún no tenemos fecha de entrega, y preferimos decirlo así antes que prometer algo que no podamos cumplir. El programa de socios fundadores que aparece abajo es la forma en la que las primeras salas quedan reservadas para el primer lote cuando llegue.</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td><span data-lang="en" data-active>Payment</span><span data-lang="es">Pago</span></td>
+        <td>
+          <span data-lang="en" data-active>50% deposit on PO, 50% on delivery<span class="small">Net-30 terms available from the second order onward.</span></span>
+          <span data-lang="es">50% por adelantado al pedido, 50% en la entrega<span class="small">Pago a 30 días disponible a partir del segundo pedido.</span></span>
+        </td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- FOUNDING PARTNERS -->
+  <section class="section reveal d3">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">
+        <span data-lang="en" data-active>Founding <span class="accent">partner</span> program.</span>
+        <span data-lang="es">Programa de socios <span class="accent">fundadores</span>.</span>
+      </h2>
+    </div>
+    <div class="early">
+      <h3 data-lang="en" data-active>The first <span class="accent">five</span> Barcelona venues.</h3>
+      <h3 data-lang="es">Las primeras <span class="accent">cinco</span> salas de Barcelona.</h3>
+
+      <p data-lang="en" data-active>
+        We're choosing the first five Barcelona venues carefully. The idea is simple: a small group of partners we work closely with through the launch, who help us get the EU version right, and who keep founding-partner terms once we're at scale. There's no commitment to a volume number yet. What we're asking for is a place in line and a real conversation.
+      </p>
+      <p data-lang="es">
+        Estamos eligiendo con cuidado las primeras cinco salas de Barcelona. La idea es sencilla: un grupo reducido de socios con los que trabajamos de cerca durante el lanzamiento, que nos ayudan a afinar la versión europea y que mantienen las condiciones de socio fundador cuando crezcamos. De momento no pedimos compromiso de volumen. Solo un sitio en la lista y una conversación real.
+      </p>
+
+      <ul data-lang="en" data-active>
+        <li><strong>Founding-partner pricing</strong>, locked for 18 months from launch</li>
+        <li><strong>Free sample case</strong> for staff and a soft-launch night</li>
+        <li><strong>A launch night</strong> with Kiwi present, when you want one</li>
+        <li><strong>Early access</strong> to new flavors before public release</li>
+        <li><strong>Listed</strong> on the kiwipop.fun map, if you'd like</li>
+        <li><strong>First in line</strong> when the EU stock lands</li>
+      </ul>
+      <ul data-lang="es">
+        <li><strong>Precio de socio fundador</strong>, asegurado durante 18 meses desde el lanzamiento</li>
+        <li><strong>Caja de muestras gratuita</strong> para el equipo y una noche de prelanzamiento</li>
+        <li><strong>Una noche de lanzamiento</strong> con Kiwi en la sala, cuando os venga bien</li>
+        <li><strong>Acceso anticipado</strong> a sabores nuevos antes del lanzamiento público</li>
+        <li><strong>Aparición</strong> en el mapa de kiwipop.fun, si lo deseáis</li>
+        <li><strong>Prioridad</strong> cuando llegue el primer stock europeo</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOUNDERS -->
+  <section class="section reveal d4">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">
+        <span data-lang="en" data-active>Who's <span class="accent">behind</span> it.</span>
+        <span data-lang="es">Quién está <span class="accent">detrás</span>.</span>
+      </h2>
+    </div>
+    <div class="founders">
+      <div class="founder">
+        <div class="founder-photo kiwi">舐</div>
+        <div class="founder-text">
+          <h4>Kiwi</h4>
+          <div class="role">
+            <span data-lang="en" data-active>CO-FOUNDER · BARCELONA</span>
+            <span data-lang="es">COFUNDADORA · BARCELONA</span>
+          </div>
+          <p data-lang="en" data-active>
+            Kiwi built this product from inside the scene. Years of helping friends and strangers get back to baseline at festivals and after-hours, using food, electrolytes, and the right botanicals. She's in Barcelona now and is happy to come by your venue, listen, and leave a sample case.
+          </p>
+          <p data-lang="es">
+            Kiwi ha desarrollado este producto desde dentro de la escena. Años ayudando a amigos y a desconocidos a volver a su sitio en festivales y afters, con comida, electrolitos y las plantas adecuadas. Está en Barcelona ahora y le encantará pasarse por vuestra sala, escuchar y dejar una caja de muestra.
+          </p>
+        </div>
+      </div>
+      <div class="founder">
+        <div class="founder-photo tennyson">T</div>
+        <div class="founder-text">
+          <h4>Tennyson</h4>
+          <div class="role">
+            <span data-lang="en" data-active>CO-FOUNDER · FORMULATOR</span>
+            <span data-lang="es">COFUNDADOR · FORMULADOR</span>
+          </div>
+          <p data-lang="en" data-active>
+            Tennyson is the formulator. A long history of building functional food products, tropical snacks, and party-recovery foods that taste good, work honestly, and don't pretend to be something they're not. The dosing in every Kiwi Pop is his work, tuned through years of small-batch trial and error.
+          </p>
+          <p data-lang="es">
+            Tennyson es el formulador. Una larga trayectoria desarrollando alimentos funcionales, snacks tropicales y comidas de recuperación para fiestas, con buen sabor, efectos honestos y sin pretender ser lo que no son. La dosificación de cada Kiwi Pop es trabajo suyo, afinado durante años de pruebas en lotes pequeños.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section reveal d4">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">
+        <span data-lang="en" data-active>Common <span class="accent">questions</span>.</span>
+        <span data-lang="es">Preguntas <span class="accent">frecuentes</span>.</span>
+      </h2>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>What is jambu, and is it safe?</span>
+        <span data-lang="es">¿Qué es el jambú y es seguro?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>Jambu (also called paracress, or by its scientific name Acmella oleracea) is a flowering plant from South America. Its extract is what creates the small mouth tingle and slight numbing sensation, similar to what you feel from Sichuan peppercorns or sherbet powder. It's used as a flavor in chewing gum, oral-care products, and certain foods. The European Food Safety Authority (EFSA) has reviewed the active compound, spilanthol, and established a safe daily intake. The amount in one Kiwi Pop is well below that level, in the range used as a standard food flavoring rather than a supplement dose. It's not psychoactive and doesn't interact with alcohol.</p>
+        <p data-lang="es">El jambú (también llamado paracress, o por su nombre científico Acmella oleracea) es una planta con flor originaria de América del Sur. Su extracto es lo que produce ese pequeño cosquilleo y leve adormecimiento en la boca, parecido a lo que se siente con la pimienta de Sichuan o el polvo efervescente. Se utiliza como aromatizante en chicles, productos de higiene bucal y ciertos alimentos. La Autoridad Europea de Seguridad Alimentaria (EFSA) ha revisado el compuesto activo, el espilantol, y ha establecido una ingesta diaria segura. La cantidad en una Kiwi Pop está muy por debajo de ese nivel, en el rango habitual de un aromatizante alimentario, no de una dosis de suplemento. No es psicoactivo y no interactúa con el alcohol.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>How does it taste? Will my customers actually like it?</span>
+        <span data-lang="es">¿A qué sabe? ¿Le gustará a mis clientes?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>The base flavor is fruit-forward and bright. Kiwi (sweet and tart) is the lead, with lemon-ginger, mango, and peppermint flavors planned. The jambu tingle is light, not aggressive, and arrives a few seconds after the first lick. Most people read it as a fun surprise rather than a strong sensation. The xylitol base sweetens like sugar but is tooth-friendly and won't spike blood sugar. We always send a sample case before any commitment so your team can taste it and your floor can react before you decide.</p>
+        <p data-lang="es">El sabor base es afrutado y brillante. El kiwi (dulce y ácido) es el principal, con sabores de limón-jengibre, mango y menta también previstos. El cosquilleo del jambú es ligero, no agresivo, y aparece a los pocos segundos del primer chupetón. La mayoría de la gente lo percibe como una sorpresa divertida más que como una sensación fuerte. La base de xilitol endulza como el azúcar pero es respetuosa con los dientes y no eleva la glucosa en sangre. Siempre enviamos una caja de muestra antes de cualquier compromiso, para que tu equipo lo pruebe y veas cómo reacciona la sala antes de decidir.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>How is this different from an energy drink or a functional shot?</span>
+        <span data-lang="es">¿En qué se diferencia esto de una bebida energética o un shot funcional?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>No caffeine. The lift comes from theobromine (a milder, longer cousin of caffeine, the same compound that makes dark chocolate feel pleasant), B12, and ginseng, with magnesium and electrolytes balancing it out. The point isn't to spike someone up; it's to keep them comfortable through a long night. It also takes the form of a lollipop, not a can or a shot, so it sits in a different mental category for the customer: a small treat, not a stimulant purchase.</p>
+        <p data-lang="es">Sin cafeína. El empuje viene de la teobromina (un primo más suave y duradero de la cafeína, el mismo compuesto que hace que el chocolate negro siente bien), la B12 y el ginseng, equilibrados con magnesio y electrolitos. La idea no es subir a nadie de golpe, sino mantenerle cómodo durante una noche larga. Además, tiene forma de piruleta, no de lata ni de chupito, así que para el cliente entra en una categoría mental distinta: un pequeño capricho, no la compra de un estimulante.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>What's the shelf life and storage?</span>
+        <span data-lang="es">¿Cuál es la caducidad y cómo se conserva?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>Hard candy on an isomalt base is shelf-stable for around 12-18 months in standard conditions. No refrigeration needed. Keep cool and dry, away from direct sunlight. Each pop is individually wrapped, so handling at the bar or counter is straightforward. Final shelf life will be confirmed on the EU spec sheet alongside the finalized formula.</p>
+        <p data-lang="es">Los caramelos duros con base de isomalt son estables a temperatura ambiente entre 12 y 18 meses en condiciones normales. No requieren frío. Conservar en lugar fresco y seco, alejado de la luz solar directa. Cada piruleta va envasada individualmente, así que la manipulación en barra o mostrador es sencilla. La caducidad definitiva se confirmará en la ficha técnica europea junto con la fórmula final.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>What about allergens and dietary restrictions?</span>
+        <span data-lang="es">¿Y los alérgenos y restricciones alimentarias?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>Vegan. Gluten-free. No common allergens (no nuts, dairy, eggs, soy, or wheat) in the current formula. The xylitol base means it's diabetic-friendly and doesn't spike insulin. One real warning to flag with your customers: <strong>xylitol is highly toxic to dogs</strong>, so if a customer has a dog at the venue, the wrapper needs to stay out of reach. The full EU-compliant allergen panel will appear on the final wrapper in Spanish and English.</p>
+        <p data-lang="es">Vegana. Sin gluten. Sin alérgenos comunes (sin frutos secos, lácteos, huevo, soja ni trigo) en la fórmula actual. La base de xilitol la hace apta para diabéticos y no eleva la insulina. Un aviso real que conviene comunicar a los clientes: <strong>el xilitol es muy tóxico para los perros</strong>, así que si un cliente lleva su perro a la sala, el envoltorio debe quedar fuera de su alcance. El panel completo de alérgenos conforme a la normativa de la UE aparecerá en el envoltorio final en español e inglés.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>Will you provide marketing materials in Spanish?</span>
+        <span data-lang="es">¿Vais a aportar materiales de marketing en español?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>Yes. Founding partners receive counter cards, social-media assets, and short-format video clips in Spanish for use on your channels. Wrapper text on the EU run will be in Spanish and English. If you have a particular format you find works well on your floor (table cards, drink-menu inserts, etc.), tell us and we'll match it.</p>
+        <p data-lang="es">Sí. Los socios fundadores reciben tarjetas de mostrador, materiales para redes sociales y clips de vídeo de formato corto en español para usar en vuestros canales. El texto del envoltorio de la versión europea irá en español e inglés. Si tenéis algún formato concreto que os funciona en vuestra sala (carteles de mesa, insertos en la carta, etc.), decídnoslo y lo adaptamos.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>What if it doesn't sell? Can I return unsold stock?</span>
+        <span data-lang="es">¿Y si no se vende? ¿Puedo devolver lo que no se haya vendido?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>For founding partners on the first order, yes: any unsold, undamaged stock can be returned within 60 days for credit toward a future order, or refunded if you'd rather. We're more interested in finding out whether the product fits your floor than in protecting margin on a first batch. After the first order, return terms shift to standard food-and-beverage industry practice (typically no returns on opened cases, credit on damaged-in-transit only).</p>
+        <p data-lang="es">Para los socios fundadores en el primer pedido, sí: cualquier stock no vendido y en buen estado se puede devolver en un plazo de 60 días, ya sea como crédito para un pedido futuro o como reembolso, lo que prefiráis. Nos interesa más averiguar si el producto encaja en vuestra sala que proteger el margen del primer lote. A partir del segundo pedido, las condiciones de devolución pasan a las habituales del sector de alimentación (normalmente no se aceptan devoluciones de cajas abiertas, solo crédito por daños en el transporte).</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>Can we have territorial exclusivity in our neighborhood?</span>
+        <span data-lang="es">¿Podemos tener exclusividad territorial en nuestra zona?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>Limited exclusivity is on the table for founding partners, on a case-by-case basis. We're not promising it as default because we want to keep the door open to new venues that fit, but if exclusivity matters for your business model, raise it in the conversation and we'll talk through what would work for both sides.</p>
+        <p data-lang="es">La exclusividad limitada está sobre la mesa para los socios fundadores, evaluada caso por caso. No la prometemos por defecto porque queremos dejar la puerta abierta a nuevas salas que encajen, pero si la exclusividad es importante para vuestro modelo de negocio, planteadla en la conversación y veremos juntos qué funciona para ambas partes.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span data-lang="en" data-active>What about Spanish regulatory and labeling compliance?</span>
+        <span data-lang="es">¿Qué hay sobre el cumplimiento normativo y el etiquetado en España?</span>
+      </div>
+      <div class="faq-a">
+        <p data-lang="en" data-active>The EU version will be compliant with EU food regulations (Regulation 1169/2011 on food information to consumers), with full Spanish-language labeling, mandatory nutrition declaration, allergen highlighting, and proper E-number disclosure. We're working with a regulatory consultancy to confirm the formula and packaging meet Spanish AESAN requirements before any wholesale ship date. We'll share the regulatory documentation pack with founding partners ahead of the first delivery so your team can confirm it fits your house standards.</p>
+        <p data-lang="es">La versión europea cumplirá la normativa alimentaria de la UE (Reglamento 1169/2011 sobre información alimentaria al consumidor), con etiquetado completo en español, declaración nutricional obligatoria, alérgenos resaltados y números E correctamente declarados. Estamos trabajando con una consultoría regulatoria para confirmar que la fórmula y el envase cumplen los requisitos de AESAN antes de cualquier fecha de envío al por mayor. Compartiremos la documentación regulatoria con los socios fundadores antes de la primera entrega para que vuestro equipo pueda confirmar que cumple vuestros estándares.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- CTA -->
+  <section class="cta reveal d4">
+    <div class="cta-eyebrow">
+      <span data-lang="en" data-active>NEXT STEP</span>
+      <span data-lang="es">SIGUIENTE PASO</span>
+    </div>
+    <h2 data-lang="en" data-active>Send a vendor application.</h2>
+    <h2 data-lang="es">Enviar una solicitud.</h2>
+    <p class="cta-sub" data-lang="en" data-active>
+      A short form. The fields are tuned for venues importing from outside the EU, so it asks for your tax IDs and customs information up front. Nothing on the form commits you to a volume or a price — it gives us what we need to come back with a clear proposal for your floor.
+    </p>
+    <p class="cta-sub" data-lang="es">
+      Un formulario breve. Los campos están pensados para salas que importan de fuera de la UE, así que se piden los datos fiscales y aduaneros desde el principio. Nada del formulario te compromete a un volumen ni a un precio: nos da lo que necesitamos para volver con una propuesta clara para vuestra sala.
+    </p>
+    <button class="btn" id="open-form-btn">
+      <span data-lang="en" data-active>Send wholesale vendor application →</span>
+      <span data-lang="es">Enviar solicitud de mayorista →</span>
+    </button>
+
+    <div class="contact">
+      <div class="item">
+        <div class="lbl"><span data-lang="en" data-active>Wholesale email</span><span data-lang="es">Email mayorista</span></div>
+        <div class="val"><a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a></div>
+      </div>
+      <div class="item">
+        <div class="lbl">Kiwi · WhatsApp</div>
+        <div class="val"><a href="https://wa.me/18083718666">+1 808 371 8666</a></div>
+      </div>
+      <div class="item">
+        <div class="lbl">Web</div>
+        <div class="val"><a href="https://kiwipop.fun" target="_blank">kiwipop.fun</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QR CODE -->
+  <section class="qr-block reveal">
+    <div class="qr-code" id="qr-code"></div>
+    <div class="qr-text">
+      <h3 data-lang="en" data-active>Take this with you.</h3>
+      <h3 data-lang="es">Llévatelo contigo.</h3>
+      <p data-lang="en" data-active>Scan to open this page on your phone. Share it with the rest of your team, or come back to it later when you're ready.</p>
+      <p data-lang="es">Escanea para abrir esta página en tu móvil. Compártela con el resto de tu equipo o vuelve a ella cuando estéis listos.</p>
+      <div class="url" id="qr-url"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <span>© KIWI POP 2026</span>
+    <span>
+      <span data-lang="en" data-active>DROP 001 · MFD SALT LAKE</span>
+      <span data-lang="es">DROP 001 · ELABORADO EN SALT LAKE</span>
+    </span>
+    <span>舐 一下</span>
+    <p class="disclaimer">
+      <span data-lang="en" data-active>
+        Not for use by persons under 18. Pregnant or nursing persons should consult a healthcare professional before consuming. The European version of Kiwi Pop is still in development; ingredient amounts shown above are estimates and may change before final EU release. The final formula will be confirmed in writing before any wholesale order is fulfilled. These statements have not been evaluated by any regulatory body.
+      </span>
+      <span data-lang="es">
+        No apto para menores de 18 años. Personas embarazadas o en período de lactancia deben consultar con un profesional sanitario antes de consumir. La versión europea de Kiwi Pop está aún en desarrollo; las cantidades de ingredientes indicadas son estimaciones y pueden variar antes del lanzamiento final en la UE. La fórmula definitiva se confirmará por escrito antes de servir cualquier pedido mayorista. Estas declaraciones no han sido evaluadas por ningún organismo regulador.
+      </span>
+    </p>
+  </div>
+
+</div>
+
+<!-- VENDOR APPLICATION MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">×</button>
+
+    <div id="modal-form-content">
+      <h2 data-lang="en" data-active>Wholesale vendor application</h2>
+      <h2 data-lang="es">Solicitud de mayorista</h2>
+
+      <p class="modal-sub" data-lang="en" data-active>
+        About 5 minutes. We use this to build a clear proposal that fits your floor and clears Spanish customs cleanly when the EU stock is ready.
+      </p>
+      <p class="modal-sub" data-lang="es">
+        Unos 5 minutos. Usamos esta información para preparar una propuesta clara que encaje con vuestra sala y pase la aduana española sin complicaciones cuando el stock europeo esté listo.
+      </p>
+
+      <form id="vendor-form">
+
+        <!-- BUSINESS DETAILS -->
+        <div class="modal-section-head">
+          <span data-lang="en" data-active>Business details / Datos de la empresa</span>
+          <span data-lang="es">Datos de la empresa</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>Registered business name (razón social) <span class="req">*</span></span>
+            <span data-lang="es">Razón social <span class="req">*</span></span>
+          </label>
+          <input type="text" name="razon_social" required>
+          <span class="hint" data-lang="en" data-active>The legal name on your tax registration, which can differ from the venue's trading name.</span>
+          <span class="hint" data-lang="es">El nombre legal que figura en tu registro fiscal, que puede ser distinto del nombre comercial de la sala.</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>Trading name / venue name <span class="req">*</span></span>
+            <span data-lang="es">Nombre comercial / sala <span class="req">*</span></span>
+          </label>
+          <input type="text" name="trading_name" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Legal form <span class="req">*</span></span>
+              <span data-lang="es">Forma jurídica <span class="req">*</span></span>
+            </label>
+            <select name="legal_form" required>
+              <option value="">—</option>
+              <option>Autónomo</option>
+              <option>Sociedad Limitada (SL)</option>
+              <option>Sociedad Anónima (SA)</option>
+              <option>Sociedad Civil</option>
+              <option>Comunidad de Bienes</option>
+              <option data-lang="en" data-active>Other</option>
+              <option data-lang="es">Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Venue type <span class="req">*</span></span>
+              <span data-lang="es">Tipo de local <span class="req">*</span></span>
+            </label>
+            <select name="venue_type" required>
+              <option value="">—</option>
+              <option data-lang="en" data-active>Nightclub</option>
+              <option data-lang="es">Discoteca</option>
+              <option data-lang="en" data-active>Bar / lounge</option>
+              <option data-lang="es">Bar / lounge</option>
+              <option data-lang="en" data-active>Festival / event</option>
+              <option data-lang="es">Festival / evento</option>
+              <option data-lang="en" data-active>Restaurant</option>
+              <option data-lang="es">Restaurante</option>
+              <option data-lang="en" data-active>Retail</option>
+              <option data-lang="es">Comercio minorista</option>
+              <option data-lang="en" data-active>Distributor / wholesaler</option>
+              <option data-lang="es">Distribuidor / mayorista</option>
+              <option data-lang="en" data-active>Other</option>
+              <option data-lang="es">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>Fiscal address (domicilio fiscal) <span class="req">*</span></span>
+            <span data-lang="es">Domicilio fiscal <span class="req">*</span></span>
+          </label>
+          <input type="text" name="fiscal_address" placeholder="Calle, número, código postal, ciudad" required>
+          <span class="hint" data-lang="en" data-active>The address registered with Hacienda for tax purposes, not the venue's street address.</span>
+          <span class="hint" data-lang="es">La dirección registrada en Hacienda a efectos fiscales, no la dirección de la sala.</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>Venue address (if different)</span>
+            <span data-lang="es">Dirección del local (si es distinta)</span>
+          </label>
+          <input type="text" name="venue_address">
+        </div>
+
+        <!-- TAX & CUSTOMS -->
+        <div class="modal-section-head">
+          <span data-lang="en" data-active>Tax &amp; customs / Identificación fiscal y aduanera</span>
+          <span data-lang="es">Identificación fiscal y aduanera</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>NIF / CIF (Spanish tax ID) <span class="req">*</span></span>
+            <span data-lang="es">NIF / CIF <span class="req">*</span></span>
+          </label>
+          <input type="text" name="nif" placeholder="e.g. B12345678 / B12345678" required>
+          <span class="hint" data-lang="en" data-active>9 characters. Required for any business invoice in Spain.</span>
+          <span class="hint" data-lang="es">9 caracteres. Necesario para cualquier factura empresarial en España.</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>VAT / VIES number (if registered)</span>
+            <span data-lang="es">NIF-IVA / VIES (si estás registrado)</span>
+          </label>
+          <input type="text" name="vat_vies" placeholder="ESB12345678">
+          <span class="hint" data-lang="en" data-active>Your intra-community VAT number, format ES + NIF. Required for VAT-exempt cross-border invoicing.</span>
+          <span class="hint" data-lang="es">Tu NIF-IVA intracomunitario, formato ES + NIF. Necesario para facturación intracomunitaria sin IVA.</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>EORI number</span>
+            <span data-lang="es">Número EORI</span>
+          </label>
+          <input type="text" name="eori" placeholder="ES + NIF">
+          <span class="hint" data-lang="en" data-active>Required to clear goods through Spanish customs from outside the EU. If you don't have one, see the import-handling question below.</span>
+          <span class="hint" data-lang="es">Necesario para despachar mercancía en aduana desde fuera de la UE. Si no tienes uno, consulta la pregunta sobre importación más abajo.</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>How will the goods be imported? <span class="req">*</span></span>
+            <span data-lang="es">¿Cómo se importará la mercancía? <span class="req">*</span></span>
+          </label>
+          <select name="import_handling" required>
+            <option value="">—</option>
+            <option data-lang="en" data-active>We have our own EORI and will handle import directly</option>
+            <option data-lang="es">Tenemos EORI propio y gestionaremos la importación directamente</option>
+            <option data-lang="en" data-active>We work with a customs broker / freight forwarder</option>
+            <option data-lang="es">Trabajamos con un agente de aduanas / transitario</option>
+            <option data-lang="en" data-active>We need Kiwi Pop's EU partner to handle import</option>
+            <option data-lang="es">Necesitamos que el socio europeo de Kiwi Pop gestione la importación</option>
+            <option data-lang="en" data-active>Not sure yet — we'd like advice</option>
+            <option data-lang="es">Aún no estamos seguros — buscamos asesoramiento</option>
+          </select>
+          <span class="hint" data-lang="en" data-active>If you'd rather Kiwi Pop's EU partner handle customs, that's available. The wholesale price will reflect that service.</span>
+          <span class="hint" data-lang="es">Si prefieres que el socio europeo de Kiwi Pop se encargue de la aduana, es una opción disponible. El precio mayorista lo reflejará.</span>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="modal-section-head">
+          <span data-lang="en" data-active>Primary contact / Persona de contacto</span>
+          <span data-lang="es">Persona de contacto</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Full name <span class="req">*</span></span>
+              <span data-lang="es">Nombre completo <span class="req">*</span></span>
+            </label>
+            <input type="text" name="contact_name" required>
+          </div>
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Role / position <span class="req">*</span></span>
+              <span data-lang="es">Cargo <span class="req">*</span></span>
+            </label>
+            <input type="text" name="contact_role" placeholder="Owner, Buyer, F&B Manager..." required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Email <span class="req">*</span></span>
+              <span data-lang="es">Correo electrónico <span class="req">*</span></span>
+            </label>
+            <input type="email" name="email" required>
+          </div>
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Phone / WhatsApp <span class="req">*</span></span>
+              <span data-lang="es">Teléfono / WhatsApp <span class="req">*</span></span>
+            </label>
+            <input type="tel" name="phone" placeholder="+34 ..." required>
+          </div>
+        </div>
+
+        <!-- OPERATIONAL -->
+        <div class="modal-section-head">
+          <span data-lang="en" data-active>Your floor / Vuestra sala</span>
+          <span data-lang="es">Vuestra sala</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Average weekly capacity</span>
+              <span data-lang="es">Aforo medio semanal</span>
+            </label>
+            <input type="text" name="capacity" placeholder="e.g. 800 / week">
+          </div>
+          <div class="field">
+            <label>
+              <span data-lang="en" data-active>Estimated initial order</span>
+              <span data-lang="es">Pedido inicial estimado</span>
+            </label>
+            <select name="initial_order">
+              <option value="">—</option>
+              <option data-lang="en" data-active>Sample case only (~40 units)</option>
+              <option data-lang="es">Solo caja de muestra (~40 uds.)</option>
+              <option>200 - 500</option>
+              <option>500 - 1,000</option>
+              <option>1,000 - 5,000</option>
+              <option data-lang="en" data-active>5,000+</option>
+              <option data-lang="es">Más de 5,000</option>
+              <option data-lang="en" data-active>Not sure yet</option>
+              <option data-lang="es">Aún no lo sé</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>Tell us a bit about your floor</span>
+            <span data-lang="es">Cuéntanos un poco sobre vuestra sala</span>
+          </label>
+          <textarea name="floor_notes" rows="4" placeholder=""></textarea>
+          <span class="hint" data-lang="en" data-active>Music, crowd, hours, what currently sells well behind the bar, anything you'd want us to know before we propose terms.</span>
+          <span class="hint" data-lang="es">Música, público, horario, lo que se vende bien actualmente en la barra, lo que quieras que sepamos antes de proponerte condiciones.</span>
+        </div>
+
+        <div class="field">
+          <label>
+            <span data-lang="en" data-active>Existing distributor relationships (if any)</span>
+            <span data-lang="es">Relaciones existentes con distribuidores (si las hay)</span>
+          </label>
+          <input type="text" name="distributors" placeholder="">
+          <span class="hint" data-lang="en" data-active>Optional. Helps us understand if there's an existing supply chain we should plug into.</span>
+          <span class="hint" data-lang="es">Opcional. Nos ayuda a entender si ya hay una cadena de suministro a la que podamos sumarnos.</span>
+        </div>
+
+        <!-- CONSENTS -->
+        <div class="modal-section-head">
+          <span data-lang="en" data-active>Confirmations / Confirmaciones</span>
+          <span data-lang="es">Confirmaciones</span>
+        </div>
+
+        <div class="checkbox-field">
+          <input type="checkbox" id="age_check" name="age_check" required>
+          <label for="age_check">
+            <span data-lang="en" data-active>Our venue serves customers 18 and over and is licensed to sell food and beverages in Spain.</span>
+            <span data-lang="es">Nuestra sala atiende a personas mayores de 18 años y dispone de licencia para la venta de alimentos y bebidas en España.</span>
+          </label>
+        </div>
+
+        <div class="checkbox-field">
+          <input type="checkbox" id="data_check" name="data_check" required>
+          <label for="data_check">
+            <span data-lang="en" data-active>I consent to Kiwi Pop processing the information above for the purpose of evaluating this wholesale application, in accordance with EU GDPR.</span>
+            <span data-lang="es">Doy mi consentimiento para que Kiwi Pop trate la información anterior con el fin de evaluar esta solicitud de mayorista, de acuerdo con el RGPD de la UE.</span>
+          </label>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <span data-lang="en" data-active>Submit application</span>
+          <span data-lang="es">Enviar solicitud</span>
+        </button>
+
+        <p class="form-note">
+          <span data-lang="en" data-active>We respond within 48 hours, typically with a sample-case offer and a short call to talk through fit. Information is shared only with Kiwi Pop's wholesale team and is never sold or shared with third parties.</span>
+          <span data-lang="es">Respondemos en un plazo de 48 horas, normalmente con una oferta de caja de muestra y una llamada breve para hablar del encaje. La información se comparte únicamente con el equipo mayorista de Kiwi Pop y nunca se vende ni se cede a terceros.</span>
+        </p>
+      </form>
+    </div>
+
+    <div class="modal-success" id="modal-success">
+      <div class="check">舐</div>
+      <h3 data-lang="en" data-active>Application received.</h3>
+      <h3 data-lang="es">Solicitud recibida.</h3>
+      <p data-lang="en" data-active>Thank you. We'll be in touch within 48 hours from <strong>thekiwipop@gmail.com</strong>. Kiwi may also reach out by WhatsApp.</p>
+      <p data-lang="es">Gracias. Nos pondremos en contacto en un plazo de 48 horas desde <strong>thekiwipop@gmail.com</strong>. Es posible que Kiwi también te escriba por WhatsApp.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* LANGUAGE TOGGLE */
+  const langButtons = document.querySelectorAll('[data-set-lang]');
+  const langElements = document.querySelectorAll('[data-lang]');
+
+  function setLang(lang) {
+    langButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.setLang === lang);
+    });
+    langElements.forEach(el => {
+      if (el.dataset.lang === lang) {
+        el.setAttribute('data-active', '');
+      } else {
+        el.removeAttribute('data-active');
+      }
+    });
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('kp-lang', lang); } catch (e) {}
+  }
+
+  langButtons.forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.setLang));
+  });
+
+  try {
+    const saved = localStorage.getItem('kp-lang');
+    if (saved === 'es' || saved === 'en') {
+      setLang(saved);
+    } else if ((navigator.language || '').toLowerCase().startsWith('es')) {
+      setLang('es');
+    }
+  } catch (e) {}
+
+  /* FAQ ACCORDION */
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+  });
+
+  /* MODAL */
+  const overlay = document.getElementById('modal-overlay');
+  const openBtn = document.getElementById('open-form-btn');
+  const closeBtn = document.getElementById('modal-close');
+  const form = document.getElementById('vendor-form');
+  const formContent = document.getElementById('modal-form-content');
+  const successEl = document.getElementById('modal-success');
+
+  function openModal() {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    formContent.style.display = 'block';
+    successEl.classList.remove('active');
+    form.reset();
+  }
+  function closeModal() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    console.log('Vendor application submitted:', data);
+    // TODO: POST to backend / email service. For now, also build a mailto fallback.
+    const subject = encodeURIComponent('Wholesale vendor application — ' + (data.trading_name || ''));
+    const bodyLines = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n');
+    const mailto = `mailto:thekiwipop@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyLines)}`;
+    // Open email client as a fallback so the application reaches the inbox even without a backend
+    window.location.href = mailto;
+    formContent.style.display = 'none';
+    successEl.classList.add('active');
+  });
+
+  /* QR CODE */
+  const qrUrl = window.location.href.split('#')[0];
+  document.getElementById('qr-url').textContent = qrUrl;
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(document.getElementById('qr-code'), {
+      text: qrUrl,
+      width: 120,
+      height: 120,
+      colorDark: '#060610',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }
+</script>
+
+</body>
+</html>
