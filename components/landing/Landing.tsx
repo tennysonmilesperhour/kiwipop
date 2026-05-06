@@ -295,6 +295,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/raffle">RAFFLE</Link>
           <Link href="/variety">VARIETY</Link>
           <Link href="/merch">MERCH</Link>
+          <Link href="/wholesale">WHOLESALE</Link>
           <Link href="/find-us">FIND US</Link>
         </div>
         <Link href="/cart" className="kp-cart-btn" aria-label="cart">
