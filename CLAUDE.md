@@ -20,3 +20,11 @@
 ## Vercel
 
 - Hobby plan: cron schedule cap = once per day. `vercel.json` cron is `0 9 * * *`. Don't push sub-daily schedules — they'll break every preview deploy.
+
+## Shipping (USPS labels)
+
+- Provider: **ShipStation** (V1 API — `ssapi.shipstation.com`). Lib at `lib/shipstation.ts`. Uses HTTP Basic auth (`SHIPSTATION_API_KEY` + `SHIPSTATION_API_SECRET`).
+- Buy flow: `POST /api/admin/orders/[id]/buy-label` → `lib/shipstation.ts#buyUspsLabel` → row in `shipments` table with `provider='shipstation'` and `provider_shipment_id`.
+- Print flow: `GET /api/admin/shipments/[id]/label.pdf` re-fetches the PDF from ShipStation `/shipments/getlabel` on demand. We don't store the base64 blob.
+- Defaults: cheapest USPS service is `usps_ground_advantage`; default parcel is 6×4×2 in / 4 oz. All overridable via `SHIPSTATION_*` env vars.
+- Without the API keys, the buy-label endpoint returns a clean 503 — page still works.

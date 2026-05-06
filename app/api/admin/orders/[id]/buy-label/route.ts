@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { buyUspsLabel, isShippoConfigured } from '@/lib/shippo';
+import { buyUspsLabel, isShipStationConfigured } from '@/lib/shipstation';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -28,22 +28,35 @@ interface RouteContext {
   params: { id: string };
 }
 
+interface ExistingShipmentRow {
+  id: string;
+  carrier: string | null;
+  tracking_number: string | null;
+  label_url: string | null;
+  shipped_at: string | null;
+  provider: string | null;
+  provider_shipment_id: string | null;
+}
+
 /**
- * Buy a USPS label via Shippo for a paid order, store the resulting
- * tracking + PDF URL in the shipments table, and flip the order to
- * `shipped` so it falls into the right admin section. Idempotent-ish:
- * if a shipment row already exists for the order, returns it instead
- * of charging again.
+ * Buy a USPS label via ShipStation for a paid order, store the resulting
+ * tracking + provider shipment id in the shipments table, and flip the
+ * order to `shipped`. The label PDF itself is fetched on-demand by
+ * `/api/admin/shipments/[id]/label.pdf` (so we don't bloat the DB) — the
+ * `label_url` we store points there.
+ *
+ * Idempotent-ish: if a shipment row already exists with a tracking number,
+ * returns it instead of creating a new label.
  */
-export async function POST(_request: NextRequest, { params }: RouteContext) {
+export async function POST(request: NextRequest, { params }: RouteContext) {
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 
-  if (!isShippoConfigured()) {
+  if (!isShipStationConfigured()) {
     return NextResponse.json(
       {
         error:
-          'SHIPPO_API_KEY is not configured. Add it in Vercel → Project Settings → Environment Variables to enable USPS label printing.',
+          'SHIPSTATION_API_KEY / SHIPSTATION_API_SECRET are not configured. Add them in Vercel → Project Settings → Environment Variables to enable USPS label printing.',
       },
       { status: 503 },
     );
@@ -77,15 +90,19 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
     );
   }
 
-  const { data: existing } = await supabaseAdmin
+  const { data: existingRows } = await supabaseAdmin
     .from('shipments')
-    .select('id, carrier, tracking_number, label_url, shipped_at')
+    .select(
+      'id, carrier, tracking_number, label_url, shipped_at, provider, provider_shipment_id',
+    )
     .eq('order_id', order.id)
     .order('created_at', { ascending: false })
-    .limit(1);
+    .limit(1)
+    .returns<ExistingShipmentRow[]>();
 
-  if (existing && existing.length > 0 && existing[0]!.label_url) {
-    return NextResponse.json({ shipment: existing[0], reused: true });
+  const existing = existingRows?.[0];
+  if (existing && existing.tracking_number && existing.label_url) {
+    return NextResponse.json({ shipment: existing, reused: true });
   }
 
   const addr = order.shipping_address;
@@ -115,20 +132,32 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
       metadata: `order:${order.id.slice(0, 8)}`,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Shippo error';
+    const message = err instanceof Error ? err.message : 'ShipStation error';
     return NextResponse.json({ error: message }, { status: 502 });
   }
 
+  // The label_url we save points at our own re-fetch endpoint. The endpoint
+  // will call ShipStation /shipments/getlabel using provider_shipment_id and
+  // stream the PDF. This way we never store the (~50KB base64) PDF in the DB.
+  const origin =
+    process.env.NEXT_PUBLIC_SITE_URL ?? request.nextUrl.origin;
+
   const now = new Date().toISOString();
+  const insertedShipment = {
+    order_id: order.id,
+    carrier: 'usps',
+    tracking_number: label.trackingNumber,
+    label_url: '', // filled in below once we know the shipment row id
+    shipped_at: now,
+    provider: 'shipstation',
+    provider_shipment_id: label.providerShipmentId,
+    service_level: label.serviceLevel,
+    rate_cents: label.rateCents,
+  };
+
   const { data: shipment, error: shipmentError } = await supabaseAdmin
     .from('shipments')
-    .insert({
-      order_id: order.id,
-      carrier: 'usps',
-      tracking_number: label.trackingNumber,
-      label_url: label.labelUrl,
-      shipped_at: now,
-    })
+    .insert(insertedShipment)
     .select()
     .single();
 
@@ -136,14 +165,20 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
     return NextResponse.json(
       {
         error:
-          'Label was bought from Shippo but failed to save locally. The label URL is included so you can still print it.',
+          'Label was bought from ShipStation but failed to save locally. Tracking number is included; print directly from ShipStation if needed.',
         details: shipmentError?.message,
-        labelUrl: label.labelUrl,
         trackingNumber: label.trackingNumber,
+        providerShipmentId: label.providerShipmentId,
       },
       { status: 500 },
     );
   }
+
+  const labelUrl = `${origin}/api/admin/shipments/${shipment.id}/label.pdf`;
+  await supabaseAdmin
+    .from('shipments')
+    .update({ label_url: labelUrl })
+    .eq('id', shipment.id);
 
   if (order.status === 'paid') {
     await supabaseAdmin
@@ -153,7 +188,7 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
   }
 
   return NextResponse.json({
-    shipment,
+    shipment: { ...shipment, label_url: labelUrl },
     rateCents: label.rateCents,
     serviceLevel: label.serviceLevel,
   });
