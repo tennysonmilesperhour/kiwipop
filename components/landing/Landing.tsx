@@ -553,7 +553,28 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </h2>
         </div>
         <div className="zvid-feature">
-          <ReelPlayer src="/videos/kp-reel-1.mp4" label="COFOUNDER · TENNYSON" />
+          <ReelPlayer src="/videos/kp-reel-1.mp4" label="FIRST VIRAL KP REEL" />
+          <div className="zvid-copy">
+            <span className="zvid-copy-tag">// the one that did it</span>
+            <h3 className="zvid-copy-h">
+              this is how
+              <br />
+              <span className="zvid-grad">it started.</span>
+            </h3>
+            <p>
+              one little reel, zero plan, and then the internet absolutely lost it. we did NOT see this coming —
+              but we&apos;re running with it full speed.
+            </p>
+            <p className="zvid-copy-cta">
+              tap play, flip the sound on, scrub around. check it out →
+            </p>
+          </div>
+        </div>
+
+        <div className="zvid-feature is-reversed">
+          <div className="zvid-placeholder" aria-label="founder reel placeholder">
+            <span>Coming soon</span>
+          </div>
           <div className="zvid-copy">
             <span className="zvid-copy-tag">// cofounder · tennyson</span>
             <h3 className="zvid-copy-h">

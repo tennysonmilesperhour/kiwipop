@@ -1099,6 +1099,37 @@
   color: rgba(255, 255, 255, 0.85) !important;
 }
 
+/* Reversed variant: copy on the left (right-aligned), media on the right.
+   Source order is media → copy so mobile stacks media-first like row 1; on
+   desktop we use `order` to swap them into the right columns. */
+.kp-page .zvid-feature.is-reversed {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+}
+.kp-page .zvid-feature.is-reversed .zvid-copy {
+  order: 1;
+  text-align: right;
+  margin-left: auto;
+}
+.kp-page .zvid-feature.is-reversed .zvid-placeholder {
+  order: 2;
+}
+
+.kp-page .zvid-placeholder {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: 14px;
+  background: #111;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
 /* Tablet: stack */
 @media (max-width: 900px) {
   .kp-page .zvid-feature {
@@ -1106,6 +1137,14 @@
     gap: 32px;
     max-width: 480px;
     margin: 0 auto;
+  }
+  .kp-page .zvid-feature.is-reversed .zvid-copy {
+    order: 0;
+    text-align: left;
+    margin-left: 0;
+  }
+  .kp-page .zvid-feature.is-reversed .zvid-placeholder {
+    order: 0;
   }
   .kp-page .zvid { padding: 72px 20px 80px; }
 }
