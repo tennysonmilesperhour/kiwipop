@@ -53,7 +53,7 @@ export default function ShippingPage() {
 
         <h2>damaged · missing · stolen</h2>
         <p>
-          email <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> with
+          email <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> with
           your order number and a photo if relevant. we&apos;ll fix it.
         </p>
 

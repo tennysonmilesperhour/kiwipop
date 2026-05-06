@@ -47,7 +47,7 @@ const STATUS_COPY: Record<
   },
   approved: {
     headline: "you're approved.",
-    body: "tier pricing is below. to place your first preorder, email wholesale@kiwipop.co with quantities by flavor and we'll send a quote with a payment link.",
+    body: "tier pricing is below. to place your first preorder, email thekiwipop@gmail.com with quantities by flavor and we'll send a quote with a payment link.",
     color: 'var(--lime)',
   },
   rejected: {
@@ -309,14 +309,14 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
               marginBottom: '1.5rem',
             }}
           >
-            email <strong>wholesale@kiwipop.co</strong> with quantities by
+            email <strong>thekiwipop@gmail.com</strong> with quantities by
             flavor. include your business name + tier — we&apos;ll match it to
             this account, send a quote with a stripe payment link, and lock
             inventory in the next batch.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <a
-              href={`mailto:wholesale@kiwipop.co?subject=Preorder%20%C2%B7%20${encodeURIComponent(account.business_name)}&body=${encodeURIComponent(
+              href={`mailto:thekiwipop@gmail.com?subject=Preorder%20%C2%B7%20${encodeURIComponent(account.business_name)}&body=${encodeURIComponent(
                 `Hi,\n\nThis is ${account.business_name} (${user.email}). We're approved on the ${account.tier} tier.\n\nQuantities:\n  Kiwi Pop: __\n  Lemon G. Luci: __\n  Mollie's Mango: __\n  Merry Mint: __\n\nShipping to:\n  ___\n\nThanks!`
               )}`}
               className="btn btn-primary"

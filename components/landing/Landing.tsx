@@ -1067,10 +1067,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
         <div className="col">
           <h4>CONTACT</h4>
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>
-          <a href="mailto:wholesale@kiwipop.co">wholesale@kiwipop.co</a>
-          <a href="mailto:events@kiwipop.co">events@kiwipop.co</a>
-          <a href="mailto:press@kiwipop.co">press@kiwipop.co</a>
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a>
         </div>
         <div className="col">
           <h4>LEGAL</h4>

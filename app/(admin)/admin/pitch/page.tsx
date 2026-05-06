@@ -1071,7 +1071,7 @@ export default function PitchPage() {
         <section className="pitch-foot">
           <div className="pitch-foot-meta">
             <div>kiwi pop · refreshing club lolli</div>
-            <div>founder · tennyson taggart · hello@kiwipop.co</div>
+            <div>founder · tennyson taggart · thekiwipop@gmail.com</div>
             <div>doc · pitch deck v1 · {new Date().toISOString().slice(0, 10)}</div>
           </div>
           <div className="pitch-foot-stamp">

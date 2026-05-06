@@ -55,7 +55,7 @@ export default function PrivacyPage() {
           opting in to occasional marketing emails (drop announcements,
           festival activations, restocks). you can unsubscribe at the bottom
           of any email or by emailing{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>. transactional
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a>. transactional
           emails (order confirmations, shipping notifications) keep coming
           regardless — we have to send those.
         </p>
@@ -117,7 +117,7 @@ export default function PrivacyPage() {
           behavioral advertising. you have the right to know what we have on
           you, request deletion, and opt out of any future sale or sharing
           (we don&apos;t do either, but the right is yours). email{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> with the
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> with the
           subject &ldquo;CCPA request&rdquo; and we&apos;ll handle it within
           45 days.
         </p>
@@ -135,7 +135,7 @@ export default function PrivacyPage() {
         <h2>your rights</h2>
         <p>
           email{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> to:
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> to:
         </p>
         <ul>
           <li>see what we have on you</li>
@@ -172,7 +172,7 @@ export default function PrivacyPage() {
         <h2>contact</h2>
         <p>
           questions about this privacy policy or your data:{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a>
         </p>
         <p>
           mailing address: kiwi pop, salt lake city, utah, USA

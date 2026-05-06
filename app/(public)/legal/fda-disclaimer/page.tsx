@@ -102,7 +102,7 @@ export default function FdaDisclaimerPage() {
           recipe does not intentionally use peanuts, tree nuts, dairy, soy,
           wheat, eggs, fish, or shellfish, but cross-contact is possible. if
           you have a serious allergy, email{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> for the
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> for the
           current batch&apos;s facility statement before ordering.
         </p>
 
@@ -123,7 +123,7 @@ export default function FdaDisclaimerPage() {
 
         <h2>questions</h2>
         <p>
-          email <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>. if
+          email <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a>. if
           you experience an adverse reaction, also contact your healthcare
           provider and (in the US) the FDA at{' '}
           <a

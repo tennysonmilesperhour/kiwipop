@@ -361,7 +361,7 @@ First deployment is the only fiddly one. After that, every change is live within
 The landing demo's code structure is production-quality but several content fields are placeholders. Search the file for `[placeholder` (literal text marker) to find them all. The big ones:
 
 - **Founder story paragraph** on B1. Currently a generic "started in a kitchen" narrative.
-- **Contact emails** (hello@kiwipop.co, wholesale@kiwipop.co, etc.) — invented but plausible.
+- **Contact email** — currently `thekiwipop@gmail.com` everywhere.
 - **Festival event dates and statuses** on B2. Currently aspirational ("in negotiation", "tba").
 - **Retailer city list** ("[retailer placeholder]" entries) on B2.
 - **Social handles** (@kiwipop on IG/TikTok/Discord/Newsletter) on B2.
