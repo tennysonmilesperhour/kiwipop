@@ -179,11 +179,6 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
   },
   {
-    name: 'kava',
-    amount: '0.75 g instant',
-    why: 'the relaxed thing. shoulders drop. you smile a little, alone.',
-  },
-  {
     name: 'ginseng',
     amount: '150 mg',
     why: 'half a supplement dose. steady wake, no crash.',
@@ -244,12 +239,12 @@ export const TIMELINE: readonly TimelineMoment[] = [
   {
     index: '02:00',
     title: 'the lift',
-    body: 'theobromine + kava click in. shoulders drop, head clears. you smile a little, alone.',
+    body: 'theobromine clicks in. shoulders drop, head clears. you smile a little, alone.',
   },
   {
     index: '20:00',
     title: 'the after',
-    body: 'theobromine + kava + b12 + electrolytes doing the math in the background. you feel like you ate.',
+    body: 'theobromine + b12 + electrolytes doing the math in the background. you feel like you ate.',
   },
 ] as const;
 

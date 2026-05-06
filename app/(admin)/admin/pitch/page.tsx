@@ -72,7 +72,7 @@ const PLAN_5K: PitchPlan = {
     {
       label: 'legal · LLC / EIN / 1hr CPG counsel',
       cents: 45_000,
-      detail: 'food/CPG lawyer for kava-state disclosures',
+      detail: 'food/CPG lawyer for ingredient + label disclosures',
     },
     {
       label: 'klaviyo · welcome + abandoned cart flow',
@@ -128,7 +128,7 @@ const PLAN_5K: PitchPlan = {
     { metric: 'repeat-purchase signal', value: 'measurable in 90 days' },
   ],
   risks: [
-    "biggest risk: reformulation. we're swapping kava's mouthfeel for a compliant alternative without losing the sensory experience that drives early product love. actively testing alternatives. a kava SKU stays for direct channels where permissible.",
+    "biggest risk: formulation iteration. we're tuning the functional payload (theobromine + ginseng + b12 + electrolytes) for the cleanest possible lift without losing the sensory experience that drives early product love. actively running A/B taste tests batch over batch.",
     'one festival can flop on weather or foot traffic — no backup booth in this budget',
     "kitchen-batch COGS assumes the founder's own kitchen — labor not priced",
     "no money for second batch if the first sells out before paid ads have run",
@@ -251,7 +251,7 @@ const PLAN_50K: PitchPlan = {
     },
   ],
   risks: [
-    "biggest risk: reformulation. we're swapping kava's mouthfeel for a compliant alternative at scale without losing the sensory experience that drives early product love. actively testing nootropic blends; a kava SKU stays for direct channels where permissible.",
+    "biggest risk: formulation at scale. we're refining the nootropic blend (theobromine + ginseng + magnesium + b12 + electrolytes) at copacker volumes without losing the sensory experience that drives early product love. actively iterating on every batch.",
     'co-packer minimum order quantities may push first batch above $7K',
     'festival activations are weather- and crowd-dependent · one bad weekend',
     "shopify partner build takes 4–8 weeks · slip eats into first festival window",

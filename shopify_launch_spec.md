@@ -374,7 +374,7 @@ For completeness, things that are out of scope here but you'll need to figure ou
 - **Manufacturing / production scale-up.** When you outgrow your kitchen, you'll need a co-packer. That's a separate operational track.
 - **Wholesale and retail distribution.** Whole Foods, Sprouts, Erewhon, festival vendor relationships — these are direct sales conversations, not Shopify configuration.
 - **Paid acquisition strategy.** Meta ads, TikTok ads, influencer marketing — these are post-launch revenue work, not setup.
-- **Legal and regulatory.** FDA labeling requirements for functional ingredients, supplement facts vs. nutrition facts panels, kava-specific disclosures (some states regulate kava-containing products differently). Worth a one-hour consult with a food/CPG lawyer before launch.
+- **Legal and regulatory.** FDA labeling requirements for functional ingredients, supplement facts vs. nutrition facts panels. Worth a one-hour consult with a food/CPG lawyer before launch.
 - **Insurance.** Product liability insurance is non-optional for consumables. Get a quote from someone like Hiscox or Next Insurance.
 
 These are all things you'll address in parallel with the Shopify launch but they aren't part of the storefront build itself.

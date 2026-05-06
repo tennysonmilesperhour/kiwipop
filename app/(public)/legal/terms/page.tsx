@@ -25,8 +25,7 @@ export default function TermsPage() {
         <h2>using the site</h2>
         <p>
           you must be at least <strong>18 years old</strong> to buy from
-          us. kiwi pop contains kava, which is restricted to adults; the
-          site, the product, and any marketing communication is not
+          us. the site, the product, and any marketing communication is not
           intended for anyone under 18. by placing an order you affirm
           you&apos;re 18+. if you&apos;re younger, get a parent or
           guardian to handle it.
@@ -73,7 +72,7 @@ export default function TermsPage() {
         </p>
         <p>
           kiwi pop is a dietary supplement in confection form. it contains
-          functional ingredients (theobromine, kava, ginseng, b12, magnesium,
+          functional ingredients (theobromine, ginseng, b12, magnesium,
           taurine, electrolytes) and sugar alcohols (isomalt, xylitol). any
           claims we make about our ingredients are structure/function claims
           — they describe how nutrients may support normal body functions,
@@ -92,8 +91,8 @@ export default function TermsPage() {
           and other pets. keep kiwi pop away from animals.
         </p>
         <p>
-          full ingredient safety information, the FDA disclaimer, the kava
-          advisory, and the california prop 65 reservation live on the{' '}
+          full ingredient safety information, the FDA disclaimer, and
+          the california prop 65 reservation live on the{' '}
           <Link href="/legal/fda-disclaimer">fda + safety</Link> page.
         </p>
 

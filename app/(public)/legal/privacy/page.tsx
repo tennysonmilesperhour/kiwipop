@@ -127,8 +127,7 @@ export default function PrivacyPage() {
           this site and product are not directed at children under 13. we do
           not knowingly collect personal information from anyone under 13.
           if you believe a child has signed up, email us and we&apos;ll
-          delete the record. kiwi pop contains kava and is intended for
-          adults 18+ only — see the{' '}
+          delete the record. kiwi pop is intended for adults 18+ only — see the{' '}
           <Link href="/legal/fda-disclaimer">fda + safety</Link> page.
         </p>
 
