@@ -841,7 +841,7 @@
   text-shadow: 0 0 6px rgba(245, 255, 61, 0.5);
 }
 
-/* ========= ZONE 2.5 · REELS / VIDEO ========= */
+/* ========= ZONE 2.5 · FOUNDERS / STORY JOURNEY ========= */
 .kp-page .zvid {
   position: relative;
   padding: 100px var(--pad-page, 24px) 120px;
@@ -1099,53 +1099,232 @@
   color: rgba(255, 255, 255, 0.85) !important;
 }
 
+/* Journey container: stacks every founder stage with rhythmic spacing
+   so the eye can ride the bouncing video → text → video → text → ... */
+.kp-page .zvid-journey {
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+  position: relative;
+}
+
 /* Reversed variant: copy on the left (right-aligned), media on the right.
    Source order is media → copy so mobile stacks media-first like row 1; on
    desktop we use `order` to swap them into the right columns. */
 .kp-page .zvid-feature.is-reversed {
   grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
 }
-.kp-page .zvid-feature.is-reversed .zvid-copy {
+.kp-page .zvid-feature.is-reversed .zvid-copy,
+.kp-page .zvid-feature.is-reversed .zvid-emailcap {
   order: 1;
   text-align: right;
   margin-left: auto;
+  align-items: flex-end;
 }
-.kp-page .zvid-feature.is-reversed .zvid-placeholder {
+.kp-page .zvid-feature.is-reversed .zvid-placeholder,
+.kp-page .zvid-feature.is-reversed .zvid-player {
   order: 2;
+}
+.kp-page .zvid-feature.is-reversed .zvid-emailcap-form {
+  align-items: flex-end;
+}
+
+/* Scroll-reveal: each stage starts dim + offset, lands on screen with a
+   springy easing for that spunky bouncing feel. Direction of x-offset
+   matches the row's media side so the row "swoops in" from its corner. */
+.kp-page .zvid-feature {
+  opacity: 0;
+  transform: translate(-24px, 56px);
+  transition:
+    opacity 0.8s cubic-bezier(0.34, 1.4, 0.5, 1),
+    transform 0.8s cubic-bezier(0.34, 1.4, 0.5, 1);
+  will-change: opacity, transform;
+}
+.kp-page .zvid-feature.is-reversed {
+  transform: translate(24px, 56px);
+}
+.kp-page .zvid-feature.is-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kp-page .zvid-feature {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* "Coming soon" placeholder card — same physical footprint as the video
+   stage, dashed neon-magenta border that gently pulses so it reads as
+   "alive, just empty for now". The placeholder row gets extra top
+   breathing room so it sits a little lower than the previous stage. */
+.kp-page .zvid-feature.is-placeholder {
+  margin-top: 32px;
+}
+.kp-page .zvid-feature.is-placeholder .zvid-placeholder {
+  margin-top: 28px;
 }
 
 .kp-page .zvid-placeholder {
   position: relative;
   aspect-ratio: 9 / 16;
   border-radius: 14px;
-  background: #111;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(255, 26, 140, 0.10), transparent 60%),
+    #0d0d14;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.45);
+  gap: 12px;
+  padding: 24px;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  overflow: hidden;
+  animation: zvid-placeholder-pulse 3.4s ease-in-out infinite;
+}
+.kp-page .zvid-placeholder-label {
   font-family: var(--font-mono, monospace);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
 }
+.kp-page .zvid-placeholder-sub {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 26, 140, 0.7);
+}
+.kp-page .zvid-placeholder-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--hot-pink, #ff1a8c);
+  box-shadow: 0 0 12px rgba(255, 26, 140, 0.7);
+  animation: zvid-placeholder-dot 1.6s ease-in-out infinite;
+}
+@keyframes zvid-placeholder-pulse {
+  0%, 100% {
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 0 rgba(255, 26, 140, 0);
+  }
+  50% {
+    border-color: rgba(255, 26, 140, 0.45);
+    box-shadow: 0 0 28px rgba(255, 26, 140, 0.18);
+  }
+}
+@keyframes zvid-placeholder-dot {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.4); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kp-page .zvid-placeholder,
+  .kp-page .zvid-placeholder-pulse {
+    animation: none;
+  }
+}
+
+/* Email-capture card — sits in the description column of the placeholder
+   row. Stack matches .zvid-copy (tag, h3, body) then form. */
+.kp-page .zvid-emailcap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+}
+.kp-page .zvid-emailcap-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+  width: 100%;
+  max-width: 360px;
+}
+.kp-page .zvid-emailcap-form input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 26, 140, 0.4);
+  border-radius: 8px;
+  color: var(--bone, #f4f0e8);
+  font-family: var(--font-cyber, var(--font-mono, monospace));
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  transition: border-color 200ms, box-shadow 200ms;
+}
+.kp-page .zvid-emailcap-form input:focus {
+  outline: none;
+  border-color: var(--hot-pink, #ff1a8c);
+  box-shadow: 0 0 16px rgba(255, 26, 140, 0.35);
+}
+.kp-page .zvid-emailcap-form button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--hot-pink, #ff1a8c);
+  color: var(--void, #050510);
+  font-family: var(--font-cyber, var(--font-mono, monospace));
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(255, 26, 140, 0.35);
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.kp-page .zvid-emailcap-form button[type="submit"]:hover { transform: scale(1.03); }
+.kp-page .zvid-emailcap-form button[type="submit"]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+.kp-page .zvid-emailcap-msg {
+  font-family: var(--font-cyber, var(--font-mono, monospace));
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rose-dust, rgba(255, 255, 255, 0.5));
+  margin-top: 2px;
+}
+.kp-page .zvid-emailcap-msg.ok { color: var(--kiwi, #a8ff3c); }
+.kp-page .zvid-emailcap-msg.err { color: var(--hot-pink, #ff1a8c); }
 
 /* Tablet: stack */
 @media (max-width: 900px) {
+  .kp-page .zvid-journey { gap: 64px; }
   .kp-page .zvid-feature {
     grid-template-columns: 1fr;
     gap: 32px;
     max-width: 480px;
     margin: 0 auto;
   }
-  .kp-page .zvid-feature.is-reversed .zvid-copy {
+  .kp-page .zvid-feature.is-reversed .zvid-copy,
+  .kp-page .zvid-feature.is-reversed .zvid-emailcap {
     order: 0;
     text-align: left;
     margin-left: 0;
+    align-items: stretch;
   }
-  .kp-page .zvid-feature.is-reversed .zvid-placeholder {
+  .kp-page .zvid-feature.is-reversed .zvid-emailcap-form {
+    align-items: stretch;
+  }
+  .kp-page .zvid-feature.is-reversed .zvid-placeholder,
+  .kp-page .zvid-feature.is-reversed .zvid-player {
     order: 0;
   }
+  .kp-page .zvid-feature.is-placeholder { margin-top: 16px; }
+  .kp-page .zvid-feature.is-placeholder .zvid-placeholder { margin-top: 0; }
   .kp-page .zvid { padding: 72px 20px 80px; }
 }
 /* Mobile */
