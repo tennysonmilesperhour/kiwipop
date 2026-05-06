@@ -217,7 +217,7 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
             <span className="wholesale-step-num">04</span>
             <div>
               <strong>ongoing</strong> — reorder via{' '}
-              <code>wholesale@kiwipop.co</code>. festival drops get a heads-up
+              <code>thekiwipop@gmail.com</code>. festival drops get a heads-up
               before public.
             </div>
           </li>
@@ -238,7 +238,7 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
         <Link href="/wholesale/account" className="btn">
           check application status
         </Link>
-        <a className="btn btn-secondary" href="mailto:wholesale@kiwipop.co">
+        <a className="btn btn-secondary" href="mailto:thekiwipop@gmail.com">
           questions · email us
         </a>
       </div>

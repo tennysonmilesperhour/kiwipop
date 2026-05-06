@@ -25,7 +25,7 @@ export default function RefundPage() {
         <h2>damaged on arrival</h2>
         <p>
           email{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> with your
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> with your
           order number and a photo within{' '}
           <strong>7 days</strong> of delivery. we send a replacement or
           refund.
@@ -69,7 +69,7 @@ export default function RefundPage() {
           to initiate a return of unopened product:
         </p>
         <ul>
-          <li>email <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> with your order number</li>
+          <li>email <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> with your order number</li>
           <li>we&apos;ll provide a return shipping address</li>
           <li>you are responsible for return shipping costs</li>
           <li>refund is issued within 5 business days of receiving the return</li>
@@ -93,7 +93,7 @@ export default function RefundPage() {
           if you experience an adverse reaction to kiwi pop, discontinue use
           immediately and consult a healthcare provider. please also report
           the reaction to us at{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a> and to the
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> and to the
           FDA via{' '}
           <a
             href="https://www.fda.gov/safety/medwatch-fda-safety-information-and-adverse-event-reporting-program"
@@ -109,7 +109,7 @@ export default function RefundPage() {
         <h2>contact</h2>
         <p>
           all refund and return requests:{' '}
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a>
         </p>
       </div>
 

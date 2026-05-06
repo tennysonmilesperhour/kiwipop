@@ -103,27 +103,9 @@ export default function AboutPage() {
         </p>
         <div className="contact-grid">
           <div>
-            <div className="contact-label">general</div>
-            <a className="contact-link" href="mailto:hello@kiwipop.co">
-              hello@kiwipop.co
-            </a>
-          </div>
-          <div>
-            <div className="contact-label">wholesale</div>
-            <a className="contact-link" href="mailto:wholesale@kiwipop.co">
-              wholesale@kiwipop.co
-            </a>
-          </div>
-          <div>
-            <div className="contact-label">events / festival</div>
-            <a className="contact-link" href="mailto:events@kiwipop.co">
-              events@kiwipop.co
-            </a>
-          </div>
-          <div>
-            <div className="contact-label">press</div>
-            <a className="contact-link" href="mailto:press@kiwipop.co">
-              press@kiwipop.co
+            <div className="contact-label">general · wholesale · events · press</div>
+            <a className="contact-link" href="mailto:thekiwipop@gmail.com">
+              thekiwipop@gmail.com
             </a>
           </div>
         </div>

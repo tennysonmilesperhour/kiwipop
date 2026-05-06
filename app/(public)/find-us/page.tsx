@@ -196,10 +196,10 @@ end of transmission_`}
         >
           // own a shop? want pops on your counter? hit{' '}
           <a
-            href="mailto:wholesale@kiwipop.co"
+            href="mailto:thekiwipop@gmail.com"
             style={{ color: 'var(--lime)' }}
           >
-            wholesale@kiwipop.co
+            thekiwipop@gmail.com
           </a>
         </p>
       </div>

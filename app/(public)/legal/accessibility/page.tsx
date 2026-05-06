@@ -55,7 +55,7 @@ export default function AccessibilityPage() {
         <h2>flag an issue</h2>
         <p>
           if any part of this site is unusable for you,{' '}
-          <a href="mailto:hello@kiwipop.co">email hello@kiwipop.co</a>{' '}
+          <a href="mailto:thekiwipop@gmail.com">email thekiwipop@gmail.com</a>{' '}
           with the page URL and what went wrong. we read every one and
           respond within a few days. we&apos;ll also place an order for you
           over email or phone if the site itself is the blocker.

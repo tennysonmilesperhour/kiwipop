@@ -76,8 +76,8 @@ export function Footer() {
           contains functional ingredients · not medical advice
         </div>
         <div style={{ marginTop: '0.5rem', opacity: 0.6 }}>
-          <a href="mailto:hello@kiwipop.co" style={{ color: 'var(--lime)' }}>
-            hello@kiwipop.co
+          <a href="mailto:thekiwipop@gmail.com" style={{ color: 'var(--lime)' }}>
+            thekiwipop@gmail.com
           </a>
         </div>
       </div>

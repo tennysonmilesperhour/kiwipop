@@ -142,7 +142,7 @@ const ORGANIZATION_LD = {
   sameAs: ['https://www.instagram.com/the.kiwi.pop/'],
   contactPoint: {
     '@type': 'ContactPoint',
-    email: 'hello@kiwipop.co',
+    email: 'thekiwipop@gmail.com',
     contactType: 'customer service',
   },
 };

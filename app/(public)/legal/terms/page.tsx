@@ -179,7 +179,7 @@ export default function TermsPage() {
 
         <h2>contact</h2>
         <p>
-          <a href="mailto:hello@kiwipop.co">hello@kiwipop.co</a>
+          <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a>
         </p>
       </div>
 
