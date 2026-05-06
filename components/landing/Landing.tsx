@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FLAVOR_IMG, FUNCTIONALS, PULL_QUOTES, PACKS } from '@/lib/flavors';
+import { FLAVOR_IMG, FUNCTIONALS, PACKS } from '@/lib/flavors';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { JsonLd } from '@/components/JsonLd';
@@ -398,7 +398,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="img-foot">
             <span className="ig-handle">@the.kiwi.pop · the lineup</span>
             <p className="quote">
-              &ldquo;{PULL_QUOTES[0]?.text}&rdquo; <span className="em">{PULL_QUOTES[0]?.byline}</span>
+              made by hand in salt lake city. <span className="em">drop 001 · live now.</span>
             </p>
             <span className="who">— DROP 001 · KIWI POP · LIVE NOW</span>
           </div>
@@ -814,23 +814,23 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
 
         <div className="grid">
-          {PULL_QUOTES.slice(0, 3).map((q, idx) => (
-            <div className={`rev${q.highlight ? ' highlight' : ''}`} key={idx}>
-              <div className="head-row">
-                <span className="stars-sm">★ ★ ★ ★ ★</span>
-                <span className="verified">{q.highlight ? 'PINNED' : 'VERIFIED'}</span>
-              </div>
-              <blockquote>{q.text}</blockquote>
-              <div className="who">
-                <span className="nm">{q.byline.replace(/^@\s*/, '@').toUpperCase()}</span>
-                <span className="meta">
-                  PULL QUOTE
-                  <br />
-                  <span className="kw">DROP 001</span>
-                </span>
-              </div>
+          <div className="rev highlight">
+            <div className="head-row">
+              <span className="stars-sm">✦ ✧ ☆</span>
+              <span className="verified">SOON</span>
             </div>
-          ))}
+            <blockquote>
+              real reviews from real humans land here once drop 001 reaches you. yours could be the first one we read out loud at the warehouse.
+            </blockquote>
+            <div className="who">
+              <span className="nm">YOUR VOICE</span>
+              <span className="meta">
+                COMING SOON
+                <br />
+                <span className="kw">DROP 001</span>
+              </span>
+            </div>
+          </div>
 
           <div className="rev signup">
             <div className="head-row">

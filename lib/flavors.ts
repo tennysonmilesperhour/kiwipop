@@ -254,32 +254,6 @@ export const TIMELINE: readonly TimelineMoment[] = [
 ] as const;
 
 /**
- * Customer pull-quotes. Replace with real attributed comments as they come in.
- */
-export interface PullQuote {
-  text: string;
-  byline: string;
-  highlight?: boolean;
-}
-
-export const PULL_QUOTES: readonly PullQuote[] = [
-  {
-    text: 'kava in a lollipop. GENIUS.',
-    byline: '@ on tiktok',
-    highlight: true,
-  },
-  { text: "i kept the wrapper. that's a tell.", byline: '@ on instagram' },
-  {
-    text: "finally something at the festival that isn't water or beer.",
-    byline: '@ in dms',
-  },
-  {
-    text: 'sent one to my friend in vienna. she texted at 3am.',
-    byline: '@ from austria',
-  },
-] as const;
-
-/**
  * Multi-pack pricing tiers, per shopify_launch_spec.md.
  */
 export interface PackTier {

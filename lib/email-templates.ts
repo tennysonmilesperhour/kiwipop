@@ -243,35 +243,39 @@ kiwi pop · salt lake city, ut · kiwipop.fun`,
   };
 }
 
-export function reviewRequestEmail(params: {
+export function reviewRequestEmail(_params: {
   orderId: string;
 }): { subject: string; html: string; text: string } {
   return {
-    subject: 'how was it? · kiwi pop',
+    subject: 'tell us how cool you think this is · kiwi pop',
     html: layout(`
-      <h1>how was it?</h1>
-      <p>your order from a few days ago — did it hit?</p>
-      <p>we're a tiny brand making these by hand in salt lake city. every review, every share, every DM actually matters to us. if you liked it, tell someone. if you didn't, tell us.</p>
-      
-      <a href="https://www.instagram.com/the.kiwi.pop/" class="cta">tell us on IG →</a>
-      
-      <p style="margin-top: 24px;">or just reply to this email. it goes straight to the founder.</p>
-      
+      <h1>so… how cool is it?</h1>
+      <p>by now your kiwi pops should've been with you for about a week. long enough to crack one open at a party, sneak one between meetings, hand one to someone you love.</p>
+      <p>we'd love to hear what you think. genuinely. we're a tiny crew making these by hand in salt lake city, and this whole thing is as much yours as it is ours — every note you send back shapes the next batch, the next flavor, the next drop.</p>
+
+      <a href="https://www.kiwipop.fun/#reviews" class="cta">rate kiwi pop →</a>
+
+      <p style="margin-top: 24px;">we are <em>so excited</em> to read what you have to say. tell us what hit, what missed, what you want next. we love you for being here this early, and we want to know how cool you think all of this is.</p>
+
+      <p>or just reply to this email. it goes straight to the founder.</p>
+
       <div class="fact">
-        <strong>share the vibe:</strong> if you have friends who'd be into this, send them to <a href="https://www.kiwipop.fun" style="color: #a8ff3c;">kiwipop.fun</a>. word of mouth is everything for us right now.
+        <strong>this is ours together.</strong> if there's a flavor you wish existed, a packaging tweak that'd make it perfect, a friend who needs one — tell us. we're listening.
       </div>
     `),
-    text: `how was it?
+    text: `so… how cool is it?
 
-your order from a few days ago — did it hit?
+by now your kiwi pops should've been with you for about a week. long enough to crack one open at a party, sneak one between meetings, hand one to someone you love.
 
-we're a tiny brand making these by hand in salt lake city. every review, every share, every DM actually matters to us. if you liked it, tell someone. if you didn't, tell us.
+we'd love to hear what you think. genuinely. we're a tiny crew making these by hand in salt lake city, and this whole thing is as much yours as it is ours — every note you send back shapes the next batch, the next flavor, the next drop.
 
-tell us on IG → https://www.instagram.com/the.kiwi.pop/
+rate kiwi pop → https://www.kiwipop.fun/#reviews
+
+we are so excited to read what you have to say. tell us what hit, what missed, what you want next. we love you for being here this early, and we want to know how cool you think all of this is.
 
 or just reply to this email. it goes straight to the founder.
 
-share the vibe: if you have friends who'd be into this, send them to kiwipop.fun. word of mouth is everything for us right now.
+this is ours together. if there's a flavor you wish existed, a packaging tweak that'd make it perfect, a friend who needs one — tell us. we're listening.
 
 ---
 kiwi pop · salt lake city, ut · kiwipop.fun`,

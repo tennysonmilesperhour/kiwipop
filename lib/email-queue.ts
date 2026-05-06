@@ -226,12 +226,14 @@ export async function queuePostPurchaseSeries(params: {
     items: params.items,
   });
 
-  // Email 2: Review request (3 days later)
-  const day3 = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+  // Email 2: Review request (~1 week after estimated arrival).
+  // No estimated_arrival_at field exists yet; assume ~7 days door-to-door,
+  // so 14 days from purchase ≈ 7 days post-arrival.
+  const reviewSendAt = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
   await queueEmail({
     to: params.email,
     emailType: 'review_request',
-    sendAt: day3,
+    sendAt: reviewSendAt,
     metadata: { orderId: params.orderId },
   });
 }
