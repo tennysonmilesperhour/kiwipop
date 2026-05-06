@@ -287,7 +287,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </Link>
         <div className="kp-nav-links">
           <a href="#shop">SHOP</a>
-          <a href="#reels">REELS</a>
+          <a href="#founders">FOUNDERS</a>
           <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
           <a href="#reviews">REVIEWS</a>
@@ -542,34 +542,27 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
       </section>
 
-      {/* ===== ZONE 2.5 · REELS / VIDEO ===== */}
-      <section className="zvid" id="reels" data-screen-label="02b Reels">
+      {/* ===== ZONE 2.5 · FOUNDERS / STORY ===== */}
+      <section className="zvid" id="founders" data-screen-label="02b Founders">
         <div className="zvid-head">
-          <span className="zvid-eyebrow">// reels</span>
+          <span className="zvid-eyebrow">// founders</span>
           <h2 className="zvid-title">
-            SEE IT
+            A story unfolding.
             <br />
-            <span className="zvid-grad">IN ACTION.</span>
+            <span className="zvid-grad">Meet our founders.</span>
           </h2>
-          <p className="zvid-lede">
-            behind the scenes, the launch, the culture. real moments, straight from the source.
-          </p>
         </div>
         <div className="zvid-feature">
-          <ReelPlayer src="/videos/kp-reel-1.mp4" label="FIRST VIRAL KP REEL" />
+          <ReelPlayer src="/videos/kp-reel-1.mp4" label="COFOUNDER · TENNYSON" />
           <div className="zvid-copy">
-            <span className="zvid-copy-tag">// the one that did it</span>
+            <span className="zvid-copy-tag">// cofounder · tennyson</span>
             <h3 className="zvid-copy-h">
-              this is how
+              Is my wizard
               <br />
-              <span className="zvid-grad">it started.</span>
+              <span className="zvid-grad">friend AI?</span>
             </h3>
             <p>
-              one little reel, zero plan, and then the internet absolutely lost it. we did NOT see this coming —
-              but we&apos;re running with it full speed.
-            </p>
-            <p className="zvid-copy-cta">
-              tap play, flip the sound on, scrub around. check it out →
+              nope — just my cofounder Tennyson.
             </p>
           </div>
         </div>
