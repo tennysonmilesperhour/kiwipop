@@ -28,6 +28,7 @@ export function Onepager({ fontVars }: OnepagerProps) {
   const [submitted, setSubmitted] = useState(false);
   const [qrUrl, setQrUrl] = useState('');
   const [qrReady, setQrReady] = useState(false);
+  const [specOpen, setSpecOpen] = useState(false);
   const qrRef = useRef<HTMLDivElement | null>(null);
   const qrRendered = useRef(false);
 
@@ -570,6 +571,89 @@ export function Onepager({ fontVars }: OnepagerProps) {
           ))}
         </section>
 
+        {/* SPEC SHEET */}
+        <section className="section reveal d4">
+          <div className="section-header">
+            <span className="section-num">07</span>
+            <h2 className="section-title">
+              <span {...langProps('en')}>Spec sheet.</span>
+              <span {...langProps('es')}>Ficha técnica.</span>
+            </h2>
+          </div>
+          <p className="spec-intro" {...langProps('en')}>
+            The technical document your compliance team will want to see. Most fields are estimates while we finalize the EU formula; we mark which are confirmed and which are pending.
+          </p>
+          <p className="spec-intro" {...langProps('es')}>
+            El documento técnico que querrá ver vuestro equipo de cumplimiento. La mayoría de campos son estimaciones mientras cerramos la fórmula europea; indicamos cuáles están confirmados y cuáles pendientes.
+          </p>
+          <button
+            type="button"
+            className="spec-toggle"
+            onClick={() => setSpecOpen((s) => !s)}
+            aria-expanded={specOpen}
+            aria-controls="spec-sheet"
+          >
+            <span {...langProps('en')}>
+              {specOpen ? 'Hide spec sheet ↑' : 'View spec sheet ↓'}
+            </span>
+            <span {...langProps('es')}>
+              {specOpen ? 'Ocultar ficha técnica ↑' : 'Ver ficha técnica ↓'}
+            </span>
+          </button>
+          <div
+            id="spec-sheet"
+            className={`spec-content ${specOpen ? 'open' : ''}`}
+            aria-hidden={!specOpen}
+          >
+            {SPEC_GROUPS.map((group, gi) => (
+              <div key={gi} className="spec-group">
+                <div className="spec-group-h">
+                  <span {...langProps('en')}>{group.headingEn}</span>
+                  <span {...langProps('es')}>{group.headingEs}</span>
+                </div>
+                {group.rows.map((row, ri) => (
+                  <div key={ri} className="spec-row">
+                    <div className="spec-label">
+                      <span {...langProps('en')}>{row.labelEn}</span>
+                      <span {...langProps('es')}>{row.labelEs}</span>
+                    </div>
+                    <div className="spec-val">
+                      <span className="text">
+                        <span {...langProps('en')}>{row.valueEn}</span>
+                        <span {...langProps('es')}>{row.valueEs}</span>
+                      </span>
+                      <span className={`spec-badge ${row.status}`}>
+                        <span {...langProps('en')}>{STATUS_LABELS.en[row.status]}</span>
+                        <span {...langProps('es')}>{STATUS_LABELS.es[row.status]}</span>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            <div className="spec-group">
+              <div className="spec-group-h">
+                <span {...langProps('en')}>Documentation available on request</span>
+                <span {...langProps('es')}>Documentación disponible bajo petición</span>
+              </div>
+              <p className="spec-prose" {...langProps('en')}>
+                The following will be provided to founding partners ahead of first delivery: <strong>certificate of analysis, supplier specifications, allergen statement, nutritional analysis (lab-verified), packaging compliance documentation, and product images for marketing use.</strong>
+              </p>
+              <p className="spec-prose" {...langProps('es')}>
+                Lo siguiente se entregará a los socios fundadores antes de la primera entrega: <strong>certificado de análisis, especificaciones de proveedor, declaración de alérgenos, análisis nutricional (verificado en laboratorio), documentación de cumplimiento del envase e imágenes del producto para uso en marketing.</strong>
+              </p>
+            </div>
+
+            <p className="spec-final" {...langProps('en')}>
+              All values marked <strong>ESTIMATE</strong> are subject to change before final EU release. The complete confirmed spec sheet will be issued in writing before any wholesale order is fulfilled.
+            </p>
+            <p className="spec-final" {...langProps('es')}>
+              Todos los valores marcados como <strong>ESTIMACIÓN</strong> están sujetos a cambios antes del lanzamiento final en la UE. La ficha técnica definitiva confirmada se emitirá por escrito antes de servir cualquier pedido al por mayor.
+            </p>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="cta reveal d4">
           <div className="cta-eyebrow">
@@ -958,6 +1042,273 @@ export function Onepager({ fontVars }: OnepagerProps) {
     </div>
   );
 }
+
+type SpecStatus = 'confirmed' | 'estimate' | 'tbd';
+
+interface SpecRow {
+  labelEn: string;
+  labelEs: string;
+  valueEn: string;
+  valueEs: string;
+  status: SpecStatus;
+}
+
+interface SpecGroup {
+  headingEn: string;
+  headingEs: string;
+  rows: SpecRow[];
+}
+
+const STATUS_LABELS: Record<Lang, Record<SpecStatus, string>> = {
+  en: { confirmed: 'CONFIRMED', estimate: 'ESTIMATE', tbd: 'TBD' },
+  es: { confirmed: 'CONFIRMADO', estimate: 'ESTIMACIÓN', tbd: 'POR DETERMINAR' },
+};
+
+const SPEC_GROUPS: SpecGroup[] = [
+  {
+    headingEn: 'Product identity',
+    headingEs: 'Identidad del producto',
+    rows: [
+      {
+        labelEn: 'Product name',
+        labelEs: 'Nombre del producto',
+        valueEn: 'Kiwi Pop · Drop 001 EU',
+        valueEs: 'Kiwi Pop · Drop 001 EU',
+        status: 'confirmed',
+      },
+      {
+        labelEn: 'Product type',
+        labelEs: 'Tipo de producto',
+        valueEn: 'Functional hard candy lollipop',
+        valueEs: 'Piruleta funcional dura',
+        status: 'confirmed',
+      },
+      {
+        labelEn: 'Net weight per unit',
+        labelEs: 'Peso neto por unidad',
+        valueEn: '~10g',
+        valueEs: '~10g',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Country of manufacture',
+        labelEs: 'País de fabricación',
+        valueEn: 'TBD (US or EU co-packer)',
+        valueEs: 'Por determinar (envasador US o UE)',
+        status: 'tbd',
+      },
+      {
+        labelEn: 'EAN / barcode',
+        labelEs: 'EAN / código de barras',
+        valueEn: 'TBD',
+        valueEs: 'Por determinar',
+        status: 'tbd',
+      },
+      {
+        labelEn: 'Customs HS code',
+        labelEs: 'Código arancelario',
+        valueEn: '1704.90 (sugar confectionery, no cocoa)',
+        valueEs: '1704.90 (productos de confitería, sin cacao)',
+        status: 'estimate',
+      },
+    ],
+  },
+  {
+    headingEn: 'Ingredients',
+    headingEs: 'Ingredientes',
+    rows: [
+      {
+        labelEn: 'Full ingredient list (descending by weight, EU format)',
+        labelEs: 'Lista completa de ingredientes (orden decreciente por peso, formato UE)',
+        valueEn:
+          'Isomalt, xylitol, natural flavors, glycerin, citric acid, magnesium glycinate, taurine, theobromine, electrolyte blend (sodium, potassium), L-ascorbic acid, ginseng extract, blue spirulina, jambu (Acmella oleracea) extract, methylcobalamin (B12), edible mica (E555). Final order and inclusion subject to EU regulatory review.',
+        valueEs:
+          'Isomalt, xilitol, aromas naturales, glicerina, ácido cítrico, glicinato de magnesio, taurina, teobromina, mezcla de electrolitos (sodio, potasio), ácido L-ascórbico, extracto de ginseng, espirulina azul, extracto de jambú (Acmella oleracea), metilcobalamina (B12), mica comestible (E555). Orden e inclusión finales sujetos a revisión regulatoria UE.',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Allergens',
+        labelEs: 'Alérgenos',
+        valueEn: 'None of the 14 EU-declarable allergens',
+        valueEs: 'Ninguno de los 14 alérgenos de declaración obligatoria en la UE',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Dietary suitability',
+        labelEs: 'Idoneidad',
+        valueEn: 'Vegan, gluten-free, no added sugar, kosher pending',
+        valueEs: 'Vegana, sin gluten, sin azúcar añadido, kosher pendiente',
+        status: 'estimate',
+      },
+    ],
+  },
+  {
+    headingEn: 'Nutrition (per 100g, EU format)',
+    headingEs: 'Nutrición (por 100g, formato UE)',
+    rows: [
+      {
+        labelEn: 'Energy',
+        labelEs: 'Energía',
+        valueEn: '~350 kcal / 1465 kJ',
+        valueEs: '~350 kcal / 1465 kJ',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Fat',
+        labelEs: 'Grasas',
+        valueEn: '<0.5g',
+        valueEs: '<0,5g',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'of which saturates',
+        labelEs: 'de las cuales saturadas',
+        valueEn: '<0.1g',
+        valueEs: '<0,1g',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Carbohydrates',
+        labelEs: 'Hidratos de carbono',
+        valueEn: '~95g',
+        valueEs: '~95g',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'of which sugars',
+        labelEs: 'de los cuales azúcares',
+        valueEn: '<5g',
+        valueEs: '<5g',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'of which polyols',
+        labelEs: 'de los cuales polialcoholes',
+        valueEn: '~80g',
+        valueEs: '~80g',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Protein',
+        labelEs: 'Proteínas',
+        valueEn: '<0.5g',
+        valueEs: '<0,5g',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Salt',
+        labelEs: 'Sal',
+        valueEn: '~0.3g',
+        valueEs: '~0,3g',
+        status: 'estimate',
+      },
+    ],
+  },
+  {
+    headingEn: 'Packaging',
+    headingEs: 'Embalaje',
+    rows: [
+      {
+        labelEn: 'Primary packaging',
+        labelEs: 'Envase primario',
+        valueEn: 'Individually wrapped, food-grade BOPP film with twisted ends',
+        valueEs: 'Envasado individual en film BOPP de calidad alimentaria',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Wrapper printing',
+        labelEs: 'Impresión',
+        valueEn: 'Full-color, 4-color process, EU-compliant labeling in Spanish and English',
+        valueEs: 'Cuatricromía a todo color, etiquetado conforme a la UE en español e inglés',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Inner case',
+        labelEs: 'Caja interior',
+        valueEn: 'TBD units per inner',
+        valueEs: 'Por determinar unidades por caja interior',
+        status: 'tbd',
+      },
+      {
+        labelEn: 'Master case',
+        labelEs: 'Caja máster',
+        valueEn: 'TBD units per master',
+        valueEs: 'Por determinar unidades por caja máster',
+        status: 'tbd',
+      },
+      {
+        labelEn: 'Pallet config',
+        labelEs: 'Configuración de palet',
+        valueEn: 'TBD',
+        valueEs: 'Por determinar',
+        status: 'tbd',
+      },
+    ],
+  },
+  {
+    headingEn: 'Shelf life & storage',
+    headingEs: 'Caducidad y conservación',
+    rows: [
+      {
+        labelEn: 'Shelf life',
+        labelEs: 'Vida útil',
+        valueEn: '12-18 months from production',
+        valueEs: '12-18 meses desde producción',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Storage',
+        labelEs: 'Conservación',
+        valueEn: 'Cool, dry, away from direct sunlight. Below 25°C',
+        valueEs: 'Lugar fresco y seco, alejado de la luz solar directa. Por debajo de 25°C',
+        status: 'confirmed',
+      },
+      {
+        labelEn: 'Refrigeration required',
+        labelEs: 'Refrigeración necesaria',
+        valueEn: 'No',
+        valueEs: 'No',
+        status: 'confirmed',
+      },
+    ],
+  },
+  {
+    headingEn: 'Regulatory',
+    headingEs: 'Normativa',
+    rows: [
+      {
+        labelEn: 'EU Regulation 1169/2011 (food information)',
+        labelEs: 'Reglamento UE 1169/2011 (información alimentaria)',
+        valueEn: 'Compliant',
+        valueEs: 'Cumple',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'AESAN (Spanish food safety authority)',
+        labelEs: 'AESAN (Agencia Española de Seguridad Alimentaria)',
+        valueEn: 'Documentation in progress',
+        valueEs: 'Documentación en proceso',
+        status: 'tbd',
+      },
+      {
+        labelEn: 'EU Novel Food status',
+        labelEs: 'Estado en el Catálogo de Nuevos Alimentos UE',
+        valueEn:
+          'All ingredients to be confirmed against EU Novel Food Catalogue',
+        valueEs:
+          'Todos los ingredientes pendientes de confirmar en el Catálogo de Nuevos Alimentos UE',
+        status: 'estimate',
+      },
+      {
+        labelEn: 'Country of origin labeling',
+        labelEs: 'Etiquetado de origen',
+        valueEn: 'To be confirmed once co-packer is locked',
+        valueEs: 'Por confirmar cuando se cierre el envasador',
+        status: 'tbd',
+      },
+    ],
+  },
+];
 
 interface FaqEntry {
   qEn: string;
