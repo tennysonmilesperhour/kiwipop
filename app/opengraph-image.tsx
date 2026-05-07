@@ -78,7 +78,7 @@ export default function OGImage() {
               letterSpacing: '0.06em',
             }}
           >
-            theobromine · ginseng · b12 · magnesium · taurine · electrolytes
+            jambu · theobromine · ginseng · b12 · magnesium · taurine · electrolytes
           </div>
         </div>
 

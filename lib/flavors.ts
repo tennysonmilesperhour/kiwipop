@@ -174,6 +174,11 @@ export interface FunctionalIngredient {
 
 export const FUNCTIONALS: readonly FunctionalIngredient[] = [
   {
+    name: 'jambu',
+    amount: 'food-flavor amount',
+    why: 'the spark. brazilian flower (acmella oleracea). electric mouth tingle on the first lick — also called the buzz button.',
+  },
+  {
     name: 'theobromine',
     amount: '175 mg',
     why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
