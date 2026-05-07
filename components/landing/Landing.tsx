@@ -588,7 +588,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
 
         <div className="zvid-feature is-reversed">
-          <ReelPlayer src="/videos/kp-reel-2.mp4" label="COFOUNDER · TENNYSON" />
+          <div className="zvid-placeholder" aria-label="founder reel placeholder">
+            <span>Coming soon</span>
+          </div>
           <div className="zvid-copy">
             <span className="zvid-copy-tag">// cofounder · tennyson</span>
             <h3 className="zvid-copy-h">
