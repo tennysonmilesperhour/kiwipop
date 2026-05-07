@@ -60,7 +60,11 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
       jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick),
       theobromine, ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter.
       less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.</p>
-      <p>we don't do spam. you'll hear from us when something actually matters — 
+      <p>jambu is the same flower bartenders use for the &ldquo;electric daisy&rdquo; tingle in
+      cocktails — it&rsquo;s been studied for its effect on saliva flow and oral sensation, and
+      it&rsquo;s been in the human food supply for centuries. sources cited on
+      <a href="https://www.kiwipop.fun/research">kiwipop.fun/research</a>.</p>
+      <p>we don't do spam. you'll hear from us when something actually matters —
       new flavors, drops, events, and the occasional secret.</p>
       <a href="https://www.kiwipop.fun" class="cta">shop now →</a>
       <div class="fact">
@@ -72,6 +76,8 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
 you just joined something small and weird and kind of beautiful.
 
 kiwi pop is a lollipop-shaped party supplement — jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
+
+jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails — it's been studied for its effect on saliva flow and oral sensation, and it's been in the human food supply for centuries. sources cited at https://www.kiwipop.fun/research.
 
 we don't do spam. you'll hear from us when something actually matters — new flavors, drops, events, and the occasional secret.
 
@@ -94,7 +100,7 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
       
       <p><span class="highlight">the functional payload — 6 ingredients per pop:</span></p>
       <ul>
-        <li><strong>jambu</strong> — the spark. brazilian flower (acmella oleracea), also called the buzz button. produces the electric mouth tingle on the first lick. food-flavor amount, not a supplement dose.</li>
+        <li><strong>jambu</strong> — the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.</li>
         <li><strong>theobromine</strong> — the gentle lift. it's what makes chocolate feel good — smooth energy without the jitters of caffeine.</li>
         <li><strong>ginseng</strong> — the ancient one. adaptogen that helps your body deal with stress.</li>
         <li><strong>B12</strong> — the essentials. methylcobalamin form. keeps your energy metabolism running.</li>
@@ -116,7 +122,7 @@ you signed up a couple days ago. here's the part where most brands would send yo
 
 the functional payload — 6 ingredients per pop:
 
-• jambu — the spark. brazilian flower (acmella oleracea), also called the buzz button. produces the electric mouth tingle on the first lick. food-flavor amount, not a supplement dose.
+• jambu — the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.
 • theobromine — the gentle lift. it's what makes chocolate feel good — smooth energy without the jitters of caffeine.
 • ginseng — the ancient one. adaptogen that helps your body deal with stress.
 • B12 — methylcobalamin form. keeps your energy metabolism running.

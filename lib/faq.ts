@@ -36,7 +36,7 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'What is jambu, and is it safe?',
-    a: 'Jambu (Acmella oleracea), also called paracress, electric daisy, or the buzz button, is a small yellow-and-red flower native to South America. The active compound, spilanthol, produces the distinctive electric, salivating tingle. Jambu has a long culinary history in Brazilian, Indian, and East African cuisine and is widely used as a flavor in cocktails, chewing gum, and oral-care products. It is generally regarded as safe in food amounts and is used in Kiwi Pop in food-flavor quantities, not as a supplement dose. It is not psychoactive and does not interact with alcohol.',
+    a: 'Jambu (Acmella oleracea), also called paracress, electric daisy, or the buzz button, is a small yellow-and-red flower native to South America. The active compound, spilanthol, produces the distinctive electric, salivating tingle. Jambu has a long culinary history in Brazilian, Indian, and East African cuisine and is widely used as a flavor in cocktails, chewing gum, and oral-care products. Reported uses include oral cooling, palate stimulation, and increased saliva flow. It is generally regarded as safe in food amounts and is used in Kiwi Pop in food-flavor quantities, not as a supplement dose. It is not psychoactive and does not interact with alcohol. The studies behind every ingredient in the formula are listed on our /research page.',
   },
   {
     q: 'When do people typically have a Kiwi Pop?',

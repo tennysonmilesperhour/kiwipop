@@ -65,7 +65,9 @@ export default function AboutPage() {
             so i made one. about thirty-five calories. less than a gram of
             sugar. edible mica glitter swirled through so it catches
             light when you lick it. jambu — the brazilian buzz-button
-            flower — for an electric mouth tingle on the first lick.
+            flower — for an electric mouth tingle on the first lick;
+            it&apos;s been used for centuries in brazilian, indian, and
+            east african cooking and is standard now in modern bartending.
             theobromine, ginseng, b12, magnesium, taurine, electrolytes —
             the functional payload — measured by gram, not by vibe.
             xylitol does the sweet —

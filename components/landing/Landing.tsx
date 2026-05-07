@@ -310,7 +310,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">refreshing club lolli.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button tingle) + theobromine + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
+              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower — wakes the palate, increases salivation) + theobromine + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
@@ -645,7 +645,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="lm">SUNRISE.</span>
           </h2>
           <p className="quote">
-            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick.
+            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick, and a small electric tingle from the jambu flower.
           </p>
         </div>
       </section>
@@ -664,6 +664,14 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="right">
             every functional doing real work, doses on the wrapper.{' '}
             <span className="em">measured by gram · not by vibe.</span>
+            <br />
+            <span style={{ display: 'inline-block', marginTop: '0.5rem', opacity: 0.85 }}>
+              the headline is jambu — a brazilian flower used in cocktails and oral-care for the way it lights up the mouth. sources cited on the{' '}
+              <Link href="/research" style={{ color: 'var(--lime)' }}>
+                research page
+              </Link>
+              .
+            </span>
           </div>
         </div>
         <div className="grid">
@@ -1016,6 +1024,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/about">a little secret</Link>
           <Link href="/find-us">find us irl</Link>
           <Link href="/wholesale">wholesale</Link>
+          <Link href="/faq">faq</Link>
+          <Link href="/research">research</Link>
           <Link href="/donate">donate</Link>
         </div>
         <div className="col">
@@ -1032,7 +1042,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/accessibility">accessibility</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>

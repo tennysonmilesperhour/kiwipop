@@ -242,6 +242,11 @@ export const TIMELINE: readonly TimelineMoment[] = [
     body: 'sweet, tart, clean. <1g of sugar — no sugar burn. the mica glitter catches the light.',
   },
   {
+    index: '00:20',
+    title: 'the spark',
+    body: 'jambu hits. the brazilian buzz-button flower wakes the palate — fizzy mouth-tingle, watering, fully awake. people have used it this way for centuries.',
+  },
+  {
     index: '02:00',
     title: 'the lift',
     body: 'theobromine clicks in. shoulders drop, head clears. you smile a little, alone.',
