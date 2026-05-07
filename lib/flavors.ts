@@ -17,7 +17,7 @@ export interface FlavorBrandInfo {
    * Short label used by the comedown checkout flavor picker. We don't want
    * to slice the marketing name (e.g. "lemon g. luci" → "g.") because
    * those abbreviated tokens read like product codes. Spell out the flavor
-   * profile instead — "kiwi", "lemon ginger", "mango", "mint".
+   * profile instead — "kiwi", "lemon ginger", "mint", "caramel apple".
    */
   pickerLabel: string;
 }
@@ -51,29 +51,29 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-MANGO-MOLLY',
-    name: "mollie's mango",
-    display: "mollie's\nmango",
-    feeling: '// the warm one',
+    name: "molly's mint",
+    display: "molly's\nmint",
+    feeling: '// the cool one',
     fn: 'full functional payload · luster dust',
-    flavor: 'mango · ripe, glossy, sticky',
-    color: '#ff2d8a',
-    status: 'soon',
-    description:
-      "ripe mango, glossy on the lips. freeze-dried mango powder cut with the LorAnn oil for full saturation. coming soon.",
-    pickerLabel: 'mango',
-  },
-  {
-    sku: 'KP-MARY-MINT',
-    name: 'merry mint',
-    display: 'merry\nmint',
-    feeling: '// the cool down',
-    fn: 'full functional payload · luster dust',
-    flavor: 'peppermint · clean, cold, sharp',
+    flavor: 'mint · cool, clean, lifted',
     color: '#00f0ff',
     status: 'soon',
     description:
-      "cold peppermint, no sweetness on the back end. the mint that doesn't apologize. coming soon.",
+      "bright peppermint, clean and cold on the back end. the mint that wakes you up without apologizing. coming soon.",
     pickerLabel: 'mint',
+  },
+  {
+    sku: 'KP-MARY-MINT',
+    name: 'merry caramel apple',
+    display: 'merry\ncaramel apple',
+    feeling: '// the cozy one',
+    fn: 'full functional payload · luster dust',
+    flavor: 'caramel apple · warm, glossy, autumnal',
+    color: '#d97539',
+    status: 'soon',
+    description:
+      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. coming soon.",
+    pickerLabel: 'caramel apple',
   },
 ] as const;
 

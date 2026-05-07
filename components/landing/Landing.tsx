@@ -22,8 +22,8 @@ interface LandingProps {
 const FLAVOR_DOT_COLOR: Record<string, string> = {
   'KP-KIWI-KITTY': '#a8ff3c',
   'KP-LUCY-LEMON': '#ffce1f',
-  'KP-MANGO-MOLLY': '#ff2d8a',
-  'KP-MARY-MINT': '#00f0ff',
+  'KP-MANGO-MOLLY': '#00f0ff',
+  'KP-MARY-MINT': '#d97539',
 };
 
 const FESTIVAL_TICKER = [

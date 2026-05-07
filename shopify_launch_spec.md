@@ -66,7 +66,7 @@ Work through these in order. Most of this is one-time setup, an hour or two of w
 
 ### Products
 
-- Create one product: **Kiwipop**. Use the four flavor names (Kiwipop / Lucypop / Mollypop / Marypop) as **variants**, not as separate products. This means customers see one product page and pick a flavor — cleaner UX, simpler inventory, and any reviews aggregate to one product.
+- Create one product: **Kiwipop**. Use the four flavor names (Kiwi Pop / Lemon G. Luci / Molly's Mint / Merry Caramel Apple) as **variants**, not as separate products. This means customers see one product page and pick a flavor — cleaner UX, simpler inventory, and any reviews aggregate to one product.
 - For each variant, set: SKU code, weight (for shipping calc), inventory count, and "track quantity" enabled.
 - Until the other three flavors launch, keep them as variants but set inventory to 0 and "continue selling when out of stock" disabled. They'll show as "sold out" or you can hide them entirely until launch. Better: create them as a **separate "Coming soon" product** that only collects email signups.
 - Product images: invest in real photography. The 3D Three.js candy is great as a hero element on the homepage, but product detail pages need real photos of the actual lollipops, the wrapper, the box, and lifestyle shots.

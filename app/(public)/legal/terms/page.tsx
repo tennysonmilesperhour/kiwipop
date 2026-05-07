@@ -118,7 +118,7 @@ export default function TermsPage() {
         <p>
           &ldquo;kiwi pop&rdquo;, &ldquo;cyberpop&rdquo;, the kiwi pop
           wordmark, the lollipop hero photography, the four-flavor naming
-          (kiwi pop · lemon g. luci · mollie&apos;s mango · merry mint), the
+          (kiwi pop · lemon g. luci · molly&apos;s mint · merry caramel apple), the
           functional payload labeling, and the visual identity (color
           system, layout, copy) are kiwi pop&apos;s intellectual property.
           you can share screenshots and tag us; you can&apos;t lift our copy

@@ -606,19 +606,19 @@
   color: var(--bone-dim);
   text-transform: lowercase;
   max-width: 34ch;
-  line-height: 1.4;
+  line-height: 1.95;
 }
 .kp-page .z1 .sub .em { color: var(--lemon); font-style: normal; font-weight: 500; }
 /* Highlighter strip for the spec line — flips to a near-opaque white slab
    with dark text so the legibility doesn't fight the hero photo. Wraps with
    the line via box-decoration-break so each line gets its own pill. */
 .kp-page .z1 .sub .sub-hl {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.82);
   color: #0a0014;
   padding: 0.18em 0.45em;
   margin-left: 0.1em;
   border-radius: 3px;
-  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   font-weight: 500;
@@ -2744,35 +2744,36 @@
 
 /* Phones */
 @media (max-width: 560px) {
-  .kp-page .kp-nav { padding: 12px 16px; gap: 8px; }
+  .kp-page .kp-nav { padding: 14px 16px; gap: 8px; }
   .kp-page .kp-brand .nm { font-size: 13px; }
-  .kp-page .kp-cart-btn { padding: 6px 10px; font-size: 10px; letter-spacing: 0.18em; }
-  .kp-page .z1 { padding: 110px 20px 60px; }
-  .kp-page .z1 .below { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .kp-page .z2 { padding-top: 60px; padding-bottom: 60px; }
+  .kp-page .kp-cart-btn { padding: 8px 12px; font-size: 10px; letter-spacing: 0.18em; }
+  .kp-page .z1 { padding: 120px 20px 80px; }
+  .kp-page .z1 .sub { font-size: 18px; max-width: 100%; line-height: 2.05; }
+  .kp-page .z1 .below { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .kp-page .z2 { padding-top: 72px; padding-bottom: 72px; gap: 36px; }
   .kp-page .z2 .img { aspect-ratio: 4/5; max-height: 460px; }
-  .kp-page .z2 .ings { gap: 4px; }
-  .kp-page .z2 .ing { font-size: 10px; padding: 4px 8px; }
-  .kp-page .z3 { padding: 80px 0 100px; }
+  .kp-page .z2 .ings { gap: 8px; margin-top: 18px; }
+  .kp-page .z2 .ing { font-size: 11px; padding: 6px 10px; line-height: 1.35; }
+  .kp-page .z3 { padding: 90px 0 110px; }
   .kp-page .fc { width: 280px; min-height: 460px; }
   .kp-page .fc h3 { font-size: 36px; }
-  .kp-page .z4 { padding: 40px 0; }
-  .kp-page .z5 { padding-top: 60px; padding-bottom: 60px; }
-  .kp-page .z5 .grid { grid-template-columns: 1fr; gap: 14px; }
-  .kp-page .z5 .lab-band { flex-wrap: wrap; gap: 8px; }
+  .kp-page .z4 { padding: 56px 0; }
+  .kp-page .z5 { padding-top: 72px; padding-bottom: 72px; }
+  .kp-page .z5 .grid { grid-template-columns: 1fr; gap: 18px; }
+  .kp-page .z5 .lab-band { flex-wrap: wrap; gap: 12px 16px; padding: 18px 16px; }
   .kp-page .zr .grid { grid-template-columns: 1fr; }
-  .kp-page .z6 { padding-top: 60px; padding-bottom: 60px; }
-  .kp-page .z6 .checkout { padding: 20px; }
-  .kp-page .z6 .pack-opt { padding: 8px 4px; }
+  .kp-page .z6 { padding-top: 72px; padding-bottom: 72px; }
+  .kp-page .z6 .checkout { padding: 22px; }
+  .kp-page .z6 .pack-opt { padding: 12px 8px; }
   .kp-page .z6 .pack-opt .sz { font-size: 14px; }
-  .kp-page .z6 .meta-row { flex-wrap: wrap; gap: 8px; }
-  .kp-page .cta-take { font-size: 12px; padding: 14px; letter-spacing: 0.14em; }
-  .kp-page .zraffle { padding-top: 80px; padding-bottom: 80px; }
+  .kp-page .z6 .meta-row { flex-wrap: wrap; gap: 10px 14px; margin-top: 18px; }
+  .kp-page .cta-take { font-size: 12px; padding: 16px; letter-spacing: 0.14em; }
+  .kp-page .zraffle { padding-top: 88px; padding-bottom: 96px; }
   .kp-page .zraffle h2 { font-size: clamp(44px, 13vw, 72px); }
-  .kp-page .raffle-form { padding: 22px 18px; }
+  .kp-page .raffle-form { padding: 26px 20px; }
   .kp-page .raffle-form .fine { font-size: 9px; letter-spacing: 0.1em; }
-  .kp-page .kp-foot { grid-template-columns: 1fr; gap: 28px; padding: 50px 20px 24px; }
-  .kp-page .kp-foot .legal { font-size: 9px; letter-spacing: 0.1em; }
+  .kp-page .kp-foot { grid-template-columns: 1fr; gap: 32px; padding: 56px 20px 28px; }
+  .kp-page .kp-foot .legal { font-size: 9px; letter-spacing: 0.1em; line-height: 1.7; }
 }
 
 /* Smallest phones (~360px and below) */

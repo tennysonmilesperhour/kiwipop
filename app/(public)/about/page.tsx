@@ -84,10 +84,10 @@ export default function AboutPage() {
             the original is{' '}
             <strong style={{ color: 'var(--lime)' }}>kiwi pop</strong> —
             kiwi flavor, sweet/tart/clean. three more flavors are coming:{' '}
-            <strong style={{ color: 'var(--magenta)' }}>mollie&apos;s mango</strong>,{' '}
+            <strong style={{ color: 'var(--cyan)' }}>molly&apos;s mint</strong>,{' '}
             <strong style={{ color: 'var(--sodium)' }}>lemon g. luci</strong>,{' '}
             and{' '}
-            <strong style={{ color: 'var(--cyan)' }}>merry mint</strong>. each
+            <strong style={{ color: 'var(--magenta)' }}>merry caramel apple</strong>. each
             built around a small obsession. same functional payload across
             the four. flavor does the work.
           </p>
