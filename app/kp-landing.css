@@ -2062,6 +2062,23 @@
   background-size: 12px 12px;
   opacity: 0.4;
   pointer-events: none;
+  z-index: 1;
+}
+.kp-page .zmf-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.28;
+  filter: saturate(1.15) contrast(1.05);
+  pointer-events: none;
+}
+.kp-page .zmf-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 0, 20, 0.5) 75%, rgba(10, 0, 20, 0.85) 100%),
+    linear-gradient(180deg, rgba(10, 0, 20, 0.35) 0%, rgba(20, 0, 42, 0.5) 100%);
 }
 .kp-page .zmf-cn {
   position: absolute;

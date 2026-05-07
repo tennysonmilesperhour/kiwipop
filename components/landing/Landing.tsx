@@ -956,6 +956,15 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
       {/* ===== ZONE 5.7 · MANIFESTO ===== */}
       <section className="zmf" data-screen-label="05d Manifesto">
+        <div className="zmf-bg" aria-hidden="true">
+          <Image
+            src="/landing/img/snake-magenta.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
         <div className="zmf-cn" aria-hidden="true">舐</div>
         <div className="zmf-inner">
           <span className="zmf-eyebrow">// manifesto</span>
@@ -972,47 +981,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             . not a biohacker supplement. not just another sterile healthy
             whatever. it&apos;s a taste of magic.
           </p>
-        </div>
-      </section>
-
-      {/* ===== ZONE 6 · ENTER ===== */}
-      <section className="z2" data-screen-label="06 Enter">
-        <div className="copy">
-          <span className="lab">06 · ENTER</span>
-          <h2>
-            LOLLIPOP SHAPED
-            <br />
-            <span className="pk">PARTY SUPPLEMENTs.</span>
-          </h2>
-          <p className="lede">
-            <span className="em">theobromine, ginseng, b12, magnesium, taurine, electrolytes, xylitol.</span>{' '}
-            measured by gram, not by vibe. same payload, every pop.
-          </p>
-          <div className="ings">
-            {FUNCTIONALS.map((ing) => (
-              <span className="ing" key={ing.name}>
-                {ing.name} · <span className="mg">{ing.amount.split(' ').slice(0, 2).join(' ')}</span>
-              </span>
-            ))}
-          </div>
-          <a className="cta" href="#inside">
-            WHAT&apos;S INSIDE <span className="arr">→</span>
-          </a>
-        </div>
-        <div className="img">
-          {/* CSS-bg → <Image> swap. .z2 .img keeps the aspect-ratio,
-              shadow, and "002" pseudo-element. */}
-          <Image
-            src="/landing/img/snake-magenta.jpg"
-            alt="kiwi pop product moment — magenta-lit dance shot"
-            fill
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
-          />
-          <div className="img-cap">
-            <span>001 · KIWI POP EDITION</span>
-            <span>DROP 001</span>
-          </div>
         </div>
       </section>
 
