@@ -14,6 +14,7 @@ import { JsonLd } from '@/components/JsonLd';
 import { FundraiserBar } from './FundraiserBar';
 import { RaffleForm } from './RaffleForm';
 import { ReelPlayer } from './ReelPlayer';
+import { ReviewSubmitModal } from './ReviewSubmitModal';
 
 interface LandingProps {
   products: LandingProducts;
@@ -109,6 +110,25 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const [signupEmail, setSignupEmail] = useState('');
   const [signupStatus, setSignupStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle');
   const [signupMsg, setSignupMsg] = useState<string>('');
+
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [approvedReviews, setApprovedReviews] = useState<
+    Array<{ id: string; display_name: string; rating: number; body: string; approved_at: string | null }>
+  >([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/reviews', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (cancelled || !j?.reviews) return;
+        setApprovedReviews(j.reviews);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => setMounted(true), []);
 
@@ -544,6 +564,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
       </section>
 
+      <FundraiserBar snapshot={fundraiser} />
+
       {/* ===== ZONE 3 · DANCE / FLAVORS ===== */}
       <section className="z3" id="flavors" data-screen-label="03 Dance">
         <div className="ticker-cn">
@@ -714,23 +736,63 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
 
         <div className="grid">
-          <div className="rev highlight">
-            <div className="head-row">
-              <span className="stars-sm">✦ ✧ ☆</span>
-              <span className="verified">SOON</span>
+          {approvedReviews.length === 0 ? (
+            <div className="rev highlight">
+              <div className="head-row">
+                <span className="stars-sm">✦ ✧ ☆</span>
+                <span className="verified">SOON</span>
+              </div>
+              <blockquote>
+                real reviews from real humans land here once drop 001 reaches you. yours could be the first one we read out loud at the warehouse.
+              </blockquote>
+              <div className="who">
+                <span className="nm">YOUR VOICE</span>
+                <span className="meta">
+                  COMING SOON
+                  <br />
+                  <span className="kw">DROP 001</span>
+                </span>
+              </div>
             </div>
-            <blockquote>
-              real reviews from real humans land here once drop 001 reaches you. yours could be the first one we read out loud at the warehouse.
-            </blockquote>
-            <div className="who">
-              <span className="nm">YOUR VOICE</span>
-              <span className="meta">
-                COMING SOON
-                <br />
-                <span className="kw">DROP 001</span>
-              </span>
-            </div>
-          </div>
+          ) : (
+            approvedReviews.map((r) => {
+              const filled = '★'.repeat(Math.max(0, Math.min(5, r.rating)));
+              const empty = '☆'.repeat(5 - Math.max(0, Math.min(5, r.rating)));
+              return (
+                <div key={r.id} className="rev">
+                  <div className="head-row">
+                    <span className="stars-sm">{filled}{empty}</span>
+                    <span className="verified">VERIFIED</span>
+                  </div>
+                  <blockquote>{r.body}</blockquote>
+                  <div className="who">
+                    <span className="nm">{r.display_name}</span>
+                    <span className="meta">
+                      KIWI POP
+                      <br />
+                      <span className="kw">DROP 001</span>
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+
+          <button
+            type="button"
+            className="rev leave"
+            onClick={() => setReviewModalOpen(true)}
+            aria-label="leave a review"
+          >
+            <span className="nm">
+              leave a <span className="it">review.</span>
+            </span>
+            <span className="sub">
+              tell us what you actually thought —{' '}
+              <span className="pk">we&apos;ll read every one.</span>
+            </span>
+            <span className="arr">drop a review →</span>
+          </button>
 
           <div className="rev signup">
             <div className="head-row">
@@ -849,6 +911,15 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
       {/* ===== ZONE 5.7 · MANIFESTO ===== */}
       <section className="zmf" data-screen-label="05d Manifesto">
+        <div className="zmf-bg" aria-hidden="true">
+          <Image
+            src="/landing/img/snake-magenta.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
         <div className="zmf-cn" aria-hidden="true">舐</div>
         <div className="zmf-inner">
           <span className="zmf-eyebrow">// manifesto</span>
@@ -865,47 +936,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             . not a biohacker supplement. not just another sterile healthy
             whatever. it&apos;s a taste of magic.
           </p>
-        </div>
-      </section>
-
-      {/* ===== ZONE 6 · ENTER ===== */}
-      <section className="z2" data-screen-label="06 Enter">
-        <div className="copy">
-          <span className="lab">06 · ENTER</span>
-          <h2>
-            LOLLIPOP SHAPED
-            <br />
-            <span className="pk">PARTY SUPPLEMENTs.</span>
-          </h2>
-          <p className="lede">
-            <span className="em">jambu, theobromine, ginseng, b12, magnesium, taurine, electrolytes, xylitol.</span>{' '}
-            measured by gram, not by vibe. same payload, every pop.
-          </p>
-          <div className="ings">
-            {FUNCTIONALS.map((ing) => (
-              <span className="ing" key={ing.name}>
-                {ing.name} · <span className="mg">{ing.amount.split(' ').slice(0, 2).join(' ')}</span>
-              </span>
-            ))}
-          </div>
-          <a className="cta" href="#inside">
-            WHAT&apos;S INSIDE <span className="arr">→</span>
-          </a>
-        </div>
-        <div className="img">
-          {/* CSS-bg → <Image> swap. .z2 .img keeps the aspect-ratio,
-              shadow, and "002" pseudo-element. */}
-          <Image
-            src="/landing/img/snake-magenta.jpg"
-            alt="kiwi pop product moment — magenta-lit dance shot"
-            fill
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
-          />
-          <div className="img-cap">
-            <span>001 · KIWI POP EDITION</span>
-            <span>DROP 001</span>
-          </div>
         </div>
       </section>
 
@@ -985,10 +1015,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
       </section>
 
-      {/* Fundraiser bar lives at the bottom now — moved out of the top of the
-          page so it doesn't dominate the hero. Sits flush above the footer. */}
-      <FundraiserBar snapshot={fundraiser} />
-
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
         <div className="col">
@@ -1047,6 +1073,11 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>
       </footer>
+
+      <ReviewSubmitModal
+        open={reviewModalOpen}
+        onClose={() => setReviewModalOpen(false)}
+      />
     </div>
   );
 }
