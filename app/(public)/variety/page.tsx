@@ -87,7 +87,7 @@ export default function VarietyPage() {
         }}
       >
         equal amounts of every flavor in one box · kiwi pop · lemon g. luci ·
-        mollie&apos;s mango · merry mint · same functional payload across all
+        molly&apos;s mint · merry caramel apple · same functional payload across all
         four · ships preorder when the batch is ready.
       </p>
 

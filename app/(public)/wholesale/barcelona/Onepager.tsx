@@ -1077,13 +1077,13 @@ const PORTFOLIO_IMAGES: PortfolioImage[] = [
   },
   {
     src: '/landing/img/lips-lollipop.jpg',
-    alt: 'Kiwi Pop · Mango Molly flavor',
-    caption: 'MANGO MOLLY',
+    alt: "Kiwi Pop · Molly's Mint flavor",
+    caption: "MOLLY'S MINT",
   },
   {
     src: '/landing/img/eye-galaxy.jpg',
-    alt: 'Kiwi Pop · Mary Mint flavor',
-    caption: 'MARY MINT',
+    alt: 'Kiwi Pop · Merry Caramel Apple flavor',
+    caption: 'MERRY CARAMEL APPLE',
   },
 ];
 
@@ -1371,8 +1371,8 @@ const FAQS: FaqEntry[] = [
   {
     qEn: 'How does it taste? Will my customers actually like it?',
     qEs: '¿A qué sabe? ¿Le gustará a mis clientes?',
-    aEn: 'The base flavor is fruit-forward and bright. Kiwi (sweet and tart) is the lead, with lemon-ginger, mango, and peppermint flavors planned. The jambu tingle is light, not aggressive, and arrives a few seconds after the first lick. Most people read it as a fun surprise rather than a strong sensation. The xylitol base sweetens like sugar but is tooth-friendly and won’t spike blood sugar. We always send a sample case before any commitment so your team can taste it and your floor can react before you decide.',
-    aEs: 'El sabor base es afrutado y brillante. El kiwi (dulce y ácido) es el principal, con sabores de limón-jengibre, mango y menta también previstos. El cosquilleo del jambú es ligero, no agresivo, y aparece a los pocos segundos del primer chupetón. La mayoría de la gente lo percibe como una sorpresa divertida más que como una sensación fuerte. La base de xilitol endulza como el azúcar pero es respetuosa con los dientes y no eleva la glucosa en sangre. Siempre enviamos una caja de muestra antes de cualquier compromiso, para que tu equipo lo pruebe y veas cómo reacciona la sala antes de decidir.',
+    aEn: 'The base flavor is fruit-forward and bright. Kiwi (sweet and tart) is the lead, with lemon-ginger, mint, and caramel apple flavors planned. The jambu tingle is light, not aggressive, and arrives a few seconds after the first lick. Most people read it as a fun surprise rather than a strong sensation. The xylitol base sweetens like sugar but is tooth-friendly and won’t spike blood sugar. We always send a sample case before any commitment so your team can taste it and your floor can react before you decide.',
+    aEs: 'El sabor base es afrutado y brillante. El kiwi (dulce y ácido) es el principal, con sabores de limón-jengibre, menta y manzana acaramelada también previstos. El cosquilleo del jambú es ligero, no agresivo, y aparece a los pocos segundos del primer chupetón. La mayoría de la gente lo percibe como una sorpresa divertida más que como una sensación fuerte. La base de xilitol endulza como el azúcar pero es respetuosa con los dientes y no eleva la glucosa en sangre. Siempre enviamos una caja de muestra antes de cualquier compromiso, para que tu equipo lo pruebe y veas cómo reacciona la sala antes de decidir.',
   },
   {
     qEn: 'How is this different from an energy drink or a functional shot?',
