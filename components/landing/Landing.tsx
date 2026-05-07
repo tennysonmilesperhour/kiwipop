@@ -568,9 +568,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </div>
 
         <div className="zvid-feature is-reversed">
-          <div className="zvid-placeholder" aria-label="founder reel placeholder">
-            <span>Coming soon</span>
-          </div>
+          <ReelPlayer src="/videos/kp-reel-2.mp4" label="COFOUNDER · TENNYSON" />
           <div className="zvid-copy">
             <span className="zvid-copy-tag">// cofounder · tennyson</span>
             <h3 className="zvid-copy-h">
@@ -584,6 +582,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </div>
         </div>
       </section>
+
+      <FundraiserBar snapshot={fundraiser} />
 
       {/* ===== ZONE 3 · DANCE / FLAVORS ===== */}
       <section className="z3" id="flavors" data-screen-label="03 Dance">
@@ -1017,10 +1017,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       </section>
 
       <RaffleForm />
-
-      {/* Fundraiser bar lives at the bottom now — moved out of the top of the
-          page so it doesn't dominate the hero. Sits flush above the footer. */}
-      <FundraiserBar snapshot={fundraiser} />
 
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
