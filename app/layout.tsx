@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     template: '%s · kiwi pop',
   },
   description:
-    "lollipop shaped party supplements. <1g of sugar, vegan, xylitol-sweetened (tooth-friendly, low-glycemic), functional lollipops with edible mica glitter and a real functional payload (theobromine, ginseng, b12, magnesium, taurine, electrolytes). candy for people who don't eat candy.",
+    "lollipop shaped party supplements. <1g of sugar, vegan, xylitol-sweetened (tooth-friendly, low-glycemic), functional lollipops with edible mica glitter and a real functional payload (jambu for the buzz-button mouth tingle, theobromine, ginseng, b12, magnesium, taurine, electrolytes). candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   alternates: {
@@ -78,6 +78,8 @@ export const metadata: Metadata = {
     'vegan lollipops',
     'functional candy',
     'theobromine lollipop',
+    'jambu lollipop',
+    'buzz button candy',
     'rave snack',
     'after-hours candy',
   ],
@@ -133,7 +135,7 @@ const ORGANIZATION_LD = {
   url: siteUrl,
   logo: `${siteUrl}/landing/img/kiwi-kitty-pop.webp`,
   description:
-    'Lollipop shaped party supplements. Functional candy with theobromine, ginseng, B12, magnesium, taurine, and electrolytes. Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.',
+    'Lollipop shaped party supplements. Functional candy with jambu (the Brazilian buzz-button flower, for an electric mouth tingle), theobromine, ginseng, B12, magnesium, taurine, and electrolytes. Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.',
   foundingLocation: {
     '@type': 'Place',
     name: 'Salt Lake City, Utah',

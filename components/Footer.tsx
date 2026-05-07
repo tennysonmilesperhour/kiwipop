@@ -26,6 +26,12 @@ export function Footer() {
           <Link href="/wholesale" className="footer-link">
             wholesale
           </Link>
+          <Link href="/faq" className="footer-link">
+            faq
+          </Link>
+          <Link href="/research" className="footer-link">
+            research
+          </Link>
           <Link href="/legal/privacy" className="footer-link">
             privacy
           </Link>

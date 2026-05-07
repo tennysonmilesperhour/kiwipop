@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
 import { FLAVOR_IMG, FUNCTIONALS, PACKS } from '@/lib/flavors';
+import { FAQ_ITEMS, FAQ_LD } from '@/lib/faq';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { JsonLd } from '@/components/JsonLd';
@@ -40,58 +41,16 @@ const FESTIVAL_TICKER = [
   'MFD SALT LAKE',
 ];
 
-// FAQ entries surfaced to humans (visible <details>/<summary> below) and
-// to AI / search crawlers via FAQPage JSON-LD. Keep questions phrased the
-// way a real person would ask them — that's what AI search engines extract.
-const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string }> = [
-  {
-    q: 'What is Kiwi Pop?',
-    a: 'Kiwi Pop is a lollipop-shaped party supplement — a functional candy with less than 1 gram of sugar, approximately 35 calories, made with theobromine, ginseng, B12, magnesium, taurine, and electrolytes. It is sweetened with xylitol (tooth-friendly, no insulin spike) and a touch of monk fruit on an isomalt base. Vegan, contains edible mica glitter, and manufactured in Salt Lake City, Utah.',
-  },
-  {
-    q: 'What ingredients are in Kiwi Pop?',
-    a: 'Each Kiwi Pop contains theobromine, ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. It is sweetened primarily with xylitol — a tooth-friendly, low-glycemic sugar alcohol that starves cavity-causing bacteria and does not spike blood sugar — plus a touch of monk fruit extract on an isomalt base.',
-  },
-  {
-    q: 'Why does Kiwi Pop use xylitol?',
-    a: 'Xylitol is a naturally occurring sugar alcohol that tastes like sugar but is tooth-friendly: cavity-causing bacteria cannot metabolize it, so it does not feed decay the way sucrose does. It is also low-glycemic, meaning it does not spike blood sugar or insulin. Xylitol is toxic to dogs, so keep Kiwi Pop away from pets.',
-  },
-  {
-    q: 'Is Kiwi Pop vegan?',
-    a: 'Yes, Kiwi Pop is 100% vegan.',
-  },
-  {
-    q: 'How much sugar is in Kiwi Pop?',
-    a: 'Each Kiwi Pop contains less than 1 gram of sugar and approximately 35 calories.',
-  },
-  {
-    q: 'Where is Kiwi Pop made?',
-    a: 'Kiwi Pop is manufactured in small batches in Salt Lake City, Utah.',
-  },
-  {
-    q: 'How much does Kiwi Pop cost?',
-    a: 'A single Kiwi Pop is $5.00. A 6-pack is $25.00 and a 20-pack party pack is $60.00. Free shipping on orders over $40.',
-  },
-];
-
-const FAQ_LD = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQ_ITEMS.map((item) => ({
-    '@type': 'Question',
-    name: item.q,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.a,
-    },
-  })),
-};
-
 // Simple neon glyphs, one per functional ingredient slot. Index aligns
 // with the FUNCTIONALS array order in lib/flavors.ts.
 const FUNCTIONAL_ICONS = [
-  // theobromine — chocolate square
+  // jambu — flower with spark petals (the buzz-button bloom)
   <g key="i0">
+    <circle cx="12" cy="12" r="2.5" />
+    <path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1" />
+  </g>,
+  // theobromine — chocolate square
+  <g key="i1">
     <rect x="5" y="5" width="14" height="14" rx="1" />
     <path d="M9 5v14M14 5v14M5 9h14M5 14h14" />
   </g>,
@@ -371,7 +330,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">refreshing club lolli.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · theobromine + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
+              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower — wakes the palate, increases salivation) + theobromine + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
@@ -708,7 +667,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="lm">SUNRISE.</span>
           </h2>
           <p className="quote">
-            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick.
+            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick, and a small electric tingle from the jambu flower.
           </p>
         </div>
       </section>
@@ -727,6 +686,14 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="right">
             every functional doing real work, doses on the wrapper.{' '}
             <span className="em">measured by gram · not by vibe.</span>
+            <br />
+            <span style={{ display: 'inline-block', marginTop: '0.5rem', opacity: 0.85 }}>
+              the headline is jambu — a brazilian flower used in cocktails and oral-care for the way it lights up the mouth. sources cited on the{' '}
+              <Link href="/research" style={{ color: 'var(--lime)' }}>
+                research page
+              </Link>
+              .
+            </span>
           </div>
         </div>
         <div className="grid">
@@ -754,80 +721,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="item"><span className="dot" />VEGAN · GLUTEN FREE</div>
           <div className="item"><span className="dot" />MFD SALT LAKE</div>
           <div className="item"><span className="dot" />DROP 001 · {new Date().getFullYear()}</div>
-        </div>
-      </section>
-
-      {/* ===== ZONE 5b · FAQ ===== */}
-      <section
-        className="zfaq"
-        id="faq"
-        data-screen-label="05c FAQ"
-        style={{
-          padding: 'clamp(48px, 8vw, 96px) clamp(20px, 5vw, 64px)',
-          background: 'var(--ink, #0a0014)',
-          color: 'var(--bone, #f4ecff)',
-          fontFamily: 'var(--mono)',
-        }}
-      >
-        <JsonLd data={FAQ_LD} />
-        <div style={{ maxWidth: 880, margin: '0 auto' }}>
-          <span
-            className="lab"
-            style={{ display: 'inline-block', marginBottom: 16 }}
-          >
-            05c · FAQ
-          </span>
-          <h2
-            style={{
-              fontFamily: 'var(--display)',
-              fontWeight: 800,
-              fontSize: 'clamp(2.2rem, 6vw, 4rem)',
-              letterSpacing: '-0.03em',
-              lineHeight: 1,
-              textTransform: 'lowercase',
-              marginBottom: '1.5rem',
-            }}
-          >
-            asked &amp;
-            <br />
-            <span style={{ color: 'var(--lemon, #f5ff3d)' }}>answered.</span>
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {FAQ_ITEMS.map((item) => (
-              <details
-                key={item.q}
-                style={{
-                  border: '1px solid rgba(244, 236, 255, 0.16)',
-                  borderRadius: 'var(--radius-card, 12px)',
-                  padding: '14px 18px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                }}
-              >
-                <summary
-                  style={{
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                    fontSize: 15,
-                    letterSpacing: '0.02em',
-                    listStyle: 'none',
-                    color: 'var(--paper, #f4ecff)',
-                  }}
-                >
-                  {item.q}
-                </summary>
-                <p
-                  style={{
-                    marginTop: 12,
-                    fontSize: 14,
-                    lineHeight: 1.65,
-                    color: 'var(--bone, #c8c0db)',
-                  }}
-                >
-                  {item.a}
-                </p>
-              </details>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -1048,6 +941,80 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
       <RaffleForm />
 
+      {/* ===== ZONE 7 · FAQ ===== */}
+      <section
+        className="zfaq"
+        id="faq"
+        data-screen-label="07 FAQ"
+        style={{
+          padding: 'clamp(48px, 8vw, 96px) clamp(20px, 5vw, 64px)',
+          background: 'var(--ink, #0a0014)',
+          color: 'var(--bone, #f4ecff)',
+          fontFamily: 'var(--mono)',
+        }}
+      >
+        <JsonLd data={FAQ_LD} />
+        <div style={{ maxWidth: 880, margin: '0 auto' }}>
+          <span
+            className="lab"
+            style={{ display: 'inline-block', marginBottom: 16 }}
+          >
+            07 · FAQ
+          </span>
+          <h2
+            style={{
+              fontFamily: 'var(--display)',
+              fontWeight: 800,
+              fontSize: 'clamp(2.2rem, 6vw, 4rem)',
+              letterSpacing: '-0.03em',
+              lineHeight: 1,
+              textTransform: 'lowercase',
+              marginBottom: '1.5rem',
+            }}
+          >
+            asked &amp;
+            <br />
+            <span style={{ color: 'var(--lemon, #f5ff3d)' }}>answered.</span>
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {FAQ_ITEMS.map((item) => (
+              <details
+                key={item.q}
+                style={{
+                  border: '1px solid rgba(244, 236, 255, 0.16)',
+                  borderRadius: 'var(--radius-card, 12px)',
+                  padding: '14px 18px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                }}
+              >
+                <summary
+                  style={{
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    fontSize: 15,
+                    letterSpacing: '0.02em',
+                    listStyle: 'none',
+                    color: 'var(--paper, #f4ecff)',
+                  }}
+                >
+                  {item.q}
+                </summary>
+                <p
+                  style={{
+                    marginTop: 12,
+                    fontSize: 14,
+                    lineHeight: 1.65,
+                    color: 'var(--bone, #c8c0db)',
+                  }}
+                >
+                  {item.a}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== FOOTER ===== */}
       <footer className="kp-foot">
         <div className="col">
@@ -1083,6 +1050,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/about">a little secret</Link>
           <Link href="/find-us">find us irl</Link>
           <Link href="/wholesale">wholesale</Link>
+          <Link href="/faq">faq</Link>
+          <Link href="/research">research</Link>
           <Link href="/donate">donate</Link>
         </div>
         <div className="col">
@@ -1099,7 +1068,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/accessibility">accessibility</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>

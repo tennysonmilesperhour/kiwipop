@@ -174,6 +174,11 @@ export interface FunctionalIngredient {
 
 export const FUNCTIONALS: readonly FunctionalIngredient[] = [
   {
+    name: 'jambu',
+    amount: 'food-flavor amount',
+    why: 'the spark. brazilian flower (acmella oleracea). electric mouth tingle on the first lick — also called the buzz button.',
+  },
+  {
     name: 'theobromine',
     amount: '175 mg',
     why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
@@ -235,6 +240,11 @@ export const TIMELINE: readonly TimelineMoment[] = [
     index: '00:15',
     title: 'first lick',
     body: 'sweet, tart, clean. <1g of sugar — no sugar burn. the mica glitter catches the light.',
+  },
+  {
+    index: '00:20',
+    title: 'the spark',
+    body: 'jambu hits. the brazilian buzz-button flower wakes the palate — fizzy mouth-tingle, watering, fully awake. people have used it this way for centuries.',
   },
   {
     index: '02:00',
