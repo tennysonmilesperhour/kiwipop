@@ -1082,8 +1082,8 @@ const PORTFOLIO_IMAGES: PortfolioImage[] = [
   },
   {
     src: '/landing/img/eye-galaxy.jpg',
-    alt: 'Kiwi Pop · Merry Caramel Apple flavor',
-    caption: 'MERRY CARAMEL APPLE',
+    alt: 'Kiwi Pop · Mary Caramel Apple flavor',
+    caption: 'MARY CARAMEL APPLE',
   },
 ];
 

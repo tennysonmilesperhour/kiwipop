@@ -64,8 +64,8 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-MARY-MINT',
-    name: 'merry caramel apple',
-    display: 'merry\ncaramel apple',
+    name: 'mary caramel apple',
+    display: 'mary\ncaramel apple',
     feeling: '// the cozy one',
     fn: 'full functional payload · luster dust',
     flavor: 'caramel apple · warm, glossy, autumnal',
