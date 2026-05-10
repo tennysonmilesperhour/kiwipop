@@ -261,16 +261,36 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </Link>
         <div className="kp-nav-links">
           <a href="#shop">SHOP</a>
-          <a href="#founders">FOUNDERS</a>
-          <a href="#flavors">FLAVORS</a>
           <a href="#inside">WHAT&apos;S INSIDE</a>
-          <a href="#reviews">REVIEWS</a>
-          <Link href="/campaign">CAMPAIGN</Link>
-          <Link href="/raffle">RAFFLE</Link>
-          <Link href="/variety">VARIETY</Link>
           <Link href="/merch">MERCH</Link>
-          <Link href="/wholesale">WHOLESALE</Link>
-          <Link href="/find-us">FIND US</Link>
+          {/* secondary links: hidden on desktop (live in MORE menu); shown inline on mobile scroll-strip */}
+          <a href="#founders" className="kp-nav-link--secondary">FOUNDERS</a>
+          <a href="#flavors" className="kp-nav-link--secondary">FLAVORS</a>
+          <a href="#reviews" className="kp-nav-link--secondary">REVIEWS</a>
+          <Link href="/campaign" className="kp-nav-link--secondary">CAMPAIGN</Link>
+          <Link href="/raffle" className="kp-nav-link--secondary">RAFFLE</Link>
+          <Link href="/variety" className="kp-nav-link--secondary">VARIETY</Link>
+          <Link href="/wholesale" className="kp-nav-link--secondary">WHOLESALE</Link>
+          <Link href="/find-us" className="kp-nav-link--secondary">FIND US</Link>
+          <div className="kp-nav-more">
+            <button
+              type="button"
+              className="kp-nav-more__btn"
+              aria-haspopup="true"
+            >
+              MORE <span aria-hidden="true">▾</span>
+            </button>
+            <div className="kp-nav-more__panel" role="menu">
+              <a href="#founders" role="menuitem">FOUNDERS</a>
+              <a href="#flavors" role="menuitem">FLAVORS</a>
+              <a href="#reviews" role="menuitem">REVIEWS</a>
+              <Link href="/campaign" role="menuitem">CAMPAIGN</Link>
+              <Link href="/raffle" role="menuitem">RAFFLE</Link>
+              <Link href="/variety" role="menuitem">VARIETY</Link>
+              <Link href="/wholesale" role="menuitem">WHOLESALE</Link>
+              <Link href="/find-us" role="menuitem">FIND US</Link>
+            </div>
+          </div>
         </div>
         <Link href="/cart" className="kp-cart-btn" aria-label="cart">
           CART {mounted && cartCount > 0 ? <span className="kp-cart-count">{cartCount}</span> : null}
@@ -906,36 +926,6 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               </span>
             </a>
           ))}
-        </div>
-      </section>
-
-      {/* ===== ZONE 5.7 · MANIFESTO ===== */}
-      <section className="zmf" data-screen-label="05d Manifesto">
-        <div className="zmf-bg" aria-hidden="true">
-          <Image
-            src="/landing/img/snake-magenta.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
-          />
-        </div>
-        <div className="zmf-cn" aria-hidden="true">舐</div>
-        <div className="zmf-inner">
-          <span className="zmf-eyebrow">// manifesto</span>
-          <h2 className="zmf-pull">
-            a taste of <span className="zmf-pull-glow">magic.</span>
-          </h2>
-          <p className="zmf-body">
-            <span className="zmf-em">kiwi pop is the first functional candy built for the night scene</span>{' '}
-            — where health and partying stop being opposites. people are
-            waking up and drinking less, festivals are getting more
-            wellness-curious, and the night and yoga scenes already overlap.
-            this is{' '}
-            <span className="zmf-em">the magical, sensory spark that lives in that intersection</span>
-            . not a biohacker supplement. not just another sterile healthy
-            whatever. it&apos;s a taste of magic.
-          </p>
         </div>
       </section>
 
