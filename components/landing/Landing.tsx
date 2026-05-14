@@ -344,7 +344,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="respect" style={{ color: 'rgb(155, 237, 255)' }}>respectfully</span>
           </h1>
           <p className="sub">
-            <span className="em">refreshing club lolli.</span>{' '}
+            <span className="em">here to make you more kissable.</span>{' '}
             <span className="sub-hl">
               &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower — wakes the palate, increases salivation) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
