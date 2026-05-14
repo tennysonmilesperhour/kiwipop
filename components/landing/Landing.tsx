@@ -54,36 +54,32 @@ const FUNCTIONAL_ICONS = [
     <rect x="5" y="5" width="14" height="14" rx="1" />
     <path d="M9 5v14M14 5v14M5 9h14M5 14h14" />
   </g>,
-  // ginseng — root
-  <g key="i2">
-    <path d="M12 3v8" />
-    <path d="M12 11c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5z" />
-    <path d="M9 13l-3-2M15 13l3-2M9 17l-3 2M15 17l3 2" />
-  </g>,
-  // b12 — bolt
-  <g key="i3">
-    <path d="M13 2L4 14h7l-2 8 9-12h-7l2-8z" />
-  </g>,
   // magnesium — capsule
-  <g key="i4">
+  <g key="i2">
     <rect x="3" y="9" width="18" height="6" rx="3" />
     <path d="M12 9v6" />
   </g>,
   // taurine — amino chain (linked rings)
-  <g key="i5">
+  <g key="i3">
     <circle cx="8" cy="12" r="4" />
     <circle cx="16" cy="12" r="4" />
   </g>,
   // electrolytes — droplet
-  <g key="i6">
+  <g key="i4">
     <path d="M12 3c-3 4-6 7-6 11a6 6 0 0 0 12 0c0-4-3-7-6-11z" />
   </g>,
-  // spirulina — spiral
-  <g key="i7">
-    <path d="M12 4a8 8 0 1 1-7.9 9.5A6 6 0 1 1 16 14a4 4 0 1 1-7-1.5" />
+  // b12 — bolt
+  <g key="i5">
+    <path d="M13 2L4 14h7l-2 8 9-12h-7l2-8z" />
+  </g>,
+  // adaptogen — sprout (per-flavor variation)
+  <g key="i6">
+    <path d="M12 21v-8" />
+    <path d="M12 13c-3 0-6-2-6-6 3 0 6 2 6 6z" />
+    <path d="M12 13c3 0 6-2 6-6-3 0-6 2-6 6z" />
   </g>,
   // xylitol — tooth (tooth-friendly sweetener)
-  <g key="i8">
+  <g key="i7">
     <path d="M8 3c-2 0-4 2-4 5 0 3 1 4 2 7s1 6 3 6 2-3 3-6 2-3 3 0 1 6 3 6 2-3 3-6 2-4 2-7c0-3-2-5-4-5-2 0-3 1-4 1s-2-1-4-1z" />
   </g>,
 ];
@@ -350,7 +346,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">refreshing club lolli.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower — wakes the palate, increases salivation) + theobromine + ginseng + b12 + magnesium + taurine + electrolytes · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
+              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower — wakes the palate, increases salivation) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
@@ -531,7 +527,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="item"><span className="dot" />&lt;1G SUGAR</span>
               <span className="item"><span className="dot" />~35 CAL</span>
               <span className="item"><span className="dot" />VEGAN</span>
-              <span className="item"><span className="dot" />THEOBROMINE + GINSENG</span>
+              <span className="item"><span className="dot" />THEOBROMINE + ADAPTOGEN</span>
             </div>
           </div>
         </div>
@@ -602,9 +598,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <div className="right">
             SWIPE → · {liveFlavors.length} OF {products.flavors.length} LIVE
             <br />
-            <span className="kw">SAME FUNCTIONAL PAYLOAD</span>
+            <span className="kw">SHARED FUNCTIONAL BASE</span>
             <br />
-            FLAVOR DOES THE WORK
+            ADAPTOGEN TUNED PER FLAVOR
           </div>
         </div>
         <div className="rail">
@@ -653,6 +649,8 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                   <div className="effect">{flavor.feeling.replace(/^\/\/\s*/, '')}.</div>
                   <div className="ings">
                     {flavor.flavor}
+                    <br />
+                    <span className="mg">+ {flavor.adaptogen} · {flavor.direction}</span>
                     <br />
                     {flavor.product
                       ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{isLive ? 'SHOP →' : 'PREORDER →'}</span></>
@@ -1058,7 +1056,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/accessibility">accessibility</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, GINSENG, B12, MAGNESIUM, TAURINE, ELECTROLYTES, EDIBLE MICA. SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, B12, MAGNESIUM GLYCINATE, TAURINE, ELECTROLYTES, EDIBLE MICA + A PER-FLAVOR ADAPTOGEN (GINSENG/SPIRULINA, ASHWAGANDHA, MACA/CINNAMON, OR L-THEANINE/CHAMOMILE). SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>

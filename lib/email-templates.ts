@@ -58,7 +58,9 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
       <p>you just joined something small and weird and kind of beautiful.</p>
       <p>kiwi pop is a <span class="highlight">lollipop-shaped party supplement</span> —
       jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick),
-      theobromine, ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter.
+      theobromine, B12, magnesium glycinate, taurine, electrolytes, edible mica glitter,
+      and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger,
+      maca + cinnamon in caramel apple, L-theanine + chamomile in mint).
       less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.</p>
       <p>jambu is the same flower bartenders use for the &ldquo;electric daisy&rdquo; tingle in
       cocktails — it&rsquo;s been studied for its effect on saliva flow and oral sensation, and
@@ -75,7 +77,7 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
 
 you just joined something small and weird and kind of beautiful.
 
-kiwi pop is a lollipop-shaped party supplement — jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, ginseng, B12, magnesium, taurine, electrolytes, and edible mica glitter. less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
+kiwi pop is a lollipop-shaped party supplement — jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, B12, magnesium glycinate, taurine, electrolytes, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
 
 jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails — it's been studied for its effect on saliva flow and oral sensation, and it's been in the human food supply for centuries. sources cited at https://www.kiwipop.fun/research.
 
@@ -98,14 +100,21 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
       <h1>what's actually in your mouth.</h1>
       <p>you signed up a couple days ago. here's the part where most brands would send you a coupon. instead, here's what we put in the pop and why.</p>
       
-      <p><span class="highlight">the functional payload — 6 ingredients per pop:</span></p>
+      <p><span class="highlight">the shared functional base — same dose in every flavor:</span></p>
       <ul>
         <li><strong>jambu</strong> — the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.</li>
         <li><strong>theobromine</strong> — the gentle lift. it's what makes chocolate feel good — smooth energy without the jitters of caffeine.</li>
-        <li><strong>ginseng</strong> — the ancient one. adaptogen that helps your body deal with stress.</li>
         <li><strong>B12</strong> — the essentials. methylcobalamin form. keeps your energy metabolism running.</li>
-        <li><strong>magnesium</strong> — the one you're probably deficient in. helps with muscle relaxation, sleep, mood. we use magnesium citrate.</li>
+        <li><strong>magnesium glycinate</strong> — the one you're probably deficient in. helps with muscle relaxation, sleep, mood. glycinate form for absorption.</li>
         <li><strong>taurine</strong> — the amino acid. supports cardiovascular function and helps regulate electrolytes.</li>
+        <li><strong>electrolytes</strong> — sodium + potassium blend. you sweat, we replace.</li>
+      </ul>
+      <p><span class="highlight">+ a flavor-specific adaptogen, tuned to direction:</span></p>
+      <ul>
+        <li><strong>kiwi pop</strong> — ginseng + spirulina. balanced, all-purpose.</li>
+        <li><strong>lemon g. luci</strong> — ashwagandha. calm-warming; pairs with ginger.</li>
+        <li><strong>mary caramel apple</strong> — maca + cinnamon. grounded energy; reinforces caramel.</li>
+        <li><strong>molly's mint</strong> — L-theanine + chamomile. calm-focus; clean alongside mint.</li>
       </ul>
       
       <div class="fact">
@@ -120,14 +129,21 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
 
 you signed up a couple days ago. here's the part where most brands would send you a coupon. instead, here's what we put in the pop and why.
 
-the functional payload — 6 ingredients per pop:
+the shared functional base — same dose in every flavor:
 
 • jambu — the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.
 • theobromine — the gentle lift. it's what makes chocolate feel good — smooth energy without the jitters of caffeine.
-• ginseng — the ancient one. adaptogen that helps your body deal with stress.
 • B12 — methylcobalamin form. keeps your energy metabolism running.
-• magnesium — helps with muscle relaxation, sleep, mood. magnesium citrate.
+• magnesium glycinate — helps with muscle relaxation, sleep, mood. glycinate form for absorption.
 • taurine — supports cardiovascular function and electrolyte regulation.
+• electrolytes — sodium + potassium blend. you sweat, we replace.
+
++ a flavor-specific adaptogen, tuned to direction:
+
+• kiwi pop — ginseng + spirulina. balanced, all-purpose.
+• lemon g. luci — ashwagandha. calm-warming; pairs with ginger.
+• mary caramel apple — maca + cinnamon. grounded energy; reinforces caramel.
+• molly's mint — L-theanine + chamomile. calm-focus; clean alongside mint.
 
 the base: isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle.
 

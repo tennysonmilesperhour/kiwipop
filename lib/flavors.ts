@@ -20,6 +20,18 @@ export interface FlavorBrandInfo {
    * profile instead — "kiwi", "lemon ginger", "mint", "caramel apple".
    */
   pickerLabel: string;
+  /**
+   * The adaptogen + direction unique to this flavor. Every flavor shares
+   * the same base functional payload (jambu, theobromine, magnesium
+   * glycinate, taurine, electrolytes, B12, xylitol) — the adaptogen is
+   * what's tuned per flavor to match the sensory profile. Used on the
+   * flavor card, product page, and per-flavor description copy.
+   *
+   * Source: kiwi_pop_costing_v2.xlsx Recipes tab (per-flavor swaps).
+   */
+  adaptogen: string;
+  /** Short direction tag — "balanced", "calm-warming", "grounded energy", "calm-focus". */
+  direction: string;
 }
 
 export const FLAVORS: readonly FlavorBrandInfo[] = [
@@ -28,52 +40,60 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     name: 'kiwi pop',
     display: 'kiwi\npop',
     feeling: '// the original',
-    fn: 'full functional payload · luster dust',
+    fn: 'shared base · ginseng + spirulina · luster dust',
     flavor: 'kiwi · sweet, tart, clean',
     color: '#a8ff3c',
     status: 'live',
     description:
-      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. xylitol-sweetened (tooth-friendly, no insulin spike) with a touch of monk fruit on an isomalt base. a little secret in your mouth.",
+      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. xylitol-sweetened (tooth-friendly, no insulin spike) with a touch of monk fruit on an isomalt base. shared functional base + ginseng & spirulina to keep it balanced and bright. a little secret in your mouth.",
     pickerLabel: 'kiwi',
+    adaptogen: 'ginseng + spirulina',
+    direction: 'balanced',
   },
   {
     sku: 'KP-LUCY-LEMON',
     name: 'lemon g. luci',
     display: 'lemon g.\nluci',
     feeling: '// get bright',
-    fn: 'full functional payload · luster dust',
+    fn: 'shared base · ashwagandha · luster dust',
     flavor: 'lemon + ginger · sharp and citrus',
     color: '#ffce1f',
     status: 'soon',
     description:
-      "the g is for ginger. bright lemon out front, ginger snap on the back end — sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. coming soon.",
+      "the g is for ginger. bright lemon out front, ginger snap on the back end — sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. coming soon.",
     pickerLabel: 'lemon ginger',
+    adaptogen: 'ashwagandha',
+    direction: 'calm-warming',
   },
   {
     sku: 'KP-MANGO-MOLLY',
     name: "molly's mint",
     display: "molly's\nmint",
     feeling: '// cool down',
-    fn: 'full functional payload · luster dust',
+    fn: 'shared base · L-theanine + chamomile · luster dust',
     flavor: 'mint · cool, clean, lifted',
     color: '#00f0ff',
     status: 'soon',
     description:
-      "bright peppermint, clean and cold on the back end. the mint that wakes you up without apologizing. coming soon.",
+      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling — mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. coming soon.",
     pickerLabel: 'mint',
+    adaptogen: 'L-theanine + chamomile',
+    direction: 'calm-focus',
   },
   {
     sku: 'KP-MARY-MINT',
     name: 'mary caramel apple',
     display: 'mary\ncaramel apple',
     feeling: '// cozy up',
-    fn: 'full functional payload · luster dust',
+    fn: 'shared base · maca + cinnamon · luster dust',
     flavor: 'caramel apple · warm, glossy, autumnal',
     color: '#d97539',
     status: 'soon',
     description:
-      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. coming soon.",
+      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon — maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. coming soon.",
     pickerLabel: 'caramel apple',
+    adaptogen: 'maca + cinnamon',
+    direction: 'grounded energy',
   },
 ] as const;
 
@@ -163,8 +183,13 @@ export function imageForProduct(
 
 
 /**
- * The functional ingredients doing real work, per the production recipe.
- * Source: kiwi_pop_costing.xlsx (Recipes tab, shared columns).
+ * The functional payload. The first 7 entries are SHARED across every
+ * flavor (the same dose, every pop). The 8th — `adaptogen` — is what
+ * varies per flavor; we render it dynamically using the active flavor's
+ * `adaptogen` + `direction` fields. The last entry, `xylitol`, is the
+ * sweetener base, shared across all flavors.
+ *
+ * Source: kiwi_pop_costing_v2.xlsx (Recipes tab, shared columns + per-flavor swaps).
  */
 export interface FunctionalIngredient {
   name: string;
@@ -184,16 +209,6 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
   },
   {
-    name: 'ginseng',
-    amount: '150 mg',
-    why: 'half a supplement dose. steady wake, no crash.',
-  },
-  {
-    name: 'b12',
-    amount: '1 mg methylcobalamin',
-    why: 'the active form. brain on, no buzz.',
-  },
-  {
     name: 'magnesium glycinate',
     amount: '300 mg',
     why: 'the un-cramp. legs stay loose on the floor.',
@@ -209,9 +224,14 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     why: 'sodium + potassium. you sweat, we replace.',
   },
   {
-    name: 'blue spirulina',
-    amount: '125 mg',
-    why: 'where the color comes from. trace nutrition, real pigment.',
+    name: 'b12',
+    amount: '1 mg methylcobalamin',
+    why: 'the active form. brain on, no buzz.',
+  },
+  {
+    name: 'adaptogen',
+    amount: 'tuned per flavor',
+    why: 'ginseng + spirulina in kiwi (balanced) · ashwagandha in lemon ginger (calm-warming) · maca + cinnamon in caramel apple (grounded energy) · L-theanine + chamomile in mint (calm-focus).',
   },
   {
     name: 'xylitol',
