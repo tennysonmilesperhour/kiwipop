@@ -71,9 +71,12 @@ export default function TermsPage() {
           intended to diagnose, treat, cure, or prevent any disease.
         </p>
         <p>
-          kiwi pop is a dietary supplement in confection form. it contains
-          functional ingredients (theobromine, ginseng, b12, magnesium,
-          taurine, electrolytes) and sugar alcohols (isomalt, xylitol). any
+          kiwi pop is a dietary supplement in confection form. every flavor
+          shares the same functional base (jambu, theobromine, b12,
+          magnesium glycinate, taurine, electrolytes) plus a flavor-specific
+          adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon
+          ginger, maca + cinnamon in caramel apple, l-theanine + chamomile
+          in mint). also contains sugar alcohols (isomalt, xylitol). any
           claims we make about our ingredients are structure/function claims
           — they describe how nutrients may support normal body functions,
           not treat or cure medical conditions.

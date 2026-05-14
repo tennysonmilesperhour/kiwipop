@@ -208,11 +208,11 @@ export function Onepager({ fontVars }: OnepagerProps) {
 
           <p className="hero-sub" {...langProps('en')}>
             <strong>Kiwi Pop is a functional lollipop, made for the night.</strong>
-            {' '}Less than 1g of sugar. Around 35 calories. Vegan. A measured blend of botanicals and electrolytes (jambu, theobromine, ginseng, B12, magnesium, taurine, electrolytes), thought through for long hours and warm rooms. Honest about what&apos;s in it. Honest about what it isn&apos;t.
+            {' '}Less than 1g of sugar. Around 35 calories. Vegan. A measured blend of botanicals and electrolytes — a shared base in every flavor (jambu, theobromine, B12, magnesium glycinate, taurine, electrolytes) plus an adaptogen tuned per flavor (ginseng + spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) — thought through for long hours and warm rooms. Honest about what&apos;s in it. Honest about what it isn&apos;t.
           </p>
           <p className="hero-sub" {...langProps('es')}>
             <strong>Kiwi Pop es una piruleta funcional, pensada para la noche.</strong>
-            {' '}Menos de 1g de azúcar. Alrededor de 35 calorías. Vegana. Una mezcla medida de plantas y electrolitos (jambú, teobromina, ginseng, B12, magnesio, taurina, electrolitos), pensada para horas largas y salas con ritmo. Transparente con lo que lleva. Transparente con lo que no.
+            {' '}Menos de 1g de azúcar. Alrededor de 35 calorías. Vegana. Una mezcla medida de plantas y electrolitos — base común en cada sabor (jambú, teobromina, B12, glicinato de magnesio, taurina, electrolitos) más un adaptógeno afinado por sabor (ginseng + espirulina, ashwagandha, maca + canela o L-teanina + manzanilla) — pensada para horas largas y salas con ritmo. Transparente con lo que lleva. Transparente con lo que no.
           </p>
 
           <div className="hero-stats">
@@ -1377,8 +1377,8 @@ const FAQS: FaqEntry[] = [
   {
     qEn: 'How is this different from an energy drink or a functional shot?',
     qEs: '¿En qué se diferencia esto de una bebida energética o un shot funcional?',
-    aEn: 'No caffeine. The lift comes from theobromine (a milder, longer cousin of caffeine, the same compound that makes dark chocolate feel pleasant), B12, and ginseng, with magnesium and electrolytes balancing it out. The point isn’t to spike someone up; it’s to keep them comfortable through a long night. It also takes the form of a lollipop, not a can or a shot, so it sits in a different mental category for the customer: a small treat, not a stimulant purchase.',
-    aEs: 'Sin cafeína. El empuje viene de la teobromina (un primo más suave y duradero de la cafeína, el mismo compuesto que hace que el chocolate negro siente bien), la B12 y el ginseng, equilibrados con magnesio y electrolitos. La idea no es subir a nadie de golpe, sino mantenerle cómodo durante una noche larga. Además, tiene forma de piruleta, no de lata ni de chupito, así que para el cliente entra en una categoría mental distinta: un pequeño capricho, no la compra de un estimulante.',
+    aEn: 'No caffeine. The lift comes from theobromine (a milder, longer cousin of caffeine, the same compound that makes dark chocolate feel pleasant), B12, and a per-flavor adaptogen (ginseng + spirulina in Kiwi Pop, ashwagandha in Lemon Ginger, maca + cinnamon in Caramel Apple, or L-theanine + chamomile in Mint), with magnesium and electrolytes balancing it out. The point isn’t to spike someone up; it’s to keep them comfortable through a long night. It also takes the form of a lollipop, not a can or a shot, so it sits in a different mental category for the customer: a small treat, not a stimulant purchase.',
+    aEs: 'Sin cafeína. El empuje viene de la teobromina (un primo más suave y duradero de la cafeína, el mismo compuesto que hace que el chocolate negro siente bien), la B12 y un adaptógeno afinado por sabor (ginseng + espirulina en Kiwi Pop, ashwagandha en Lemon Ginger, maca + canela en Caramel Apple, o L-teanina + manzanilla en Mint), equilibrados con magnesio y electrolitos. La idea no es subir a nadie de golpe, sino mantenerle cómodo durante una noche larga. Además, tiene forma de piruleta, no de lata ni de chupito, así que para el cliente entra en una categoría mental distinta: un pequeño capricho, no la compra de un estimulante.',
   },
   {
     qEn: 'What’s the shelf life and storage?',

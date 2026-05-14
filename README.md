@@ -9,7 +9,7 @@ This repo holds the **kiwi pop** webapp — storefront, admin cockpit, financial
 
 ## What kiwi pop is
 
-A functional lollipop. Low-sugar hard candy (isomalt + xylitol base, **<1g of sugar per pop**), edible mica glitter swirled through the middle, and a real functional payload — theobromine, ginseng, magnesium glycinate, taurine, B12, electrolytes, kiwi powder, spirulina. **~35 cal per pop (~9g net digestible carbs).** Sweetened with monk fruit extract and xylitol.
+A functional lollipop. Low-sugar hard candy (isomalt + xylitol base, **<1g of sugar per pop**), edible mica glitter swirled through the middle, and a real functional payload. **Shared base in every flavor** — theobromine, magnesium glycinate, taurine, B12, electrolytes — **plus a per-flavor adaptogen** tuned to direction (ginseng + spirulina in Kiwi Pop, ashwagandha in Lemon Ginger, maca + cinnamon in Caramel Apple, L-theanine + chamomile in Mint). **~35 cal per pop (~9g net digestible carbs).** Sweetened with monk fruit extract and xylitol.
 
 Positioned for the rave / festival / party scene as a "candy that does something" — built to occupy a structural gap in the functional-confectionery market currently dominated by calm, pastel, wellness-coded brands.
 

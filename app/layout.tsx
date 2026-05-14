@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     template: '%s · kiwi pop',
   },
   description:
-    "lollipop shaped party supplements. <1g of sugar, vegan, xylitol-sweetened (tooth-friendly, low-glycemic), functional lollipops with edible mica glitter and a real functional payload (jambu for the buzz-button mouth tingle, theobromine, ginseng, b12, magnesium, taurine, electrolytes). candy for people who don't eat candy.",
+    "lollipop shaped party supplements. <1g of sugar, vegan, xylitol-sweetened (tooth-friendly, low-glycemic), functional lollipops with edible mica glitter. shared functional base across every flavor (jambu for the buzz-button mouth tingle, theobromine, magnesium glycinate, taurine, b12, electrolytes) plus an adaptogen tuned to each flavor's direction (ginseng + spirulina, ashwagandha, maca + cinnamon, or l-theanine + chamomile). candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   alternates: {
@@ -135,7 +135,7 @@ const ORGANIZATION_LD = {
   url: siteUrl,
   logo: `${siteUrl}/landing/img/kiwi-kitty-pop.webp`,
   description:
-    'Lollipop shaped party supplements. Functional candy with jambu (the Brazilian buzz-button flower, for an electric mouth tingle), theobromine, ginseng, B12, magnesium, taurine, and electrolytes. Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.',
+    "Lollipop shaped party supplements. Functional candy with a shared base across every flavor — jambu (the Brazilian buzz-button flower, for an electric mouth tingle), theobromine, B12, magnesium glycinate, taurine, and electrolytes — plus a flavor-specific adaptogen (ginseng + spirulina in Kiwi Pop, ashwagandha in Lemon G. Luci, maca + cinnamon in Mary Caramel Apple, L-theanine + chamomile in Molly's Mint). Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.",
   foundingLocation: {
     '@type': 'Place',
     name: 'Salt Lake City, Utah',

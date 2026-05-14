@@ -169,8 +169,8 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
             <div className="cp-story-body">
               <p>
                 <strong>Kiwi Pop</strong> is a lollipop-shaped party supplement — functional candy with less than 1g of sugar,
-                packed with theobromine, ginseng, B12, magnesium, taurine, and electrolytes.
-                We launched three days ago and our first video hit <strong>70,000 views</strong>. 
+                packed with a shared functional base (theobromine, B12, magnesium glycinate, taurine, electrolytes) plus a per-flavor adaptogen tuned to each flavor&apos;s direction.
+                We launched three days ago and our first video hit <strong>70,000 views</strong>.
                 People want this. Now we need to scale.
               </p>
               <p>
