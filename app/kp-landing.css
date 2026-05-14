@@ -443,21 +443,51 @@
 .kp-page .kp-nav-more__panel {
   display: none;
   position: absolute;
-  top: calc(100% + 12px);
+  /* Panel anchors directly to the button's bottom edge (no gap) so the
+     cursor never crosses a dead zone moving from button → panel. The
+     visual breathing room comes from the panel's own padding-top and
+     the ::before invisible bridge below. */
+  top: 100%;
   right: 0;
   min-width: 200px;
   flex-direction: column;
   gap: 4px;
-  padding: 12px 8px;
+  padding: 18px 8px 12px;
   background: rgba(10, 0, 20, 0.96);
   border: 1px solid rgba(244, 236, 255, 0.16);
   border-radius: var(--radius-card, 12px);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   z-index: 50;
 }
+/* Invisible hover-bridge sitting between the MORE button and the visible
+   panel. Without it, the cursor crosses a brief gap where neither the
+   button nor the panel is hovered, the parent loses :hover, and the menu
+   snaps shut before the cursor reaches a link. The ::before extends the
+   hoverable area up so the gap is always covered. */
+.kp-page .kp-nav-more__panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -16px;
+  height: 16px;
+  /* Stay transparent — purely a hit target. */
+  background: transparent;
+}
 .kp-page .kp-nav-more:hover .kp-nav-more__panel,
 .kp-page .kp-nav-more:focus-within .kp-nav-more__panel {
   display: flex;
+}
+/* Also widen the parent's hover footprint downward so the cursor can dip
+   below the button by a few pixels without losing the parent's :hover. */
+.kp-page .kp-nav-more::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 16px;
+  pointer-events: auto;
 }
 .kp-page .kp-nav-more__panel a {
   display: block;
