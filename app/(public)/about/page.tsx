@@ -68,8 +68,12 @@ export default function AboutPage() {
             flower — for an electric mouth tingle on the first lick;
             it&apos;s been used for centuries in brazilian, indian, and
             east african cooking and is standard now in modern bartending.
-            theobromine, ginseng, b12, magnesium, taurine, electrolytes —
-            the functional payload — measured by gram, not by vibe.
+            the shared base — theobromine, b12, magnesium glycinate,
+            taurine, electrolytes — measured by gram, not by vibe. plus
+            an adaptogen tuned per flavor: ginseng + spirulina in kiwi
+            for the balanced lift, ashwagandha in lemon ginger for
+            calm-warming, maca + cinnamon in caramel apple for grounded
+            energy, l-theanine + chamomile in mint for calm-focus.
             xylitol does the sweet —
             tooth-friendly, low-glycemic, no insulin spike — with a touch
             of monk fruit. isomalt does the body. one stick.
@@ -92,8 +96,8 @@ export default function AboutPage() {
             <strong style={{ color: 'var(--sodium)' }}>lemon g. luci</strong>,{' '}
             and{' '}
             <strong style={{ color: 'var(--magenta)' }}>mary caramel apple</strong>. each
-            built around a small obsession. same functional payload across
-            the four. flavor does the work.
+            built around a small obsession. shared functional base across
+            the four — adaptogen tuned per flavor. flavor leads.
           </p>
           <p>
             we&apos;re launching soooon.

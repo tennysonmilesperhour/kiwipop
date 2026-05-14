@@ -40,11 +40,20 @@ on the first lick — it's a sensory hook, a conversation starter, and
 the literature on its active compound (spilanthol) is what put it in
 modern bartending and oral-care products. theobromine, b12, and
 taurine give a clean, jitter-free lift; magnesium and electrolytes
-manage the soft-tissue and hydration cost of dancing for hours;
-ginseng is the steady backbone the chinese pharmacopeia has trusted
-for two thousand years. the sweet half — xylitol, isomalt, monk fruit
-— is a deliberate choice: tooth-friendly, low-glycemic, and validated
-by decades of dental and metabolic research.
+manage the soft-tissue and hydration cost of dancing for hours.
+the sweet half — xylitol, isomalt, monk fruit — is a deliberate
+choice: tooth-friendly, low-glycemic, and validated by decades of
+dental and metabolic research.
+
+every flavor shares that same functional base. what changes is the
+adaptogen, tuned to each flavor's sensory direction: ginseng +
+spirulina is the steady backbone in kiwi pop (balanced, all-purpose,
+the chinese pharmacopeia has trusted ginseng for two thousand years);
+ashwagandha takes its place in lemon ginger because its calmer profile
+sits better next to ginger's warmth; maca + cinnamon in caramel apple
+reinforce the malty backbone and add blood-sugar-modulating support;
+l-theanine + chamomile in mint round out the calm-focus direction the
+mint already leans into.
 
 every ingredient is included at food-flavor or food-supplement
 amounts that are below the doses used in clinical trials. the goal
