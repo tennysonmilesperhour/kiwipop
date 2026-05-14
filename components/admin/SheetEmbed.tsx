@@ -22,13 +22,28 @@ interface SheetsResponse {
 }
 
 /**
- * Renders a configured Google Sheets embed for the given slug. Fetches the
- * row from /api/admin/sheets at mount; falls back to a "link a sheet" CTA
+ * Renders a configured spreadsheet embed for the given slug. Fetches the row
+ * from /api/admin/sheets at mount; falls back to a "link a sheet" CTA
  * pointing at /admin/sheets if nothing is configured.
+ *
+ * Accepts two URL flavors:
+ *  - Google Sheets "publish to web" / gviz URLs — fully interactive sheet
+ *  - Drive file preview URLs (drive.google.com/file/d/.../preview) — Google's
+ *    xlsx viewer; reads all tabs but doesn't recompute formulas on the fly
+ *
+ * If the URL points at a Drive file, we surface an "Open in Drive ↗" link
+ * under the iframe so the admin can jump out to edit / convert as needed.
  *
  * Pure client component so it slots cleanly into the existing 'use client'
  * admin pages without rewiring them as server components.
  */
+function driveFileId(url: string): string | null {
+  // Matches both /file/d/{ID}/(view|preview|edit) and the older &id= form.
+  const m =
+    url.match(/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]+)/) ??
+    url.match(/[?&]id=([A-Za-z0-9_-]+)/);
+  return m?.[1] ?? null;
+}
 export function SheetEmbed({
   slug,
   defaultLabel,
@@ -89,7 +104,8 @@ export function SheetEmbed({
           </Link>
         </div>
         <p className="sheet-embed-hint">
-          paste a Google Sheets &quot;publish to web&quot; URL on the{' '}
+          paste a Google Sheets &quot;publish to web&quot; URL — or a Drive
+          file preview URL for raw .xlsx — on the{' '}
           <Link href="/admin/sheets" style={{ color: 'var(--lime)' }}>
             sheets
           </Link>{' '}
@@ -101,19 +117,35 @@ export function SheetEmbed({
     );
   }
 
+  const fileId = driveFileId(row.embed_url);
+  const driveViewUrl = fileId ? `https://drive.google.com/file/d/${fileId}/view` : null;
+
   return (
     <section className="card sheet-embed">
       <div className="sheet-embed-header">
         <p className="stat-label">
           // linked sheet · {row.label || defaultLabel}
         </p>
-        <Link
-          href={`/admin/sheets?focus=${encodeURIComponent(slug)}`}
-          className="btn btn-secondary"
-          style={{ padding: '0.4rem 0.8rem', fontSize: 11 }}
-        >
-          edit
-        </Link>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          {driveViewUrl ? (
+            <a
+              href={driveViewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary"
+              style={{ padding: '0.4rem 0.8rem', fontSize: 11 }}
+            >
+              open in drive ↗
+            </a>
+          ) : null}
+          <Link
+            href={`/admin/sheets?focus=${encodeURIComponent(slug)}`}
+            className="btn btn-secondary"
+            style={{ padding: '0.4rem 0.8rem', fontSize: 11 }}
+          >
+            edit
+          </Link>
+        </div>
       </div>
       <iframe
         src={row.embed_url}
@@ -127,6 +159,14 @@ export function SheetEmbed({
         sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
         loading="lazy"
       />
+      {fileId ? (
+        <p className="sheet-embed-hint" style={{ marginTop: '0.6rem' }}>
+          this is the live Drive preview of <code>{row.label || defaultLabel}</code>.
+          tabs, data, and formula results are all read-only here. open in Drive
+          (or save as a Google Sheet) to edit cells or use the active-tier
+          dropdown to flow new costs through the workbook.
+        </p>
+      ) : null}
     </section>
   );
 }

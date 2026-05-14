@@ -192,9 +192,11 @@ export default function AdminSheetsPage(): JSX.Element {
         <p className="stat-label">// admin · sheets</p>
         <h1>sheets.</h1>
         <p className="admin-home-meta">
-          paste the Google Sheets &quot;publish to web&quot; URL for any admin
-          section. the linked sheet renders inline on the matching page so you
-          can keep working out of your spreadsheet without leaving the admin.
+          paste a Google Sheets &quot;publish to web&quot; URL — or a Drive
+          file preview URL (https://drive.google.com/file/d/&lt;id&gt;/preview)
+          for raw .xlsx files — for any admin section. the linked sheet
+          renders inline on the matching page so you can keep working out of
+          your spreadsheet without leaving the admin.
         </p>
       </div>
 
