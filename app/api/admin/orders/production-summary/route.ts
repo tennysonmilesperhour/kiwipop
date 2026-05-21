@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
+import { FLAVORS_BY_SKU, flavorPopsForSku } from '@/lib/flavors';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
 export const runtime = 'nodejs';
@@ -26,6 +27,13 @@ export interface ProductionSummaryEntry {
   name: string;
   totalQuantity: number;
   orderCount: number;
+}
+
+export interface FlavorSummaryEntry {
+  flavorSku: string;
+  label: string;
+  color: string;
+  totalPops: number;
 }
 
 /**
@@ -64,8 +72,11 @@ export async function GET() {
     }
   >();
 
+  const byFlavor = new Map<string, number>();
+
   let orderCount = 0;
   let totalJars = 0;
+  let totalPops = 0;
 
   for (const order of orders) {
     if (order.shipping_address?.kind === 'donation') continue;
@@ -88,6 +99,14 @@ export async function GET() {
           orderIds: new Set([order.id]),
         });
       }
+      for (const breakdown of flavorPopsForSku(product.sku)) {
+        const add = breakdown.pops * qty;
+        byFlavor.set(
+          breakdown.flavorSku,
+          (byFlavor.get(breakdown.flavorSku) ?? 0) + add,
+        );
+        totalPops += add;
+      }
     }
   }
 
@@ -101,9 +120,23 @@ export async function GET() {
     }))
     .sort((a, b) => b.totalQuantity - a.totalQuantity);
 
+  const flavorEntries: FlavorSummaryEntry[] = [...byFlavor.entries()]
+    .map(([flavorSku, total]) => {
+      const meta = FLAVORS_BY_SKU[flavorSku];
+      return {
+        flavorSku,
+        label: meta?.pickerLabel ?? meta?.name ?? flavorSku,
+        color: meta?.color ?? '#a8ff3c',
+        totalPops: total,
+      };
+    })
+    .sort((a, b) => b.totalPops - a.totalPops);
+
   return NextResponse.json({
     entries,
+    flavorEntries,
     orderCount,
     totalJars,
+    totalPops,
   });
 }

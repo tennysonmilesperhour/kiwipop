@@ -164,6 +164,50 @@ export const FLAVOR_SKU_FOR: Record<string, string> = (() => {
 })();
 
 /**
+ * Static SKU → [{flavorSku, pops}] table. Built up-front so the production
+ * planner can explode any line item ("3 × KP-VARIETY-PACK-8") into the raw
+ * per-flavor pop counts it needs to make. Unknown SKUs (merch, donations,
+ * one-off bundles we haven't taught the table about) return [].
+ *
+ * Pack sizes come from PACK_SKUS_BY_FLAVOR (1/6/20 ladders) and the variety
+ * bundles inline below. Keep this in sync if a new bundle SKU lands.
+ */
+const FLAVOR_POPS_PER_SKU: Record<string, Array<{ flavorSku: string; pops: number }>> = (() => {
+  const map: Record<string, Array<{ flavorSku: string; pops: number }>> = {};
+  for (const [flavorSku, packs] of Object.entries(PACK_SKUS_BY_FLAVOR)) {
+    map[packs[1]] = [{ flavorSku, pops: 1 }];
+    map[packs[6]] = [{ flavorSku, pops: 6 }];
+    map[packs[20]] = [{ flavorSku, pops: 20 }];
+  }
+  // Variety packs are equal amounts of every flavor in FLAVORS.
+  const allFlavorSkus = Object.keys(PACK_SKUS_BY_FLAVOR);
+  const varieties: Array<{ sku: string; perFlavor: number }> = [
+    { sku: 'KP-VARIETY-PACK-8', perFlavor: 2 },
+    { sku: 'KP-VARIETY-PACK-20', perFlavor: 5 },
+    { sku: 'KP-VARIETY-PACK-40', perFlavor: 10 },
+  ];
+  for (const v of varieties) {
+    map[v.sku] = allFlavorSkus.map((flavorSku) => ({
+      flavorSku,
+      pops: v.perFlavor,
+    }));
+  }
+  return map;
+})();
+
+/**
+ * Expand a product SKU into the raw flavor pop counts that ship per unit.
+ * Returns empty for non-pop SKUs (merch, donation) — callers should ignore
+ * those for production planning.
+ */
+export function flavorPopsForSku(
+  sku: string | null | undefined,
+): Array<{ flavorSku: string; pops: number }> {
+  if (!sku) return [];
+  return FLAVOR_POPS_PER_SKU[sku] ?? [];
+}
+
+/**
  * Resolves the best image for a product: prefer whatever the DB has on
  * `image_url` (admin can upload one any time); fall back to the brand
  * asset for that flavor (resolves bundle SKUs back to their flavor via

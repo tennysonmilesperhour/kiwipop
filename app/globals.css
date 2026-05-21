@@ -1904,6 +1904,79 @@ button { font: inherit; }
   white-space: nowrap;
 }
 
+/* Raw pops-by-flavor sub-section — shown beneath the per-SKU roll-up. */
+.admin-layout .orders-flavor-breakdown {
+  margin-top: 0.9rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed
+    color-mix(in srgb, var(--c-sodium) 35%, var(--admin-border));
+}
+.admin-layout .orders-flavor-breakdown-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.admin-layout .orders-flavor-breakdown-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--admin-text-soft);
+}
+.admin-layout .orders-flavor-breakdown-total {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--admin-text);
+}
+.admin-layout .orders-flavor-breakdown-total strong {
+  color: var(--c-sodium);
+  font-family: var(--display);
+  font-size: 14px;
+}
+.admin-layout .orders-flavor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.45rem;
+}
+.admin-layout .orders-flavor-item {
+  display: grid;
+  grid-template-columns: 12px auto 1fr;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.7rem;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  border-left: 3px solid var(--flavor-c, var(--c-lime));
+}
+.admin-layout .orders-flavor-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--flavor-c, var(--c-lime));
+  box-shadow: 0 0 8px -2px var(--flavor-c, var(--c-lime));
+}
+.admin-layout .orders-flavor-qty {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--flavor-c, var(--c-lime));
+  min-width: 26px;
+  text-align: right;
+}
+.admin-layout .orders-flavor-label {
+  font-size: 13px;
+  color: var(--admin-text);
+  text-transform: lowercase;
+}
+
 .admin-layout .orders-modal-overlay {
   position: fixed;
   inset: 0;
