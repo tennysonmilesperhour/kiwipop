@@ -21,7 +21,7 @@ interface ProjectionRow {
 }
 
 interface PitchPlan {
-  id: 'seed-5k' | 'seed-50k';
+  id: 'seed-5k' | 'seed-25k';
   raise: string;
   raiseCents: number;
   thesis: string;
@@ -31,7 +31,6 @@ interface PitchPlan {
   milestones: MilestoneItem[];
   projections: ProjectionRow[];
   risks: string[];
-  exits: string;
 }
 
 const PLAN_5K: PitchPlan = {
@@ -42,110 +41,104 @@ const PLAN_5K: PitchPlan = {
     "the first lollipop that makes you feel good while you party. like willy wonka actually made functional candy for adults.",
   hypothesis:
     "kiwi pop is a functional, sensual lollipop for the night scene. it cleans your palate, makes you feel relaxed and present, and tastes incredible. it's not a supplement pretending to be candy — it's candy that happens to support you.",
-  why: "this is the smallest cheque that proves it: one hand-rolled batch, one festival, one online drop. enough to put kiwi pop in real mouths in real environments and watch what people do next. no co-packer minimums, no shopify partner fees, no commissioned art. a yes/no answer in 90 days and a real email list either way.",
+  why: "the first $5K is already committed. it's earmarked for ingredient sourcing across all 4 flavors, custom packaging, and fulfilling the $1,000 of preorders already on the books. the $200 amazon r&d batch validated the core recipe in real party conditions — this cheque is what turns one proven flavor into a sellable line of four, ships the preorders, and generates the data we need to size the next move. the storefront, admin, and ops stack already exist (ai-coded, no engineering hire) and the LLC/EIN is filed — none of this raise pays for infrastructure.",
   budget: [
     {
-      label: 'first batch · 1,000 pops',
-      cents: 100_000,
-      detail: 'commercial-kitchen run · COGS ~$1.00/pop per costing.xlsx',
+      label: 'r&d · 3 new flavor recipes',
+      cents: 50_000,
+      detail: 'round out the line past the proven hero · sourced ingredients for repeated taste tests',
     },
     {
-      label: 'wordmark + packaging',
+      label: 'production batch · 4-flavor ingredients · ~1,500 pops',
+      cents: 150_000,
+      detail: 'raw materials across all 4 flavors at ~$1.00/pop COGS',
+    },
+    {
+      label: 'custom packaging · printed foil wrappers + labels + 4-flavor sampler box',
+      cents: 120_000,
+      detail: 'brand identity carrier · one designer round (ai-iterated, human polish)',
+    },
+    {
+      label: 'lollipop sticks + silicone molds + small kitchen tools',
+      cents: 30_000,
+      detail: 'consumables and equipment for repeatable batches',
+    },
+    {
+      label: 'commercial kitchen time · batch days',
       cents: 40_000,
-      detail: 'fiverr top-tier or cara · one designer, one round',
+      detail: 'licensed kitchen rental for the first production run',
     },
     {
-      label: 'product photography',
+      label: 'fulfillment · ship $1,000 of preorders',
+      cents: 25_000,
+      detail: 'mailers, padded inserts, postage for orders already on the books',
+    },
+    {
+      label: 'legal · LLC + EIN (filed)',
+      cents: 5_900,
+      detail: 'self-serve filing · CPG counsel deferred until first real regulatory question',
+    },
+    {
+      label: 'regional pop-up / event booth',
       cents: 40_000,
-      detail: 'natural-light DIY shoot · 8-12 frames',
+      detail: 'one local event · vendor fee + signage + travel · IRL traction signal',
     },
     {
-      label: 'shopify basic + domain',
-      cents: 49_300,
-      detail: '$39/mo × 12 + $25 .co domain · path C from launch spec',
+      label: 'paid ads test · meta + tiktok',
+      cents: 30_000,
+      detail: '$10/day × 30 days · find the cheapest hook · ai-generated creative variants',
     },
     {
-      label: 'product liability insurance',
-      cents: 60_000,
-      detail: '12-month policy · non-optional for consumables',
-    },
-    {
-      label: 'legal · LLC / EIN / 1hr CPG counsel',
-      cents: 45_000,
-      detail: 'food/CPG lawyer for ingredient + label disclosures',
-    },
-    {
-      label: 'klaviyo · welcome + abandoned cart flow',
-      cents: 0,
-      detail: 'free tier up to 250 contacts',
-    },
-    {
-      label: 'one festival booth · regional event',
-      cents: 50_000,
-      detail: 'vendor fee + signage + travel',
-    },
-    {
-      label: 'micro-influencer seeding · 10 @ $50',
-      cents: 50_000,
-      detail: 'send free pops, ask for one story · no obligation',
-    },
-    {
-      label: 'paid ads test (meta + tiktok)',
-      cents: 50_000,
-      detail: '$15/day × 30 days · find the cheapest hook',
-    },
-    {
-      label: 'buffer · wrappers + sticks + restock',
-      cents: 15_700,
-      detail: '~3% buffer · sticker labels, lollipop sticks, foil',
+      label: 'buffer · restock + unforeseen',
+      cents: 9_100,
+      detail: 'thin buffer — relying on ai-coded ops, donated photography, and sweat equity',
     },
   ],
   milestones: [
     {
       when: 'day 0–14',
-      what: 'set up shopify · run first kitchen batch · photograph the pop · build klaviyo welcome flow',
+      what: 'lock the 3 new flavor recipes · order ingredients + packaging · brief the volunteer photographer on hero shots',
     },
     {
       when: 'day 15–45',
-      what: 'one regional festival booth · sell 200–300 pops in person · capture 500-name email list',
+      what: 'commercial-kitchen batch · fulfill the $1,000 of preorders · free product photo shoot wrapped · all 4 flavors live on the storefront',
     },
     {
       when: 'day 46–90',
-      what: 'online drop to email list · run paid ads test · ship 200–300 pops dtc · measure repeat',
+      what: 'regional pop-up booth · paid ads + email drop to the 500-name list · measure repeat across flavors',
     },
     {
       when: 'day 91+',
-      what: 'have a yes/no answer on willingness-to-pay and a real cohort to measure repeat against',
+      what: 'yes/no answer on willingness-to-pay across all 4 flavors · a real cohort to measure repeat against · revenue from sold pops funds the next batch',
     },
   ],
   projections: [
-    { metric: 'units sold', value: '500 pops' },
-    { metric: 'gross revenue (avg $5/pop)', value: '$2,500' },
-    { metric: 'COGS at $1.00/pop', value: '$500' },
-    { metric: 'gross profit', value: '$2,000 (80%)' },
-    { metric: 'net cash burned', value: '~$3,000' },
+    { metric: 'units produced', value: '~1,500 pops (4 flavors)' },
+    { metric: 'units sold (90 days)', value: '800–1,200 incl. preorders' },
+    { metric: 'gross revenue (avg $5/pop)', value: '$4,000–6,000' },
+    { metric: 'COGS at $1.00/pop', value: '~$1,500' },
+    { metric: 'gross profit', value: '$2,500–4,500' },
+    { metric: 'net cash position', value: 'break-even to modestly positive' },
     { metric: 'email list built', value: '500–1,000' },
-    { metric: 'repeat-purchase signal', value: 'measurable in 90 days' },
+    { metric: 'repeat-purchase signal', value: 'measurable across 4 flavors in 90 days' },
   ],
   risks: [
     "biggest risk: formulation iteration. we're tuning the functional payload (theobromine + ginseng + b12 + electrolytes) for the cleanest possible lift without losing the sensory experience that drives early product love. actively running A/B taste tests batch over batch.",
-    'one festival can flop on weather or foot traffic — no backup booth in this budget',
-    "kitchen-batch COGS assumes the founder's own kitchen — labor not priced",
-    "no money for second batch if the first sells out before paid ads have run",
+    'one regional event can flop on weather or foot traffic — no backup booth in this budget',
+    'kitchen-batch labor is founder sweat equity — not priced into COGS',
+    'production capacity · 1,500 pops is a single-kitchen run · scaling past that needs co-packer paperwork that costs time, not money',
   ],
-  exits:
-    'success at this check size: 500 pops sold, repeat ≥ 15%, an email list of 500+, and one short founder note ready to send to the next $50K cheque. the 18-month vision (1M pops, 200 retail doors, 6 festival activations) is a separate slide — this cheque is the receipt that says it can happen.',
 };
 
-const PLAN_50K: PitchPlan = {
-  id: 'seed-50k',
-  raise: '$50,000',
-  raiseCents: 5_000_000,
+const PLAN_25K: PitchPlan = {
+  id: 'seed-25k',
+  raise: '$25,000',
+  raiseCents: 2_500_000,
   thesis:
     "the first lollipop that makes you feel good while you party. like willy wonka actually made functional candy for adults.",
   hypothesis:
     "gen z is drinking less. festivals are going wellness-curious. the night scene and the yoga scene already overlap. kiwi pop is the obvious product for where culture is already heading — where health and partying stop being opposites — and we're the magical, sensory entry point.",
-  why: 'this is the gap between "founder side project" and "real CPG brand with proof of demand." it funds the move from kitchen to co-packer, the brand identity, and the festival circuit where word-of-mouth compounds in the product\'s native environment. the GHOST playbook: one limited-edition flavor drop per major festival, with collectible packaging.',
+  why: "this is the cheque that turns proof into a real brand presence. we don't need it for a shopify theme, a custom illustrator, or a pro photographer — we already have those (ai-coded storefront, ai-iterated brand, a volunteer photographer). this cheque funds the move from kitchen to co-packer, three festival activations, and the creator + paid-ads loop that converts attention into a list and a list into repeat orders. the GHOST playbook: one limited-edition flavor drop per major festival, with collectible packaging.",
   budget: [
     {
       label: 'co-packer batch · 8,000 pops',
@@ -153,97 +146,92 @@ const PLAN_50K: PitchPlan = {
       detail: 'tier-3 ingredient pricing · $0.85/pop blended COGS',
     },
     {
-      label: 'custom shopify theme · path A',
-      cents: 1_000_000,
-      detail: 'shopify partner build · keeps four-floor narrative + flavor orbs',
-    },
-    {
-      label: 'wordmark by a real type designer',
-      cents: 80_000,
-      detail: 'working not working · 1 wordmark, 2 rounds',
-    },
-    {
-      label: 'crew mascot illustration set',
-      cents: 350_000,
-      detail: 'kiwi · neko · lip · glitch · single illustrator, character-sheet',
-    },
-    {
-      label: 'pro CPG product photography',
-      cents: 400_000,
-      detail: 'food/CPG specialist · hero, lifestyle, packaging, all 4 flavors',
-    },
-    {
-      label: 'three festival activations',
-      cents: 750_000,
-      detail: '1 major (beyond wonderland-tier) + 2 regional · vendor + booth + travel',
-    },
-    {
-      label: 'creator + influencer marketing',
-      cents: 700_000,
-      detail: '5 mid-tier @ $1k + 20 micro @ $100 · seeded packs included',
-    },
-    {
-      label: 'shopify + apps · 12 months',
-      cents: 250_000,
-      detail: 'basic + klaviyo paid + recharge subs + judge.me reviews',
-    },
-    {
-      label: 'multi-pack boxes + foil wrappers',
+      label: 'custom packaging · 4 flavors + sampler box + festival drop foil',
       cents: 300_000,
       detail: 'matte black 4-pack box · UV-spot-gloss limited drop foil',
     },
     {
-      label: 'PR push · festival announce',
-      cents: 250_000,
-      detail: 'one boutique PR firm · 30-day push',
+      label: 'brand identity polish · ai-iterated + 1 designer round',
+      cents: 80_000,
+      detail: 'wordmark + character set refined with ai, finished by a human designer',
     },
     {
-      label: 'insurance + legal',
-      cents: 120_000,
-      detail: 'product liability + CPG attorney for FDA labeling review',
+      label: 'product photography · founder content + 1 small lead shoot',
+      cents: 50_000,
+      detail: 'volunteer photographer covers most · paid mini-shoot for hero frames',
     },
     {
-      label: 'google workspace · 4 emails × 12mo',
-      cents: 28_800,
-      detail: 'hello / wholesale / events / press @ kiwipop.co',
+      label: 'three festival activations',
+      cents: 600_000,
+      detail: '1 major + 2 regional · vendor + booth + travel',
     },
     {
-      label: 'buffer · runway for second batch',
-      cents: 71_200,
-      detail: '~1.5% buffer for restock or unforeseen',
+      label: 'creator + influencer seeding',
+      cents: 300_000,
+      detail: '3 mid-tier @ $750 + 15 micro @ $50 · seeded packs included',
+    },
+    {
+      label: 'paid ads · meta + tiktok structured tests',
+      cents: 150_000,
+      detail: '$50/day × 30 days · ai-generated creative variants · find the cheapest hook',
+    },
+    {
+      label: 'PR push · 30-day festival announce window',
+      cents: 100_000,
+      detail: 'one boutique PR firm · short, scene-targeted push',
+    },
+    {
+      label: 'product liability insurance · 12 months',
+      cents: 60_000,
+      detail: 'once volume warrants — required for festival vendor permits',
+    },
+    {
+      label: 'legal · CPG attorney for FDA labeling review',
+      cents: 30_000,
+      detail: 'one-time review of ingredient + label disclosures at scale',
+    },
+    {
+      label: 'fulfillment + ops · mailers, restock consumables, sticks, foil',
+      cents: 70_000,
+      detail: 'shipping materials + replenishment for the production run',
+    },
+    {
+      label: 'buffer · restock + unforeseen',
+      cents: 60_000,
+      detail: '~2.4% buffer · ai-coded ops and a thin team keep overhead low',
     },
   ],
   milestones: [
     {
       when: 'day 0–30',
-      what: 'sign co-packer · brief illustrator + type designer · start shopify partner kickoff',
+      what: 'sign co-packer · finalize brand polish round · packaging to print · storefront already live · brief creators',
     },
     {
       when: 'day 31–60',
-      what: 'theme live in staging · photography wrapped · mascots delivered · first co-packer batch in production',
+      what: 'first co-packer batch in production · all 4 flavors packaged · creator content rolling · ads in test',
     },
     {
       when: 'day 61–90',
-      what: 'soft launch to founder list + early-list 500 · first festival activation · measure conversion',
+      what: 'soft launch to early list · first festival activation · paid ads optimizing on real conversion data',
     },
     {
       when: 'day 91–180',
-      what: 'major festival activation · all 4 flavors live · open boutique-retail conversations (LA · NYC · austin)',
+      what: 'major festival activation · open boutique-retail conversations (LA · NYC · austin) · subscription cohort forming',
     },
     {
       when: 'day 181–365',
-      what: 'subscription revenue stabilizes · second co-packer batch · case study deck for next raise',
+      what: 'stable repeat cohort · second co-packer batch funded by revenue · case study deck for next raise',
     },
   ],
   projections: [
-    { metric: 'units sold (12 mo)', value: '8,000–10,000 pops' },
+    { metric: 'units sold (12 mo)', value: '6,000–8,000 pops' },
     {
       metric: 'gross revenue mix',
-      value: '$40K–$60K (dtc + festival + early wholesale)',
+      value: '$30K–$45K (dtc + festival + early wholesale)',
     },
     { metric: 'gross margin', value: '60–70%' },
-    { metric: 'email list', value: '5,000–10,000' },
-    { metric: 'subscription customers', value: '50–150 active' },
+    { metric: 'email list', value: '3,000–7,000' },
+    { metric: 'subscription customers', value: '50–120 active' },
     { metric: 'wholesale partners', value: '1–3 boutique retailers' },
     {
       metric: 'next-raise readiness',
@@ -254,14 +242,12 @@ const PLAN_50K: PitchPlan = {
     "biggest risk: formulation at scale. we're refining the nootropic blend (theobromine + ginseng + magnesium + b12 + electrolytes) at copacker volumes without losing the sensory experience that drives early product love. actively iterating on every batch.",
     'co-packer minimum order quantities may push first batch above $7K',
     'festival activations are weather- and crowd-dependent · one bad weekend',
-    "shopify partner build takes 4–8 weeks · slip eats into first festival window",
-    "illustrator delivery on the crew mascots is the long-pole creative item",
+    'paid ad efficiency · meta/tiktok creative typically needs 3–5 rounds before a hook lands · budget assumes that iteration',
+    'founder bandwidth · two operators across product, ops, content, and ai engineering · time is the real constraint, not capital',
   ],
-  exits:
-    'success at this check size: 10K pops shipped, 30% margin after all costs, an active subscription cohort, and a cleaner-than-pitch story for either a $250K seed or a wholesale-led growth path. the 18-month target is on the vision slide.',
 };
 
-const PLANS: PitchPlan[] = [PLAN_5K, PLAN_50K];
+const PLANS: PitchPlan[] = [PLAN_5K, PLAN_25K];
 
 // ---------------------------------------------------------------------------
 // Brand-positioning content (shared between both check sizes — the soul of
@@ -341,14 +327,14 @@ const TARGET_CUSTOMER = {
   primary:
     'adults in the night scene — clubs, festivals, afterparties — who want a clean palate, a functional lift, and a sensual experience while partying.',
   expansion:
-    'wellness-curious adults (yoga, holistic health) who already overlap with the night scene demographically. the coachella → erewhon distribution arc.',
+    'wellness-curious adults (yoga, holistic health) who already overlap with the night scene demographically. the festival → wellness-retail distribution arc.',
   insight:
     'the venn diagram: night scene and wellness scene share more overlap than most brands recognize, because both communities are driven by the same impulse — the desire to feel vividly alive.',
 };
 
 const GO_TO_MARKET = {
   intro:
-    'three-channel adaptive strategy with early traction in all three. festivals + clubs are the highest-conviction wedge for brand-building (native demonstration, word-of-mouth compounds). retail is the scaling channel after that.',
+    'three-channel adaptive strategy. festivals + clubs are the highest-conviction wedge for brand-building (native demonstration, word-of-mouth compounds). retail is the scaling channel after that.',
   channels: [
     {
       label: 'festivals',
@@ -359,11 +345,55 @@ const GO_TO_MARKET = {
       detail: 'sensory and social product fit',
     },
     {
-      label: 'retail / wholesale pre-orders',
-      detail: 'already happening · scaling channel',
+      label: 'dtc + early wholesale',
+      detail: 'storefront live · preorders open · boutique conversations forming',
     },
   ],
-  traction: 'approached by erewhon for product placement.',
+};
+
+interface TractionItem {
+  headline: string;
+  detail: string;
+  color?: 'lime' | 'cyan' | 'magenta';
+}
+
+const TRACTION: { intro: string; items: TractionItem[]; punchline: string } = {
+  intro:
+    "the deck doesn't lead with projections — it leads with what's already true. every line below is a receipt, not a forecast.",
+  items: [
+    {
+      headline: '$1,000 in preorders',
+      detail: 'real cash captured before any paid marketing · friend network + early storefront only',
+      color: 'lime',
+    },
+    {
+      headline: '$200 r&d batch — validated',
+      detail: 'amazon-sourced ingredients · the recipe was tested in real party conditions and the response was unambiguously positive',
+      color: 'lime',
+    },
+    {
+      headline: '$5,000 first cheque · committed',
+      detail: 'outside backer · fully allocated to ingredients, packaging, and shipping the preorders',
+      color: 'lime',
+    },
+    {
+      headline: 'storefront + admin + ops stack · live',
+      detail: 'custom-coded with ai · stripe, supabase, shipstation, klaviyo all wired up · zero engineering hire',
+      color: 'cyan',
+    },
+    {
+      headline: 'LLC + EIN · filed',
+      detail: 'self-serve · $59 total · CPG counsel deferred until first real regulatory question',
+      color: 'cyan',
+    },
+    {
+      headline: 'capital efficiency is the moat',
+      detail: 'what would cost a typical CPG founder $30K–$50K in agencies, designers, photographers, and dev shops, we ship for under $2K — and that delta compounds at every raise',
+      color: 'magenta',
+    },
+  ],
+  punchline:
+    "we're not asking investors to fund a hypothesis. we're showing them what's already built, and asking them to fund the next 10x.",
 };
 
 interface FounderProfile {
@@ -378,9 +408,9 @@ const FOUNDERS: FounderProfile[] = [
     blurb: 'operator · approachable, transparent, values-aligned',
     bullets: [
       'track record building first-of-their-kind functional products with non-sterile, non-biohacker branding',
-      'approached by erewhon to carry products',
       'deep, authentic embedding in every level of the party scene',
-      'long history of helping people return to baseline and beyond using food, functional nutrition, and case-by-case nootropic blends — near-perfect track record',
+      'long history of helping people return to baseline and beyond using food, functional nutrition, and case-by-case nootropic blends',
+      'ai-native operator · shipped the entire storefront, admin, and ops stack without an engineering hire',
     ],
   },
   {
@@ -587,7 +617,7 @@ export default function PitchPage() {
             >
               <span className="pitch-tab-amount">{p.raise}</span>
               <span className="pitch-tab-label">
-                {p.id === 'seed-5k' ? 'prove it · 90 days' : 'launch · 12 months'}
+                {p.id === 'seed-5k' ? 'prove it · 90 days' : 'scale · 12 months'}
               </span>
             </button>
           ))}
@@ -815,19 +845,66 @@ export default function PitchPage() {
               </div>
             ))}
           </div>
-          <p
-            className="pitch-prose"
+        </section>
+
+        <section className="pitch-slide">
+          <div className="pitch-slide-tag">/08 traction · what&apos;s already real</div>
+          <p className="pitch-prose" style={{ marginBottom: '1.4rem' }}>
+            {TRACTION.intro}
+          </p>
+          <div
             style={{
-              color: 'var(--lime, #a8ff3c)',
-              fontWeight: 500,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1rem',
+              marginBottom: '1.6rem',
             }}
           >
-            // traction · {GO_TO_MARKET.traction}
+            {TRACTION.items.map((item) => {
+              const accent =
+                item.color === 'cyan'
+                  ? 'var(--cyan, #00f0ff)'
+                  : item.color === 'magenta'
+                    ? 'var(--magenta, #ff2d8a)'
+                    : 'var(--lime, #a8ff3c)';
+              return (
+                <div
+                  key={item.headline}
+                  className="pitch-projection-card"
+                  style={{
+                    padding: '1rem 1.2rem',
+                    borderLeft: `2px solid ${accent}`,
+                  }}
+                >
+                  <div
+                    className="pitch-projection-metric"
+                    style={{ color: accent, marginBottom: '0.4rem' }}
+                  >
+                    {item.headline}
+                  </div>
+                  <div
+                    className="pitch-projection-value"
+                    style={{ fontSize: '0.95rem', lineHeight: 1.5 }}
+                  >
+                    {item.detail}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <p
+            className="pitch-thesis"
+            style={{
+              fontSize: 'clamp(1.2rem, 2.4vw, 1.6rem)',
+              color: 'var(--lime, #a8ff3c)',
+            }}
+          >
+            {TRACTION.punchline}
           </p>
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/08 founders</div>
+          <div className="pitch-slide-tag">/09 founders</div>
           <div
             style={{
               display: 'grid',
@@ -875,7 +952,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/09 use of funds</div>
+          <div className="pitch-slide-tag">/10 use of funds</div>
           <table className="table pitch-table">
             <thead>
               <tr>
@@ -963,7 +1040,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/10 milestones</div>
+          <div className="pitch-slide-tag">/11 milestones</div>
           <ol className="pitch-timeline">
             {plan.milestones.map((m) => {
               const compositeKey = progressKey(plan.id, 'milestone', m.when);
@@ -1021,7 +1098,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/11 projections</div>
+          <div className="pitch-slide-tag">/12 projections</div>
           <div className="pitch-projection-grid">
             {plan.projections.map((p) => (
               <div className="pitch-projection-card" key={p.metric}>
@@ -1033,7 +1110,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/12 risks</div>
+          <div className="pitch-slide-tag">/13 risks</div>
           <ul className="pitch-risks">
             {plan.risks.map((r, idx) => (
               <li key={idx}>{r}</li>
@@ -1042,7 +1119,7 @@ export default function PitchPage() {
         </section>
 
         <section className="pitch-slide">
-          <div className="pitch-slide-tag">/13 18-month vision</div>
+          <div className="pitch-slide-tag">/14 18-month vision</div>
           <p className="pitch-prose" style={{ marginBottom: '1.4rem' }}>
             {VISION_18_MONTHS.framing}
           </p>
@@ -1063,19 +1140,13 @@ export default function PitchPage() {
           </div>
         </section>
 
-        <section className="pitch-slide pitch-slide--exit">
-          <div className="pitch-slide-tag">/14 success at this check size</div>
-          <p className="pitch-thesis pitch-thesis--exit">{plan.exits}</p>
-        </section>
-
         <section className="pitch-foot">
           <div className="pitch-foot-meta">
             <div>kiwi pop · refreshing club lolli</div>
             <div>founder · tennyson taggart · thekiwipop@gmail.com</div>
-            <div>doc · pitch deck v1 · {new Date().toISOString().slice(0, 10)}</div>
           </div>
           <div className="pitch-foot-stamp">
-            // {plan.id === 'seed-5k' ? 'prove it' : 'launch it'}
+            // {plan.id === 'seed-5k' ? 'prove it' : 'scale it'}
           </div>
         </section>
       </div>
