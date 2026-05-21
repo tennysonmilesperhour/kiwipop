@@ -70,6 +70,19 @@ interface BulkLabelResponse {
   failed: number;
 }
 
+interface ProductionSummaryEntry {
+  productId: string;
+  sku: string | null;
+  name: string;
+  totalQuantity: number;
+  orderCount: number;
+}
+interface ProductionSummary {
+  entries: ProductionSummaryEntry[];
+  orderCount: number;
+  totalJars: number;
+}
+
 type SectionKey =
   | 'to_fulfill'
   | 'shipped'
@@ -169,6 +182,10 @@ export default function OrdersPage() {
   const [bulkResult, setBulkResult] = useState<BulkLabelResponse | null>(null);
   const [bulkError, setBulkError] = useState<string>('');
 
+  const [production, setProduction] = useState<ProductionSummary | null>(null);
+  const [productionLoading, setProductionLoading] = useState(false);
+  const [shippingRowId, setShippingRowId] = useState<string | null>(null);
+
   // Restore last-active section from localStorage so admins land where they
   // left off (usually 'to_fulfill').
   useEffect(() => {
@@ -196,6 +213,55 @@ export default function OrdersPage() {
     setBulkResult(null);
     setBulkError('');
   }, [section]);
+
+  // Pull the flavor-by-flavor production roll-up whenever the order list
+  // changes (so it stays in sync after labels are bought / status flips).
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setProductionLoading(true);
+      try {
+        const response = await fetch('/api/admin/orders/production-summary', {
+          cache: 'no-store',
+        });
+        const json = await response.json();
+        if (!cancelled && response.ok) setProduction(json as ProductionSummary);
+      } catch {
+        // soft fail — card just won't render
+      } finally {
+        if (!cancelled) setProductionLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [orders]);
+
+  const handleQuickShip = async (orderId: string) => {
+    if (shippingRowId) return;
+    setShippingRowId(orderId);
+    try {
+      const response = await fetch(`/api/admin/orders/${orderId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'shipped' }),
+      });
+      const json = await response.json();
+      if (!response.ok) throw new Error(json.error ?? 'failed to mark shipped');
+      setSelected((prev) => {
+        if (!prev.has(orderId)) return prev;
+        const next = new Set(prev);
+        next.delete(orderId);
+        return next;
+      });
+      await refetch();
+      await queryClient.invalidateQueries({ queryKey: ['orders'] });
+    } catch (err) {
+      setBulkError(err instanceof Error ? err.message : 'failed to mark shipped');
+    } finally {
+      setShippingRowId(null);
+    }
+  };
 
   const grouped = useMemo(() => {
     const buckets: Record<SectionKey, OrderRow[]> = {
@@ -472,6 +538,13 @@ export default function OrdersPage() {
         </div>
       )}
 
+      {section === 'to_fulfill' && (
+        <ProductionSummaryCard
+          summary={production}
+          loading={productionLoading}
+        />
+      )}
+
       <div className="card">
         {isLoading ? (
           <p>Loading…</p>
@@ -539,8 +612,29 @@ export default function OrdersPage() {
                     <td className="text-sm font-mono" style={{ opacity: 0.65 }}>
                       {order.id.slice(0, 8)}…
                     </td>
-                    <td className="text-sm" style={{ color: 'var(--admin-text-soft)' }}>
-                      open ›
+                    <td
+                      className="text-sm"
+                      style={{ color: 'var(--admin-text-soft)' }}
+                      onClick={(e) => {
+                        if (showCheckboxes) e.stopPropagation();
+                      }}
+                    >
+                      {showCheckboxes ? (
+                        <button
+                          type="button"
+                          className="orders-row-ship-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleQuickShip(order.id);
+                          }}
+                          disabled={shippingRowId === order.id}
+                          title="mark this order as shipped"
+                        >
+                          {shippingRowId === order.id ? '…' : 'ship ✓'}
+                        </button>
+                      ) : (
+                        'open ›'
+                      )}
                     </td>
                   </tr>
                 );
@@ -572,6 +666,71 @@ export default function OrdersPage() {
         />
       )}
     </AdminLayout>
+  );
+}
+
+/* -----------------------------------------------------------
+   PRODUCTION SUMMARY — flavor counts for the to-fulfill bucket
+   ----------------------------------------------------------- */
+
+function ProductionSummaryCard({
+  summary,
+  loading,
+}: {
+  summary: ProductionSummary | null;
+  loading: boolean;
+}) {
+  if (loading && !summary) {
+    return (
+      <div className="orders-production-card">
+        <p style={{ margin: 0, fontSize: 13, color: 'var(--admin-text-soft)' }}>
+          tallying flavors…
+        </p>
+      </div>
+    );
+  }
+  if (!summary || summary.entries.length === 0) {
+    return (
+      <div className="orders-production-card">
+        <p style={{ margin: 0, fontSize: 13, color: 'var(--admin-text-soft)' }}>
+          nothing to produce — to-fulfill is empty.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="orders-production-card">
+      <div className="orders-production-header">
+        <h2 className="orders-production-title">to produce</h2>
+        <div className="orders-production-stats">
+          <span>
+            <strong>{summary.totalJars}</strong> jars
+          </span>
+          <span style={{ color: 'var(--admin-text-soft)' }}>·</span>
+          <span>
+            <strong>{summary.orderCount}</strong> order
+            {summary.orderCount === 1 ? '' : 's'}
+          </span>
+        </div>
+      </div>
+      <ul className="orders-production-list">
+        {summary.entries.map((entry) => (
+          <li key={entry.productId} className="orders-production-item">
+            <span className="orders-production-qty">{entry.totalQuantity}</span>
+            <span className="orders-production-name">
+              {entry.name}
+              {entry.sku ? (
+                <span className="orders-production-sku"> {entry.sku}</span>
+              ) : null}
+            </span>
+            <span className="orders-production-orders">
+              {entry.orderCount} order{entry.orderCount === 1 ? '' : 's'}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
