@@ -77,10 +77,18 @@ interface ProductionSummaryEntry {
   totalQuantity: number;
   orderCount: number;
 }
+interface FlavorSummaryEntry {
+  flavorSku: string;
+  label: string;
+  color: string;
+  totalPops: number;
+}
 interface ProductionSummary {
   entries: ProductionSummaryEntry[];
+  flavorEntries: FlavorSummaryEntry[];
   orderCount: number;
   totalJars: number;
+  totalPops: number;
 }
 
 type SectionKey =
@@ -730,6 +738,30 @@ function ProductionSummaryCard({
           </li>
         ))}
       </ul>
+
+      {summary.flavorEntries.length > 0 && (
+        <div className="orders-flavor-breakdown">
+          <div className="orders-flavor-breakdown-header">
+            <h3 className="orders-flavor-breakdown-title">raw pops by flavor</h3>
+            <span className="orders-flavor-breakdown-total">
+              <strong>{summary.totalPops}</strong> pops total
+            </span>
+          </div>
+          <ul className="orders-flavor-list">
+            {summary.flavorEntries.map((f) => (
+              <li
+                key={f.flavorSku}
+                className="orders-flavor-item"
+                style={{ '--flavor-c': f.color } as React.CSSProperties}
+              >
+                <span className="orders-flavor-swatch" />
+                <span className="orders-flavor-qty">{f.totalPops}</span>
+                <span className="orders-flavor-label">{f.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
