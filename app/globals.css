@@ -3015,6 +3015,43 @@ button { font: inherit; }
   .pitch-table tfoot td { padding-top: 0.6rem; }
 }
 
+/* ---------- print to pdf ---------- */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+  html, body {
+    background: #0a0a0a !important;
+    color: var(--bone) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .admin-sidebar,
+  .pitch-tabs,
+  .pitch-print-actions,
+  .pitch-page select,
+  .pitch-page input[type="checkbox"],
+  .pitch-table th:first-child,
+  .pitch-table td:first-child {
+    display: none !important;
+  }
+  .admin-layout { display: block !important; }
+  .admin-content { padding: 0 !important; }
+  .pitch-page { margin: 0 !important; padding: 0 !important; }
+  .pitch-slide {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid rgba(244, 240, 232, 0.15) !important;
+    background: #0f0f0f !important;
+    margin: 0 0 0.3in 0 !important;
+    padding: 0.3in !important;
+  }
+  .pitch-slide--thesis { break-after: page; page-break-after: always; }
+  .pitch-timeline li { break-inside: avoid; page-break-inside: avoid; }
+  .pitch-projection-card { break-inside: avoid; page-break-inside: avoid; }
+}
+
 /* =========================================================
    25. VERSION-WATCHER TOAST
    ========================================================= */

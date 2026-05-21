@@ -572,7 +572,36 @@ export default function PitchPage() {
       <div className="pitch-page">
         <div className="pitch-header">
           <p className="stat-label">// admin · pitch deck</p>
-          <h1>pitch.</h1>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              gap: '1rem',
+              flexWrap: 'wrap',
+            }}
+          >
+            <h1>pitch.</h1>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="pitch-print-actions"
+              style={{
+                fontFamily: 'var(--mono)',
+                fontSize: 11,
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                padding: '0.5rem 0.9rem',
+                background: 'transparent',
+                color: 'var(--lime, #a8ff3c)',
+                border: '1px solid var(--lime, #a8ff3c)',
+                cursor: 'pointer',
+              }}
+              aria-label="download pitch deck as pdf"
+            >
+              ↓ download pdf
+            </button>
+          </div>
           <p className="pitch-subtitle">
             two budgets, two outcomes. pick the floor.
           </p>
