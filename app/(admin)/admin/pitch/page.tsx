@@ -13,11 +13,20 @@ interface BudgetLine {
 interface MilestoneItem {
   when: string;
   what: string;
+  note?: string; // actuals annotation — does not affect DB key
 }
 
 interface ProjectionRow {
   metric: string;
   value: string;
+  actual?: string;
+  actualStatus?: 'ahead' | 'on-track' | 'behind';
+}
+
+interface ActualsMetric {
+  metric: string;
+  value: string;
+  color?: 'lime' | 'cyan' | 'magenta';
 }
 
 interface PitchPlan {
@@ -106,6 +115,7 @@ const PLAN_5K: PitchPlan = {
     {
       when: 'day 46–90',
       what: 'regional pop-up booth · paid ads + email drop to the 500-name list · measure repeat across flavors',
+      note: '// at risk · email list is 47 / 500 needed — list build must accelerate before this window opens',
     },
     {
       when: 'day 91+',
@@ -114,13 +124,38 @@ const PLAN_5K: PitchPlan = {
   ],
   projections: [
     { metric: 'units produced', value: '~1,500 pops (4 flavors)' },
-    { metric: 'units sold (90 days)', value: '800–1,200 incl. preorders' },
-    { metric: 'gross revenue (avg $5/pop)', value: '$4,000–6,000' },
+    {
+      metric: 'units sold (90 days)',
+      value: '800–1,200 incl. preorders',
+      actual: '56 items/SKUs in 28d · run rate ~72/90d vs 800 low-end · -91% off pace',
+      actualStatus: 'behind',
+    },
+    {
+      metric: 'gross revenue (avg $5/pop)',
+      value: '$4,000–6,000',
+      actual: '$1,084 in 28d · AOV $29.29/order · within range of low-end pace',
+      actualStatus: 'on-track',
+    },
     { metric: 'COGS at $1.00/pop', value: '~$1,500' },
-    { metric: 'gross profit', value: '$2,500–4,500' },
+    {
+      metric: 'gross profit',
+      value: '$2,500–4,500',
+      actual: 'unit volume too low to confirm range · revenue run rate near floor',
+      actualStatus: 'behind',
+    },
     { metric: 'net cash position', value: 'break-even to modestly positive' },
-    { metric: 'email list built', value: '500–1,000' },
-    { metric: 'repeat-purchase signal', value: 'measurable across 4 flavors in 90 days' },
+    {
+      metric: 'email list built',
+      value: '500–1,000',
+      actual: '47 total · 1.7 signups/day vs 5.6/day needed · -91% off pace',
+      actualStatus: 'behind',
+    },
+    {
+      metric: 'repeat-purchase signal',
+      value: 'measurable across 4 flavors in 90 days',
+      actual: '4 of 32 buyers reordered (12.5%) · signal is live early',
+      actualStatus: 'on-track',
+    },
   ],
   risks: [
     "biggest risk: formulation iteration. we're tuning the functional payload (theobromine + ginseng + b12 + electrolytes) for the cleanest possible lift without losing the sensory experience that drives early product love. actively running A/B taste tests batch over batch.",
@@ -224,14 +259,31 @@ const PLAN_25K: PitchPlan = {
     },
   ],
   projections: [
-    { metric: 'units sold (12 mo)', value: '6,000–8,000 pops' },
+    {
+      metric: 'units sold (12 mo)',
+      value: '6,000–8,000 pops',
+      actual: '56 items/SKUs in 28d · annualized ~730 · -88% vs low end',
+      actualStatus: 'behind',
+    },
     {
       metric: 'gross revenue mix',
       value: '$30K–$45K (dtc + festival + early wholesale)',
+      actual: '$1,084 in 28d · annualized ~$14K · AOV $29.29 is a healthy signal',
+      actualStatus: 'behind',
     },
     { metric: 'gross margin', value: '60–70%' },
-    { metric: 'email list', value: '3,000–7,000' },
-    { metric: 'subscription customers', value: '50–120 active' },
+    {
+      metric: 'email list',
+      value: '3,000–7,000',
+      actual: '47 total · pre-festival · active list build not yet started',
+      actualStatus: 'behind',
+    },
+    {
+      metric: 'subscription customers',
+      value: '50–120 active',
+      actual: 'not launched · 4 repeat buyers as leading indicator',
+      actualStatus: 'behind',
+    },
     { metric: 'wholesale partners', value: '1–3 boutique retailers' },
     {
       metric: 'next-raise readiness',
@@ -245,6 +297,30 @@ const PLAN_25K: PitchPlan = {
     'paid ad efficiency · meta/tiktok creative typically needs 3–5 rounds before a hook lands · budget assumes that iteration',
     'founder bandwidth · two operators across product, ops, content, and ai engineering · time is the real constraint, not capital',
   ],
+};
+
+// ---------------------------------------------------------------------------
+// Live actuals — 28-day read as of 2026-05-27
+// All paid orders in the DB fall within this window (store is at earliest-stage).
+// ---------------------------------------------------------------------------
+const LIVE_ACTUALS: {
+  asOf: string;
+  windowDays: number;
+  metrics: ActualsMetric[];
+  note: string;
+} = {
+  asOf: '2026-05-27',
+  windowDays: 28,
+  metrics: [
+    { metric: 'paid orders (28d)', value: '37', color: 'cyan' },
+    { metric: 'gross revenue (28d)', value: '$1,084', color: 'lime' },
+    { metric: 'avg order value', value: '$29.29 / order', color: 'lime' },
+    { metric: 'items/SKUs sold (28d)', value: '56 across 10 SKUs', color: 'cyan' },
+    { metric: 'unique buyers (28d)', value: '32', color: 'cyan' },
+    { metric: 'repeat buyers (all time)', value: '4 of 32 · 12.5%', color: 'lime' },
+    { metric: 'email list (total)', value: '47', color: 'magenta' },
+  ],
+  note: "all paid orders fall within the last 28 days — the store is at earliest-stage. revenue run rate (~$1.1K/28d) is within striking distance of the $5K plan low-end pace, and AOV of $29.29 beats the $5/pop assumption (pack pricing is working). unit volume and email list are both well behind pace and need active attention before the day 46–90 pop-up window.",
 };
 
 const PLANS: PitchPlan[] = [PLAN_5K, PLAN_25K];
@@ -622,6 +698,60 @@ export default function PitchPage() {
             </button>
           ))}
         </div>
+
+        <section
+          className="pitch-slide"
+          style={{ borderLeft: '2px solid var(--cyan, #00f0ff)' }}
+        >
+          <div className="pitch-slide-tag">
+            /00 live actuals · as of {LIVE_ACTUALS.asOf}
+          </div>
+          <p
+            className="stat-label"
+            style={{
+              marginBottom: '1.2rem',
+              color: 'var(--bone)',
+              opacity: 0.7,
+              letterSpacing: '0.18em',
+            }}
+          >
+            // {LIVE_ACTUALS.windowDays}-day window · all transactions to date
+          </p>
+          <div
+            className="pitch-projection-grid"
+            style={{ marginBottom: '1.4rem' }}
+          >
+            {LIVE_ACTUALS.metrics.map((m) => {
+              const accent =
+                m.color === 'cyan'
+                  ? 'var(--cyan, #00f0ff)'
+                  : m.color === 'magenta'
+                    ? 'var(--magenta, #ff2d8a)'
+                    : 'var(--lime, #a8ff3c)';
+              return (
+                <div
+                  key={m.metric}
+                  className="pitch-projection-card"
+                  style={{ borderLeft: `2px solid ${accent}` }}
+                >
+                  <div
+                    className="pitch-projection-metric"
+                    style={{ color: accent }}
+                  >
+                    {m.metric}
+                  </div>
+                  <div className="pitch-projection-value">{m.value}</div>
+                </div>
+              );
+            })}
+          </div>
+          <p
+            className="pitch-prose"
+            style={{ fontStyle: 'italic', opacity: 0.8 }}
+          >
+            {LIVE_ACTUALS.note}
+          </p>
+        </section>
 
         <section className="pitch-slide pitch-slide--thesis">
           <div className="pitch-slide-tag">/01 thesis</div>
@@ -1062,6 +1192,21 @@ export default function PitchPage() {
                     }}
                   >
                     {m.what}
+                    {m.note ? (
+                      <span
+                        style={{
+                          display: 'block',
+                          marginTop: '0.3rem',
+                          fontSize: '0.75rem',
+                          fontFamily: 'var(--mono)',
+                          color: 'var(--magenta, #ff2d8a)',
+                          letterSpacing: '0.12em',
+                          opacity: 0.9,
+                        }}
+                      >
+                        {m.note}
+                      </span>
+                    ) : null}
                   </span>
                   <select
                     value={status}
@@ -1100,12 +1245,53 @@ export default function PitchPage() {
         <section className="pitch-slide">
           <div className="pitch-slide-tag">/12 projections</div>
           <div className="pitch-projection-grid">
-            {plan.projections.map((p) => (
-              <div className="pitch-projection-card" key={p.metric}>
-                <div className="pitch-projection-metric">{p.metric}</div>
-                <div className="pitch-projection-value">{p.value}</div>
-              </div>
-            ))}
+            {plan.projections.map((p) => {
+              const statusColor =
+                p.actualStatus === 'ahead'
+                  ? 'var(--lime, #a8ff3c)'
+                  : p.actualStatus === 'on-track'
+                    ? 'var(--cyan, #00f0ff)'
+                    : p.actualStatus === 'behind'
+                      ? 'var(--magenta, #ff2d8a)'
+                      : undefined;
+              return (
+                <div
+                  className="pitch-projection-card"
+                  key={p.metric}
+                  style={statusColor ? { borderLeft: `2px solid ${statusColor}` } : {}}
+                >
+                  <div className="pitch-projection-metric">{p.metric}</div>
+                  <div className="pitch-projection-value">{p.value}</div>
+                  {p.actual ? (
+                    <div
+                      style={{
+                        marginTop: '0.6rem',
+                        paddingTop: '0.6rem',
+                        borderTop: '1px solid rgba(255,255,255,0.08)',
+                        fontSize: '0.82rem',
+                        fontFamily: 'var(--mono)',
+                        color: statusColor ?? 'var(--bone)',
+                        lineHeight: 1.55,
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: 'block',
+                          opacity: 0.5,
+                          fontSize: '0.7rem',
+                          letterSpacing: '0.18em',
+                          textTransform: 'uppercase',
+                          marginBottom: '0.2rem',
+                        }}
+                      >
+                        // actual · 28d
+                      </span>
+                      {p.actual}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
         </section>
 
