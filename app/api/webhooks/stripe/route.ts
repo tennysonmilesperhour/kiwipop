@@ -26,29 +26,18 @@ async function decrementInventoryForOrder(orderId: string): Promise<void> {
   }
 
   for (const item of items as OrderItemRow[]) {
-    const { data: inv, error: invError } = await supabaseAdmin
-      .from('inventory')
-      .select('id, quantity_available, quantity_reserved')
-      .eq('product_id', item.product_id)
-      .maybeSingle();
-
-    if (invError) {
-      console.error('[stripe-webhook] inventory lookup failed', {
+    const { error: rpcError } = await supabaseAdmin.rpc(
+      'decrement_stock_for_product',
+      { p_product_id: item.product_id, p_quantity: item.quantity }
+    );
+    if (rpcError) {
+      console.error('[stripe-webhook] decrement_stock_for_product failed', {
+        orderId,
         productId: item.product_id,
-        invError,
+        quantity: item.quantity,
+        rpcError,
       });
-      continue;
     }
-    if (!inv) continue;
-
-    const newAvailable = Math.max(0, inv.quantity_available - item.quantity);
-    await supabaseAdmin
-      .from('inventory')
-      .update({
-        quantity_available: newAvailable,
-        last_updated: new Date().toISOString(),
-      })
-      .eq('id', inv.id);
   }
 }
 
