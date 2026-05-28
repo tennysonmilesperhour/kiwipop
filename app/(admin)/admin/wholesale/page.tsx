@@ -31,10 +31,26 @@ interface ProductOption {
   cost_cents: number;
 }
 
+type CostBasis = 'diy_tier1' | 'diy_tier2' | 'diy_tier3' | 'copacker';
+
 interface AppSettings {
   monthly_overhead_cents: number;
   target_monthly_volume: number;
+  active_cost_basis: CostBasis;
 }
+
+const BASIS_LABELS: Record<CostBasis, string> = {
+  diy_tier1: 'DIY · small bulk',
+  diy_tier2: 'DIY · Amazon-anchored',
+  diy_tier3: 'DIY · large bulk',
+  copacker: 'Copacker',
+};
+const BASIS_HINTS: Record<CostBasis, string> = {
+  diy_tier1: 'Small-bulk ingredient prices — what 1-flavor batches cost on craft suppliers / Amazon small packs.',
+  diy_tier2: 'Next pouch/lot size up on the same Amazon listings — achievable today, ~25% cheaper than Tier 1.',
+  diy_tier3: 'Large-bulk lots (4500–10000g pouches, 10000-count packaging) — real inventory commitment, ~25% cheaper than Tier 2.',
+  copacker: 'External manufacturer at ~$0.75/pop including labor + packaging — viable above ~1000/mo, frees up the founders.',
+};
 
 interface PricingForm {
   product_id: string;
@@ -53,6 +69,7 @@ const EMPTY_PRICING: PricingForm = {
 const DEFAULT_SETTINGS: AppSettings = {
   monthly_overhead_cents: 15000,
   target_monthly_volume: 100,
+  active_cost_basis: 'diy_tier2',
 };
 
 export default function WholesalePage() {
@@ -246,6 +263,16 @@ export default function WholesalePage() {
       const json = await response.json();
       if (!response.ok) throw new Error(json.error ?? 'Save failed');
       setSettings(json);
+      // Switching cost basis fires a server-side trigger that re-mirrors
+      // products.cost_cents from cost_basis_cents[new basis]. Re-fetch
+      // products so the table shows the new costs.
+      if (patch.active_cost_basis) {
+        const prodRes = await supabase
+          .from('products')
+          .select('id, name, cost_cents')
+          .order('name');
+        setProducts(prodRes.data ?? []);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Save failed');
     }
@@ -469,13 +496,72 @@ export default function WholesalePage() {
         <h2 className="card-title" id="cost-assumptions">
           Cost Assumptions
         </h2>
+
+        <div style={{ marginTop: '0.5rem' }}>
+          <div
+            className="form-label"
+            style={{ marginBottom: '0.4rem' }}
+            id="basis-label"
+          >
+            Production basis
+          </div>
+          <div
+            role="radiogroup"
+            aria-labelledby="basis-label"
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}
+          >
+            {(
+              ['diy_tier1', 'diy_tier2', 'diy_tier3', 'copacker'] as CostBasis[]
+            ).map((basis) => {
+              const active = settings.active_cost_basis === basis;
+              return (
+                <button
+                  key={basis}
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() =>
+                    !active && void saveSettings({ active_cost_basis: basis })
+                  }
+                  title={BASIS_HINTS[basis]}
+                  style={{
+                    padding: '0.5rem 0.85rem',
+                    borderRadius: 8,
+                    border: active
+                      ? '1px solid var(--c-lime)'
+                      : '1px solid var(--admin-border)',
+                    background: active
+                      ? 'rgba(168, 255, 60, 0.12)'
+                      : 'var(--admin-surface-soft)',
+                    color: active ? 'var(--c-lime-text)' : 'var(--admin-text)',
+                    cursor: 'pointer',
+                    fontSize: '0.85rem',
+                    fontWeight: active ? 700 : 500,
+                  }}
+                >
+                  {BASIS_LABELS[basis]}
+                </button>
+              );
+            })}
+          </div>
+          <p
+            style={{
+              fontSize: '0.75rem',
+              color: 'var(--admin-text-muted)',
+              marginTop: '0.45rem',
+              lineHeight: 1.5,
+            }}
+          >
+            {BASIS_HINTS[settings.active_cost_basis]}
+          </p>
+        </div>
+
         <div
           style={{
             display: 'flex',
             flexWrap: 'wrap',
             gap: '1.5rem',
             alignItems: 'flex-end',
-            marginTop: '0.5rem',
+            marginTop: '1rem',
           }}
         >
           <div className="form-group" style={{ marginBottom: 0 }}>
@@ -535,10 +621,17 @@ export default function WholesalePage() {
             lineHeight: 1.5,
           }}
         >
-          Net margin below subtracts <em>both</em> material cost (per product)
-          and this amortized overhead. Material cost is editable inline —
-          click any cost cell. Sheet default: $150/mo overhead, baseline scale
-          ~100&nbsp;units/mo.
+          Net margin below subtracts <em>both</em> material cost and this
+          amortized overhead from every wholesale price. If a row reads
+          negative, it means the wholesale price minus material is less than
+          the{' '}
+          <strong style={{ color: 'var(--c-uv-text)' }}>
+            {formatCentsToUSD(overheadPerUnitCents)}
+          </strong>{' '}
+          overhead chunk — bump assumed volume up or fixed overhead down to
+          shrink that chunk. Material cost is editable inline (click any cost
+          cell); the value pins to the active production basis, so each
+          scenario keeps its own number.
         </p>
       </div>
 

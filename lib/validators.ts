@@ -256,6 +256,9 @@ export type CashDonationCreate = z.infer<typeof cashDonationCreateSchema>;
 export const appSettingsUpdateSchema = z.object({
   monthly_overhead_cents: z.number().int().min(0).optional(),
   target_monthly_volume: z.number().int().positive().optional(),
+  active_cost_basis: z
+    .enum(['diy_tier1', 'diy_tier2', 'diy_tier3', 'copacker'])
+    .optional(),
 });
 
 export type AppSettingsUpdate = z.infer<typeof appSettingsUpdateSchema>;
