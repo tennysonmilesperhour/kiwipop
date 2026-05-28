@@ -72,6 +72,29 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
       );
   }
 
+  // When the admin edits material cost inline, also pin that value into the
+  // currently-active basis bucket on cost_basis_cents — otherwise flipping
+  // the production basis selector would silently revert their override.
+  if (typeof updates.cost_cents === 'number') {
+    const { data: settings } = await supabaseAdmin
+      .from('app_settings')
+      .select('active_cost_basis')
+      .eq('id', 1)
+      .single();
+    const basis = settings?.active_cost_basis as string | undefined;
+    if (basis) {
+      const existing = (product.cost_basis_cents ?? {}) as Record<
+        string,
+        number
+      >;
+      const nextBasis = { ...existing, [basis]: updates.cost_cents };
+      await supabaseAdmin
+        .from('products')
+        .update({ cost_basis_cents: nextBasis })
+        .eq('id', params.id);
+    }
+  }
+
   return NextResponse.json({ product });
 }
 
