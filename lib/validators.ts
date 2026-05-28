@@ -259,3 +259,24 @@ export const appSettingsUpdateSchema = z.object({
 });
 
 export type AppSettingsUpdate = z.infer<typeof appSettingsUpdateSchema>;
+
+export const quoteItemSchema = z.object({
+  product_id: z.string().uuid(),
+  quantity: z.number().int().positive(),
+  price_cents: z.number().int().nonnegative(),
+});
+export type QuoteItem = z.infer<typeof quoteItemSchema>;
+
+export const quoteCreateSchema = z.object({
+  wholesale_account_id: z.string().uuid(),
+  items: z.array(quoteItemSchema).min(1),
+  expires_at: z.string().datetime().nullable().optional(),
+});
+export type QuoteCreate = z.infer<typeof quoteCreateSchema>;
+
+export const quoteUpdateSchema = z.object({
+  status: z.enum(['draft', 'sent', 'accepted', 'rejected']).optional(),
+  items: z.array(quoteItemSchema).min(1).optional(),
+  expires_at: z.string().datetime().nullable().optional(),
+});
+export type QuoteUpdate = z.infer<typeof quoteUpdateSchema>;
