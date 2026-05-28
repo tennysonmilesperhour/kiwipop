@@ -27,6 +27,7 @@ interface WholesalePricing {
 interface ProductOption {
   id: string;
   name: string;
+  cost_cents: number;
 }
 
 interface PricingForm {
@@ -71,7 +72,7 @@ export default function WholesalePage() {
         .from('wholesale_pricing')
         .select('*')
         .order('tier', { ascending: true }),
-      supabase.from('products').select('id, name').order('name'),
+      supabase.from('products').select('id, name, cost_cents').order('name'),
     ]);
     setAccounts(acctRes.data ?? []);
     setPricing(priceRes.data ?? []);
@@ -166,6 +167,32 @@ export default function WholesalePage() {
 
   const productName = (id: string) =>
     products.find((p) => p.id === id)?.name ?? id.slice(0, 8);
+  const productCost = (id: string) =>
+    products.find((p) => p.id === id)?.cost_cents ?? 0;
+
+  // Material-only margin %. Anything below 25% is a yellow flag because
+  // we still haven't subtracted overhead / labor / shipping from this
+  // ratio — at DIY scale (~50/mo) overhead alone adds another ~$3/unit.
+  const marginPct = (priceCents: number, costCents: number) => {
+    if (!priceCents || !costCents) return null;
+    return ((priceCents - costCents) / priceCents) * 100;
+  };
+  const marginColor = (pct: number | null) => {
+    if (pct === null) return 'var(--admin-text-muted)';
+    if (pct < 25) return 'var(--c-magenta)';
+    if (pct < 40) return 'var(--c-sodium)';
+    return 'var(--c-lime)';
+  };
+
+  // Live preview of cost + margin while the admin is filling in the form.
+  const previewCostCents = pricingForm.product_id
+    ? productCost(pricingForm.product_id)
+    : 0;
+  const previewPriceCents =
+    Number.isFinite(parseFloat(pricingForm.priceUsd))
+      ? Math.round(parseFloat(pricingForm.priceUsd) * 100)
+      : 0;
+  const previewMargin = marginPct(previewPriceCents, previewCostCents);
 
   return (
     <AdminLayout>
@@ -399,6 +426,50 @@ export default function WholesalePage() {
                 />
               </div>
             </div>
+            {pricingForm.product_id && (
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '1.25rem',
+                  alignItems: 'baseline',
+                  padding: '0.6rem 0.85rem',
+                  marginBottom: '0.75rem',
+                  borderRadius: 8,
+                  background: 'rgba(0, 240, 255, 0.06)',
+                  border: '1px solid rgba(0, 240, 255, 0.18)',
+                  fontSize: '0.85rem',
+                }}
+              >
+                <span>
+                  <span style={{ color: 'var(--admin-text-muted)' }}>
+                    Cost/unit:&nbsp;
+                  </span>
+                  <strong>
+                    {previewCostCents
+                      ? formatCentsToUSD(previewCostCents)
+                      : '— (not set)'}
+                  </strong>
+                </span>
+                {previewCostCents > 0 && previewPriceCents > 0 && (
+                  <>
+                    <span>
+                      <span style={{ color: 'var(--admin-text-muted)' }}>
+                        Margin:&nbsp;
+                      </span>
+                      <strong style={{ color: marginColor(previewMargin) }}>
+                        {formatCentsToUSD(
+                          previewPriceCents - previewCostCents
+                        )}{' '}
+                        ·{' '}
+                        {previewMargin === null
+                          ? '—'
+                          : `${previewMargin.toFixed(1)}%`}
+                      </strong>
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
             <div className="flex gap-2">
               <button
                 type="submit"
@@ -428,32 +499,56 @@ export default function WholesalePage() {
                 <th>Product</th>
                 <th>Tier</th>
                 <th>Min qty</th>
+                <th>Cost/unit</th>
                 <th>Price/unit</th>
+                <th>Margin %</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {pricing.map((row) => (
-                <tr key={row.id}>
-                  <td className="font-medium">{productName(row.product_id)}</td>
-                  <td className="capitalize">{row.tier}</td>
-                  <td>{row.min_quantity}</td>
-                  <td>{formatCentsToUSD(row.price_cents)}</td>
-                  <td className="text-sm">
-                    <button
-                      onClick={() => handleDeletePricing(row.id)}
-                      className="text-red-600"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {pricing.map((row) => {
+                const cost = productCost(row.product_id);
+                const pct = marginPct(row.price_cents, cost);
+                return (
+                  <tr key={row.id}>
+                    <td className="font-medium">{productName(row.product_id)}</td>
+                    <td className="capitalize">{row.tier}</td>
+                    <td>{row.min_quantity}</td>
+                    <td>{cost ? formatCentsToUSD(cost) : '—'}</td>
+                    <td>{formatCentsToUSD(row.price_cents)}</td>
+                    <td style={{ color: marginColor(pct), fontWeight: 600 }}>
+                      {pct === null ? '—' : `${pct.toFixed(1)}%`}
+                    </td>
+                    <td className="text-sm">
+                      <button
+                        onClick={() => handleDeletePricing(row.id)}
+                        className="text-red-600"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         ) : (
           <p>No tiered pricing yet</p>
         )}
+        <p
+          style={{
+            fontSize: '0.75rem',
+            color: 'var(--admin-text-muted)',
+            marginTop: '0.75rem',
+            lineHeight: 1.5,
+          }}
+        >
+          Cost is material-only, sourced from the Wholesale Costing &amp;
+          Margin Workbook (DIY active tier, Amazon/bulk-anchored placeholders).
+          Overhead, labor, and shipping are <em>not</em> included — at DIY
+          scale (~50&nbsp;units/mo) overhead alone adds roughly $3/unit, which
+          would wipe out the magenta and sodium rows below.
+        </p>
       </div>
 
       <SheetEmbed
