@@ -405,6 +405,7 @@
 }
 .kp-page .kp-nav-links { display: flex; gap: 28px; }
 .kp-page .kp-nav-links a {
+  position: relative;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 11px;
@@ -413,7 +414,28 @@
   color: var(--bone-dim);
   transition: color 150ms;
 }
+.kp-page .kp-nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--kiwi),
+    var(--cyan),
+    var(--magenta),
+    var(--violet),
+    var(--lemon)
+  );
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 180ms ease-out;
+  pointer-events: none;
+}
 .kp-page .kp-nav-links a:hover { color: var(--kiwi); text-shadow: var(--glow-kiwi); }
+.kp-page .kp-nav-links a:hover::after { transform: scaleX(1); }
 
 /* MORE dropdown — desktop default. The 8 secondary links are duplicated:
    the inline copies (.kp-nav-link--secondary) are hidden here and shown
@@ -422,6 +444,7 @@
 .kp-page .kp-nav-link--secondary { display: none; }
 .kp-page .kp-nav-more { position: relative; display: inline-flex; align-items: center; }
 .kp-page .kp-nav-more__btn {
+  position: relative;
   background: none;
   border: none;
   padding: 0;
@@ -435,10 +458,34 @@
   color: var(--bone-dim);
   transition: color 150ms;
 }
+.kp-page .kp-nav-more__btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--kiwi),
+    var(--cyan),
+    var(--magenta),
+    var(--violet),
+    var(--lemon)
+  );
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 180ms ease-out;
+  pointer-events: none;
+}
 .kp-page .kp-nav-more__btn:hover,
 .kp-page .kp-nav-more:focus-within .kp-nav-more__btn {
   color: var(--kiwi);
   text-shadow: var(--glow-kiwi);
+}
+.kp-page .kp-nav-more__btn:hover::after,
+.kp-page .kp-nav-more:focus-within .kp-nav-more__btn::after {
+  transform: scaleX(1);
 }
 .kp-page .kp-nav-more__panel {
   display: none;
@@ -490,6 +537,7 @@
   pointer-events: auto;
 }
 .kp-page .kp-nav-more__panel a {
+  position: relative;
   display: block;
   padding: 8px 14px;
   font-family: var(--font-display);
@@ -501,10 +549,31 @@
   white-space: nowrap;
   transition: color 150ms;
 }
+.kp-page .kp-nav-more__panel a::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 4px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--kiwi),
+    var(--cyan),
+    var(--magenta),
+    var(--violet),
+    var(--lemon)
+  );
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 180ms ease-out;
+  pointer-events: none;
+}
 .kp-page .kp-nav-more__panel a:hover {
   color: var(--kiwi);
   text-shadow: var(--glow-kiwi);
 }
+.kp-page .kp-nav-more__panel a:hover::after { transform: scaleX(1); }
 
 .kp-page .kp-cart-btn {
   display: flex;
