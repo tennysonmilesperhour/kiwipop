@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { AdminLayout } from '@/components/AdminLayout';
 import { SheetEmbed } from '@/components/admin/SheetEmbed';
 import { supabase } from '@/lib/supabase';
@@ -304,7 +305,23 @@ export default function WholesalePage() {
 
   return (
     <AdminLayout>
-      <h1 className="text-3xl font-bold mb-6">Wholesale</h1>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          marginBottom: '1.5rem',
+        }}
+      >
+        <h1 className="text-3xl font-bold">Wholesale</h1>
+        <Link
+          href="/admin/wholesale/quotes"
+          className="btn btn-primary"
+          style={{ textDecoration: 'none' }}
+        >
+          Quote builder →
+        </Link>
+      </div>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
 
