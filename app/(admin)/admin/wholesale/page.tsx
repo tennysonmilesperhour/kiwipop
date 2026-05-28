@@ -30,6 +30,11 @@ interface ProductOption {
   cost_cents: number;
 }
 
+interface AppSettings {
+  monthly_overhead_cents: number;
+  target_monthly_volume: number;
+}
+
 interface PricingForm {
   product_id: string;
   tier: 'standard' | 'premium';
@@ -44,10 +49,18 @@ const EMPTY_PRICING: PricingForm = {
   min_quantity: 100,
 };
 
+const DEFAULT_SETTINGS: AppSettings = {
+  monthly_overhead_cents: 15000,
+  target_monthly_volume: 100,
+};
+
 export default function WholesalePage() {
   const [accounts, setAccounts] = useState<WholesaleAccount[]>([]);
   const [pricing, setPricing] = useState<WholesalePricing[]>([]);
   const [products, setProducts] = useState<ProductOption[]>([]);
+  const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
+  const [overheadUsdInput, setOverheadUsdInput] = useState('150');
+  const [volumeInput, setVolumeInput] = useState('100');
   const [loading, setLoading] = useState(true);
   const [selectedAccount, setSelectedAccount] = useState<WholesaleAccount | null>(
     null
@@ -56,6 +69,8 @@ export default function WholesalePage() {
   const [error, setError] = useState<string>('');
   const [showPricingForm, setShowPricingForm] = useState(false);
   const [pricingForm, setPricingForm] = useState<PricingForm>(EMPTY_PRICING);
+  const [editingCostFor, setEditingCostFor] = useState<string | null>(null);
+  const [editingCostUsd, setEditingCostUsd] = useState('');
 
   useEffect(() => {
     void refresh();
@@ -63,7 +78,7 @@ export default function WholesalePage() {
 
   const refresh = async () => {
     setLoading(true);
-    const [acctRes, priceRes, prodRes] = await Promise.all([
+    const [acctRes, priceRes, prodRes, settingsRes] = await Promise.all([
       supabase
         .from('wholesale_accounts')
         .select('*')
@@ -73,10 +88,16 @@ export default function WholesalePage() {
         .select('*')
         .order('tier', { ascending: true }),
       supabase.from('products').select('id, name, cost_cents').order('name'),
+      fetch('/api/admin/settings').then((r) => (r.ok ? r.json() : null)),
     ]);
     setAccounts(acctRes.data ?? []);
     setPricing(priceRes.data ?? []);
     setProducts(prodRes.data ?? []);
+    if (settingsRes) {
+      setSettings(settingsRes);
+      setOverheadUsdInput((settingsRes.monthly_overhead_cents / 100).toFixed(2));
+      setVolumeInput(String(settingsRes.target_monthly_volume));
+    }
     setLoading(false);
   };
 
@@ -170,17 +191,32 @@ export default function WholesalePage() {
   const productCost = (id: string) =>
     products.find((p) => p.id === id)?.cost_cents ?? 0;
 
-  // Material-only margin %. Anything below 25% is a yellow flag because
-  // we still haven't subtracted overhead / labor / shipping from this
-  // ratio — at DIY scale (~50/mo) overhead alone adds another ~$3/unit.
-  const marginPct = (priceCents: number, costCents: number) => {
+  // Overhead amortized into a per-unit cents number at the admin's chosen
+  // assumed monthly volume. Floor at 1 unit to avoid division by zero
+  // even though the DB CHECK constraint already prevents it.
+  const overheadPerUnitCents = Math.round(
+    settings.monthly_overhead_cents /
+      Math.max(1, settings.target_monthly_volume)
+  );
+
+  // Net margin % = (price - material - overhead/unit) / price. This is
+  // what gets color-coded, since material-only margin paints a falsely
+  // rosy picture at our current DIY scale.
+  const netMarginPct = (priceCents: number, costCents: number) => {
+    if (!priceCents) return null;
+    return ((priceCents - costCents - overheadPerUnitCents) / priceCents) * 100;
+  };
+  // Material-only margin is also surfaced (smaller) so admin can see
+  // how much of the gap is fixed overhead vs. actual COGS.
+  const materialMarginPct = (priceCents: number, costCents: number) => {
     if (!priceCents || !costCents) return null;
     return ((priceCents - costCents) / priceCents) * 100;
   };
   const marginColor = (pct: number | null) => {
     if (pct === null) return 'var(--admin-text-muted)';
-    if (pct < 25) return 'var(--c-magenta)';
-    if (pct < 40) return 'var(--c-sodium)';
+    if (pct < 0) return 'var(--c-cherry)';
+    if (pct < 15) return 'var(--c-magenta)';
+    if (pct < 30) return 'var(--c-sodium)';
     return 'var(--c-lime)';
   };
 
@@ -192,7 +228,79 @@ export default function WholesalePage() {
     Number.isFinite(parseFloat(pricingForm.priceUsd))
       ? Math.round(parseFloat(pricingForm.priceUsd) * 100)
       : 0;
-  const previewMargin = marginPct(previewPriceCents, previewCostCents);
+  const previewNetMargin = netMarginPct(previewPriceCents, previewCostCents);
+  const previewMaterialMargin = materialMarginPct(
+    previewPriceCents,
+    previewCostCents
+  );
+
+  const saveSettings = async (patch: Partial<AppSettings>) => {
+    setError('');
+    try {
+      const response = await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      });
+      const json = await response.json();
+      if (!response.ok) throw new Error(json.error ?? 'Save failed');
+      setSettings(json);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Save failed');
+    }
+  };
+
+  const commitOverhead = () => {
+    const cents = Math.round(parseFloat(overheadUsdInput) * 100);
+    if (!Number.isFinite(cents) || cents < 0) {
+      setOverheadUsdInput((settings.monthly_overhead_cents / 100).toFixed(2));
+      return;
+    }
+    if (cents === settings.monthly_overhead_cents) return;
+    void saveSettings({ monthly_overhead_cents: cents });
+  };
+  const commitVolume = () => {
+    const vol = parseInt(volumeInput, 10);
+    if (!Number.isFinite(vol) || vol < 1) {
+      setVolumeInput(String(settings.target_monthly_volume));
+      return;
+    }
+    if (vol === settings.target_monthly_volume) return;
+    void saveSettings({ target_monthly_volume: vol });
+  };
+
+  const startCostEdit = (productId: string) => {
+    const current = productCost(productId);
+    setEditingCostFor(productId);
+    setEditingCostUsd((current / 100).toFixed(2));
+  };
+  const saveCostEdit = async () => {
+    if (!editingCostFor) return;
+    const cents = Math.round(parseFloat(editingCostUsd) * 100);
+    if (!Number.isFinite(cents) || cents < 0) {
+      setEditingCostFor(null);
+      return;
+    }
+    try {
+      const response = await fetch(`/api/admin/products/${editingCostFor}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cost_cents: cents }),
+      });
+      const json = await response.json();
+      if (!response.ok) throw new Error(json.error ?? 'Save failed');
+      // Optimistically update the local products list so the table
+      // re-renders without a full refetch.
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === editingCostFor ? { ...p, cost_cents: cents } : p
+        )
+      );
+      setEditingCostFor(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Save failed');
+    }
+  };
 
   return (
     <AdminLayout>
@@ -336,6 +444,87 @@ export default function WholesalePage() {
         )}
       </div>
 
+      <div
+        className="card"
+        style={{ marginBottom: '1.25rem' }}
+        aria-labelledby="cost-assumptions"
+      >
+        <h2 className="card-title" id="cost-assumptions">
+          Cost Assumptions
+        </h2>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            alignItems: 'flex-end',
+            marginTop: '0.5rem',
+          }}
+        >
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label className="form-label" htmlFor="overhead-input">
+              Fixed monthly overhead (USD)
+            </label>
+            <input
+              id="overhead-input"
+              type="number"
+              step="0.01"
+              min="0"
+              value={overheadUsdInput}
+              onChange={(e) => setOverheadUsdInput(e.target.value)}
+              onBlur={commitOverhead}
+              onKeyDown={(e) => e.key === 'Enter' && commitOverhead()}
+              className="form-input"
+              style={{ width: 140 }}
+            />
+          </div>
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label className="form-label" htmlFor="volume-input">
+              Assumed monthly volume (units)
+            </label>
+            <input
+              id="volume-input"
+              type="number"
+              min="1"
+              value={volumeInput}
+              onChange={(e) => setVolumeInput(e.target.value)}
+              onBlur={commitVolume}
+              onKeyDown={(e) => e.key === 'Enter' && commitVolume()}
+              className="form-input"
+              style={{ width: 140 }}
+            />
+          </div>
+          <div
+            style={{
+              padding: '0.5rem 0.85rem',
+              borderRadius: 8,
+              background: 'rgba(123, 45, 255, 0.10)',
+              border: '1px solid rgba(123, 45, 255, 0.28)',
+              fontSize: '0.85rem',
+              alignSelf: 'center',
+            }}
+          >
+            Overhead absorbed per unit:{' '}
+            <strong style={{ color: 'var(--c-uv-text)' }}>
+              {formatCentsToUSD(overheadPerUnitCents)}
+            </strong>
+          </div>
+        </div>
+        <p
+          style={{
+            fontSize: '0.75rem',
+            color: 'var(--admin-text-muted)',
+            marginTop: '0.85rem',
+            lineHeight: 1.5,
+          }}
+        >
+          Net margin below subtracts <em>both</em> material cost (per product)
+          and this amortized overhead. Material cost is editable inline —
+          click any cost cell. Sheet default: $150/mo overhead, baseline scale
+          ~100&nbsp;units/mo.
+        </p>
+      </div>
+
       <div className="card">
         <div className="flex justify-between items-center mb-4">
           <h2 className="card-title">Wholesale Pricing</h2>
@@ -430,6 +619,7 @@ export default function WholesalePage() {
               <div
                 style={{
                   display: 'flex',
+                  flexWrap: 'wrap',
                   gap: '1.25rem',
                   alignItems: 'baseline',
                   padding: '0.6rem 0.85rem',
@@ -442,7 +632,7 @@ export default function WholesalePage() {
               >
                 <span>
                   <span style={{ color: 'var(--admin-text-muted)' }}>
-                    Cost/unit:&nbsp;
+                    Material:&nbsp;
                   </span>
                   <strong>
                     {previewCostCents
@@ -450,20 +640,34 @@ export default function WholesalePage() {
                       : '— (not set)'}
                   </strong>
                 </span>
-                {previewCostCents > 0 && previewPriceCents > 0 && (
+                <span>
+                  <span style={{ color: 'var(--admin-text-muted)' }}>
+                    Overhead/unit:&nbsp;
+                  </span>
+                  <strong>{formatCentsToUSD(overheadPerUnitCents)}</strong>
+                </span>
+                {previewPriceCents > 0 && (
                   <>
                     <span>
                       <span style={{ color: 'var(--admin-text-muted)' }}>
-                        Margin:&nbsp;
+                        Material %:&nbsp;
                       </span>
-                      <strong style={{ color: marginColor(previewMargin) }}>
-                        {formatCentsToUSD(
-                          previewPriceCents - previewCostCents
-                        )}{' '}
-                        ·{' '}
-                        {previewMargin === null
+                      <strong
+                        style={{ color: marginColor(previewMaterialMargin) }}
+                      >
+                        {previewMaterialMargin === null
                           ? '—'
-                          : `${previewMargin.toFixed(1)}%`}
+                          : `${previewMaterialMargin.toFixed(1)}%`}
+                      </strong>
+                    </span>
+                    <span>
+                      <span style={{ color: 'var(--admin-text-muted)' }}>
+                        Net %:&nbsp;
+                      </span>
+                      <strong style={{ color: marginColor(previewNetMargin) }}>
+                        {previewNetMargin === null
+                          ? '—'
+                          : `${previewNetMargin.toFixed(1)}%`}
                       </strong>
                     </span>
                   </>
@@ -499,25 +703,78 @@ export default function WholesalePage() {
                 <th>Product</th>
                 <th>Tier</th>
                 <th>Min qty</th>
-                <th>Cost/unit</th>
+                <th>Material cost</th>
                 <th>Price/unit</th>
-                <th>Margin %</th>
+                <th title="Price minus material cost only">Material %</th>
+                <th title="Price minus material cost AND amortized overhead">
+                  Net %
+                </th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {pricing.map((row) => {
                 const cost = productCost(row.product_id);
-                const pct = marginPct(row.price_cents, cost);
+                const matPct = materialMarginPct(row.price_cents, cost);
+                const netPct = netMarginPct(row.price_cents, cost);
+                const isEditing = editingCostFor === row.product_id;
                 return (
                   <tr key={row.id}>
                     <td className="font-medium">{productName(row.product_id)}</td>
                     <td className="capitalize">{row.tier}</td>
                     <td>{row.min_quantity}</td>
-                    <td>{cost ? formatCentsToUSD(cost) : '—'}</td>
+                    <td>
+                      {isEditing ? (
+                        <input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={editingCostUsd}
+                          autoFocus
+                          onChange={(e) => setEditingCostUsd(e.target.value)}
+                          onBlur={saveCostEdit}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') saveCostEdit();
+                            if (e.key === 'Escape') setEditingCostFor(null);
+                          }}
+                          className="form-input"
+                          style={{ width: 90, padding: '0.25rem 0.5rem' }}
+                        />
+                      ) : (
+                        <button
+                          onClick={() => startCostEdit(row.product_id)}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: cost ? 'inherit' : 'var(--c-magenta)',
+                            cursor: 'pointer',
+                            padding: 0,
+                            font: 'inherit',
+                            textDecoration: 'underline dotted',
+                            textUnderlineOffset: '3px',
+                          }}
+                          title="Click to edit material cost"
+                        >
+                          {cost ? formatCentsToUSD(cost) : 'set cost'}
+                        </button>
+                      )}
+                    </td>
                     <td>{formatCentsToUSD(row.price_cents)}</td>
-                    <td style={{ color: marginColor(pct), fontWeight: 600 }}>
-                      {pct === null ? '—' : `${pct.toFixed(1)}%`}
+                    <td
+                      style={{
+                        color: marginColor(matPct),
+                        fontWeight: 600,
+                      }}
+                    >
+                      {matPct === null ? '—' : `${matPct.toFixed(1)}%`}
+                    </td>
+                    <td
+                      style={{
+                        color: marginColor(netPct),
+                        fontWeight: 700,
+                      }}
+                    >
+                      {netPct === null ? '—' : `${netPct.toFixed(1)}%`}
                     </td>
                     <td className="text-sm">
                       <button
@@ -543,11 +800,12 @@ export default function WholesalePage() {
             lineHeight: 1.5,
           }}
         >
-          Cost is material-only, sourced from the Wholesale Costing &amp;
-          Margin Workbook (DIY active tier, Amazon/bulk-anchored placeholders).
-          Overhead, labor, and shipping are <em>not</em> included — at DIY
-          scale (~50&nbsp;units/mo) overhead alone adds roughly $3/unit, which
-          would wipe out the magenta and sodium rows below.
+          <strong>Material %</strong> = (price − material cost) ÷ price.{' '}
+          <strong>Net %</strong> additionally subtracts overhead/unit at the
+          assumed volume above. Color thresholds: cherry &lt;0%, magenta
+          &lt;15%, sodium &lt;30%, lime ≥30%. Material costs are sourced from
+          the Wholesale Costing &amp; Margin Workbook (DIY active tier,
+          Amazon/bulk-anchored placeholders) and editable inline.
         </p>
       </div>
 

@@ -34,6 +34,7 @@ export const productCreateSchema = z.object({
   preorder_only: z.boolean().default(false),
   preorder_deadline: z.string().datetime().nullable().optional(),
   in_stock: z.number().int().min(0).default(0),
+  cost_cents: z.number().int().min(0).optional(),
   image_url: z.string().url().nullable().optional().or(z.literal('')),
 });
 
@@ -251,3 +252,10 @@ export const cashDonationCreateSchema = z.object({
 });
 
 export type CashDonationCreate = z.infer<typeof cashDonationCreateSchema>;
+
+export const appSettingsUpdateSchema = z.object({
+  monthly_overhead_cents: z.number().int().min(0).optional(),
+  target_monthly_volume: z.number().int().positive().optional(),
+});
+
+export type AppSettingsUpdate = z.infer<typeof appSettingsUpdateSchema>;
