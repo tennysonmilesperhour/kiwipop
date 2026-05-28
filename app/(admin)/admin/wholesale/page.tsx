@@ -85,6 +85,7 @@ export default function WholesalePage() {
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
+  const [savingBasis, setSavingBasis] = useState<CostBasis | null>(null);
   const [showPricingForm, setShowPricingForm] = useState(false);
   const [pricingForm, setPricingForm] = useState<PricingForm>(EMPTY_PRICING);
   const [editingCostFor, setEditingCostFor] = useState<string | null>(null);
@@ -254,6 +255,7 @@ export default function WholesalePage() {
 
   const saveSettings = async (patch: Partial<AppSettings>) => {
     setError('');
+    if (patch.active_cost_basis) setSavingBasis(patch.active_cost_basis);
     try {
       const response = await fetch('/api/admin/settings', {
         method: 'PATCH',
@@ -261,7 +263,13 @@ export default function WholesalePage() {
         body: JSON.stringify(patch),
       });
       const json = await response.json();
-      if (!response.ok) throw new Error(json.error ?? 'Save failed');
+      if (!response.ok) {
+        throw new Error(
+          json.error
+            ? `${json.error}${json.details ? ` — ${json.details}` : ''}`
+            : `Save failed (HTTP ${response.status})`
+        );
+      }
       setSettings(json);
       // Switching cost basis fires a server-side trigger that re-mirrors
       // products.cost_cents from cost_basis_cents[new basis]. Re-fetch
@@ -275,6 +283,8 @@ export default function WholesalePage() {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Save failed');
+    } finally {
+      setSavingBasis(null);
     }
   };
 
@@ -514,14 +524,19 @@ export default function WholesalePage() {
               ['diy_tier1', 'diy_tier2', 'diy_tier3', 'copacker'] as CostBasis[]
             ).map((basis) => {
               const active = settings.active_cost_basis === basis;
+              const saving = savingBasis === basis;
+              const busy = savingBasis !== null;
               return (
                 <button
                   key={basis}
+                  type="button"
                   role="radio"
                   aria-checked={active}
-                  onClick={() =>
-                    !active && void saveSettings({ active_cost_basis: basis })
-                  }
+                  disabled={busy && !saving}
+                  onClick={() => {
+                    if (active || busy) return;
+                    void saveSettings({ active_cost_basis: basis });
+                  }}
                   title={BASIS_HINTS[basis]}
                   style={{
                     padding: '0.5rem 0.85rem',
@@ -531,14 +546,21 @@ export default function WholesalePage() {
                       : '1px solid var(--admin-border)',
                     background: active
                       ? 'rgba(168, 255, 60, 0.12)'
+                      : saving
+                      ? 'rgba(0, 240, 255, 0.10)'
                       : 'var(--admin-surface-soft)',
-                    color: active ? 'var(--c-lime-text)' : 'var(--admin-text)',
-                    cursor: 'pointer',
+                    color: active
+                      ? 'var(--c-lime-text)'
+                      : saving
+                      ? 'var(--c-cyan-text)'
+                      : 'var(--admin-text)',
+                    cursor: busy ? 'wait' : active ? 'default' : 'pointer',
                     fontSize: '0.85rem',
                     fontWeight: active ? 700 : 500,
+                    opacity: busy && !saving ? 0.5 : 1,
                   }}
                 >
-                  {BASIS_LABELS[basis]}
+                  {saving ? `Switching to ${BASIS_LABELS[basis]}…` : BASIS_LABELS[basis]}
                 </button>
               );
             })}
