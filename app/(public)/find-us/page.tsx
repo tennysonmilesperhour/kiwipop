@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/JsonLd';
 import { buildBreadcrumbLd } from '@/lib/seo';
+import { FindUsMap } from '@/components/map/FindUsMap';
 
 const title = 'find us · events + retail';
 const description =
@@ -96,6 +97,25 @@ export default function FindUsPage() {
       >
         find us irl.
       </h1>
+
+      <div className="card" style={{ padding: '1.5rem 1.5rem 2rem' }}>
+        <p className="stat-label" style={{ marginBottom: '0.4rem' }}>
+          // live map · find a pop near you
+        </p>
+        <p
+          style={{
+            fontSize: 12,
+            color: 'var(--bone)',
+            opacity: 0.8,
+            marginBottom: '1rem',
+            fontFamily: 'var(--mono)',
+          }}
+        >
+          colorful stars = where to find kiwi pop. pulsing stars are live right now — a booth or a
+          roving rep broadcasting their spot. tap a star for details.
+        </p>
+        <FindUsMap />
+      </div>
 
       <pre className="terminal-block">
 {`kiwi pop // signal status
