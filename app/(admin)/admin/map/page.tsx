@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
+import { PresenceShareModal } from '@/components/map/PresenceShareModal';
 import { LIVE_FRESH_SECONDS, MARKER_COLOR_KEYS, resolveColor } from '@/lib/map';
 
 interface LocationRow {
@@ -47,6 +48,7 @@ export default function AdminMapPage() {
   const [presences, setPresences] = useState<PresenceRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState<string | null>(null);
+  const [sharePresence, setSharePresence] = useState<PresenceRow | null>(null);
 
   // location form
   const [lName, setLName] = useState('');
@@ -292,6 +294,17 @@ export default function AdminMapPage() {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
                     <code style={tokenBox}>/live/{p.share_token}</code>
+                    <button
+                      onClick={() => setSharePresence(p)}
+                      style={{
+                        ...smallBtn,
+                        borderColor: resolveColor(p.color),
+                        color: resolveColor(p.color),
+                        fontWeight: 700,
+                      }}
+                    >
+                      📲 scan / hand off
+                    </button>
                     <button onClick={() => copyLink(p.share_token)} style={smallBtn}>
                       copy link
                     </button>
@@ -417,6 +430,20 @@ export default function AdminMapPage() {
           </div>
         </section>
       </div>
+
+      {sharePresence && (
+        <PresenceShareModal
+          label={sharePresence.label}
+          emoji={sharePresence.emoji}
+          accent={resolveColor(sharePresence.color)}
+          url={
+            typeof window !== 'undefined'
+              ? `${window.location.origin}/live/${sharePresence.share_token}`
+              : `/live/${sharePresence.share_token}`
+          }
+          onClose={() => setSharePresence(null)}
+        />
+      )}
     </AdminLayout>
   );
 }
