@@ -18,61 +18,10 @@ export const metadata: Metadata = {
 
 const breadcrumbLd = buildBreadcrumbLd([{ name: 'Find Us', url: '/find-us' }]);
 
-interface EventRow {
-  date: string;
-  name: string;
-  city: string;
-  status: 'tba' | 'negotiation' | 'confirmed';
-}
-
-const EVENTS: EventRow[] = [
-  {
-    date: '2026.07',
-    name: 'beyond wonderland',
-    city: 'san bernardino, ca',
-    status: 'negotiation',
-  },
-  { date: '2026.04', name: 'coachella · w2', city: 'indio, ca', status: 'tba' },
-  {
-    date: '2026.06',
-    name: 'electric daisy carnival',
-    city: 'las vegas, nv',
-    status: 'tba',
-  },
-  {
-    date: '2026.08',
-    name: 'lightning in a bottle',
-    city: 'central coast, ca',
-    status: 'tba',
-  },
-];
-
-interface RetailRow {
-  city: string;
-  spot: string;
-}
-
-const RETAIL: RetailRow[] = [
-  { city: 'los angeles, ca', spot: 'tbd · in conversation' },
-  { city: 'brooklyn, ny', spot: 'tbd · in conversation' },
-  { city: 'austin, tx', spot: 'tbd · in conversation' },
-  { city: 'miami, fl', spot: 'tbd · in conversation' },
-  { city: 'chicago, il', spot: 'tbd · in conversation' },
-  { city: 'portland, or', spot: 'tbd · in conversation' },
-];
-
 const SOCIAL = [
   { handle: '@the.kiwi.pop', label: 'instagram', url: 'https://instagram.com/the.kiwi.pop' },
   { handle: '@kiwipop', label: 'tiktok', url: 'https://tiktok.com/@kiwipop' },
-  { handle: '@kiwipop', label: 'discord', url: '#' },
-  { handle: 'kiwipop.co', label: 'newsletter', url: '/#list' },
 ];
-
-const STATUS_COLOR: Record<EventRow['status'], string> = {
-  confirmed: 'var(--lime)',
-  negotiation: 'var(--sodium)',
-  tba: 'var(--bone)',
-};
 
 export default function FindUsPage() {
   return (
@@ -120,93 +69,20 @@ export default function FindUsPage() {
       <pre className="terminal-block">
 {`kiwi pop // signal status
 ─────────────────────────────────
-> retail:        soft launch
-> festivals:     in negotiation
-> dtc:           drops 001 — kiwi pop
-> intl:          waitlist only · vienna · melbourne · london
-> next ship:     tbd · check the list
+> dtc:           live — drops 001 · kiwi pop
+> retail:        coming soon
+> map:           live spots + roving reps
+> next ship:     check the list
 ─────────────────────────────────
 end of transmission_`}
       </pre>
 
       <div className="card" style={{ padding: '2rem' }}>
-        <p className="stat-label" style={{ marginBottom: '1.2rem' }}>
-          // events · festival calendar
+        <p className="stat-label" style={{ marginBottom: '0.8rem' }}>
+          // retail · stock kiwi pop
         </p>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>date</th>
-              <th>event</th>
-              <th>city</th>
-              <th>status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {EVENTS.map((e) => (
-              <tr key={`${e.date}-${e.name}`}>
-                <td className="font-mono">{e.date}</td>
-                <td>{e.name}</td>
-                <td>{e.city}</td>
-                <td style={{ color: STATUS_COLOR[e.status] }}>{e.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
         <p
           style={{
-            marginTop: '1rem',
-            fontSize: 11,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: 'var(--bone)',
-            opacity: 0.7,
-          }}
-        >
-          // following the ghost playbook · one limited-edition flavor drop
-          per major festival, with collectible packaging
-        </p>
-      </div>
-
-      <div className="card" style={{ padding: '2rem' }}>
-        <p className="stat-label" style={{ marginBottom: '1.2rem' }}>
-          // retail · find a pop
-        </p>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '1rem',
-          }}
-        >
-          {RETAIL.map((r) => (
-            <div
-              key={r.city}
-              style={{
-                padding: '0.85rem 1rem',
-                border: '1px solid rgba(244,240,232,0.1)',
-                fontFamily: 'var(--mono)',
-                fontSize: 12,
-              }}
-            >
-              <div
-                style={{
-                  fontWeight: 700,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {r.city}
-              </div>
-              <div style={{ color: 'var(--bone)', marginTop: '0.4rem' }}>
-                {r.spot}
-              </div>
-            </div>
-          ))}
-        </div>
-        <p
-          style={{
-            marginTop: '1rem',
             fontSize: 11,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
