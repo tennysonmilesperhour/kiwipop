@@ -289,6 +289,38 @@ button { font: inherit; }
 }
 .nav-cta-admin:hover span { transform: translateX(2px); }
 
+/* Mobile menu toggle (hamburger) — hidden on desktop, shown ≤768px */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(244, 240, 232, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+}
+.nav-toggle-bars {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 18px;
+  height: 13px;
+}
+.nav-toggle-bars span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--paper);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-toggle-bars.is-open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav-toggle-bars.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle-bars.is-open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
 /* =========================================================
    5. MAIN CONTAINER
    ========================================================= */
@@ -1243,6 +1275,29 @@ button { font: inherit; }
   letter-spacing: -0.02em;
   text-transform: lowercase;
   color: var(--admin-text);
+}
+/* Admin sidebar collapse toggle — hidden on desktop, shown ≤768px */
+.admin-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--admin-surface-soft);
+  border: 1px solid var(--admin-border-strong);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--admin-text);
+  font-family: var(--display);
+  font-size: 14px;
+}
+.admin-nav-toggle-label {
+  text-transform: lowercase;
+  letter-spacing: -0.005em;
+  color: var(--admin-accent);
+  font-weight: 700;
 }
 .sidebar-nav { display: flex; flex-direction: column; gap: 0.15rem; }
 .nav-item {
@@ -2272,13 +2327,80 @@ button { font: inherit; }
    21. RESPONSIVE
    ========================================================= */
 @media (max-width: 768px) {
-  .admin-layout { grid-template-columns: 1fr; }
-  .admin-sidebar { position: static; }
+  .admin-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem var(--pad-page);
+  }
+  .admin-sidebar { position: static; padding: 1rem; }
+  .admin-nav-toggle { display: flex; }
+  .sidebar-header {
+    margin-bottom: 0;
+    padding: 0.25rem 0.25rem 0;
+    border-bottom: none;
+  }
+  .sidebar-nav {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+  .sidebar-nav-open {
+    max-height: 75vh;
+    overflow-y: auto;
+    opacity: 1;
+    margin-top: 0.6rem;
+  }
+  /* Wide admin tables scroll horizontally instead of breaking the layout. */
+  .admin-content .table,
+  .admin-layout .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
   .cart-container { grid-template-columns: 1fr; }
   .cart-summary { position: static; }
   .product-detail { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
   .raffle-grid { grid-template-columns: 1fr !important; }
+
+  /* Customer nav → hamburger + slide-down panel (was: links hidden entirely) */
+  .nav-toggle { display: inline-flex; }
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: rgba(5, 5, 16, 0.97);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(244, 240, 232, 0.1);
+    padding: 0 var(--pad-page);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+  .nav-links-open {
+    max-height: 85vh;
+    overflow-y: auto;
+    opacity: 1;
+    pointer-events: auto;
+    padding: 0.25rem var(--pad-page) 1rem;
+  }
+  .nav-links .nav-link {
+    padding: 0.9rem 0.25rem;
+    border-bottom: 1px solid rgba(244, 240, 232, 0.06);
+    opacity: 0.92;
+    font-size: 13px;
+    text-align: left;
+  }
+  .nav-links .nav-link::after { display: none; }
 }
 @media (max-width: 640px) {
   .hero-meta { display: none; }
