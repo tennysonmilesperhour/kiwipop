@@ -154,12 +154,15 @@ function ageLabel(iso: string): string {
   return `${mins}m`;
 }
 
-function downloadBase64Pdf(b64: string, filename: string) {
+function base64ToPdfBlob(b64: string): Blob {
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  const blob = new Blob([bytes], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
+  return new Blob([bytes], { type: 'application/pdf' });
+}
+
+function downloadBase64Pdf(b64: string, filename: string) {
+  const url = URL.createObjectURL(base64ToPdfBlob(b64));
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
@@ -169,6 +172,41 @@ function downloadBase64Pdf(b64: string, filename: string) {
     URL.revokeObjectURL(url);
     a.remove();
   }, 200);
+}
+
+const AUTO_PRINT_STORAGE_KEY = 'kp-admin-auto-print';
+
+/**
+ * Pop the browser print dialog for a PDF without making the admin hunt for a
+ * downloaded file. Loads the PDF into an offscreen iframe and calls print()
+ * once it's rendered — that routes straight to the (label) printer. If the
+ * browser refuses to print the embedded PDF, we fall back to opening it in a
+ * new tab so the label is never lost.
+ */
+function printPdfUrl(url: string, onDone?: () => void) {
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText =
+    'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
+  iframe.src = url;
+  iframe.onload = () => {
+    try {
+      iframe.contentWindow?.focus();
+      iframe.contentWindow?.print();
+    } catch {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+  document.body.appendChild(iframe);
+  // The print dialog blocks, so a generous timeout is plenty to clean up after.
+  window.setTimeout(() => {
+    iframe.remove();
+    onDone?.();
+  }, 60_000);
+}
+
+function printBase64Pdf(b64: string) {
+  const url = URL.createObjectURL(base64ToPdfBlob(b64));
+  printPdfUrl(url, () => URL.revokeObjectURL(url));
 }
 
 export default function OrdersPage() {
@@ -193,6 +231,30 @@ export default function OrdersPage() {
   const [production, setProduction] = useState<ProductionSummary | null>(null);
   const [productionLoading, setProductionLoading] = useState(false);
   const [shippingRowId, setShippingRowId] = useState<string | null>(null);
+
+  // When on, freshly-bought labels (single or bulk) auto-pop the print dialog
+  // and route straight to the label printer instead of downloading a file the
+  // admin has to find and open. Persisted so the preference sticks.
+  const [autoPrint, setAutoPrint] = useState(true);
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(AUTO_PRINT_STORAGE_KEY);
+      if (stored !== null) setAutoPrint(stored === '1');
+    } catch {
+      // ignore
+    }
+  }, []);
+  const toggleAutoPrint = () => {
+    setAutoPrint((prev) => {
+      const next = !prev;
+      try {
+        window.localStorage.setItem(AUTO_PRINT_STORAGE_KEY, next ? '1' : '0');
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  };
 
   // Restore last-active section from localStorage so admins land where they
   // left off (usually 'to_fulfill').
@@ -358,8 +420,15 @@ export default function OrdersPage() {
       const result = json as BulkLabelResponse;
       setBulkResult(result);
       if (result.pdfB64) {
-        const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-        downloadBase64Pdf(result.pdfB64, `kiwipop-labels-${stamp}.pdf`);
+        if (autoPrint) {
+          printBase64Pdf(result.pdfB64);
+        } else {
+          const stamp = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace(/[:T]/g, '-');
+          downloadBase64Pdf(result.pdfB64, `kiwipop-labels-${stamp}.pdf`);
+        }
       }
       await refetch();
       await queryClient.invalidateQueries({ queryKey: ['orders'] });
@@ -430,14 +499,27 @@ export default function OrdersPage() {
         }}
       >
         <h1 className="text-3xl font-bold">Orders</h1>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={handleReconcile}
-          disabled={reconciling}
-        >
-          {reconciling ? 'reconciling…' : 'reconcile with stripe'}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <label
+            className="orders-autoprint-toggle"
+            title="Pop the print dialog automatically when a label is bought"
+          >
+            <input
+              type="checkbox"
+              checked={autoPrint}
+              onChange={toggleAutoPrint}
+            />
+            <span>auto-print labels</span>
+          </label>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleReconcile}
+            disabled={reconciling}
+          >
+            {reconciling ? 'reconciling…' : 'reconcile with stripe'}
+          </button>
+        </div>
       </div>
 
       {reconcileError && (
@@ -542,7 +624,48 @@ export default function OrdersPage() {
                 .join(' · ')}
             </>
           ) : null}
-          {bulkResult.pdfB64 ? ' · combined PDF downloading' : ''}
+          {bulkResult.pdfB64
+            ? autoPrint
+              ? ' · sending combined PDF to printer'
+              : ' · combined PDF downloading'
+            : ''}
+          {bulkResult.pdfB64 && (
+            <span
+              style={{
+                display: 'inline-flex',
+                gap: 8,
+                marginLeft: 10,
+                verticalAlign: 'middle',
+              }}
+            >
+              <button
+                type="button"
+                className="orders-bulk-bar-clear"
+                onClick={() =>
+                  bulkResult.pdfB64 && printBase64Pdf(bulkResult.pdfB64)
+                }
+              >
+                print again
+              </button>
+              <button
+                type="button"
+                className="orders-bulk-bar-clear"
+                onClick={() => {
+                  if (!bulkResult.pdfB64) return;
+                  const stamp = new Date()
+                    .toISOString()
+                    .slice(0, 19)
+                    .replace(/[:T]/g, '-');
+                  downloadBase64Pdf(
+                    bulkResult.pdfB64,
+                    `kiwipop-labels-${stamp}.pdf`,
+                  );
+                }}
+              >
+                download
+              </button>
+            </span>
+          )}
         </div>
       )}
 
@@ -655,6 +778,7 @@ export default function OrdersPage() {
       {modalOrderId && (
         <OrderModal
           orderId={modalOrderId}
+          autoPrint={autoPrint}
           onClose={() => setModalOrderId(null)}
           onChanged={async () => {
             await refetch();
@@ -772,6 +896,7 @@ function ProductionSummaryCard({
 
 interface OrderModalProps {
   orderId: string;
+  autoPrint: boolean;
   onClose: () => void;
   onChanged: () => Promise<void> | void;
   onPrev: (() => void) | null;
@@ -780,6 +905,7 @@ interface OrderModalProps {
 
 function OrderModal({
   orderId,
+  autoPrint,
   onClose,
   onChanged,
   onPrev,
@@ -890,11 +1016,16 @@ function OrderModal({
       );
       const json = await response.json();
       if (!response.ok) throw new Error(json.error ?? 'failed to buy label');
-      setShipment(json.shipment as ShipmentRow);
+      const boughtShipment = json.shipment as ShipmentRow;
+      setShipment(boughtShipment);
       setLabelMeta({
         rateCents: json.rateCents,
         serviceLevel: json.serviceLevel,
       });
+      // Send the fresh label straight to the printer when auto-print is on.
+      if (autoPrint && boughtShipment?.label_url) {
+        printPdfUrl(boughtShipment.label_url);
+      }
       await refetchOrder();
       await onChanged();
     } catch (err) {
@@ -1103,13 +1234,22 @@ function OrderModal({
                         </>
                       )}
                     </p>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() =>
+                        shipment.label_url && printPdfUrl(shipment.label_url)
+                      }
+                    >
+                      Print label
+                    </button>{' '}
                     <a
                       href={shipment.label_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-primary"
+                      className="btn btn-secondary"
                     >
-                      Print label (PDF) →
+                      Open PDF ↗
                     </a>{' '}
                     <a
                       href={`/api/admin/orders/packing-slips?ids=${order.id}`}
