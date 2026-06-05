@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { useOrders, useOrderWithItems } from '@/lib/hooks';
 import { formatCentsToUSD } from '@/lib/format';
@@ -478,11 +478,32 @@ export default function OrdersPage() {
     () => sectionOrders.map((o) => o.id),
     [sectionOrders],
   );
+  // Remember where the open order sits in the section. Buying a label flips a
+  // `paid` order to `shipped`, so it drops out of the `to_fulfill` list and its
+  // id is no longer in `sectionIds` — without this fallback the prev/next nav
+  // would dead-end the moment you print a label.
+  const lastModalIndexRef = useRef(-1);
+  const liveModalIdx = modalOrderId ? sectionIds.indexOf(modalOrderId) : -1;
+  if (liveModalIdx >= 0) lastModalIndexRef.current = liveModalIdx;
+  // When the order has left the section, its old slot now holds the order that
+  // slid up into it — so `next` is that same index, `prev` is one before.
+  const modalIdx = liveModalIdx >= 0 ? liveModalIdx : lastModalIndexRef.current;
+  const modalInSection = liveModalIdx >= 0;
+  const canGoPrev = modalIdx > 0;
+  const canGoNext = modalInSection
+    ? modalIdx >= 0 && modalIdx < sectionIds.length - 1
+    : modalIdx >= 0 && modalIdx < sectionIds.length;
   const goToOrder = (delta: 1 | -1) => {
-    if (!modalOrderId) return;
-    const idx = sectionIds.indexOf(modalOrderId);
-    if (idx < 0) return;
-    const next = sectionIds[idx + delta];
+    if (modalIdx < 0) return;
+    // If the open order is still in the section, step relative to it. If it has
+    // left, index `modalIdx` already points at its successor, so only `prev`
+    // needs to step back.
+    const targetIdx = modalInSection
+      ? modalIdx + delta
+      : delta === 1
+        ? modalIdx
+        : modalIdx - 1;
+    const next = sectionIds[targetIdx];
     if (next) setModalOrderId(next);
   };
 
@@ -784,17 +805,8 @@ export default function OrdersPage() {
             await refetch();
             await queryClient.invalidateQueries({ queryKey: ['orders'] });
           }}
-          onPrev={
-            sectionIds.indexOf(modalOrderId) > 0
-              ? () => goToOrder(-1)
-              : null
-          }
-          onNext={
-            sectionIds.indexOf(modalOrderId) <
-            sectionIds.length - 1
-              ? () => goToOrder(1)
-              : null
-          }
+          onPrev={canGoPrev ? () => goToOrder(-1) : null}
+          onNext={canGoNext ? () => goToOrder(1) : null}
         />
       )}
     </AdminLayout>
