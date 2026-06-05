@@ -10,6 +10,9 @@ export const dynamic = 'force-dynamic';
 
 const bodySchema = z.object({
   orderIds: z.array(z.string().uuid()).min(1).max(50),
+  // When the client auto-prints the combined sheet, stamp those labels printed
+  // so they don't reappear in the "print unprinted labels" batch.
+  markPrinted: z.boolean().optional(),
 });
 
 interface ShippingAddress {
@@ -31,6 +34,7 @@ interface OrderRow {
 }
 
 interface ExistingShipment {
+  id: string;
   order_id: string;
   tracking_number: string | null;
   label_url: string | null;
@@ -90,7 +94,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { orderIds } = parsed.data;
+  const { orderIds, markPrinted } = parsed.data;
   const origin =
     process.env.NEXT_PUBLIC_SITE_URL ?? request.nextUrl.origin;
 
@@ -113,7 +117,7 @@ export async function POST(request: NextRequest) {
   const { data: existingShipments } = await supabaseAdmin
     .from('shipments')
     .select(
-      'order_id, tracking_number, label_url, provider_shipment_id, label_pdf_base64',
+      'id, order_id, tracking_number, label_url, provider_shipment_id, label_pdf_base64',
     )
     .in('order_id', orderIds)
     .returns<ExistingShipment[]>();
@@ -126,6 +130,9 @@ export async function POST(request: NextRequest) {
   // Buy labels in parallel. Per-order failures are caught and surfaced in
   // results — they don't tank the rest of the batch.
   const labelB64s: Array<{ orderId: string; b64: string }> = [];
+  // Shipment rows whose label lands on the combined sheet — stamped printed
+  // below when markPrinted (the client is auto-printing this batch).
+  const printedShipmentIds: string[] = [];
   const results: PerOrderResult[] = await Promise.all(
     orderIds.map(async (orderId): Promise<PerOrderResult> => {
       const order = orderById.get(orderId);
@@ -186,6 +193,7 @@ export async function POST(request: NextRequest) {
             service_level: label.serviceLevel,
             rate_cents: label.rateCents,
             label_pdf_base64: label.labelDataB64,
+            printed_at: markPrinted ? now : null,
           })
           .select('id')
           .single();
@@ -212,6 +220,7 @@ export async function POST(request: NextRequest) {
           .eq('status', 'paid');
 
         labelB64s.push({ orderId, b64: label.labelDataB64 });
+        printedShipmentIds.push(shipment.id);
 
         return {
           orderId,
@@ -235,6 +244,7 @@ export async function POST(request: NextRequest) {
     const ex = existingByOrder.get(orderId);
     if (ex?.label_pdf_base64) {
       labelB64s.push({ orderId, b64: ex.label_pdf_base64 });
+      printedShipmentIds.push(ex.id);
     }
   }
 
@@ -253,6 +263,16 @@ export async function POST(request: NextRequest) {
       // Merging failed — return individual results without combined PDF.
       console.error('[bulk-buy-labels] merge failed', err);
     }
+  }
+
+  // Stamp the labels we're handing back for immediate printing so they don't
+  // also surface in the "print unprinted labels" batch.
+  if (markPrinted && printedShipmentIds.length > 0) {
+    await supabaseAdmin
+      .from('shipments')
+      .update({ printed_at: new Date().toISOString() })
+      .in('id', printedShipmentIds)
+      .is('printed_at', null);
   }
 
   const succeeded = results.filter((r) => r.ok).length;
