@@ -70,7 +70,7 @@ export function Footer() {
             instagram
           </a>
           <a
-            href="https://www.tiktok.com/@the.kiwi.pop"
+            href="https://www.tiktok.com/@thekiwipop"
             target="_blank"
             rel="noopener noreferrer"
             className="footer-link"
