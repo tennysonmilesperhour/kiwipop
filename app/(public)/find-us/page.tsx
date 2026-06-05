@@ -20,7 +20,7 @@ const breadcrumbLd = buildBreadcrumbLd([{ name: 'Find Us', url: '/find-us' }]);
 
 const SOCIAL = [
   { handle: '@the.kiwi.pop', label: 'instagram', url: 'https://instagram.com/the.kiwi.pop' },
-  { handle: '@kiwipop', label: 'tiktok', url: 'https://tiktok.com/@kiwipop' },
+  { handle: '@thekiwipop', label: 'tiktok', url: 'https://www.tiktok.com/@thekiwipop' },
 ];
 
 export default function FindUsPage() {
