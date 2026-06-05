@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { useOrders, useOrderWithItems } from '@/lib/hooks';
 import { formatCentsToUSD } from '@/lib/format';
@@ -228,6 +228,20 @@ export default function OrdersPage() {
   const [bulkResult, setBulkResult] = useState<BulkLabelResponse | null>(null);
   const [bulkError, setBulkError] = useState<string>('');
 
+  // "Buy all labels" buys postage for the whole fulfillment queue without
+  // printing; "print unprinted labels" then merges everything bought-but-not-
+  // yet-printed into one sheet. unprintedCount drives that button's badge.
+  const [buyAllBusy, setBuyAllBusy] = useState(false);
+  const [buyAllResult, setBuyAllResult] = useState<{
+    succeeded: number;
+    failed: number;
+    errors: string[];
+  } | null>(null);
+  const [unprintedCount, setUnprintedCount] = useState(0);
+  const [printingUnprinted, setPrintingUnprinted] = useState(false);
+  const [unprintedPdf, setUnprintedPdf] = useState<string | null>(null);
+  const [unprintedPrinted, setUnprintedPrinted] = useState(0);
+
   const [production, setProduction] = useState<ProductionSummary | null>(null);
   const [productionLoading, setProductionLoading] = useState(false);
   const [shippingRowId, setShippingRowId] = useState<string | null>(null);
@@ -282,6 +296,8 @@ export default function OrdersPage() {
     setSelected(new Set());
     setBulkResult(null);
     setBulkError('');
+    setBuyAllResult(null);
+    setUnprintedPdf(null);
   }, [section]);
 
   // Pull the flavor-by-flavor production roll-up whenever the order list
@@ -306,6 +322,25 @@ export default function OrdersPage() {
       cancelled = true;
     };
   }, [orders]);
+
+  // Keep the "print unprinted labels (N)" badge in sync. Refreshes on mount and
+  // whenever the order list changes (i.e. after labels are bought).
+  const refreshUnprintedCount = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/orders/print-unprinted-labels', {
+        cache: 'no-store',
+      });
+      if (response.ok) {
+        const json = await response.json();
+        setUnprintedCount(typeof json.count === 'number' ? json.count : 0);
+      }
+    } catch {
+      // soft fail — badge just won't update
+    }
+  }, []);
+  useEffect(() => {
+    refreshUnprintedCount();
+  }, [orders, refreshUnprintedCount]);
 
   const handleQuickShip = async (orderId: string) => {
     if (shippingRowId) return;
@@ -407,7 +442,9 @@ export default function OrdersPage() {
       const response = await fetch('/api/admin/orders/bulk-buy-labels', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderIds: [...selected] }),
+        // When auto-printing, stamp these labels printed so they don't also
+        // surface in the "print unprinted labels" batch.
+        body: JSON.stringify({ orderIds: [...selected], markPrinted: autoPrint }),
       });
       const json = (await response.json()) as
         | BulkLabelResponse
@@ -432,11 +469,103 @@ export default function OrdersPage() {
       }
       await refetch();
       await queryClient.invalidateQueries({ queryKey: ['orders'] });
+      await refreshUnprintedCount();
       setSelected(new Set());
     } catch (err) {
       setBulkError(err instanceof Error ? err.message : 'bulk-buy-labels failed');
     } finally {
       setBulkBusy(null);
+    }
+  };
+
+  // Buy postage for the entire fulfillment queue in one go. Chunks by the
+  // endpoint's 50-order cap and leaves the labels UNprinted — printing is the
+  // separate "print unprinted labels" step. Already-labeled orders are skipped
+  // server-side, so this is safe to re-run.
+  const handleBuyAll = async () => {
+    if (buyAllBusy || bulkBusy) return;
+    const eligible = grouped.to_fulfill.map((o) => o.id);
+    if (eligible.length === 0) return;
+    if (
+      !confirm(
+        `Buy USPS labels for all ${eligible.length} order${
+          eligible.length === 1 ? '' : 's'
+        } in the fulfillment queue? Already-labeled orders are skipped. Print them with "print unprinted labels" when you're ready.`,
+      )
+    )
+      return;
+    setBuyAllBusy(true);
+    setBulkError('');
+    setBulkResult(null);
+    setBuyAllResult(null);
+    try {
+      let succeeded = 0;
+      let failed = 0;
+      const errors: string[] = [];
+      for (let i = 0; i < eligible.length; i += 50) {
+        const chunk = eligible.slice(i, i + 50);
+        const response = await fetch('/api/admin/orders/bulk-buy-labels', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          // markPrinted:false — leave these for the batch print step.
+          body: JSON.stringify({ orderIds: chunk, markPrinted: false }),
+        });
+        const json = await response.json();
+        if (!response.ok) {
+          errors.push(json.error ?? 'bulk-buy-labels failed');
+          failed += chunk.length;
+          continue;
+        }
+        const result = json as BulkLabelResponse;
+        succeeded += result.succeeded;
+        failed += result.failed;
+        for (const r of result.results) {
+          if (!r.ok) errors.push(`${r.orderId.slice(0, 8)} (${r.error})`);
+        }
+      }
+      setBuyAllResult({ succeeded, failed, errors });
+      await refetch();
+      await queryClient.invalidateQueries({ queryKey: ['orders'] });
+      await refreshUnprintedCount();
+    } catch (err) {
+      setBulkError(err instanceof Error ? err.message : 'buy all failed');
+    } finally {
+      setBuyAllBusy(false);
+    }
+  };
+
+  // Merge every bought-but-not-yet-printed label into one sheet, print (or
+  // download) it, and mark them printed so they don't come back.
+  const handlePrintUnprinted = async () => {
+    if (printingUnprinted) return;
+    setPrintingUnprinted(true);
+    setBulkError('');
+    try {
+      const response = await fetch(
+        '/api/admin/orders/print-unprinted-labels',
+        { method: 'POST' },
+      );
+      const json = await response.json();
+      if (!response.ok) throw new Error(json.error ?? 'print failed');
+      const pdfB64 = json.pdfB64 as string | null;
+      if (pdfB64) {
+        setUnprintedPdf(pdfB64);
+        setUnprintedPrinted(typeof json.count === 'number' ? json.count : 0);
+        if (autoPrint) {
+          printBase64Pdf(pdfB64);
+        } else {
+          const stamp = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace(/[:T]/g, '-');
+          downloadBase64Pdf(pdfB64, `kiwipop-unprinted-labels-${stamp}.pdf`);
+        }
+      }
+      await refreshUnprintedCount();
+    } catch (err) {
+      setBulkError(err instanceof Error ? err.message : 'print failed');
+    } finally {
+      setPrintingUnprinted(false);
     }
   };
 
@@ -520,7 +649,14 @@ export default function OrdersPage() {
         }}
       >
         <h1 className="text-3xl font-bold">Orders</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
+          }}
+        >
           <label
             className="orders-autoprint-toggle"
             title="Pop the print dialog automatically when a label is bought"
@@ -532,6 +668,32 @@ export default function OrdersPage() {
             />
             <span>auto-print labels</span>
           </label>
+          {section === 'to_fulfill' && grouped.to_fulfill.length > 0 && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleBuyAll}
+              disabled={buyAllBusy || !!bulkBusy}
+              title="Buy USPS labels for every order in the fulfillment queue"
+            >
+              {buyAllBusy
+                ? 'buying all…'
+                : `buy all labels (${grouped.to_fulfill.length})`}
+            </button>
+          )}
+          {unprintedCount > 0 && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handlePrintUnprinted}
+              disabled={printingUnprinted}
+              title="Merge every bought-but-not-yet-printed label into one sheet and print it"
+            >
+              {printingUnprinted
+                ? 'printing…'
+                : `print unprinted labels (${unprintedCount})`}
+            </button>
+          )}
           <button
             type="button"
             className="btn btn-secondary"
@@ -553,6 +715,61 @@ export default function OrdersPage() {
           scanned <b>{reconcileResult.scanned_sessions}</b> stripe sessions ·
           marked paid <b>{reconcileResult.marked_paid}</b> · cancelled{' '}
           <b>{reconcileResult.marked_cancelled}</b>
+        </div>
+      )}
+      {buyAllResult && (
+        <div className="alert alert-success" style={{ marginBottom: 12 }}>
+          bought <b>{buyAllResult.succeeded}</b> label
+          {buyAllResult.succeeded === 1 ? '' : 's'}
+          {buyAllResult.failed > 0 ? (
+            <>
+              {' '}
+              · <b>{buyAllResult.failed}</b> failed:{' '}
+              {buyAllResult.errors.join(' · ')}
+            </>
+          ) : null}
+          {' · '}use <b>print unprinted labels</b> when you're ready to print.
+        </div>
+      )}
+      {unprintedPdf && (
+        <div className="alert alert-success" style={{ marginBottom: 12 }}>
+          {autoPrint ? 'sent ' : 'downloaded '}
+          <b>{unprintedPrinted}</b> label
+          {unprintedPrinted === 1 ? '' : 's'}
+          {autoPrint ? ' to the printer' : ''}
+          <span
+            style={{
+              display: 'inline-flex',
+              gap: 8,
+              marginLeft: 10,
+              verticalAlign: 'middle',
+            }}
+          >
+            <button
+              type="button"
+              className="orders-bulk-bar-clear"
+              onClick={() => unprintedPdf && printBase64Pdf(unprintedPdf)}
+            >
+              print again
+            </button>
+            <button
+              type="button"
+              className="orders-bulk-bar-clear"
+              onClick={() => {
+                if (!unprintedPdf) return;
+                const stamp = new Date()
+                  .toISOString()
+                  .slice(0, 19)
+                  .replace(/[:T]/g, '-');
+                downloadBase64Pdf(
+                  unprintedPdf,
+                  `kiwipop-unprinted-labels-${stamp}.pdf`,
+                );
+              }}
+            >
+              download
+            </button>
+          </span>
         </div>
       )}
 
@@ -1024,7 +1241,13 @@ function OrderModal({
     try {
       const response = await fetch(
         `/api/admin/orders/${order.id}/buy-label`,
-        { method: 'POST' },
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          // Stamp printed when we're about to auto-print, so it doesn't also
+          // land in the "print unprinted labels" batch.
+          body: JSON.stringify({ markPrinted: autoPrint }),
+        },
       );
       const json = await response.json();
       if (!response.ok) throw new Error(json.error ?? 'failed to buy label');

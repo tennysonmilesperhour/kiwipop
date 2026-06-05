@@ -62,6 +62,16 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     );
   }
 
+  // When the client is auto-printing the freshly-bought label, mark it printed
+  // so it doesn't also show up in the "print unprinted labels" batch.
+  let markPrinted = false;
+  try {
+    const body = (await request.json()) as { markPrinted?: boolean } | null;
+    markPrinted = body?.markPrinted === true;
+  } catch {
+    // no body / not JSON — treat as not auto-printing
+  }
+
   const { data: order, error: orderError } = await supabaseAdmin
     .from('orders')
     .select('id, status, user_email, shipping_address')
@@ -156,6 +166,7 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     // Persist the PDF ShipStation handed back on createlabel. V1 has no
     // re-fetch-by-id endpoint, so the label.pdf route serves this blob.
     label_pdf_base64: label.labelDataB64,
+    printed_at: markPrinted ? now : null,
   };
 
   const { data: shipment, error: shipmentError } = await supabaseAdmin
