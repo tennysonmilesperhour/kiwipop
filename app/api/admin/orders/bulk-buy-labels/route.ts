@@ -35,6 +35,7 @@ interface ExistingShipment {
   tracking_number: string | null;
   label_url: string | null;
   provider_shipment_id: string | null;
+  label_pdf_base64: string | null;
 }
 
 interface PerOrderResult {
@@ -53,7 +54,7 @@ interface PerOrderResult {
  * merge the per-label base64 PDFs from ShipStation. Idempotent per order:
  * if a tracking number already exists for an order in the request, that
  * order is skipped (its existing label is included in the combined PDF
- * via fetchLabelPdf).
+ * from the stored label_pdf_base64 blob).
  *
  * Per-order failures don't fail the batch — the response includes a
  * `results` array with the outcome for each requested orderId, plus the
@@ -111,7 +112,9 @@ export async function POST(request: NextRequest) {
 
   const { data: existingShipments } = await supabaseAdmin
     .from('shipments')
-    .select('order_id, tracking_number, label_url, provider_shipment_id')
+    .select(
+      'order_id, tracking_number, label_url, provider_shipment_id, label_pdf_base64',
+    )
     .in('order_id', orderIds)
     .returns<ExistingShipment[]>();
 
@@ -182,6 +185,7 @@ export async function POST(request: NextRequest) {
             provider_shipment_id: label.providerShipmentId,
             service_level: label.serviceLevel,
             rate_cents: label.rateCents,
+            label_pdf_base64: label.labelDataB64,
           })
           .select('id')
           .single();
@@ -222,23 +226,16 @@ export async function POST(request: NextRequest) {
     }),
   );
 
-  // For any reused-existing rows, fetch their labels too (best-effort —
-  // failures are non-fatal; user already has tracking numbers).
+  // For any reused-existing rows, include their stored label PDF too so the
+  // combined sheet is complete. Best-effort — a row labeled before we started
+  // persisting the blob just won't be in the merged PDF (user still has the
+  // tracking number and can re-buy / print individually).
   const reusedIds = results.filter((r) => r.ok && r.reused).map((r) => r.orderId);
-  if (reusedIds.length > 0) {
-    const { fetchLabelPdf } = await import('@/lib/shipstation');
-    await Promise.all(
-      reusedIds.map(async (orderId) => {
-        const ex = existingByOrder.get(orderId);
-        if (!ex?.provider_shipment_id) return;
-        try {
-          const buf = await fetchLabelPdf(ex.provider_shipment_id);
-          labelB64s.push({ orderId, b64: buf.toString('base64') });
-        } catch {
-          // skip; user can still print individually
-        }
-      }),
-    );
+  for (const orderId of reusedIds) {
+    const ex = existingByOrder.get(orderId);
+    if (ex?.label_pdf_base64) {
+      labelB64s.push({ orderId, b64: ex.label_pdf_base64 });
+    }
   }
 
   let pdfB64: string | null = null;

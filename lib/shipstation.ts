@@ -205,26 +205,6 @@ export async function buyUspsLabel(input: BuyLabelInput): Promise<BuyLabelResult
   };
 }
 
-interface GetLabelResponse {
-  labelData: string;
-}
-
-/**
- * Re-fetch the base64 label PDF for a previously-bought shipment. Used by
- * the in-admin print endpoint so we don't have to store the (largeish)
- * base64 PDFs in the DB.
- */
-export async function fetchLabelPdf(providerShipmentId: string): Promise<Buffer> {
-  const resp = await postShipStation<GetLabelResponse>('/shipments/getlabel', {
-    shipmentId: Number(providerShipmentId),
-    useStoredRecipient: true,
-  });
-  if (!resp.labelData) {
-    throw new Error('ShipStation returned no labelData for this shipment');
-  }
-  return Buffer.from(resp.labelData, 'base64');
-}
-
 export function isShipStationConfigured(): boolean {
   return Boolean(
     process.env.SHIPSTATION_API_KEY && process.env.SHIPSTATION_API_SECRET,
