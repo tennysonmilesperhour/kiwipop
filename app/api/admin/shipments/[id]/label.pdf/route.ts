@@ -1,16 +1,14 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { fetchLabelPdf } from '@/lib/shipstation';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface ShipmentRow {
   id: string;
-  provider: string | null;
-  provider_shipment_id: string | null;
   tracking_number: string | null;
+  label_pdf_base64: string | null;
 }
 
 interface RouteContext {
@@ -18,9 +16,9 @@ interface RouteContext {
 }
 
 /**
- * Stream the latest label PDF for a stored shipment. ShipStation /shipments/getlabel
- * regenerates the same PDF for a given shipmentId, so we don't persist the (~50KB
- * base64) blob — we just hold the provider_shipment_id and re-fetch on click.
+ * Stream the stored label PDF for a shipment. We persist the base64 PDF that
+ * ShipStation hands back on /shipments/createlabel (their V1 API has no
+ * re-fetch-by-id endpoint), so this just decodes and streams it.
  */
 export async function GET(_request: NextRequest, { params }: RouteContext) {
   const auth = await requireAdmin();
@@ -28,7 +26,7 @@ export async function GET(_request: NextRequest, { params }: RouteContext) {
 
   const { data, error } = await supabaseAdmin
     .from('shipments')
-    .select('id, provider, provider_shipment_id, tracking_number')
+    .select('id, tracking_number, label_pdf_base64')
     .eq('id', params.id)
     .maybeSingle<ShipmentRow>();
 
@@ -41,24 +39,17 @@ export async function GET(_request: NextRequest, { params }: RouteContext) {
   if (!data) {
     return NextResponse.json({ error: 'Shipment not found' }, { status: 404 });
   }
-  if (data.provider !== 'shipstation' || !data.provider_shipment_id) {
+  if (!data.label_pdf_base64) {
     return NextResponse.json(
       {
         error:
-          'This shipment was not created via ShipStation; no PDF re-fetch available.',
+          'No stored label PDF for this shipment. It was created before label PDFs were saved — re-buy the label to regenerate it.',
       },
-      { status: 400 },
+      { status: 404 },
     );
   }
 
-  let pdf: Buffer;
-  try {
-    pdf = await fetchLabelPdf(data.provider_shipment_id);
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'ShipStation error';
-    return NextResponse.json({ error: message }, { status: 502 });
-  }
-
+  const pdf = Buffer.from(data.label_pdf_base64, 'base64');
   const filename = `kiwipop-label-${data.tracking_number ?? data.id}.pdf`;
 
   return new NextResponse(new Uint8Array(pdf), {

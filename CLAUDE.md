@@ -26,6 +26,6 @@
 
 - Provider: **ShipStation** (V1 API — `ssapi.shipstation.com`). Lib at `lib/shipstation.ts`. Uses HTTP Basic auth (`SHIPSTATION_API_KEY` + `SHIPSTATION_API_SECRET`).
 - Buy flow: `POST /api/admin/orders/[id]/buy-label` → `lib/shipstation.ts#buyUspsLabel` → row in `shipments` table with `provider='shipstation'` and `provider_shipment_id`.
-- Print flow: `GET /api/admin/shipments/[id]/label.pdf` re-fetches the PDF from ShipStation `/shipments/getlabel` on demand. We don't store the base64 blob.
+- Print flow: `GET /api/admin/shipments/[id]/label.pdf` streams the stored base64 label PDF from `shipments.label_pdf_base64`. ShipStation's V1 API has **no** re-fetch-by-id endpoint (that's V2 only), so we persist the blob that `/shipments/createlabel` returns at buy time.
 - Defaults: cheapest USPS service is `usps_ground_advantage`; default parcel is 6×4×2 in / 4 oz. All overridable via `SHIPSTATION_*` env vars.
 - Without the API keys, the buy-label endpoint returns a clean 503 — page still works.

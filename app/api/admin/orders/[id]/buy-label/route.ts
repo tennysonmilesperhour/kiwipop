@@ -136,9 +136,9 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: message }, { status: 502 });
   }
 
-  // The label_url we save points at our own re-fetch endpoint. The endpoint
-  // will call ShipStation /shipments/getlabel using provider_shipment_id and
-  // stream the PDF. This way we never store the (~50KB base64) PDF in the DB.
+  // The label_url we save points at our own endpoint, which streams the
+  // stored base64 PDF (persisted just below). ShipStation V1 has no
+  // re-fetch-by-id endpoint, so we keep the blob ourselves.
   const origin =
     process.env.NEXT_PUBLIC_SITE_URL ?? request.nextUrl.origin;
 
@@ -153,6 +153,9 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     provider_shipment_id: label.providerShipmentId,
     service_level: label.serviceLevel,
     rate_cents: label.rateCents,
+    // Persist the PDF ShipStation handed back on createlabel. V1 has no
+    // re-fetch-by-id endpoint, so the label.pdf route serves this blob.
+    label_pdf_base64: label.labelDataB64,
   };
 
   const { data: shipment, error: shipmentError } = await supabaseAdmin
