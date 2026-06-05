@@ -1842,6 +1842,25 @@ button { font: inherit; }
   color: var(--c-magenta);
 }
 
+/* Auto-print labels toggle (orders header) */
+.admin-layout .orders-autoprint-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--display);
+  font-size: 12px;
+  color: var(--admin-text-soft);
+  cursor: pointer;
+  user-select: none;
+}
+.admin-layout .orders-autoprint-toggle input {
+  accent-color: var(--c-cyan);
+  cursor: pointer;
+}
+.admin-layout .orders-autoprint-toggle:hover {
+  color: var(--c-cyan);
+}
+
 /* Denser row + checkbox styling */
 .admin-layout .orders-table tbody tr.is-selected {
   background: rgba(168, 255, 60, 0.06);
