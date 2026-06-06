@@ -8,7 +8,7 @@ import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
 import { FLAVOR_IMG, FUNCTIONALS, PACKS } from '@/lib/flavors';
 import { FAQ_ITEMS, FAQ_LD } from '@/lib/faq';
-import { isPrideMonth } from '@/lib/pride';
+import { PRIDE_MODE } from '@/lib/pride';
 import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { JsonLd } from '@/components/JsonLd';
@@ -261,9 +261,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
   const launchProduct = products.flavors.find((f) => f.sku === 'KP-KIWI-KITTY')?.product;
 
-  // June → recolor the yellow fills (ticker band, CTAs, etc.) into a pastel
-  // rainbow with a glowing outline. Auto-reverts July 1 via isPrideMonth().
-  const pride = isPrideMonth();
+  // Recolor the yellow fills (ticker band, CTAs, etc.) into a rainbow. Kept on
+  // year-round for now; flip PRIDE_MODE in lib/pride.ts to toggle it off.
+  const pride = PRIDE_MODE;
 
   return (
     <div className={`kp-page${pride ? ' kp-pride' : ''}`}>
