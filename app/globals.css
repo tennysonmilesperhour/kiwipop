@@ -3454,3 +3454,312 @@ textarea.form-input,
 .kp-popup-link { margin-top: 4px; font-size: 12px; color: var(--lime); }
 .leaflet-control-attribution { background: rgba(5, 5, 16, 0.7) !important; color: var(--bone) !important; }
 .leaflet-control-attribution a { color: var(--cyan) !important; }
+
+/* =========================================================
+   26. BRAND SHEET / VENDOR ONE-PAGER  (/brand)
+   ========================================================= */
+.brand-sheet { background: var(--midnight); }
+
+.brand-section {
+  padding: clamp(3.5rem, 8vw, 6rem) var(--pad-page);
+  border-bottom: 1px solid rgba(244, 240, 232, 0.08);
+  position: relative;
+}
+.brand-section-inner { max-width: 1200px; margin: 0 auto; }
+
+.brand-lead {
+  font-family: var(--mono);
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.75;
+  color: var(--bone);
+  max-width: 760px;
+}
+.brand-lead strong { color: var(--paper); }
+
+/* --- Hero --- */
+.brand-hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(3rem, 9vh, 6rem) var(--pad-page) clamp(3rem, 7vh, 5rem);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(244, 240, 232, 0.12);
+}
+.brand-hero-copy { position: relative; z-index: 3; }
+.brand-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 1.25rem;
+}
+.brand-hero h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  text-transform: lowercase;
+  color: var(--paper);
+}
+.brand-hero-tagline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--lime);
+  margin-top: 1.25rem;
+}
+.brand-hero-positioning {
+  font-family: var(--mono);
+  font-size: clamp(13px, 1.3vw, 15px);
+  line-height: 1.7;
+  color: var(--bone);
+  max-width: 520px;
+  margin-top: 1.5rem;
+}
+.brand-hero-shot {
+  position: relative;
+  justify-self: center;
+  filter: drop-shadow(0 0 60px rgba(0, 240, 255, 0.3))
+    drop-shadow(0 0 90px rgba(168, 255, 60, 0.22));
+}
+.brand-hero-shot img { width: 100%; height: auto; max-width: 440px; display: block; }
+
+/* --- Accent card grid (functional payload) --- */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.brand-card {
+  background: var(--terminal);
+  border: 1px solid rgba(244, 240, 232, 0.1);
+  border-left: 3px solid var(--c, var(--lime));
+  padding: 1.5rem;
+  transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+}
+.brand-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--c, var(--lime)), transparent 75%);
+}
+.brand-card-name {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--c, var(--lime));
+  margin-bottom: 0.5rem;
+}
+.brand-card-body {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--bone);
+}
+.brand-card-tag {
+  display: inline-block;
+  margin-top: 0.85rem;
+  background: var(--c, var(--lime));
+  color: var(--midnight);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+}
+
+/* --- Formulation "no" claims --- */
+.brand-claims {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0;
+  margin-top: 2.5rem;
+  border: 1px solid rgba(244, 240, 232, 0.15);
+}
+.brand-claim {
+  padding: 2rem 1.5rem;
+  border-right: 1px solid rgba(244, 240, 232, 0.15);
+  border-bottom: 1px solid rgba(244, 240, 232, 0.15);
+}
+.brand-claim:last-child { border-right: none; }
+.brand-claim-no {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+  color: var(--magenta);
+}
+.brand-claim-what {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--paper);
+  margin-top: 0.25rem;
+}
+.brand-claim-why {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--bone);
+  margin-top: 0.6rem;
+}
+
+/* --- Flavor image TODO tag (rides existing .flavor-card) --- */
+.brand-img-todo {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: rgba(5, 5, 16, 0.6);
+  border: 1px dashed rgba(244, 240, 232, 0.4);
+  padding: 0.2rem 0.45rem;
+}
+
+/* --- Wholesale data grid --- */
+.brand-data {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0;
+  margin-top: 2.5rem;
+  border: 1px solid rgba(244, 240, 232, 0.15);
+}
+.brand-data-cell {
+  padding: 1.75rem 1.5rem;
+  border-right: 1px solid rgba(244, 240, 232, 0.15);
+  border-bottom: 1px solid rgba(244, 240, 232, 0.15);
+}
+.brand-data-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-bottom: 0.6rem;
+}
+.brand-data-value {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-transform: lowercase;
+  color: var(--lime);
+}
+.brand-data-value--todo { color: var(--sodium); opacity: 0.85; }
+
+/* --- Regulatory cert badges --- */
+.brand-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.brand-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bone);
+  border: 1px dashed rgba(244, 240, 232, 0.35);
+  padding: 0.6rem 0.9rem;
+}
+
+/* --- Contact CTA row --- */
+.brand-cta-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .brand-hero { grid-template-columns: 1fr; }
+  .brand-hero-shot { order: -1; max-width: 300px; }
+  .brand-claim,
+  .brand-data-cell { border-right: 1px solid rgba(244, 240, 232, 0.15); }
+}
+
+/* =========================================================
+   27. PRINT — vendor saves /brand to PDF
+   ========================================================= */
+@media print {
+  body::before,
+  .scanlines::after,
+  .nav,
+  .footer,
+  .version-toast,
+  .glitch::before,
+  .glitch::after { display: none !important; }
+
+  body,
+  .brand-sheet { background: #fff !important; color: #111 !important; }
+
+  .brand-section {
+    border-color: #ddd !important;
+    padding: 1.25rem 0 !important;
+    break-inside: avoid;
+  }
+  .brand-hero {
+    border-color: #ddd !important;
+    padding: 0 0 1.25rem !important;
+    break-inside: avoid;
+  }
+
+  .brand-hero h1,
+  .brand-hero-tagline,
+  .section-title,
+  .brand-card-name,
+  .brand-claim-no,
+  .brand-claim-what,
+  .brand-data-value,
+  .manifesto-text { color: #111 !important; }
+
+  .brand-lead,
+  .brand-card-body,
+  .brand-claim-why,
+  .brand-data-label,
+  .brand-hero-positioning,
+  .brand-hero-eyebrow,
+  .section-meta,
+  .brand-badge,
+  .contact-label { color: #333 !important; }
+
+  .brand-card,
+  .brand-claim,
+  .brand-data-cell,
+  .brand-claims,
+  .brand-data,
+  .terminal-block {
+    background: #fff !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+  }
+  .brand-card { border-left: 3px solid #111 !important; }
+  .brand-card-tag { background: #111 !important; color: #fff !important; }
+  .terminal-block { color: #111 !important; }
+  .flavor-card { break-inside: avoid; }
+  .contact-link,
+  a { color: #111 !important; }
+
+  .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
