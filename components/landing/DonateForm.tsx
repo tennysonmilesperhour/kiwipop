@@ -312,7 +312,7 @@ export function DonateForm({ snapshot }: DonateFormProps) {
 
             <p className="lede" style={{ marginTop: 24, fontSize: 14 }}>
               <strong>stripe</strong> takes ~2.9% + 30¢ per transaction (the
-              processor's cut). <strong>venmo</strong> is no-fee — your full
+              processor's cut). <strong>venmo</strong> is no-fee, your full
               dollar lands. either way, it counts toward the bar above.
             </p>
 

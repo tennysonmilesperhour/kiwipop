@@ -36,12 +36,12 @@ export const SYNTHESIS = `
 the kiwi pop formula is built for one specific moment: a long, hot
 night where you want to feel something but not feel awful tomorrow.
 each ingredient maps to that moment cleanly. jambu wakes the palate
-on the first lick — it's a sensory hook, a conversation starter, and
+on the first lick. it's a sensory hook, a conversation starter, and
 the literature on its active compound (spilanthol) is what put it in
 modern bartending and oral-care products. theobromine, b12, and
 taurine give a clean, jitter-free lift; magnesium and electrolytes
 manage the soft-tissue and hydration cost of dancing for hours.
-the sweet half — xylitol, isomalt, monk fruit — is a deliberate
+the sweet half (xylitol, isomalt, monk fruit) is a deliberate
 choice: tooth-friendly, low-glycemic, and validated by decades of
 dental and metabolic research.
 
@@ -57,7 +57,7 @@ mint already leans into.
 
 every ingredient is included at food-flavor or food-supplement
 amounts that are below the doses used in clinical trials. the goal
-is not megadose pharmacology — it's a candy that doesn't trash you,
+is not megadose pharmacology. it's a candy that doesn't trash you,
 served in the kind of room that usually does.
 
 below: the studies, position statements, and authoritative reviews
@@ -91,17 +91,17 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2013,
         url: pubmed('High therapeutic potential of Spilanthes acmella: a review'),
         summary:
-          'review of the chemistry, traditional use, and biological properties reported for acmella oleracea. discusses the local oral effects of spilanthol — including the increase in saliva flow and the cold-tingle palate sensation that gives the plant its english name "buzz button."',
+          'review of the chemistry, traditional use, and biological properties reported for acmella oleracea. discusses the local oral effects of spilanthol, including the increase in saliva flow and the cold-tingle palate sensation that gives the plant its english name "buzz button."',
       },
       {
         title:
           'Acmella oleracea (jambu) as a food ingredient: review of safety and use',
         authors: 'EFSA Panel on Food Additives and Flavourings',
-        journal: 'European Food Safety Authority — flavouring substance database',
+        journal: 'European Food Safety Authority · flavouring substance database',
         year: 2020,
         url: 'https://www.efsa.europa.eu/en/topics/topic/flavourings',
         summary:
-          'EFSA maintains a flavouring substances database in which spilanthol-bearing acmella extracts are listed and reviewed for use as a food flavouring. the agency has established a safe daily intake at typical food-flavor levels — well above the amount used in a single kiwi pop.',
+          'EFSA maintains a flavouring substances database in which spilanthol-bearing acmella extracts are listed and reviewed for use as a food flavouring. the agency has established a safe daily intake at typical food-flavor levels, well above the amount used in a single kiwi pop.',
       },
       {
         title: 'Alkamids: a new class of plant-derived bioactive compounds',
@@ -117,7 +117,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'theobromine',
     blurb:
-      'the active alkaloid in cocoa. a smoother, longer-lasting cousin of caffeine — gentler on the heart rate, less of the jittery edge, and the reason a bar of dark chocolate can feel like a small lift.',
+      'the active alkaloid in cocoa. a smoother, longer-lasting cousin of caffeine, gentler on the heart rate, less of the jittery edge, and the reason a bar of dark chocolate can feel like a small lift.',
     studies: [
       {
         title:
@@ -150,7 +150,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2011,
         url: pubmed('Theobromine and the pharmacology of cocoa'),
         summary:
-          'a foundational chapter-length review of theobromine pharmacology — absorption, metabolism, half-life, and effects across cardiovascular, respiratory, and central-nervous systems at dietary intake levels.',
+          'a foundational chapter-length review of theobromine pharmacology: absorption, metabolism, half-life, and effects across cardiovascular, respiratory, and central-nervous systems at dietary intake levels.',
       },
       {
         title:
@@ -172,13 +172,13 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
       'the steady root. used in chinese herbal practice for over two thousand years. modern research has examined ginseng for cognitive performance, fatigue, and immune-system markers.',
     studies: [
       {
-        title: 'Asian ginseng — health professional fact sheet',
+        title: 'Asian ginseng: health professional fact sheet',
         authors: 'National Center for Complementary and Integrative Health (NCCIH)',
         journal: 'NIH NCCIH',
         year: 2024,
         url: 'https://www.nccih.nih.gov/health/asian-ginseng',
         summary:
-          'NIH\'s plain-language overview of panax ginseng — what it is, what people use it for, and what the research does and does not support. a useful starting point that links to the underlying systematic reviews.',
+          'NIH\'s plain-language overview of panax ginseng: what it is, what people use it for, and what the research does and does not support. a useful starting point that links to the underlying systematic reviews.',
       },
       {
         title:
@@ -219,16 +219,16 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'vitamin b12 (methylcobalamin)',
     blurb:
-      'the active form of B12. essential cofactor in energy metabolism and nerve function. methylcobalamin is the form your body uses directly — no conversion step required, unlike the cyanocobalamin found in cheaper supplements.',
+      'the active form of B12. essential cofactor in energy metabolism and nerve function. methylcobalamin is the form your body uses directly, no conversion step required, unlike the cyanocobalamin found in cheaper supplements.',
     studies: [
       {
-        title: 'Vitamin B12 — health professional fact sheet',
+        title: 'Vitamin B12: health professional fact sheet',
         authors: 'NIH Office of Dietary Supplements',
         journal: 'NIH ODS',
         year: 2024,
         url: 'https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/',
         summary:
-          'the NIH\'s definitive professional reference on vitamin B12 — recommended intakes, food sources, deficiency symptoms, drug interactions, and the difference between methylcobalamin and other B12 forms.',
+          'the NIH\'s definitive professional reference on vitamin B12: recommended intakes, food sources, deficiency symptoms, drug interactions, and the difference between methylcobalamin and other B12 forms.',
       },
       {
         title: 'Vitamin B12 deficiency',
@@ -237,7 +237,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2013,
         url: pubmed('Vitamin B12 deficiency'),
         summary:
-          'NEJM clinical-practice review of B12 deficiency — prevalence, causes, neurological and hematologic consequences, and what the literature shows about supplementation. cited in most modern B12 references.',
+          'NEJM clinical-practice review of B12 deficiency: prevalence, causes, neurological and hematologic consequences, and what the literature shows about supplementation. cited in most modern B12 references.',
       },
       {
         title:
@@ -247,7 +247,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2013,
         url: pubmed('Methylcobalamin: a potential vitamin of pain killer'),
         summary:
-          'reviews methylcobalamin specifically — its absorption, tissue uptake, and the reasons clinicians prefer it over cyanocobalamin in patients with neurological B12-deficiency symptoms.',
+          'reviews methylcobalamin specifically: its absorption, tissue uptake, and the reasons clinicians prefer it over cyanocobalamin in patients with neurological B12-deficiency symptoms.',
       },
       {
         title:
@@ -266,10 +266,10 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'magnesium glycinate',
     blurb:
-      'the un-cramp. magnesium is one of the four most-deficient micronutrients in the modern american diet, and the glycinate form is well-tolerated and readily absorbed — used in the literature for muscle relaxation, sleep quality, and stress markers.',
+      'the un-cramp. magnesium is one of the four most-deficient micronutrients in the modern american diet, and the glycinate form is well-tolerated and readily absorbed, used in the literature for muscle relaxation, sleep quality, and stress markers.',
     studies: [
       {
-        title: 'Magnesium — health professional fact sheet',
+        title: 'Magnesium: health professional fact sheet',
         authors: 'NIH Office of Dietary Supplements',
         journal: 'NIH ODS',
         year: 2024,
@@ -300,7 +300,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
       },
       {
         title:
-          'The effects of magnesium supplementation on subjective anxiety and stress — a systematic review',
+          'The effects of magnesium supplementation on subjective anxiety and stress: a systematic review',
         authors: 'Boyle NB, Lawton C, Dye L',
         journal: 'Nutrients',
         year: 2017,
@@ -324,7 +324,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2015,
         url: pubmed('The physiological role of taurine: from organism to organelle'),
         summary:
-          'broad review of taurine\'s biological roles — osmoregulation, calcium signaling, mitochondrial function, and antioxidant activity. a useful single-source primer on why taurine appears across nervous, cardiac, and metabolic literature.',
+          'broad review of taurine\'s biological roles: osmoregulation, calcium signaling, mitochondrial function, and antioxidant activity. a useful single-source primer on why taurine appears across nervous, cardiac, and metabolic literature.',
       },
       {
         title: 'Effects and mechanisms of taurine as a therapeutic agent',
@@ -355,7 +355,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2012,
         url: pubmed('Taurine: a very essential amino acid'),
         summary:
-          'review of taurine\'s role in tissues that hold the highest concentrations — retina, cardiac, and skeletal muscle. discusses why taurine is "conditionally essential" rather than strictly essential or non-essential.',
+          'review of taurine\'s role in tissues that hold the highest concentrations: retina, cardiac, and skeletal muscle. discusses why taurine is "conditionally essential" rather than strictly essential or non-essential.',
       },
     ],
   },
@@ -374,13 +374,13 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'the american college of sports medicine\'s position statement on hydration and electrolyte replacement during exertion. the foundational reference for sodium-and-potassium-bearing rehydration formulas in the sports nutrition space.',
       },
       {
-        title: 'Oral rehydration salts (ORS) — formulation rationale',
+        title: 'Oral rehydration salts (ORS): formulation rationale',
         authors: 'World Health Organization',
         journal: 'WHO Model List of Essential Medicines',
         year: 2024,
         url: 'https://www.who.int/publications/i/item/WHO-MHP-HPS-EML-2023.02',
         summary:
-          'the WHO\'s formulation rationale for oral rehydration solutions — explains why a specific sodium / potassium / glucose ratio is more effective at restoring hydration than water alone, and why electrolytes appear in many performance and recovery products.',
+          'the WHO\'s formulation rationale for oral rehydration solutions: explains why a specific sodium / potassium / glucose ratio is more effective at restoring hydration than water alone, and why electrolytes appear in many performance and recovery products.',
       },
       {
         title:
@@ -400,18 +400,18 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2016,
         url: pubmed('A randomized trial of hydrating beverages on rehydration'),
         summary:
-          'compared the rehydration efficacy of common beverages — water, sports drinks, milk, oral rehydration solution, and others. found that drinks containing sodium and a small amount of carbohydrate retained more body water than plain water.',
+          'compared the rehydration efficacy of common beverages: water, sports drinks, milk, oral rehydration solution, and others. found that drinks containing sodium and a small amount of carbohydrate retained more body water than plain water.',
       },
     ],
   },
   {
     name: 'blue spirulina (phycocyanin)',
     blurb:
-      'where the color comes from — and a real one. blue spirulina is the protein-rich extract phycocyanin, GRAS-affirmed by the FDA as a natural food coloring with a substantial antioxidant literature.',
+      'where the color comes from, and a real one. blue spirulina is the protein-rich extract phycocyanin, GRAS-affirmed by the FDA as a natural food coloring with a substantial antioxidant literature.',
     studies: [
       {
         title:
-          'GRAS Notice (GRN) No. 424 — Phycocyanin from Spirulina',
+          'GRAS Notice (GRN) No. 424: Phycocyanin from Spirulina',
         authors: 'US FDA Center for Food Safety and Applied Nutrition',
         journal: 'FDA GRAS Notice Inventory',
         year: 2013,
@@ -446,7 +446,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'xylitol',
     blurb:
-      'the sweet that is friendly to your teeth. unlike sucrose, cavity-causing bacteria cannot metabolize xylitol — they starve on it. low-glycemic, no insulin spike, decades of dental and metabolic literature behind it.',
+      'the sweet that is friendly to your teeth. unlike sucrose, cavity-causing bacteria cannot metabolize xylitol. they starve on it. low-glycemic, no insulin spike, decades of dental and metabolic literature behind it.',
     studies: [
       {
         title:
@@ -456,17 +456,17 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2015,
         url: 'https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD010743.pub2/full',
         summary:
-          'Cochrane systematic review of xylitol for caries prevention. concludes there is low-to-moderate-quality evidence that xylitol-containing products can reduce caries incidence — the strongest available evidence base for any non-fluoride dental sweetener.',
+          'Cochrane systematic review of xylitol for caries prevention. concludes there is low-to-moderate-quality evidence that xylitol-containing products can reduce caries incidence, the strongest available evidence base for any non-fluoride dental sweetener.',
       },
       {
         title:
-          'Xylitol — its role in caries control',
+          'Xylitol: its role in caries control',
         authors: 'Söderling EM',
         journal: 'European Journal of Dentistry',
         year: 2009,
-        url: pubmed('Xylitol — its role in caries control'),
+        url: pubmed('Xylitol: its role in caries control'),
         summary:
-          'review of xylitol\'s mechanism in dental caries — how it disrupts streptococcus mutans metabolism without providing a usable carbon source for bacteria. underpins the dental-association recommendations that followed.',
+          'review of xylitol\'s mechanism in dental caries: how it disrupts streptococcus mutans metabolism without providing a usable carbon source for bacteria. underpins the dental-association recommendations that followed.',
       },
       {
         title:
@@ -478,7 +478,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Glycemic and insulinemic responses to xylitol-containing foods',
         ),
         summary:
-          'examines blood-glucose and insulin response to xylitol versus sucrose-containing foods. xylitol produced a substantially attenuated postprandial response — the basis for its inclusion in low-glycemic and diabetic-friendly products.',
+          'examines blood-glucose and insulin response to xylitol versus sucrose-containing foods. xylitol produced a substantially attenuated postprandial response, the basis for its inclusion in low-glycemic and diabetic-friendly products.',
       },
       {
         title: 'Xylitol toxicity in dogs',
@@ -498,7 +498,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
     studies: [
       {
         title:
-          'Health potential of polyols as sugar replacers — focus on isomalt',
+          'Health potential of polyols as sugar replacers: focus on isomalt',
         authors: 'Sentko A, Willibald-Ettle I',
         journal: 'In: Sweeteners and Sugar Alternatives in Food Technology',
         year: 2012,
@@ -514,17 +514,17 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2003,
         url: pubmed('Isomalt: a review of its physiological effects'),
         summary:
-          'review of isomalt\'s metabolic profile — slow, partial absorption in the small intestine and fermentation of the unabsorbed fraction in the colon. explains the low caloric density and minimal blood-glucose response.',
+          'review of isomalt\'s metabolic profile: slow, partial absorption in the small intestine and fermentation of the unabsorbed fraction in the colon. explains the low caloric density and minimal blood-glucose response.',
       },
       {
         title:
-          'Joint FAO/WHO Expert Committee on Food Additives (JECFA) — isomalt evaluation',
+          'Joint FAO/WHO Expert Committee on Food Additives (JECFA): isomalt evaluation',
         authors: 'JECFA',
         journal: 'WHO Food Additives Series',
         year: 1985,
         url: 'https://www.fao.org/food/food-safety-quality/scientific-advice/jecfa/en/',
         summary:
-          'JECFA, the international food-safety body, evaluated isomalt for use as a food additive and assigned an "ADI not specified" — the most permissive safety category, applied only to additives with no observed toxicity at any tested dietary level.',
+          'JECFA, the international food-safety body, evaluated isomalt for use as a food additive and assigned an "ADI not specified", the most permissive safety category, applied only to additives with no observed toxicity at any tested dietary level.',
       },
     ],
   },
@@ -535,7 +535,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
     studies: [
       {
         title:
-          'GRAS Notice (GRN) No. 301 — Luo Han Guo (monk fruit) extract',
+          'GRAS Notice (GRN) No. 301: Luo Han Guo (monk fruit) extract',
         authors: 'US FDA Center for Food Safety and Applied Nutrition',
         journal: 'FDA GRAS Notice Inventory',
         year: 2010,
@@ -545,13 +545,13 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
       },
       {
         title:
-          'Pharmacology of monk fruit (Siraitia grosvenorii) — a review',
+          'Pharmacology of monk fruit (Siraitia grosvenorii): a review',
         authors: 'Pawar RS, Krynitsky AJ, Rader JI',
         journal: 'Analytical and Bioanalytical Chemistry',
         year: 2013,
-        url: pubmed('Pharmacology of monk fruit Siraitia grosvenorii — a review'),
+        url: pubmed('Pharmacology of monk fruit Siraitia grosvenorii: a review'),
         summary:
-          'review of the chemistry and pharmacology of the mogrosides — the cucurbitane glycosides responsible for monk fruit\'s intense sweetness. discusses why mogrosides are non-caloric and do not raise blood glucose.',
+          'review of the chemistry and pharmacology of the mogrosides: the cucurbitane glycosides responsible for monk fruit\'s intense sweetness. discusses why mogrosides are non-caloric and do not raise blood glucose.',
       },
       {
         title:

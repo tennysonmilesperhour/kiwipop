@@ -30,7 +30,7 @@ export default function CheckoutSuccessPage({ searchParams }: SuccessPageProps) 
           fontFamily: 'var(--mono)',
         }}
       >
-        sweet, tart, clean — and en route. packing now. tracking link in your
+        sweet, tart, clean, and en route. packing now. tracking link in your
         inbox.
       </p>
       {orderId ? (

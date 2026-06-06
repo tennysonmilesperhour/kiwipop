@@ -5,7 +5,7 @@ import { RESEARCH, SYNTHESIS } from '@/lib/research';
 export const metadata: Metadata = {
   title: 'research + references',
   description:
-    'curated research, position statements, and authoritative reviews behind every ingredient in the kiwi pop formula — jambu, theobromine, ginseng, b12, magnesium, taurine, electrolytes, spirulina, xylitol, isomalt, and monk fruit.',
+    'curated research, position statements, and authoritative reviews behind every ingredient in the kiwi pop formula: jambu, theobromine, ginseng, b12, magnesium, taurine, electrolytes, spirulina, xylitol, isomalt, and monk fruit.',
 };
 
 export default function ResearchPage() {

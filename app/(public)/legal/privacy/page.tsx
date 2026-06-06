@@ -57,7 +57,7 @@ export default function PrivacyPage() {
           of any email or by emailing{' '}
           <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a>. transactional
           emails (order confirmations, shipping notifications) keep coming
-          regardless — we have to send those.
+          regardless. we have to send those.
         </p>
 
         <h2>cookies + tracking</h2>
@@ -75,11 +75,11 @@ export default function PrivacyPage() {
           business:
         </p>
         <ul>
-          <li><strong>stripe</strong> — payment processing (PCI-DSS compliant)</li>
-          <li><strong>supabase</strong> — database and authentication</li>
-          <li><strong>vercel</strong> — hosting and analytics</li>
-          <li><strong>resend</strong> — transactional email</li>
-          <li><strong>usps / shipping carriers</strong> — order fulfillment</li>
+          <li><strong>stripe</strong>: payment processing (PCI-DSS compliant)</li>
+          <li><strong>supabase</strong>: database and authentication</li>
+          <li><strong>vercel</strong>: hosting and analytics</li>
+          <li><strong>resend</strong>: transactional email</li>
+          <li><strong>usps / shipping carriers</strong>: order fulfillment</li>
         </ul>
         <p>
           these providers are contractually bound to use your data only for
@@ -93,9 +93,9 @@ export default function PrivacyPage() {
           fulfill the purposes described in this policy:
         </p>
         <ul>
-          <li>order data — 7 years (tax and legal compliance)</li>
-          <li>email list data — until you unsubscribe</li>
-          <li>analytics data — 26 months (aggregated)</li>
+          <li>order data: 7 years (tax and legal compliance)</li>
+          <li>email list data: until you unsubscribe</li>
+          <li>analytics data: 26 months (aggregated)</li>
         </ul>
         <p>
           you can request deletion at any time; we&apos;ll delete what we
@@ -107,7 +107,7 @@ export default function PrivacyPage() {
           we implement industry-standard security measures including HTTPS
           encryption, secure authentication, and access controls. payment
           data is handled entirely by stripe and never touches our servers.
-          no system is 100% secure — if we ever experience a breach affecting
+          no system is 100% secure. if we ever experience a breach affecting
           your data, we&apos;ll notify you as required by law.
         </p>
 
@@ -127,7 +127,7 @@ export default function PrivacyPage() {
           this site and product are not directed at children under 13. we do
           not knowingly collect personal information from anyone under 13.
           if you believe a child has signed up, email us and we&apos;ll
-          delete the record. kiwi pop is intended for adults 18+ only — see the{' '}
+          delete the record. kiwi pop is intended for adults 18+ only. see the{' '}
           <Link href="/legal/fda-disclaimer">fda + safety</Link> page.
         </p>
 

@@ -64,18 +64,18 @@ export default function AboutPage() {
           <p>
             so i made one. about thirty-five calories. less than a gram of
             sugar. edible mica glitter swirled through so it catches
-            light when you lick it. jambu — the brazilian buzz-button
-            flower — for an electric mouth tingle on the first lick;
+            light when you lick it. jambu (the brazilian buzz-button
+            flower) for an electric mouth tingle on the first lick;
             it&apos;s been used for centuries in brazilian, indian, and
             east african cooking and is standard now in modern bartending.
-            the shared base — theobromine, b12, magnesium glycinate,
-            taurine, electrolytes — measured by gram, not by vibe. plus
+            the shared base (theobromine, b12, magnesium glycinate,
+            taurine, electrolytes) measured by gram, not by vibe. plus
             an adaptogen tuned per flavor: ginseng + spirulina in kiwi
             for the balanced lift, ashwagandha in lemon ginger for
             calm-warming, maca + cinnamon in caramel apple for grounded
             energy, l-theanine + chamomile in mint for calm-focus.
-            xylitol does the sweet —
-            tooth-friendly, low-glycemic, no insulin spike — with a touch
+            xylitol does the sweet
+            (tooth-friendly, low-glycemic, no insulin spike) with a touch
             of monk fruit. isomalt does the body. one stick.
             small batch. you can taste the small batch.
           </p>
@@ -90,14 +90,14 @@ export default function AboutPage() {
           </p>
           <p>
             the original is{' '}
-            <strong style={{ color: 'var(--lime)' }}>kiwi pop</strong> —
+            <strong style={{ color: 'var(--lime)' }}>kiwi pop</strong>,{' '}
             kiwi flavor, sweet/tart/clean. three more flavors are coming:{' '}
             <strong style={{ color: 'var(--cyan)' }}>molly&apos;s mint</strong>,{' '}
             <strong style={{ color: 'var(--sodium)' }}>lemon g. luci</strong>,{' '}
             and{' '}
             <strong style={{ color: 'var(--magenta)' }}>mary caramel apple</strong>. each
             built around a small obsession. shared functional base across
-            the four — adaptogen tuned per flavor. flavor leads.
+            the four, adaptogen tuned per flavor. flavor leads.
           </p>
           <p>
             we&apos;re launching soooon.

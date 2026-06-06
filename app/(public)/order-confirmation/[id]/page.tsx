@@ -84,7 +84,7 @@ export default async function OrderConfirmation({
         your secret is on its way.
       </h1>
       <p style={{ color: 'var(--paper)', marginBottom: '2rem' }}>
-        sweet, tart, clean — and en route. receipt to{' '}
+        sweet, tart, clean, and en route. receipt to{' '}
         <strong style={{ color: 'var(--lime)' }}>
           {data.user_email || 'your email'}
         </strong>
@@ -146,7 +146,7 @@ export default async function OrderConfirmation({
             <tbody>
               {data.items.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.products?.name?.toLowerCase() ?? '—'}</td>
+                  <td>{item.products?.name?.toLowerCase() ?? '-'}</td>
                   <td>{item.quantity}</td>
                   <td>{formatCentsToUSD(item.price_cents)}</td>
                   <td>{formatCentsToUSD(item.price_cents * item.quantity)}</td>

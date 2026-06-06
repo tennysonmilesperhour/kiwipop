@@ -60,7 +60,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#ffce1f',
     status: 'soon',
     description:
-      "the g is for ginger. bright lemon out front, ginger snap on the back end — sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. coming soon.",
+      "the g is for ginger. bright lemon out front, ginger snap on the back end, sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. coming soon.",
     pickerLabel: 'lemon ginger',
     adaptogen: 'ashwagandha',
     direction: 'calm-warming',
@@ -75,7 +75,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#00f0ff',
     status: 'soon',
     description:
-      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling — mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. coming soon.",
+      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling: mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. coming soon.",
     pickerLabel: 'mint',
     adaptogen: 'L-theanine + chamomile',
     direction: 'calm-focus',
@@ -90,7 +90,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#d97539',
     status: 'soon',
     description:
-      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon — maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. coming soon.",
+      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon. maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. coming soon.",
     pickerLabel: 'caramel apple',
     adaptogen: 'maca + cinnamon',
     direction: 'grounded energy',
@@ -245,7 +245,7 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
   {
     name: 'jambu',
     amount: 'food-flavor amount',
-    why: 'the spark. brazilian flower (acmella oleracea). electric mouth tingle on the first lick — also called the buzz button.',
+    why: 'the spark. brazilian flower (acmella oleracea). electric mouth tingle on the first lick, also called the buzz button.',
   },
   {
     name: 'theobromine',
@@ -303,12 +303,12 @@ export const TIMELINE: readonly TimelineMoment[] = [
   {
     index: '00:15',
     title: 'first lick',
-    body: 'sweet, tart, clean. <1g of sugar — no sugar burn. the mica glitter catches the light.',
+    body: 'sweet, tart, clean. <1g of sugar, no sugar burn. the mica glitter catches the light.',
   },
   {
     index: '00:20',
     title: 'the spark',
-    body: 'jambu hits. the brazilian buzz-button flower wakes the palate — fizzy mouth-tingle, watering, fully awake. people have used it this way for centuries.',
+    body: 'jambu hits. the brazilian buzz-button flower wakes the palate, fizzy mouth-tingle, watering, fully awake. people have used it this way for centuries.',
   },
   {
     index: '02:00',

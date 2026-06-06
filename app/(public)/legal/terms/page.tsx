@@ -19,7 +19,7 @@ export default function TermsPage() {
         <p>
           short version: buy our pops, eat our pops, enjoy our pops. don&apos;t
           do anything weird. if something goes wrong, email us before you sue
-          us — we&apos;ll fix it.
+          us, we&apos;ll fix it.
         </p>
 
         <h2>using the site</h2>
@@ -44,7 +44,7 @@ export default function TermsPage() {
           <li>
             we may refuse or cancel any order. the most likely reason is
             we&apos;re out of stock and the inventory hasn&apos;t caught up
-            yet — we&apos;ll refund and tell you.
+            yet, we&apos;ll refund and tell you.
           </li>
           <li>
             payment is processed by stripe under their terms.
@@ -77,8 +77,8 @@ export default function TermsPage() {
           adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon
           ginger, maca + cinnamon in caramel apple, l-theanine + chamomile
           in mint). also contains sugar alcohols (isomalt, xylitol). any
-          claims we make about our ingredients are structure/function claims
-          — they describe how nutrients may support normal body functions,
+          claims we make about our ingredients are structure/function claims.
+          they describe how nutrients may support normal body functions,
           not treat or cure medical conditions.
         </p>
         <p>

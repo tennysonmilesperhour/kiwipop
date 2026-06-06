@@ -214,7 +214,7 @@ export function Broadcaster({ token }: { token: string }) {
           {status === 'starting'
             ? 'GETTING LOCATION…'
             : isLive
-              ? '● YOU ARE LIVE — TAP TO GO OFFLINE'
+              ? '● YOU ARE LIVE · TAP TO GO OFFLINE'
               : 'GO LIVE'}
         </button>
 
@@ -230,7 +230,7 @@ export function Broadcaster({ token }: { token: string }) {
           <div style={{ ...notice, borderColor: 'var(--sodium)' }}>
             <strong style={{ color: 'var(--sodium)' }}>you left your zone.</strong>
             <p style={muted}>
-              broadcasting paused automatically. tap GO LIVE to resume — or turn off
+              broadcasting paused automatically. tap GO LIVE to resume, or turn off
               “auto-off when I leave the zone” below to broadcast anywhere.
             </p>
           </div>
@@ -246,8 +246,8 @@ export function Broadcaster({ token }: { token: string }) {
               <br />
               <span style={muted}>
                 {config.zone_lat != null
-                  ? `zone set · radius ${config.zone_radius_m ?? '—'}m`
-                  : 'no zone set — set one below'}
+                  ? `zone set · radius ${config.zone_radius_m ?? '-'}m`
+                  : 'no zone set, set one below'}
               </span>
             </span>
             <input

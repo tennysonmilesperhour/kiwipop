@@ -263,7 +263,7 @@ export default function ProductClient({ params }: ProductClientProps) {
                         {tile.label}
                       </div>
                       <div style={{ fontSize: '0.8rem', marginTop: '0.3rem' }}>
-                        {tilePriceCents ? formatCentsToUSD(tilePriceCents) : '—'}
+                        {tilePriceCents ? formatCentsToUSD(tilePriceCents) : '-'}
                       </div>
                       {tile.badge && (
                         <div

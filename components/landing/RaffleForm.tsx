@@ -62,10 +62,10 @@ export function RaffleForm() {
           <span className="lm">PRIDE ART.</span>
         </h2>
         <p className="lede">
-          a special one-of-one Pride art giveaway — one original kiwi pop piece,
+          a special one-of-one Pride art giveaway: one original kiwi pop piece,
           made to celebrate the month, one winner.{' '}
           <span className="em">free to enter.</span> drop your info, we&apos;ll
-          pick at random and DM the winner. promise we won&apos;t sell your data —
+          pick at random and DM the winner. promise we won&apos;t sell your data,
           we&apos;ll just tag you in the post.
         </p>
       </div>

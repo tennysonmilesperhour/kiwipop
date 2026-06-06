@@ -119,7 +119,7 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
       >
         boutiques, late-night bars, festival vendors, gift shops. apply with
         your business details and we get back fast. tiered pricing scales
-        with your order size — no minimums for the first conversation.
+        with your order size. no minimums for the first conversation.
       </p>
 
       <div
@@ -194,21 +194,21 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
           <li>
             <span className="wholesale-step-num">01</span>
             <div>
-              <strong>apply</strong> — business name, contact, channel, expected
+              <strong>apply</strong>: business name, contact, channel, expected
               volume. takes 90 seconds.
             </div>
           </li>
           <li>
             <span className="wholesale-step-num">02</span>
             <div>
-              <strong>review</strong> — we batch-review applications. typical
+              <strong>review</strong>: we batch-review applications. typical
               turnaround is 2 business days. expect an email either way.
             </div>
           </li>
           <li>
             <span className="wholesale-step-num">03</span>
             <div>
-              <strong>place a preorder</strong> — once approved you can
+              <strong>place a preorder</strong>: once approved you can
               preorder full cases at tier pricing. we lock the batch and ship
               when the run is ready.
             </div>
@@ -216,7 +216,7 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
           <li>
             <span className="wholesale-step-num">04</span>
             <div>
-              <strong>ongoing</strong> — reorder via{' '}
+              <strong>ongoing</strong>: reorder via{' '}
               <code>thekiwipop@gmail.com</code>. festival drops get a heads-up
               before public.
             </div>

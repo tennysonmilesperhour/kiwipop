@@ -328,7 +328,7 @@ export default function WholesaleApplyPage(): JSX.Element {
               className="form-select"
               required
             >
-              <option value="">— pick one —</option>
+              <option value="">pick one</option>
               {CHANNELS.map((ch) => (
                 <option key={ch.value} value={ch.value ?? ''}>
                   {ch.label}

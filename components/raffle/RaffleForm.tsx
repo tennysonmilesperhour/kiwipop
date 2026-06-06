@@ -52,7 +52,7 @@ export function RaffleForm({ entryUrl }: RaffleFormProps) {
         throw new Error(json.error ?? 'something broke. try again.');
       }
       setStatus('ok');
-      setMessage("you're in. two winners get drawn — we'll email if it's you.");
+      setMessage("you're in. two winners get drawn, we'll email if it's you.");
       setName('');
       setEmail('');
       setPhone('');

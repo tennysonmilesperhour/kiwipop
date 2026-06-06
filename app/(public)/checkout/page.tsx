@@ -109,7 +109,7 @@ export default function CheckoutPage() {
       const json = (await response.json()) as CheckoutResponse;
 
       if (!response.ok || !json.checkoutUrl) {
-        setError(json.error ?? 'Could not start checkout — please try again.');
+        setError(json.error ?? 'Could not start checkout. please try again.');
         setSubmitting(false);
         return;
       }
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
 
       {!user && (
         <div className="alert" style={{ marginBottom: '1rem' }}>
-          checking out as a guest — no account needed. we&apos;ll email
+          checking out as a guest, no account needed. we&apos;ll email
           the receipt and a tracking link.{' '}
           <Link
             href={`/auth/signin?next=${encodeURIComponent('/checkout')}`}
@@ -294,7 +294,7 @@ export default function CheckoutPage() {
                 style={{ fontSize: '0.85rem', lineHeight: 1.5 }}
               >
                 email me about new flavors, drops, and the occasional
-                discount. unsubscribe any time — we never share your email.
+                discount. unsubscribe any time. we never share your email.
               </label>
             </div>
 

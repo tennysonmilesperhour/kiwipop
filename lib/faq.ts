@@ -16,11 +16,11 @@ export interface FaqItem {
 export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   {
     q: 'What does Kiwi Pop feel like?',
-    a: 'The first lick brings a bright, electric tingle on the tongue and lips — that is jambu, the small flowering plant from Brazil also called the buzz button. Behind the tingle, the rest of the formula is doing quieter work: theobromine for a clean lift, magnesium and taurine to soften the edges, electrolytes and B12 for that "you ate something real" feeling. Most people describe it as alert, social, and a little playful.',
+    a: 'The first lick brings a bright, electric tingle on the tongue and lips. That is jambu, the small flowering plant from Brazil also called the buzz button. Behind the tingle, the rest of the formula is doing quieter work: theobromine for a clean lift, magnesium and taurine to soften the edges, electrolytes and B12 for that "you ate something real" feeling. Most people describe it as alert, social, and a little playful.',
   },
   {
     q: 'How long until I feel the tingle, and how long does it last?',
-    a: 'Instantly. The jambu sensation kicks in on the first lick and stays roughly as long as the pop does — a few minutes of light, fizzy mouth-tingle. The other functional ingredients (theobromine, magnesium, B12, electrolytes) take about 15–30 minutes to settle in.',
+    a: 'Instantly. The jambu sensation kicks in on the first lick and stays roughly as long as the pop does, a few minutes of light, fizzy mouth-tingle. The other functional ingredients (theobromine, magnesium, B12, electrolytes) take about 15–30 minutes to settle in.',
   },
   {
     q: 'How many should I have?',
@@ -32,7 +32,7 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'How is Kiwi Pop different from alcohol?',
-    a: 'No ethanol, no hangover, less than 1 gram of sugar. It is a sensory, social experience — the tingle is a conversation starter and the rest of the formula keeps you clear. A sober-curious option, not a buzz substitute.',
+    a: 'No ethanol, no hangover, less than 1 gram of sugar. It is a sensory, social experience. The tingle is a conversation starter and the rest of the formula keeps you clear. A sober-curious option, not a buzz substitute.',
   },
   {
     q: 'What is jambu, and is it safe?',
@@ -44,14 +44,14 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'Can I mix Kiwi Pop with alcohol or coffee?',
-    a: 'Sure — there is nothing in the formula that conflicts with normal social use. That said, the supplement payload (theobromine, taurine, B12, magnesium) does real work, so do not stack five of them on top of three espressos.',
+    a: 'Sure, there is nothing in the formula that conflicts with normal social use. That said, the supplement payload (theobromine, taurine, B12, magnesium) does real work, so do not stack five of them on top of three espressos.',
   },
   {
     q: 'Who should not eat Kiwi Pop?',
-    a: 'Anyone under 18, anyone pregnant or nursing (precautionary), anyone on prescription medication that warrants checking new dietary supplements with a doctor, and anyone with a sugar-alcohol sensitivity that causes GI distress. If you have a known plant allergy — especially to the daisy / Asteraceae family — talk to your doctor before trying jambu. Full advisory on our /legal/fda-disclaimer page.',
+    a: 'Anyone under 18, anyone pregnant or nursing (precautionary), anyone on prescription medication that warrants checking new dietary supplements with a doctor, and anyone with a sugar-alcohol sensitivity that causes GI distress. If you have a known plant allergy (especially to the daisy / Asteraceae family) talk to your doctor before trying jambu. Full advisory on our /legal/fda-disclaimer page.',
   },
   {
-    q: 'My dog got into one — what do I do?',
+    q: 'My dog got into one, what do I do?',
     a: 'Call your veterinarian or the Pet Poison Helpline immediately. Xylitol is highly toxic to dogs even in tiny amounts. Keep Kiwi Pop out of reach of pets.',
   },
   {

@@ -21,7 +21,7 @@ export function MerchSection() {
         error?: string;
       };
       if (!response.ok || !json.checkoutUrl) {
-        throw new Error(json.error ?? 'could not start checkout — try again.');
+        throw new Error(json.error ?? 'could not start checkout. try again.');
       }
       window.location.href = json.checkoutUrl;
     } catch (err) {

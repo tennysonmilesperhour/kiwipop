@@ -58,7 +58,7 @@ export default function SignIn() {
       <div className="card">
         {next === '/checkout' && (
           <div className="alert" style={{ marginBottom: '1rem' }}>
-            signing in is optional —{' '}
+            signing in is optional.{' '}
             <Link
               href="/checkout"
               style={{ color: 'var(--lime)', fontWeight: 700 }}

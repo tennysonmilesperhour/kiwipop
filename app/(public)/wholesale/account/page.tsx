@@ -52,7 +52,7 @@ const STATUS_COPY: Record<
   },
   rejected: {
     headline: 'not this round.',
-    body: "we couldn't make it work this cycle. reapply once anything changes — new shop, new channel, new volume — and we'll take a fresh look.",
+    body: "we couldn't make it work this cycle. reapply once anything changes (new shop, new channel, new volume) and we'll take a fresh look.",
     color: 'var(--magenta)',
   },
 };
@@ -310,7 +310,7 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
             }}
           >
             email <strong>thekiwipop@gmail.com</strong> with quantities by
-            flavor. include your business name + tier — we&apos;ll match it to
+            flavor. include your business name + tier, we&apos;ll match it to
             this account, send a quote with a stripe payment link, and lock
             inventory in the next batch.
           </p>
