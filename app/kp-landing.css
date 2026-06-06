@@ -3060,25 +3060,20 @@
    Auto-gated by isPrideMonth() (lib/pride.ts), which adds the `.kp-pride`
    class to .kp-page for all of June and removes it on July 1. This block
    recolors the yellow (--lemon) FILLS — the scrolling ticker band, the
-   CTAs/buttons, the hero eyebrow pill, the equalizer bars — into a light
-   pastel rainbow with a glowing outline. Every gradient stop is kept high on
-   the lightness scale so the black (--void) text on top stays legible.
+   CTAs/buttons, the hero eyebrow pill, the equalizer bars — into a saturated
+   rainbow (no glow / no outline). Every gradient stop is still kept light
+   enough that the black (--void) text on top stays legible.
    Yellow *text* accents are intentionally left alone.
    ========================================================= */
 .kp-page.kp-pride {
   --pride-rainbow: linear-gradient(
     100deg,
-    #ffb3ba 0%, #ffd9a8 16%, #fdffb3 33%,
-    #bdf5c0 50%, #a8e6ff 66%, #c2b6ff 83%, #ffc2f0 100%
+    #ff7a92 0%, #ffb14d 16%, #ffe14d 33%,
+    #5fde7f 50%, #4db5fb 66%, #8e8bff 83%, #ee7ee0 100%
   );
-  --pride-glow:
-    0 0 0 1.5px rgba(255, 255, 255, 0.65),
-    0 0 16px rgba(255, 145, 200, 0.5),
-    0 0 30px rgba(150, 200, 255, 0.4),
-    0 0 48px rgba(190, 160, 255, 0.3);
 }
 
-/* every recolored fill shares the pastel rainbow + glow, with a slow shimmer */
+/* every recolored fill shares the rainbow + a slow shimmer (no glow/outline) */
 .kp-page.kp-pride .kp-ticker-bar,
 .kp-page.kp-pride .z1 .eyebrow,
 .kp-page.kp-pride .z2 .cta,
@@ -3091,8 +3086,8 @@
   background: var(--pride-rainbow);
   background-size: 220% 100%;
   color: var(--void);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: var(--pride-glow);
+  border-color: transparent;
+  box-shadow: none;
   animation: kp-pride-shift 8s linear infinite;
 }
 
@@ -3120,18 +3115,26 @@
 
 /* decorative equalizer bars → vertical rainbow */
 .kp-page.kp-pride .z4 .bars b {
-  background: linear-gradient(180deg, #ffb3ba, #fdffb3, #bdf5c0, #a8e6ff, #c2b6ff, #ffc2f0);
+  background: linear-gradient(180deg, #ff7a92, #ffe14d, #5fde7f, #4db5fb, #8e8bff, #ee7ee0);
   box-shadow: 0 0 6px rgba(255, 180, 220, 0.6);
 }
 
-/* intensify the glow on hover for the big tappable CTAs */
-.kp-page.kp-pride .cta-take:hover,
-.kp-page.kp-pride .raffle-form .cta:hover,
-.kp-page.kp-pride .rev.signup button[type="submit"]:hover {
-  box-shadow:
-    0 0 0 1.5px rgba(255, 255, 255, 0.8),
-    0 0 22px rgba(255, 145, 200, 0.6),
-    0 0 40px rgba(150, 200, 255, 0.5);
+/* hero spec-line highlighter ("here to make you more kissable" + the ingredient
+   list under it) → wash a rainbow tint over the near-white slab. The white base
+   stays dominant so the dense dark copy keeps its contrast. */
+.kp-page.kp-pride .z1 .sub .sub-hl {
+  background:
+    linear-gradient(
+      100deg,
+      rgba(255, 122, 146, 0.5) 0%,
+      rgba(255, 177, 77, 0.5) 18%,
+      rgba(255, 225, 77, 0.5) 36%,
+      rgba(95, 222, 127, 0.5) 54%,
+      rgba(77, 181, 251, 0.5) 72%,
+      rgba(142, 139, 255, 0.5) 88%,
+      rgba(238, 126, 224, 0.5) 100%
+    ),
+    rgba(255, 255, 255, 0.9);
 }
 
 /* respect reduced-motion — drop the shimmer, keep the colors */
@@ -3159,9 +3162,9 @@
 .kp-page .zraffle .raffle-art-frame {
   padding: 10px;
   border-radius: 16px;
-  /* falls back to a cyan glow outside Pride month, becomes the rainbow in June */
+  /* rainbow frame in June, soft cyan/lemon frame otherwise */
   background: var(--pride-rainbow, linear-gradient(135deg, rgba(0, 240, 255, 0.5), rgba(245, 255, 61, 0.4)));
-  box-shadow: var(--pride-glow, 0 0 30px rgba(0, 240, 255, 0.35));
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
 }
 .kp-page .zraffle .raffle-art-img,
 .kp-page .zraffle .raffle-art-ph {
