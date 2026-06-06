@@ -3040,13 +3040,13 @@
 }
 
 /* =========================================================
-   PRIDE MONTH — June rainbow takeover.
-   Auto-gated by isPrideMonth() (lib/pride.ts), which adds the `.kp-pride`
-   class to .kp-page for all of June and removes it on July 1. This block
-   recolors the yellow (--lemon) FILLS — the scrolling ticker band, the
-   CTAs/buttons, the hero eyebrow pill, the equalizer bars — into a saturated
-   rainbow (no glow / no outline). Every gradient stop is still kept light
-   enough that the black (--void) text on top stays legible.
+   PRIDE rainbow takeover.
+   Toggled by the `.kp-pride` class on .kp-page (driven by PRIDE_MODE in
+   lib/pride.ts), kept on year-round for now. This block recolors the yellow
+   (--lemon) FILLS: the scrolling ticker band, the CTAs/buttons, the hero
+   eyebrow pill, the equalizer bars, into a saturated rainbow (no glow / no
+   outline). Every gradient stop is still kept light enough that the black
+   (--void) text on top stays legible.
    Yellow *text* accents are intentionally left alone.
    ========================================================= */
 .kp-page.kp-pride {
