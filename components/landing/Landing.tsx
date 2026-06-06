@@ -112,6 +112,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const [approvedReviews, setApprovedReviews] = useState<
     Array<{ id: string; display_name: string; rating: number; body: string; approved_at: string | null }>
   >([]);
+  const [igPosts, setIgPosts] = useState<
+    Array<{ id: string; permalink: string; imageUrl: string; caption: string }>
+  >([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -120,6 +123,23 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       .then((j) => {
         if (cancelled || !j?.reviews) return;
         setApprovedReviews(j.reviews);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Pull live Instagram posts (via the Behold JSON feed proxied through
+  // /api/instagram). If nothing comes back — feed not configured yet, or the
+  // request fails — igPosts stays empty and the grid shows placeholder tiles.
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/instagram', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (cancelled || !j?.posts?.length) return;
+        setIgPosts(j.posts);
       })
       .catch(() => {});
     return () => {
@@ -902,33 +922,67 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         </a>
 
         <div className="zig-grid" role="list">
-          {[
-            'KIWI · DROP 001',
-            'BEHIND THE BATCH',
-            'FESTIVAL POP-UP',
-            'POP × LIPS',
-            'GLITTER MICA · MACRO',
-            '03:47 AM · SUNRISE',
-          ].map((label, idx) => (
-            <a
-              key={label}
-              className={`zig-tile zig-tile-${idx % 4}`}
-              href="https://www.instagram.com/the.kiwi.pop/"
-              target="_blank"
-              rel="noopener noreferrer"
-              role="listitem"
-              aria-label={`${label} — open @the.kiwi.pop`}
-            >
-              <span className="zig-tile-label">{label}</span>
-              <span className="zig-tile-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
-                </svg>
-              </span>
-            </a>
-          ))}
+          {igPosts.length > 0
+            ? igPosts.map((post) => {
+                const cap =
+                  post.caption.length > 64
+                    ? `${post.caption.slice(0, 61)}…`
+                    : post.caption;
+                return (
+                  <a
+                    key={post.id}
+                    className="zig-tile zig-tile--photo"
+                    href={post.permalink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    role="listitem"
+                    aria-label={`${cap || 'kiwi pop'} — open on @the.kiwi.pop`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="zig-tile-img"
+                      src={post.imageUrl}
+                      alt={post.caption || 'kiwi pop on instagram'}
+                      loading="lazy"
+                    />
+                    {cap ? <span className="zig-tile-label">{cap}</span> : null}
+                    <span className="zig-tile-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="5" />
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+                      </svg>
+                    </span>
+                  </a>
+                );
+              })
+            : [
+                'KIWI · DROP 001',
+                'BEHIND THE BATCH',
+                'FESTIVAL POP-UP',
+                'POP × LIPS',
+                'GLITTER MICA · MACRO',
+                '03:47 AM · SUNRISE',
+              ].map((label, idx) => (
+                <a
+                  key={label}
+                  className={`zig-tile zig-tile-${idx % 4}`}
+                  href="https://www.instagram.com/the.kiwi.pop/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="listitem"
+                  aria-label={`${label} — open @the.kiwi.pop`}
+                >
+                  <span className="zig-tile-label">{label}</span>
+                  <span className="zig-tile-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <rect x="3" y="3" width="18" height="18" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+                    </svg>
+                  </span>
+                </a>
+              ))}
         </div>
       </section>
 
