@@ -121,7 +121,7 @@ export function Onepager({ fontVars }: OnepagerProps) {
     // eslint-disable-next-line no-console
     console.log('Vendor application submitted:', data);
     const subject = encodeURIComponent(
-      'Wholesale vendor application — ' + (data.trading_name || ''),
+      'Wholesale vendor application: ' + (data.trading_name || ''),
     );
     const bodyLines = Object.entries(data)
       .map(([k, v]) => `${k}: ${v}`)
@@ -208,11 +208,11 @@ export function Onepager({ fontVars }: OnepagerProps) {
 
           <p className="hero-sub" {...langProps('en')}>
             <strong>Kiwi Pop is a functional lollipop, made for the night.</strong>
-            {' '}Less than 1g of sugar. Around 35 calories. Vegan. A measured blend of botanicals and electrolytes — a shared base in every flavor (jambu, theobromine, B12, magnesium glycinate, taurine, electrolytes) plus an adaptogen tuned per flavor (ginseng + spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) — thought through for long hours and warm rooms. Honest about what&apos;s in it. Honest about what it isn&apos;t.
+            {' '}Less than 1g of sugar. Around 35 calories. Vegan. A measured blend of botanicals and electrolytes: a shared base in every flavor (jambu, theobromine, B12, magnesium glycinate, taurine, electrolytes) plus an adaptogen tuned per flavor (ginseng + spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile), thought through for long hours and warm rooms. Honest about what&apos;s in it. Honest about what it isn&apos;t.
           </p>
           <p className="hero-sub" {...langProps('es')}>
             <strong>Kiwi Pop es una piruleta funcional, pensada para la noche.</strong>
-            {' '}Menos de 1g de azúcar. Alrededor de 35 calorías. Vegana. Una mezcla medida de plantas y electrolitos — base común en cada sabor (jambú, teobromina, B12, glicinato de magnesio, taurina, electrolitos) más un adaptógeno afinado por sabor (ginseng + espirulina, ashwagandha, maca + canela o L-teanina + manzanilla) — pensada para horas largas y salas con ritmo. Transparente con lo que lleva. Transparente con lo que no.
+            {' '}Menos de 1g de azúcar. Alrededor de 35 calorías. Vegana. Una mezcla medida de plantas y electrolitos: base común en cada sabor (jambú, teobromina, B12, glicinato de magnesio, taurina, electrolitos) más un adaptógeno afinado por sabor (ginseng + espirulina, ashwagandha, maca + canela o L-teanina + manzanilla), pensada para horas largas y salas con ritmo. Transparente con lo que lleva. Transparente con lo que no.
           </p>
 
           <div className="hero-stats">
@@ -676,7 +676,7 @@ export function Onepager({ fontVars }: OnepagerProps) {
           <h2 {...langProps('en')}>Send a vendor application.</h2>
           <h2 {...langProps('es')}>Enviar una solicitud.</h2>
           <p className="cta-sub" {...langProps('en')}>
-            A short form. The fields are tuned for venues importing from outside the EU, so it asks for your tax IDs and customs information up front. Nothing on the form commits you to a volume or a price — it gives us what we need to come back with a clear proposal for your floor.
+            A short form. The fields are tuned for venues importing from outside the EU, so it asks for your tax IDs and customs information up front. Nothing on the form commits you to a volume or a price. It gives us what we need to come back with a clear proposal for your floor.
           </p>
           <p className="cta-sub" {...langProps('es')}>
             Un formulario breve. Los campos están pensados para salas que importan de fuera de la UE, así que se piden los datos fiscales y aduaneros desde el principio. Nada del formulario te compromete a un volumen ni a un precio: nos da lo que necesitamos para volver con una propuesta clara para vuestra sala.
@@ -805,7 +805,7 @@ export function Onepager({ fontVars }: OnepagerProps) {
                       <span {...langProps('es')}>Forma jurídica <span className="req">*</span></span>
                     </label>
                     <select name="legal_form" required defaultValue="">
-                      <option value="">—</option>
+                      <option value="">-</option>
                       <option>Autónomo</option>
                       <option>Sociedad Limitada (SL)</option>
                       <option>Sociedad Anónima (SA)</option>
@@ -821,7 +821,7 @@ export function Onepager({ fontVars }: OnepagerProps) {
                       <span {...langProps('es')}>Tipo de local <span className="req">*</span></span>
                     </label>
                     <select name="venue_type" required defaultValue="">
-                      <option value="">—</option>
+                      <option value="">-</option>
                       <option {...langProps('en')}>Nightclub</option>
                       <option {...langProps('es')}>Discoteca</option>
                       <option {...langProps('en')}>Bar / lounge</option>
@@ -900,15 +900,15 @@ export function Onepager({ fontVars }: OnepagerProps) {
                     <span {...langProps('es')}>¿Cómo se importará la mercancía? <span className="req">*</span></span>
                   </label>
                   <select name="import_handling" required defaultValue="">
-                    <option value="">—</option>
+                    <option value="">-</option>
                     <option {...langProps('en')}>We have our own EORI and will handle import directly</option>
                     <option {...langProps('es')}>Tenemos EORI propio y gestionaremos la importación directamente</option>
                     <option {...langProps('en')}>We work with a customs broker / freight forwarder</option>
                     <option {...langProps('es')}>Trabajamos con un agente de aduanas / transitario</option>
                     <option {...langProps('en')}>We need Kiwi Pop&apos;s EU partner to handle import</option>
                     <option {...langProps('es')}>Necesitamos que el socio europeo de Kiwi Pop gestione la importación</option>
-                    <option {...langProps('en')}>Not sure yet — we&apos;d like advice</option>
-                    <option {...langProps('es')}>Aún no estamos seguros — buscamos asesoramiento</option>
+                    <option {...langProps('en')}>Not sure yet, we&apos;d like advice</option>
+                    <option {...langProps('es')}>Aún no estamos seguros, buscamos asesoramiento</option>
                   </select>
                   <span className="hint" {...langProps('en')}>If you&apos;d rather Kiwi Pop&apos;s EU partner handle customs, that&apos;s available. The wholesale price will reflect that service.</span>
                   <span className="hint" {...langProps('es')}>Si prefieres que el socio europeo de Kiwi Pop se encargue de la aduana, es una opción disponible. El precio mayorista lo reflejará.</span>
@@ -974,7 +974,7 @@ export function Onepager({ fontVars }: OnepagerProps) {
                       <span {...langProps('es')}>Pedido inicial estimado</span>
                     </label>
                     <select name="initial_order" defaultValue="">
-                      <option value="">—</option>
+                      <option value="">-</option>
                       <option {...langProps('en')}>Sample case only (~40 units)</option>
                       <option {...langProps('es')}>Solo caja de muestra (~40 uds.)</option>
                       <option>200 - 500</option>

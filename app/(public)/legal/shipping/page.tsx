@@ -19,12 +19,12 @@ export default function ShippingPage() {
         <h2>where we ship</h2>
         <ul>
           <li>
-            <strong style={{ color: 'var(--lime)' }}>domestic us</strong> —
+            <strong style={{ color: 'var(--lime)' }}>domestic us</strong>:
             yes, day one
           </li>
-          <li>canada — soon, on the list</li>
+          <li>canada: soon, on the list</li>
           <li>
-            international (vienna · melbourne · london are first in line) —
+            international (vienna · melbourne · london are first in line):
             waitlist; we open it when we have stock
           </li>
         </ul>

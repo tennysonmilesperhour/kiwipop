@@ -28,7 +28,7 @@ export default function FdaDisclaimerPage() {
           <strong>FDA notice:</strong> these statements have not been
           evaluated by the food and drug administration. this product is not
           intended to diagnose, treat, cure, or prevent any disease. kiwi pop
-          is a confection with functional ingredients — it is candy, not a
+          is a confection with functional ingredients. it is candy, not a
           drug, and not medical advice.
         </p>
 
@@ -66,19 +66,19 @@ export default function FdaDisclaimerPage() {
         </p>
         <p><strong>shared base · same dose in every flavor:</strong></p>
         <ul>
-          <li>jambu (acmella oleracea) — food-flavor amount</li>
-          <li>theobromine — 175 mg</li>
-          <li>magnesium glycinate — 300 mg</li>
-          <li>taurine — 250 mg</li>
-          <li>electrolyte blend — 250 mg</li>
-          <li>b12 (methylcobalamin) — 1 mg</li>
+          <li>jambu (acmella oleracea): food-flavor amount</li>
+          <li>theobromine: 175 mg</li>
+          <li>magnesium glycinate: 300 mg</li>
+          <li>taurine: 250 mg</li>
+          <li>electrolyte blend: 250 mg</li>
+          <li>b12 (methylcobalamin): 1 mg</li>
         </ul>
         <p><strong>per-flavor adaptogen:</strong></p>
         <ul>
-          <li>kiwi pop — ginseng 150 mg + blue spirulina 125 mg (balanced)</li>
-          <li>lemon g. luci — ashwagandha 150 mg (calm-warming)</li>
-          <li>mary caramel apple — maca 150 mg + cinnamon 100 mg (grounded energy)</li>
-          <li>molly&apos;s mint — l-theanine 200 mg + chamomile extract 25 mg (calm-focus)</li>
+          <li>kiwi pop: ginseng 150 mg + blue spirulina 125 mg (balanced)</li>
+          <li>lemon g. luci: ashwagandha 150 mg (calm-warming)</li>
+          <li>mary caramel apple: maca 150 mg + cinnamon 100 mg (grounded energy)</li>
+          <li>molly&apos;s mint: l-theanine 200 mg + chamomile extract 25 mg (calm-focus)</li>
         </ul>
         <p>
           functional ingredients are dietary supplements, not drugs.

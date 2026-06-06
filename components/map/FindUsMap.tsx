@@ -71,7 +71,7 @@ export function FindUsMap() {
 
       {loaded && points.length === 0 && !error && (
         <p className="kp-map-empty">
-          // no pops on the map right now — check back, or get on the list for drops.
+          // no pops on the map right now. check back, or get on the list for drops.
         </p>
       )}
 

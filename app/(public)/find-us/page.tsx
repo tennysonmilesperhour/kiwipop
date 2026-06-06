@@ -60,7 +60,7 @@ export default function FindUsPage() {
             fontFamily: 'var(--mono)',
           }}
         >
-          colorful stars = where to find kiwi pop. pulsing stars are live right now — a booth or a
+          colorful stars = where to find kiwi pop. pulsing stars are live right now, a booth or a
           roving rep broadcasting their spot. tap a star for details.
         </p>
         <FindUsMap />
@@ -69,7 +69,7 @@ export default function FindUsPage() {
       <pre className="terminal-block">
 {`kiwi pop // signal status
 ─────────────────────────────────
-> dtc:           live — drops 001 · kiwi pop
+> dtc:           live · drops 001 · kiwi pop
 > retail:        coming soon
 > map:           live spots + roving reps
 > next ship:     check the list

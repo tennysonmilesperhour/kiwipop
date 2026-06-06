@@ -7,7 +7,7 @@ export const revalidate = 60;
 
 const title = 'campaign · launch the kiwi';
 const description =
-  'Help launch Kiwi Pop — functional lollipops for festivals, shelves, and every hand that needs a better alternative. Donate, follow our progress, and join the movement.';
+  'Help launch Kiwi Pop, functional lollipops for festivals, shelves, and every hand that needs a better alternative. Donate, follow our progress, and join the movement.';
 
 export const metadata: Metadata = {
   title,

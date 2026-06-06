@@ -104,8 +104,8 @@ export function SheetEmbed({
           </Link>
         </div>
         <p className="sheet-embed-hint">
-          paste a Google Sheets &quot;publish to web&quot; URL — or a Drive
-          file preview URL for raw .xlsx — on the{' '}
+          paste a Google Sheets &quot;publish to web&quot; URL (or a Drive
+          file preview URL for raw .xlsx) on the{' '}
           <Link href="/admin/sheets" style={{ color: 'var(--lime)' }}>
             sheets
           </Link>{' '}

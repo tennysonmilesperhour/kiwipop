@@ -341,7 +341,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
         <div className="hero-img">
           <Image
             src="/landing/img/lips-lollipop.jpg"
-            alt="Kiwi Pop hero — anime portrait holding a swirl lollipop"
+            alt="Kiwi Pop hero, anime portrait holding a swirl lollipop"
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 55vw"
@@ -371,12 +371,12 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">here to make you more kissable.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower — wakes the palate, increases salivation) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
+              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower that wakes the palate, increases salivation) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
             <span className="em">heads up · v1.</span>{' '}
-            this is the first version we&apos;re shipping — first batch of {launchProduct?.in_stock ?? 200}, made small.
+            this is the first version we&apos;re shipping. first batch of {launchProduct?.in_stock ?? 200}, made small.
             we&apos;re already tuning the next one. tell us what hits and what doesn&apos;t.
           </p>
           <div className="hero-ctas">
@@ -417,7 +417,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <p className="quote">
               made by hand in salt lake city. <span className="em">drop 001 · live now.</span>
             </p>
-            <span className="who">— DROP 001 · KIWI POP · LIVE NOW</span>
+            <span className="who">DROP 001 · KIWI POP · LIVE NOW</span>
           </div>
 
           <div className="checkout">
@@ -578,7 +578,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="zvid-grad">it started.</span>
             </h3>
             <p>
-              one little reel, zero plan, and then the internet absolutely lost it. we did NOT see this coming —
+              one little reel, zero plan, and then the internet absolutely lost it. we did NOT see this coming,
               but we&apos;re running with it full speed.
             </p>
             <p className="zvid-copy-cta">
@@ -597,7 +597,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="zvid-grad">friend AI?</span>
             </h3>
             <p>
-              nope — just my cofounder Tennyson.
+              nope, just my cofounder Tennyson.
             </p>
           </div>
         </div>
@@ -640,7 +640,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                 key={flavor.sku}
                 href={href}
                 className={`fc ${cardSkuKey}`}
-                aria-label={`${flavor.name} — ${isLive ? 'shop' : 'preorder'}`}
+                aria-label={`${flavor.name}, ${isLive ? 'shop' : 'preorder'}`}
               >
                 <div className="img">
                   {/* CSS-bg → <Image> swap. The .img class keeps
@@ -648,7 +648,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                       and Image fills it with object-fit: cover. */}
                   <Image
                     src={FLAVOR_IMG[flavor.sku] ?? '/landing/img/lips-lollipop.jpg'}
-                    alt={`${flavor.name} kiwi pop flavor — ${flavor.flavor}`}
+                    alt={`${flavor.name} kiwi pop flavor, ${flavor.flavor}`}
                     fill
                     sizes="(max-width: 768px) 80vw, 25vw"
                     style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -708,7 +708,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="lm">SUNRISE.</span>
           </h2>
           <p className="quote">
-            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth — about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick, and a small electric tingle from the jambu flower.
+            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth: about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick, and a small electric tingle from the jambu flower.
           </p>
         </div>
       </section>
@@ -729,7 +729,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="em">measured by gram · not by vibe.</span>
             <br />
             <span style={{ display: 'inline-block', marginTop: '0.5rem', opacity: 0.85 }}>
-              the headline is jambu — a brazilian flower used in cocktails and oral-care for the way it lights up the mouth. sources cited on the{' '}
+              the headline is jambu, a brazilian flower used in cocktails and oral-care for the way it lights up the mouth. sources cited on the{' '}
               <Link href="/research" style={{ color: 'var(--lime)' }}>
                 research page
               </Link>
@@ -829,7 +829,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               leave a <span className="it">review.</span>
             </span>
             <span className="sub">
-              tell us what you actually thought —{' '}
+              tell us what you actually thought.{' '}
               <span className="pk">we&apos;ll read every one.</span>
             </span>
             <span className="arr">drop a review →</span>
@@ -934,7 +934,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     role="listitem"
-                    aria-label={`${cap || 'kiwi pop'} — open on @the.kiwi.pop`}
+                    aria-label={`${cap || 'kiwi pop'}, open on @the.kiwi.pop`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -969,7 +969,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   role="listitem"
-                  aria-label={`${label} — open @the.kiwi.pop`}
+                  aria-label={`${label}, open @the.kiwi.pop`}
                 >
                   <span className="zig-tile-label">{label}</span>
                   <span className="zig-tile-icon" aria-hidden="true">
@@ -1113,7 +1113,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/accessibility">accessibility</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, B12, MAGNESIUM GLYCINATE, TAURINE, ELECTROLYTES, EDIBLE MICA + A PER-FLAVOR ADAPTOGEN (GINSENG/SPIRULINA, ASHWAGANDHA, MACA/CINNAMON, OR L-THEANINE/CHAMOMILE). SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS — KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, B12, MAGNESIUM GLYCINATE, TAURINE, ELECTROLYTES, EDIBLE MICA + A PER-FLAVOR ADAPTOGEN (GINSENG/SPIRULINA, ASHWAGANDHA, MACA/CINNAMON, OR L-THEANINE/CHAMOMILE). SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS. KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>

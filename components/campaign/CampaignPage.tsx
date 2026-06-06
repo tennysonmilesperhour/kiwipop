@@ -168,7 +168,7 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
             </p>
             <div className="cp-story-body">
               <p>
-                <strong>Kiwi Pop</strong> is a lollipop-shaped party supplement — functional candy with less than 1g of sugar,
+                <strong>Kiwi Pop</strong> is a lollipop-shaped party supplement, functional candy with less than 1g of sugar,
                 packed with a shared functional base (theobromine, B12, magnesium glycinate, taurine, electrolytes) plus a per-flavor adaptogen tuned to each flavor&apos;s direction.
                 We launched three days ago and our first video hit <strong>70,000 views</strong>.
                 People want this. Now we need to scale.
@@ -194,7 +194,7 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
 
             {updates.length === 0 ? (
               <div className="cp-empty-feed">
-                <p>No updates yet — check back soon for launch milestones and news!</p>
+                <p>No updates yet. check back soon for launch milestones and news!</p>
               </div>
             ) : (
               <div className="cp-feed">

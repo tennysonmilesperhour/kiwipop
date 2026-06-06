@@ -6,7 +6,7 @@ import { JsonLd } from '@/components/JsonLd';
 export const metadata: Metadata = {
   title: 'faq',
   description:
-    'kiwi pop frequently asked questions — what it feels like, what is in it, who should not eat it, shipping, returns, and storage.',
+    'kiwi pop frequently asked questions: what it feels like, what is in it, who should not eat it, shipping, returns, and storage.',
 };
 
 export default function FaqPage() {

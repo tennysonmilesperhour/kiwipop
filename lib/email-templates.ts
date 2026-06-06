@@ -56,17 +56,17 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
     html: layout(`
       <h1>welcome to the club.</h1>
       <p>you just joined something small and weird and kind of beautiful.</p>
-      <p>kiwi pop is a <span class="highlight">lollipop-shaped party supplement</span> —
+      <p>kiwi pop is a <span class="highlight">lollipop-shaped party supplement</span>:
       jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick),
       theobromine, B12, magnesium glycinate, taurine, electrolytes, edible mica glitter,
       and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger,
       maca + cinnamon in caramel apple, L-theanine + chamomile in mint).
       less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.</p>
       <p>jambu is the same flower bartenders use for the &ldquo;electric daisy&rdquo; tingle in
-      cocktails — it&rsquo;s been studied for its effect on saliva flow and oral sensation, and
+      cocktails, and it&rsquo;s been studied for its effect on saliva flow and oral sensation, and
       it&rsquo;s been in the human food supply for centuries. sources cited on
       <a href="https://www.kiwipop.fun/research">kiwipop.fun/research</a>.</p>
-      <p>we don't do spam. you'll hear from us when something actually matters —
+      <p>we don't do spam. you'll hear from us when something actually matters:
       new flavors, drops, events, and the occasional secret.</p>
       <a href="https://www.kiwipop.fun" class="cta">shop now →</a>
       <div class="fact">
@@ -77,11 +77,11 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
 
 you just joined something small and weird and kind of beautiful.
 
-kiwi pop is a lollipop-shaped party supplement — jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, B12, magnesium glycinate, taurine, electrolytes, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
+kiwi pop is a lollipop-shaped party supplement: jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, B12, magnesium glycinate, taurine, electrolytes, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
 
-jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails — it's been studied for its effect on saliva flow and oral sensation, and it's been in the human food supply for centuries. sources cited at https://www.kiwipop.fun/research.
+jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails, and it's been studied for its effect on saliva flow and oral sensation, and it's been in the human food supply for centuries. sources cited at https://www.kiwipop.fun/research.
 
-we don't do spam. you'll hear from us when something actually matters — new flavors, drops, events, and the occasional secret.
+we don't do spam. you'll hear from us when something actually matters: new flavors, drops, events, and the occasional secret.
 
 shop now → https://www.kiwipop.fun
 
@@ -100,21 +100,21 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
       <h1>what's actually in your mouth.</h1>
       <p>you signed up a couple days ago. here's the part where most brands would send you a coupon. instead, here's what we put in the pop and why.</p>
       
-      <p><span class="highlight">the shared functional base — same dose in every flavor:</span></p>
+      <p><span class="highlight">the shared functional base, same dose in every flavor:</span></p>
       <ul>
-        <li><strong>jambu</strong> — the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.</li>
-        <li><strong>theobromine</strong> — the gentle lift. it's what makes chocolate feel good — smooth energy without the jitters of caffeine.</li>
-        <li><strong>B12</strong> — the essentials. methylcobalamin form. keeps your energy metabolism running.</li>
-        <li><strong>magnesium glycinate</strong> — the one you're probably deficient in. helps with muscle relaxation, sleep, mood. glycinate form for absorption.</li>
-        <li><strong>taurine</strong> — the amino acid. supports cardiovascular function and helps regulate electrolytes.</li>
-        <li><strong>electrolytes</strong> — sodium + potassium blend. you sweat, we replace.</li>
+        <li><strong>jambu</strong>: the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.</li>
+        <li><strong>theobromine</strong>: the gentle lift. it's what makes chocolate feel good, smooth energy without the jitters of caffeine.</li>
+        <li><strong>B12</strong>: the essentials. methylcobalamin form. keeps your energy metabolism running.</li>
+        <li><strong>magnesium glycinate</strong>: the one you're probably deficient in. helps with muscle relaxation, sleep, mood. glycinate form for absorption.</li>
+        <li><strong>taurine</strong>: the amino acid. supports cardiovascular function and helps regulate electrolytes.</li>
+        <li><strong>electrolytes</strong>: sodium + potassium blend. you sweat, we replace.</li>
       </ul>
       <p><span class="highlight">+ a flavor-specific adaptogen, tuned to direction:</span></p>
       <ul>
-        <li><strong>kiwi pop</strong> — ginseng + spirulina. balanced, all-purpose.</li>
-        <li><strong>lemon g. luci</strong> — ashwagandha. calm-warming; pairs with ginger.</li>
-        <li><strong>mary caramel apple</strong> — maca + cinnamon. grounded energy; reinforces caramel.</li>
-        <li><strong>molly's mint</strong> — L-theanine + chamomile. calm-focus; clean alongside mint.</li>
+        <li><strong>kiwi pop</strong>: ginseng + spirulina. balanced, all-purpose.</li>
+        <li><strong>lemon g. luci</strong>: ashwagandha. calm-warming; pairs with ginger.</li>
+        <li><strong>mary caramel apple</strong>: maca + cinnamon. grounded energy; reinforces caramel.</li>
+        <li><strong>molly's mint</strong>: L-theanine + chamomile. calm-focus; clean alongside mint.</li>
       </ul>
       
       <div class="fact">
@@ -129,21 +129,21 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
 
 you signed up a couple days ago. here's the part where most brands would send you a coupon. instead, here's what we put in the pop and why.
 
-the shared functional base — same dose in every flavor:
+the shared functional base, same dose in every flavor:
 
-• jambu — the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.
-• theobromine — the gentle lift. it's what makes chocolate feel good — smooth energy without the jitters of caffeine.
-• B12 — methylcobalamin form. keeps your energy metabolism running.
-• magnesium glycinate — helps with muscle relaxation, sleep, mood. glycinate form for absorption.
-• taurine — supports cardiovascular function and electrolyte regulation.
-• electrolytes — sodium + potassium blend. you sweat, we replace.
+• jambu: the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.
+• theobromine: the gentle lift. it's what makes chocolate feel good, smooth energy without the jitters of caffeine.
+• B12: methylcobalamin form. keeps your energy metabolism running.
+• magnesium glycinate: helps with muscle relaxation, sleep, mood. glycinate form for absorption.
+• taurine: supports cardiovascular function and electrolyte regulation.
+• electrolytes: sodium + potassium blend. you sweat, we replace.
 
 + a flavor-specific adaptogen, tuned to direction:
 
-• kiwi pop — ginseng + spirulina. balanced, all-purpose.
-• lemon g. luci — ashwagandha. calm-warming; pairs with ginger.
-• mary caramel apple — maca + cinnamon. grounded energy; reinforces caramel.
-• molly's mint — L-theanine + chamomile. calm-focus; clean alongside mint.
+• kiwi pop: ginseng + spirulina. balanced, all-purpose.
+• lemon g. luci: ashwagandha. calm-warming; pairs with ginger.
+• mary caramel apple: maca + cinnamon. grounded energy; reinforces caramel.
+• molly's mint: L-theanine + chamomile. calm-focus; clean alongside mint.
 
 the base: isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle.
 
@@ -213,7 +213,7 @@ export function orderConfirmationEmail(params: {
     .join('');
 
   const itemsText = params.items
-    .map((item) => `  ${item.name} ×${item.quantity} — $${(item.priceCents / 100).toFixed(2)}`)
+    .map((item) => `  ${item.name} ×${item.quantity} · $${(item.priceCents / 100).toFixed(2)}`)
     .join('\n');
 
   return {
@@ -274,7 +274,7 @@ export function reviewRequestEmail(_params: {
     html: layout(`
       <h1>so… how cool is it?</h1>
       <p>by now your kiwi pops should've been with you for about a week. long enough to crack one open at a party, sneak one between meetings, hand one to someone you love.</p>
-      <p>we'd love to hear what you think. genuinely. we're a tiny crew making these by hand in salt lake city, and this whole thing is as much yours as it is ours — every note you send back shapes the next batch, the next flavor, the next drop.</p>
+      <p>we'd love to hear what you think. genuinely. we're a tiny crew making these by hand in salt lake city, and this whole thing is as much yours as it is ours. every note you send back shapes the next batch, the next flavor, the next drop.</p>
 
       <a href="https://www.kiwipop.fun/#reviews" class="cta">rate kiwi pop →</a>
 
@@ -283,14 +283,14 @@ export function reviewRequestEmail(_params: {
       <p>or just reply to this email. it goes straight to the founder.</p>
 
       <div class="fact">
-        <strong>this is ours together.</strong> if there's a flavor you wish existed, a packaging tweak that'd make it perfect, a friend who needs one — tell us. we're listening.
+        <strong>this is ours together.</strong> if there's a flavor you wish existed, a packaging tweak that'd make it perfect, a friend who needs one, tell us. we're listening.
       </div>
     `),
     text: `so… how cool is it?
 
 by now your kiwi pops should've been with you for about a week. long enough to crack one open at a party, sneak one between meetings, hand one to someone you love.
 
-we'd love to hear what you think. genuinely. we're a tiny crew making these by hand in salt lake city, and this whole thing is as much yours as it is ours — every note you send back shapes the next batch, the next flavor, the next drop.
+we'd love to hear what you think. genuinely. we're a tiny crew making these by hand in salt lake city, and this whole thing is as much yours as it is ours. every note you send back shapes the next batch, the next flavor, the next drop.
 
 rate kiwi pop → https://www.kiwipop.fun/#reviews
 
@@ -298,7 +298,7 @@ we are so excited to read what you have to say. tell us what hit, what missed, w
 
 or just reply to this email. it goes straight to the founder.
 
-this is ours together. if there's a flavor you wish existed, a packaging tweak that'd make it perfect, a friend who needs one — tell us. we're listening.
+this is ours together. if there's a flavor you wish existed, a packaging tweak that'd make it perfect, a friend who needs one, tell us. we're listening.
 
 ---
 kiwi pop · salt lake city, ut · kiwipop.fun`,

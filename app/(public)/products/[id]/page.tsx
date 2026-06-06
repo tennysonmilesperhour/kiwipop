@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const description =
     product.description?.trim() ||
     flavor?.description ||
-    'lollipop shaped party supplements — kiwi pop.';
+    'lollipop shaped party supplements, kiwi pop.';
   const image = imageForProduct(product.sku, product.image_url);
   const title = product.name.toLowerCase();
 

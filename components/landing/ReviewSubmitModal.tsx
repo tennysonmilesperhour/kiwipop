@@ -64,7 +64,7 @@ export function ReviewSubmitModal({
       if (!res.ok) throw new Error(json.error ?? "couldn't submit review");
       setStatus('ok');
       setMsg(
-        "thanks. we'll read it and post it after a quick look — usually within a day."
+        "thanks. we'll read it and post it after a quick look, usually within a day."
       );
       onSubmitted?.();
     } catch (err) {
@@ -99,7 +99,7 @@ export function ReviewSubmitModal({
           leave a review.
         </h3>
         <p className="rsm-sub">
-          tell us what you actually thought. we&apos;ll read every one — and
+          tell us what you actually thought. we&apos;ll read every one, and
           post it on the site after a quick look.
         </p>
 
@@ -131,7 +131,7 @@ export function ReviewSubmitModal({
             </label>
 
             <label className="rsm-label">
-              <span>email (private — for follow-up only)</span>
+              <span>email (private, for follow-up only)</span>
               <input
                 type="email"
                 value={email}
@@ -168,7 +168,7 @@ export function ReviewSubmitModal({
               <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
-                placeholder="favorite flavor? how it actually felt? whatever — keep it real."
+                placeholder="favorite flavor? how it actually felt? whatever, keep it real."
                 required
                 minLength={4}
                 maxLength={1200}

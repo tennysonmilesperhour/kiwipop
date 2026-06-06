@@ -19,7 +19,7 @@ export default function RefundPage() {
         <p>
           short version: if a pop is broken, melted, or missing, we replace
           it or refund it. we don&apos;t take returns of opened candy because
-          food safety, but if you hated it, tell us — we&apos;ll fix it.
+          food safety, but if you hated it, tell us, we&apos;ll fix it.
         </p>
 
         <h2>damaged on arrival</h2>
@@ -84,7 +84,7 @@ export default function RefundPage() {
         <h2>order cancellation</h2>
         <p>
           you can cancel an order for a full refund if it hasn&apos;t shipped
-          yet. once an order is in transit, it cannot be cancelled — you
+          yet. once an order is in transit, it cannot be cancelled. you
           would need to refuse delivery or return it upon arrival.
         </p>
 

@@ -14,7 +14,7 @@ const notoSerifJp = Noto_Serif_JP({
 
 const title = 'Kiwi Pop · Mayorista · Barcelona';
 const description =
-  'A functional lollipop, made for the night. Wholesale program for Barcelona venues — founding-partner terms for the first five.';
+  'A functional lollipop, made for the night. Wholesale program for Barcelona venues, founding-partner terms for the first five.';
 
 export const metadata: Metadata = {
   title,

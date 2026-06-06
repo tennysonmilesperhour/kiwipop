@@ -45,7 +45,7 @@ export default function MerchPage() {
         }}
       >
         five tees, fundraiser pricing, ships when the print run lands. these
-        are placeholder products — checkout works today, art locks next week.
+        are placeholder products. checkout works today, art locks next week.
         every order goes straight into the launch.
       </p>
 
