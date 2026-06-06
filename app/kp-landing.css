@@ -3054,3 +3054,141 @@
   .rsm-dialog { padding: 22px 18px 18px; }
   .rsm-title { font-size: 26px; }
 }
+
+/* =========================================================
+   PRIDE MONTH — June rainbow takeover.
+   Auto-gated by isPrideMonth() (lib/pride.ts), which adds the `.kp-pride`
+   class to .kp-page for all of June and removes it on July 1. This block
+   recolors the yellow (--lemon) FILLS — the scrolling ticker band, the
+   CTAs/buttons, the hero eyebrow pill, the equalizer bars — into a light
+   pastel rainbow with a glowing outline. Every gradient stop is kept high on
+   the lightness scale so the black (--void) text on top stays legible.
+   Yellow *text* accents are intentionally left alone.
+   ========================================================= */
+.kp-page.kp-pride {
+  --pride-rainbow: linear-gradient(
+    100deg,
+    #ffb3ba 0%, #ffd9a8 16%, #fdffb3 33%,
+    #bdf5c0 50%, #a8e6ff 66%, #c2b6ff 83%, #ffc2f0 100%
+  );
+  --pride-glow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.65),
+    0 0 16px rgba(255, 145, 200, 0.5),
+    0 0 30px rgba(150, 200, 255, 0.4),
+    0 0 48px rgba(190, 160, 255, 0.3);
+}
+
+/* every recolored fill shares the pastel rainbow + glow, with a slow shimmer */
+.kp-page.kp-pride .kp-ticker-bar,
+.kp-page.kp-pride .z1 .eyebrow,
+.kp-page.kp-pride .z2 .cta,
+.kp-page.kp-pride .cta-take,
+.kp-page.kp-pride .raffle-form .cta,
+.kp-page.kp-pride .rev.signup button[type="submit"],
+.kp-page.kp-pride .rev.leave .arr,
+.kp-page.kp-pride .kp-fundraiser .kp-fr-cta.primary,
+.kp-page.kp-pride .rsm-btn-primary {
+  background: var(--pride-rainbow);
+  background-size: 220% 100%;
+  color: var(--void);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: var(--pride-glow);
+  animation: kp-pride-shift 8s linear infinite;
+}
+
+@keyframes kp-pride-shift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 220% 50%; }
+}
+
+/* the scrolling band keeps its hairline, gains the rainbow + a calmer drift */
+.kp-page.kp-pride .kp-ticker-bar {
+  border-bottom-color: rgba(255, 255, 255, 0.55);
+  animation-duration: 14s;
+}
+
+/* fundraiser CTA: keep the text black on hover (base rule flips it to lemon) */
+.kp-page.kp-pride .kp-fundraiser .kp-fr-cta.primary:hover {
+  color: var(--void);
+}
+
+/* the progress fill already blends kiwi→lemon→pink — make it a full rainbow */
+.kp-page.kp-pride .kp-fundraiser .kp-fr-fill {
+  background: var(--pride-rainbow);
+  box-shadow: 0 0 18px rgba(255, 180, 220, 0.55);
+}
+
+/* decorative equalizer bars → vertical rainbow */
+.kp-page.kp-pride .z4 .bars b {
+  background: linear-gradient(180deg, #ffb3ba, #fdffb3, #bdf5c0, #a8e6ff, #c2b6ff, #ffc2f0);
+  box-shadow: 0 0 6px rgba(255, 180, 220, 0.6);
+}
+
+/* intensify the glow on hover for the big tappable CTAs */
+.kp-page.kp-pride .cta-take:hover,
+.kp-page.kp-pride .raffle-form .cta:hover,
+.kp-page.kp-pride .rev.signup button[type="submit"]:hover {
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.8),
+    0 0 22px rgba(255, 145, 200, 0.6),
+    0 0 40px rgba(150, 200, 255, 0.5);
+}
+
+/* respect reduced-motion — drop the shimmer, keep the colors */
+@media (prefers-reduced-motion: reduce) {
+  .kp-page.kp-pride .kp-ticker-bar,
+  .kp-page.kp-pride .z1 .eyebrow,
+  .kp-page.kp-pride .z2 .cta,
+  .kp-page.kp-pride .cta-take,
+  .kp-page.kp-pride .raffle-form .cta,
+  .kp-page.kp-pride .rev.signup button[type="submit"],
+  .kp-page.kp-pride .rev.leave .arr,
+  .kp-page.kp-pride .kp-fundraiser .kp-fr-cta.primary,
+  .kp-page.kp-pride .rsm-btn-primary {
+    animation: none;
+  }
+}
+
+/* ========= PRIDE ART GIVEAWAY — raffle artwork slot ========= */
+.kp-page .zraffle .raffle-art {
+  position: relative;
+  z-index: 2;
+  max-width: 460px;
+  margin: 0 auto 44px;
+}
+.kp-page .zraffle .raffle-art-frame {
+  padding: 10px;
+  border-radius: 16px;
+  /* falls back to a cyan glow outside Pride month, becomes the rainbow in June */
+  background: var(--pride-rainbow, linear-gradient(135deg, rgba(0, 240, 255, 0.5), rgba(245, 255, 61, 0.4)));
+  box-shadow: var(--pride-glow, 0 0 30px rgba(0, 240, 255, 0.35));
+}
+.kp-page .zraffle .raffle-art-img,
+.kp-page .zraffle .raffle-art-ph {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 9px;
+  background: #0a0014;
+}
+.kp-page .zraffle .raffle-art-ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed rgba(255, 255, 255, 0.45);
+  font-family: var(--font-cyber);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 255, 0.7);
+}
+.kp-page .zraffle .raffle-art-cap {
+  margin-top: 12px;
+  text-align: center;
+  font-family: var(--font-cyber);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 255, 0.7);
+}
