@@ -11,6 +11,9 @@ export function RaffleForm() {
   const [social, setSocial] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
+  // Drop the artwork file at public/landing/img/pride-raffle-art.jpg. Until it
+  // exists the <img> 404s and we fall back to the "dropping soon" placeholder.
+  const [artOk, setArtOk] = useState(true);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -52,19 +55,42 @@ export function RaffleForm() {
       <div className="cn-bg" aria-hidden="true">运</div>
 
       <div className="head">
-        <span className="lab">07 · ARTWORK RAFFLE</span>
+        <span className="lab">07 · PRIDE ART GIVEAWAY</span>
         <h2>
           WIN THE
           <br />
-          <span className="lm">ARTWORK.</span>
+          <span className="lm">PRIDE ART.</span>
         </h2>
         <p className="lede">
-          one original kiwi pop piece, one winner.{' '}
+          a special one-of-one Pride art giveaway — one original kiwi pop piece,
+          made to celebrate the month, one winner.{' '}
           <span className="em">free to enter.</span> drop your info, we&apos;ll
           pick at random and DM the winner. promise we won&apos;t sell your data —
           we&apos;ll just tag you in the post.
         </p>
       </div>
+
+      <figure className="raffle-art">
+        <div className="raffle-art-frame">
+          {artOk ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src="/landing/img/pride-raffle-art.jpg"
+              alt="the original Pride art giveaway piece up for grabs"
+              className="raffle-art-img"
+              loading="lazy"
+              onError={() => setArtOk(false)}
+            />
+          ) : (
+            <div className="raffle-art-ph" aria-hidden="true">
+              <span>pride art · dropping soon</span>
+            </div>
+          )}
+        </div>
+        <figcaption className="raffle-art-cap">
+          one original Pride piece · one winner
+        </figcaption>
+      </figure>
 
       <form className="raffle-form" onSubmit={onSubmit}>
         <label className="field">
