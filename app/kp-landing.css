@@ -1271,24 +1271,8 @@
   text-align: right;
   margin-left: auto;
 }
-.kp-page .zvid-feature.is-reversed .zvid-placeholder {
+.kp-page .zvid-feature.is-reversed .zvid-player {
   order: 2;
-}
-
-.kp-page .zvid-placeholder {
-  position: relative;
-  aspect-ratio: 9 / 16;
-  border-radius: 14px;
-  background: #111;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.45);
-  font-family: var(--font-mono, monospace);
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 
 /* Tablet: stack */
@@ -1304,7 +1288,7 @@
     text-align: left;
     margin-left: 0;
   }
-  .kp-page .zvid-feature.is-reversed .zvid-placeholder {
+  .kp-page .zvid-feature.is-reversed .zvid-player {
     order: 0;
   }
   .kp-page .zvid { padding: 72px 20px 80px; }
