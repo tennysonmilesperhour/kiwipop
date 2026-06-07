@@ -86,8 +86,8 @@ export default function VarietyPage() {
           marginBottom: '2.5rem',
         }}
       >
-        equal amounts of every flavor in one box · kiwi pop · lemon g. luci ·
-        molly&apos;s mint · mary caramel apple · same functional payload across all
+        equal amounts of every flavor in one box · kiwi pop · luci ginger lemon ·
+        molly matcha mint · mary caramel apple cinn · same functional payload across all
         four · ships preorder when the batch is ready.
       </p>
 

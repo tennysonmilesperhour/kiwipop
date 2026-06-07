@@ -76,9 +76,9 @@ export default function FdaDisclaimerPage() {
         <p><strong>per-flavor adaptogen:</strong></p>
         <ul>
           <li>kiwi pop: ginseng 150 mg + blue spirulina 125 mg (balanced)</li>
-          <li>lemon g. luci: ashwagandha 150 mg (calm-warming)</li>
-          <li>mary caramel apple: maca 150 mg + cinnamon 100 mg (grounded energy)</li>
-          <li>molly&apos;s mint: l-theanine 200 mg + chamomile extract 25 mg (calm-focus)</li>
+          <li>luci ginger lemon: ashwagandha 150 mg (calm-warming)</li>
+          <li>mary caramel apple cinn: maca 150 mg + cinnamon 100 mg (grounded energy)</li>
+          <li>molly matcha mint: l-theanine 200 mg + chamomile extract 25 mg (calm-focus)</li>
         </ul>
         <p>
           functional ingredients are dietary supplements, not drugs.

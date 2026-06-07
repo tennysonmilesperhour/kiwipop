@@ -1328,7 +1328,7 @@ export default function PitchPage() {
 
         <section className="pitch-foot">
           <div className="pitch-foot-meta">
-            <div>kiwi pop · refreshing club lolli</div>
+            <div>kiwi pop · lollipop-shaped party supplements</div>
             <div>founder · tennyson taggart · thekiwipop@gmail.com</div>
           </div>
           <div className="pitch-foot-stamp">

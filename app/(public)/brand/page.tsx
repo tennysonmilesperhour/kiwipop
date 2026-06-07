@@ -20,7 +20,7 @@ interface PayloadItem {
   name: string;
   benefit: string;
   color: string; // any --token hex from globals.css :root
-  hook?: string; // optional emphasis tag (used for the chilcuague tingle)
+  hook?: string; // optional emphasis tag (used for the jambu tingle)
 }
 
 interface Claim {
@@ -55,64 +55,75 @@ const SHEET = {
     brand: 'kiwi pop',
     tagline: 'tokyo at 3am in 2099.',
     positioning:
-      'a functional lollipop engineered for energy, focus, and a tingle you can feel. sugar-free, sharp, and built for people who want their candy to do something.',
+      'a functional lollipop engineered for energy, focus, and a tingle you can feel. <1g sugar, ~35 cal, vegan — built for people who want their candy to do something.',
     // TODO: swap /hero-pop.png for the final vendor-facing product shot when ready.
     image: '/hero-pop.png',
   },
 
   whatItIs:
-    'kiwi pop is a hard-candy lollipop with a functional payload. it sits in the fast-growing intersection of confectionery and functional wellness — the indulgence and impulse-buy appeal of candy, with an active formulation that delivers a real sensory and physical effect. no sugar, no crash, no compromise on flavor.',
+    'kiwi pop is a hard-candy lollipop with a functional payload. it sits in the fast-growing intersection of confectionery and functional wellness — the indulgence and impulse-buy appeal of candy, with an active formulation that delivers a real sensory and physical effect. <1g sugar, ~35 cal, no crash, no compromise on flavor.',
 
   payload: [
     {
+      name: 'jambu',
+      benefit:
+        'the brazilian buzz-button flower (acmella oleracea). an electric mouth-tingle on the first lick — the signature sensory hook.',
+      color: '#ff2d8a',
+      hook: 'the hook · impossible to copy',
+    },
+    {
       name: 'theobromine',
-      benefit: 'a smooth, sustained lift without the jitter of caffeine.',
+      benefit:
+        '175 mg. a smooth, sustained lift — like a square of dark chocolate, none of the caffeine jitter.',
       color: '#a8ff3c',
     },
     {
-      name: 'b12',
-      benefit: 'supports energy metabolism and mental clarity.',
+      name: 'magnesium glycinate',
+      benefit: '300 mg. the un-cramp — muscles stay loose, mood steady.',
       color: '#00f0ff',
     },
     {
-      name: 'electrolytes',
-      benefit: 'hydration support built right into the candy.',
-      color: '#ffce1f',
-    },
-    {
-      name: 'blue spirulina',
-      benefit:
-        "a natural blue-green pigment and nutrient source — kiwi pop's signature color, no artificial dye.",
+      name: 'taurine',
+      benefit: '250 mg. a clean focus current, no energy-drink edge.',
       color: '#7b2dff',
     },
     {
-      name: 'chilcuague',
+      name: 'electrolytes',
+      benefit: '250 mg blend. sodium + potassium — hydration built into the candy.',
+      color: '#ffce1f',
+    },
+    {
+      name: 'b12',
+      benefit: '1 mg methylcobalamin. the active form. brain on, no buzz.',
+      color: '#ff1f3d',
+    },
+    {
+      name: 'adaptogen',
       benefit:
-        'a root-derived spilanthol source that creates a distinctive electric, effervescent mouthfeel.',
-      color: '#ff2d8a',
-      hook: 'the hook · impossible to copy',
+        'tuned per flavor: ginseng + spirulina (kiwi pop) · ashwagandha (luci ginger lemon) · L-theanine + chamomile (molly matcha mint) · maca + cinnamon (mary caramel apple cinn).',
+      color: '#00f0ff',
     },
   ] as PayloadItem[],
 
   formulation: {
     claims: [
       {
-        no: 'no sugar',
-        what: 'isomalt base',
-        why: 'sweetened with monk fruit and allulose. zero sugar, full flavor.',
-      },
-      {
-        no: 'no citric acid',
-        what: 'cleaner finish',
-        why: 'no harsh sour bite on the back end.',
+        no: 'no corn syrup',
+        what: 'xylitol + monk fruit',
+        why: 'isomalt base, sweetened with xylitol and a touch of monk fruit. tooth-friendly, low-glycemic. <1g sugar.',
       },
       {
         no: 'no artificial dyes',
-        what: 'color from spirulina',
-        why: 'the signature blue-green comes from blue spirulina, not dye.',
+        what: 'color from botanicals',
+        why: 'spirulina, turmeric, matcha, and lucuma do the color — never artificial dye.',
+      },
+      {
+        no: 'no caffeine crash',
+        what: 'theobromine, not caffeine',
+        why: 'a smooth lift from theobromine + per-flavor adaptogens. lifted, not wired.',
       },
     ] as Claim[],
-    note: 'clean-label positioning that holds up to scrutiny from health-conscious buyers and their customers.',
+    note: '<1g sugar · ~35 cal · vegan · gluten-free · edible mica glitter inside. clean-label positioning that holds up to scrutiny from health-conscious buyers and their customers.',
   },
 
   flavors: [
@@ -191,11 +202,11 @@ const SHEET = {
 export const metadata: Metadata = {
   title: 'brand sheet · for wholesale partners',
   description:
-    'kiwi pop wholesale brand sheet — a sugar-free functional lollipop with theobromine, b12, electrolytes, blue spirulina, and the chilcuague tingle. everything a buyer needs to evaluate stocking kiwi pop.',
+    'kiwi pop wholesale brand sheet — a <1g-sugar functional lollipop with jambu (the buzz-button tingle), theobromine, magnesium glycinate, taurine, electrolytes, b12, and a per-flavor adaptogen. everything a buyer needs to evaluate stocking kiwi pop.',
   openGraph: {
     title: 'kiwi pop · wholesale brand sheet',
     description:
-      'a sugar-free functional lollipop engineered for energy, focus, and a tingle you can feel. tokyo at 3am in 2099.',
+      'a <1g-sugar functional lollipop engineered for energy, focus, and a tingle you can feel. tokyo at 3am in 2099.',
     images: ['/og-image.png'],
   },
 };

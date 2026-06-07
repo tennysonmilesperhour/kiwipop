@@ -112,9 +112,9 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
       <p><span class="highlight">+ a flavor-specific adaptogen, tuned to direction:</span></p>
       <ul>
         <li><strong>kiwi pop</strong>: ginseng + spirulina. balanced, all-purpose.</li>
-        <li><strong>lemon g. luci</strong>: ashwagandha. calm-warming; pairs with ginger.</li>
-        <li><strong>mary caramel apple</strong>: maca + cinnamon. grounded energy; reinforces caramel.</li>
-        <li><strong>molly's mint</strong>: L-theanine + chamomile. calm-focus; clean alongside mint.</li>
+        <li><strong>luci ginger lemon</strong>: ashwagandha. calm-warming; pairs with ginger.</li>
+        <li><strong>mary caramel apple cinn</strong>: maca + cinnamon. grounded energy; reinforces caramel.</li>
+        <li><strong>molly matcha mint</strong>: L-theanine + chamomile. calm-focus; clean alongside mint.</li>
       </ul>
       
       <div class="fact">
@@ -141,9 +141,9 @@ the shared functional base, same dose in every flavor:
 + a flavor-specific adaptogen, tuned to direction:
 
 • kiwi pop: ginseng + spirulina. balanced, all-purpose.
-• lemon g. luci: ashwagandha. calm-warming; pairs with ginger.
-• mary caramel apple: maca + cinnamon. grounded energy; reinforces caramel.
-• molly's mint: L-theanine + chamomile. calm-focus; clean alongside mint.
+• luci ginger lemon: ashwagandha. calm-warming; pairs with ginger.
+• mary caramel apple cinn: maca + cinnamon. grounded energy; reinforces caramel.
+• molly matcha mint: L-theanine + chamomile. calm-focus; clean alongside mint.
 
 the base: isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle.
 

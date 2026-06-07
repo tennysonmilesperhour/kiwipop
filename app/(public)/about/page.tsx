@@ -5,7 +5,7 @@ import { buildBreadcrumbLd } from '@/lib/seo';
 
 const title = 'about · the story';
 const description =
-  "the founder's voice on why a refreshing club lolli exists. gum and mints just don't hit the way they used to.";
+  "the founder's voice on why a lollipop-shaped party supplement exists. gum and mints just don't hit the way they used to.";
 
 export const metadata: Metadata = {
   title,
@@ -92,10 +92,10 @@ export default function AboutPage() {
             the original is{' '}
             <strong style={{ color: 'var(--lime)' }}>kiwi pop</strong>,{' '}
             kiwi flavor, sweet/tart/clean. three more flavors are coming:{' '}
-            <strong style={{ color: 'var(--cyan)' }}>molly&apos;s mint</strong>,{' '}
-            <strong style={{ color: 'var(--sodium)' }}>lemon g. luci</strong>,{' '}
+            <strong style={{ color: 'var(--cyan)' }}>molly matcha mint</strong>,{' '}
+            <strong style={{ color: 'var(--sodium)' }}>luci ginger lemon</strong>,{' '}
             and{' '}
-            <strong style={{ color: 'var(--magenta)' }}>mary caramel apple</strong>. each
+            <strong style={{ color: 'var(--magenta)' }}>mary caramel apple cinn</strong>. each
             built around a small obsession. shared functional base across
             the four, adaptogen tuned per flavor. flavor leads.
           </p>
