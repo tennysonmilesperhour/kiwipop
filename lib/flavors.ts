@@ -15,7 +15,7 @@ export interface FlavorBrandInfo {
   description: string;
   /**
    * Short label used by the comedown checkout flavor picker. We don't want
-   * to slice the marketing name (e.g. "lemon g. luci" → "g.") because
+   * to slice the marketing name (e.g. "luci ginger lemon" → "luci") because
    * those abbreviated tokens read like product codes. Spell out the flavor
    * profile instead — "kiwi", "lemon ginger", "mint", "caramel apple".
    */
@@ -52,8 +52,8 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-LUCY-LEMON',
-    name: 'lemon g. luci',
-    display: 'lemon g.\nluci',
+    name: 'luci ginger lemon',
+    display: 'luci ginger\nlemon',
     feeling: '// get bright',
     fn: 'shared base · ashwagandha · luster dust',
     flavor: 'lemon + ginger · sharp and citrus',
@@ -67,11 +67,11 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-MANGO-MOLLY',
-    name: "molly's mint",
-    display: "molly's\nmint",
+    name: 'molly matcha mint',
+    display: 'molly matcha\nmint',
     feeling: '// cool down',
     fn: 'shared base · L-theanine + chamomile · luster dust',
-    flavor: 'mint · cool, clean, lifted',
+    flavor: 'matcha + mint · cool, clean, lifted',
     color: '#00f0ff',
     status: 'soon',
     description:
@@ -82,11 +82,11 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
   },
   {
     sku: 'KP-MARY-MINT',
-    name: 'mary caramel apple',
-    display: 'mary\ncaramel apple',
+    name: 'mary caramel apple cinn',
+    display: 'mary caramel\napple cinn',
     feeling: '// cozy up',
     fn: 'shared base · maca + cinnamon · luster dust',
-    flavor: 'caramel apple · warm, glossy, autumnal',
+    flavor: 'caramel apple + cinnamon · warm, glossy, autumnal',
     color: '#d97539',
     status: 'soon',
     description:
@@ -283,6 +283,22 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     why: 'tooth-friendly sweetener. starves cavity bacteria, low-glycemic, no insulin spike.',
   },
 ] as const;
+
+/**
+ * The full ingredient list for a single flavor: the shared functional base
+ * with the generic `adaptogen` row resolved to that flavor's actual adaptogen
+ * + direction. Used by the homepage flavor-card hover panel so each card shows
+ * exactly what's in that flavor.
+ */
+export function ingredientsForFlavor(
+  flavor: Pick<FlavorBrandInfo, 'adaptogen' | 'direction'>,
+): FunctionalIngredient[] {
+  return FUNCTIONALS.map((ing) =>
+    ing.name === 'adaptogen'
+      ? { name: flavor.adaptogen, amount: flavor.direction, why: ing.why }
+      : ing,
+  );
+}
 
 /**
  * The four-moment "what it's actually like" timeline used on the homepage

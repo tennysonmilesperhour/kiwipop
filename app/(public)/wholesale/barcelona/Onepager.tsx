@@ -1067,23 +1067,23 @@ interface PortfolioImage {
 const PORTFOLIO_IMAGES: PortfolioImage[] = [
   {
     src: '/landing/img/kiwi-kitty-pop.webp',
-    alt: 'Kiwi Pop · Kiwi Kitty flavor',
-    caption: 'KIWI KITTY · 舐',
+    alt: 'Kiwi Pop · the original kiwi flavor',
+    caption: 'KIWI POP · 舐',
   },
   {
     src: '/landing/img/yellow-hair.jpg',
-    alt: 'Kiwi Pop · Lucy Lemon flavor',
-    caption: 'LUCY LEMON',
+    alt: 'Kiwi Pop · Luci Ginger Lemon flavor',
+    caption: 'LUCI GINGER LEMON',
   },
   {
     src: '/landing/img/lips-lollipop.jpg',
-    alt: "Kiwi Pop · Molly's Mint flavor",
-    caption: "MOLLY'S MINT",
+    alt: 'Kiwi Pop · Molly Matcha Mint flavor',
+    caption: 'MOLLY MATCHA MINT',
   },
   {
     src: '/landing/img/eye-galaxy.jpg',
-    alt: 'Kiwi Pop · Mary Caramel Apple flavor',
-    caption: 'MARY CARAMEL APPLE',
+    alt: 'Kiwi Pop · Mary Caramel Apple Cinn flavor',
+    caption: 'MARY CARAMEL APPLE CINN',
   },
 ];
 

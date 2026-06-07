@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
-import { FLAVOR_IMG, FUNCTIONALS, PACKS } from '@/lib/flavors';
+import { FLAVOR_IMG, FUNCTIONALS, PACKS, ingredientsForFlavor } from '@/lib/flavors';
 import { FAQ_ITEMS, FAQ_LD } from '@/lib/faq';
 import { PRIDE_MODE } from '@/lib/pride';
 import type { LandingProducts } from '@/lib/landing-products';
@@ -679,6 +679,24 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                       ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{isLive ? 'SHOP →' : 'PREORDER →'}</span></>
                       : <span className="mg">NOTIFY ME →</span>}
                   </div>
+                </div>
+                {/* Hover/focus reveal: the full ingredient list for this
+                    flavor (shared base + this flavor's adaptogen). */}
+                <div className="ing-pop" aria-hidden="true">
+                  <span className="ing-pop-head">
+                    what&apos;s inside · {flavor.name}
+                  </span>
+                  <ul>
+                    {ingredientsForFlavor(flavor).map((ing) => (
+                      <li key={ing.name}>
+                        <span className="ing-nm">{ing.name}</span>
+                        <span className="ing-amt">{ing.amount}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <span className="ing-pop-foot">
+                    + edible mica glitter · &lt;1g sugar · ~35 cal
+                  </span>
                 </div>
               </Link>
             );

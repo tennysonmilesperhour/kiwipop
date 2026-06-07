@@ -135,7 +135,7 @@ const ORGANIZATION_LD = {
   url: siteUrl,
   logo: `${siteUrl}/landing/img/kiwi-kitty-pop.webp`,
   description:
-    "Lollipop shaped party supplements. Functional candy with a shared base across every flavor: jambu (the Brazilian buzz-button flower, for an electric mouth tingle), theobromine, B12, magnesium glycinate, taurine, and electrolytes, plus a flavor-specific adaptogen (ginseng + spirulina in Kiwi Pop, ashwagandha in Lemon G. Luci, maca + cinnamon in Mary Caramel Apple, L-theanine + chamomile in Molly's Mint). Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.",
+    "Lollipop shaped party supplements. Functional candy with a shared base across every flavor: jambu (the Brazilian buzz-button flower, for an electric mouth tingle), theobromine, B12, magnesium glycinate, taurine, and electrolytes, plus a flavor-specific adaptogen (ginseng + spirulina in Kiwi Pop, ashwagandha in Luci Ginger Lemon, maca + cinnamon in Mary Caramel Apple Cinn, L-theanine + chamomile in Molly Matcha Mint). Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.",
   foundingLocation: {
     '@type': 'Place',
     name: 'Salt Lake City, Utah',

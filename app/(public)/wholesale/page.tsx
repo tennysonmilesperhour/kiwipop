@@ -5,7 +5,7 @@ import { formatCentsToUSD } from '@/lib/format';
 import { buildBreadcrumbLd } from '@/lib/seo';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-const title = 'wholesale · refreshing club lolli';
+const title = 'wholesale · lollipop-shaped party supplements';
 const description =
   'kiwi pop on your shelf. tiered pricing, low MOQ, festival-ready. apply and we email you back.';
 
