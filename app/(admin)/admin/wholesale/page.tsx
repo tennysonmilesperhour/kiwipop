@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { AdminLayout } from '@/components/AdminLayout';
 import { SheetEmbed } from '@/components/admin/SheetEmbed';
+import { WholesaleLineSheetCard } from '@/components/admin/WholesaleLineSheetCard';
 import { supabase } from '@/lib/supabase';
 import { formatCentsToUSD } from '@/lib/format';
 import { useState, useEffect } from 'react';
@@ -361,6 +362,8 @@ export default function WholesalePage() {
       </div>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
+
+      <WholesaleLineSheetCard />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">

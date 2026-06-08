@@ -14,6 +14,7 @@ const ROUTES_WITH_OWN_CHROME = new Set([
   '/donate',
   '/campaign',
   '/wholesale/barcelona',
+  '/wholesale/line-sheet',
 ]);
 
 export function SiteChrome({ children }: SiteChromeProps) {
