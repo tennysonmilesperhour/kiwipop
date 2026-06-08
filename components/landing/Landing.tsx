@@ -90,6 +90,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   const addItem = useCart((s) => s.addItem);
   const cartCount = useCart((s) => s.getTotalItems());
   const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const liveFlavors = products.flavors.filter(
     (f) => f.product && !f.product.preorder_only,
@@ -148,6 +149,21 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   }, []);
 
   useEffect(() => setMounted(true), []);
+
+  // Mobile menu: lock body scroll while open and close on Escape.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [menuOpen]);
 
   const selectedFlavor = useMemo(
     () => products.flavors.find((f) => f.sku === flavorSku) ?? products.flavors[0],
@@ -280,19 +296,22 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             KIWI POP <span className="cn">舐</span>
           </div>
         </Link>
-        <div className="kp-nav-links">
-          <a href="#shop">SHOP</a>
-          <a href="#inside">WHAT&apos;S INSIDE</a>
-          <Link href="/merch">MERCH</Link>
-          {/* secondary links: hidden on desktop (live in MORE menu); shown inline on mobile scroll-strip */}
-          <a href="#founders" className="kp-nav-link--secondary">FOUNDERS</a>
-          <a href="#flavors" className="kp-nav-link--secondary">FLAVORS</a>
-          <a href="#reviews" className="kp-nav-link--secondary">REVIEWS</a>
-          <Link href="/campaign" className="kp-nav-link--secondary">CAMPAIGN</Link>
-          <Link href="/raffle" className="kp-nav-link--secondary">RAFFLE</Link>
-          <Link href="/variety" className="kp-nav-link--secondary">VARIETY</Link>
-          <Link href="/wholesale" className="kp-nav-link--secondary">WHOLESALE</Link>
-          <Link href="/find-us" className="kp-nav-link--secondary">FIND US</Link>
+        <div
+          className={`kp-nav-links${menuOpen ? ' kp-nav-links--open' : ''}`}
+          id="kp-nav-links"
+        >
+          <a href="#shop" onClick={() => setMenuOpen(false)}>SHOP</a>
+          <a href="#inside" onClick={() => setMenuOpen(false)}>WHAT&apos;S INSIDE</a>
+          <Link href="/merch" onClick={() => setMenuOpen(false)}>MERCH</Link>
+          {/* secondary links: hidden on desktop (live in MORE menu); shown stacked inside the mobile menu */}
+          <a href="#founders" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>FOUNDERS</a>
+          <a href="#flavors" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>FLAVORS</a>
+          <a href="#reviews" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>REVIEWS</a>
+          <Link href="/campaign" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>CAMPAIGN</Link>
+          <Link href="/raffle" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>RAFFLE</Link>
+          <Link href="/variety" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>VARIETY</Link>
+          <Link href="/wholesale" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>WHOLESALE</Link>
+          <Link href="/find-us" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>FIND US</Link>
           <div className="kp-nav-more">
             <button
               type="button"
@@ -313,10 +332,38 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             </div>
           </div>
         </div>
-        <Link href="/cart" className="kp-cart-btn" aria-label="cart">
-          CART {mounted && cartCount > 0 ? <span className="kp-cart-count">{cartCount}</span> : null}
-        </Link>
+        <div className="kp-nav-actions">
+          <Link href="/cart" className="kp-cart-btn" aria-label="cart">
+            CART {mounted && cartCount > 0 ? <span className="kp-cart-count">{cartCount}</span> : null}
+          </Link>
+          <button
+            type="button"
+            className="kp-nav-toggle"
+            aria-label={menuOpen ? 'close menu' : 'open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="kp-nav-links"
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span
+              className={`kp-nav-toggle-bars${menuOpen ? ' is-open' : ''}`}
+              aria-hidden="true"
+            >
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+        </div>
       </nav>
+      {/* Backdrop closes the mobile menu when tapping outside it. */}
+      {menuOpen && (
+        <button
+          type="button"
+          className="kp-nav-backdrop"
+          aria-label="close menu"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
 
       <div className="kp-ticker-bar">
         <span className="cn">舐一下</span>

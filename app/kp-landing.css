@@ -599,6 +599,63 @@
   box-shadow: var(--glow-pink);
 }
 
+/* ========= mobile menu (hamburger) =========
+   Desktop keeps the inline links + MORE dropdown; the toggle and backdrop are
+   hidden until the tablet/phone breakpoint below turns the link row into a
+   tap-to-open vertical menu. */
+.kp-page .kp-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.kp-page .kp-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+.kp-page .kp-nav-toggle-bars {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 18px;
+  height: 13px;
+}
+.kp-page .kp-nav-toggle-bars span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--bone);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.kp-page .kp-nav-toggle-bars.is-open span:nth-child(1) {
+  transform: translateY(5.5px) rotate(45deg);
+}
+.kp-page .kp-nav-toggle-bars.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.kp-page .kp-nav-toggle-bars.is-open span:nth-child(3) {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+.kp-page .kp-nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  border: 0;
+  padding: 0;
+  background: rgba(5, 0, 8, 0.5);
+  cursor: pointer;
+}
+
 /* ========= ticker subnav ========= */
 .kp-page .kp-ticker-bar {
   position: fixed;
@@ -2843,25 +2900,52 @@
   .kp-page .z1 .hero-img { width: 100%; opacity: 0.45; }
   .kp-page .z1 .content { max-width: 100%; }
   .kp-page .kp-nav { padding: 14px 20px; }
-  /* On mobile the nav becomes a single horizontally-scrollable strip so the
-     RAFFLE / SHOP / FLAVORS / etc. links stay reachable. Hiding them broke
-     access to the new raffle anchor. */
+  /* On tablet/phone the link row collapses behind the hamburger and drops down
+     as a full vertical menu — every link (primary + secondary) stacked and
+     tappable, instead of the old cramped horizontal scroll-strip. */
+  .kp-page .kp-nav-toggle { display: inline-flex; }
+  .kp-page .kp-nav-backdrop { display: block; }
   .kp-page .kp-nav-links {
-    display: flex;
-    gap: 18px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    flex: 1;
-    margin: 0 12px;
-    padding: 4px 0;
-    white-space: nowrap;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin: 0;
+    padding: 0 20px;
+    background: rgba(5, 0, 8, 0.97);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    white-space: normal;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.28s ease, opacity 0.2s ease;
+    z-index: 99;
   }
-  .kp-page .kp-nav-links::-webkit-scrollbar { display: none; }
-  .kp-page .kp-nav-links a { font-size: 11px; letter-spacing: 0.2em; flex-shrink: 0; }
-  /* On mobile/tablet the scroll-strip shows every link inline; the MORE
-     dropdown is desktop-only. */
-  .kp-page .kp-nav-link--secondary { display: inline; }
+  .kp-page .kp-nav-links--open {
+    max-height: 82vh;
+    overflow-y: auto;
+    opacity: 1;
+    pointer-events: auto;
+    padding: 8px 20px 18px;
+  }
+  .kp-page .kp-nav-links a {
+    display: block;
+    padding: 15px 4px;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .kp-page .kp-nav-links a::after { display: none; }
+  /* Inside the vertical menu every secondary link stacks; the desktop-only
+     MORE dropdown stays hidden. */
+  .kp-page .kp-nav-link--secondary { display: block; }
   .kp-page .kp-nav-more { display: none; }
   .kp-page .kp-ticker-bar { padding: 6px 20px; }
   .kp-page .z1,
@@ -2929,9 +3013,9 @@
 /* Smallest phones (~360px and below) */
 @media (max-width: 380px) {
   .kp-page .kp-nav { padding: 10px 12px; }
-  .kp-page .kp-nav-links { margin: 0 6px; gap: 12px; }
   .kp-page .kp-brand .nm { font-size: 12px; }
   .kp-page .kp-cart-btn { padding: 5px 8px; font-size: 9px; }
+  .kp-page .kp-nav-actions { gap: 8px; }
   .kp-page .fc { width: 250px; min-height: 420px; }
   .kp-page .fc h3 { font-size: 30px; }
   .kp-page .z6 .pack-opt { font-size: 9px; letter-spacing: 0.1em; }
