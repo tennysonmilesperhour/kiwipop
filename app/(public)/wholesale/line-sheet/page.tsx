@@ -34,34 +34,46 @@ interface PricingByProduct {
 async function loadPricing(): Promise<PricingByProduct[]> {
   const { data: products } = await supabaseAdmin
     .from('products')
-    .select('id, name, sku, price_cents')
-    .order('name');
+    .select('id, name, sku, price_cents');
 
   const { data: pricing } = await supabaseAdmin
     .from('wholesale_pricing')
-    .select('product_id, tier, price_cents, min_quantity');
+    .select('product_id, tier, price_cents');
 
   if (!products) return [];
 
-  const byProductId = new Map<string, PricingByProduct>();
+  // Index single-pop products by SKU and tier pricing by product id, then walk
+  // the canonical FLAVORS list so the sheet shows exactly the four flavors in
+  // brand order — no donation rows, multi-packs, or variety bundles.
+  const bySku = new Map<string, ProductLite>();
   for (const product of products as ProductLite[]) {
-    if (!product.sku?.startsWith('KP-')) continue;
-    if (product.sku.startsWith('KP-PACK')) continue;
-    byProductId.set(product.id, {
-      productName: product.name,
+    if (product.sku) bySku.set(product.sku, product);
+  }
+
+  const tiersByProduct = new Map<string, { standard?: number; premium?: number }>();
+  for (const row of pricing ?? []) {
+    const productId = row.product_id as string;
+    const entry = tiersByProduct.get(productId) ?? {};
+    const cents = row.price_cents as number;
+    if ((row.tier as string) === 'standard') entry.standard = cents;
+    if ((row.tier as string) === 'premium') entry.premium = cents;
+    tiersByProduct.set(productId, entry);
+  }
+
+  const rows: PricingByProduct[] = [];
+  for (const flavor of FLAVORS) {
+    const product = bySku.get(flavor.sku);
+    if (!product) continue;
+    const tiers = tiersByProduct.get(product.id) ?? {};
+    rows.push({
+      productName: flavor.name,
       retailCents: product.price_cents,
+      standardCents: tiers.standard,
+      premiumCents: tiers.premium,
     });
   }
 
-  for (const row of pricing ?? []) {
-    const entry = byProductId.get(row.product_id as string);
-    if (!entry) continue;
-    const cents = row.price_cents as number;
-    if ((row.tier as string) === 'standard') entry.standardCents = cents;
-    if ((row.tier as string) === 'premium') entry.premiumCents = cents;
-  }
-
-  return Array.from(byProductId.values());
+  return rows;
 }
 
 export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {

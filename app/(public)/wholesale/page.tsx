@@ -1,9 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/JsonLd';
-import { formatCentsToUSD } from '@/lib/format';
 import { buildBreadcrumbLd } from '@/lib/seo';
-import { supabaseAdmin } from '@/lib/supabase-admin';
 
 const title = 'wholesale · lollipop-shaped party supplements';
 const description =
@@ -19,72 +17,7 @@ export const metadata: Metadata = {
 
 const breadcrumbLd = buildBreadcrumbLd([{ name: 'Wholesale', url: '/wholesale' }]);
 
-export const dynamic = 'force-dynamic';
-
-interface PricingRow {
-  product_id: string;
-  tier: 'standard' | 'premium';
-  price_cents: number;
-  min_quantity: number;
-  product_name: string | null;
-}
-
-interface ProductLite {
-  id: string;
-  name: string;
-  sku: string | null;
-  price_cents: number;
-}
-
-interface PricingByProduct {
-  productName: string;
-  retailCents: number;
-  standard?: PricingRow;
-  premium?: PricingRow;
-}
-
-async function loadPricing(): Promise<PricingByProduct[]> {
-  const { data: products } = await supabaseAdmin
-    .from('products')
-    .select('id, name, sku, price_cents')
-    .order('name');
-
-  const { data: pricing } = await supabaseAdmin
-    .from('wholesale_pricing')
-    .select('product_id, tier, price_cents, min_quantity');
-
-  if (!products || !pricing) return [];
-
-  const byProductId = new Map<string, PricingByProduct>();
-  for (const product of products as ProductLite[]) {
-    if (!product.sku?.startsWith('KP-')) continue;
-    if (product.sku.startsWith('KP-PACK')) continue;
-    byProductId.set(product.id, {
-      productName: product.name,
-      retailCents: product.price_cents,
-    });
-  }
-
-  for (const row of pricing) {
-    const entry = byProductId.get(row.product_id as string);
-    if (!entry) continue;
-    const tier = row.tier as 'standard' | 'premium';
-    const augmented = {
-      product_id: row.product_id as string,
-      tier,
-      price_cents: row.price_cents as number,
-      min_quantity: row.min_quantity as number,
-      product_name: entry.productName,
-    };
-    entry[tier] = augmented;
-  }
-
-  return Array.from(byProductId.values());
-}
-
-export default async function WholesaleLandingPage(): Promise<JSX.Element> {
-  const pricing = await loadPricing();
-
+export default function WholesaleLandingPage(): JSX.Element {
   return (
     <div className="page-container">
       <JsonLd data={breadcrumbLd} />
@@ -131,46 +64,56 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
         }}
       >
         <p className="stat-label" style={{ marginBottom: '1rem' }}>
-          // tiered pricing · per pop
+          // tiered wholesale pricing
         </p>
-        {pricing.length === 0 ? (
-          <p style={{ color: 'var(--bone)', fontFamily: 'var(--mono)' }}>
-            tier pricing seeds when you run migration 006 in supabase. once
-            it&apos;s in, this table populates from{' '}
-            <code>wholesale_pricing</code>.
-          </p>
-        ) : (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>flavor</th>
-                <th>retail</th>
-                <th>standard · 50+</th>
-                <th>premium · 200+</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pricing.map((row) => (
-                <tr key={row.productName}>
-                  <td className="font-mono">
-                    {row.productName.toLowerCase()}
-                  </td>
-                  <td>{formatCentsToUSD(row.retailCents)}</td>
-                  <td style={{ color: 'var(--lime)' }}>
-                    {row.standard
-                      ? formatCentsToUSD(row.standard.price_cents)
-                      : 'tbd'}
-                  </td>
-                  <td style={{ color: 'var(--cyan)' }}>
-                    {row.premium
-                      ? formatCentsToUSD(row.premium.price_cents)
-                      : 'tbd'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <p
+          style={{
+            color: 'var(--bone)',
+            fontFamily: 'var(--mono)',
+            fontSize: 14,
+            lineHeight: 1.7,
+            maxWidth: 640,
+          }}
+        >
+          per-pop pricing scales with order size. we send the full line sheet —
+          flavors, MSRP, and your tier rates — once you apply, so we can match
+          it to your channel.
+        </p>
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
+            marginTop: '1.25rem',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--mono)',
+              fontSize: 12,
+              letterSpacing: '0.08em',
+              color: 'var(--lime)',
+              border: '1px solid var(--lime)',
+              borderRadius: 999,
+              padding: '0.5rem 1rem',
+            }}
+          >
+            standard · 50+ units
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--mono)',
+              fontSize: 12,
+              letterSpacing: '0.08em',
+              color: 'var(--cyan)',
+              border: '1px solid var(--cyan)',
+              borderRadius: 999,
+              padding: '0.5rem 1rem',
+            }}
+          >
+            premium · 200+ units
+          </span>
+        </div>
         <p
           style={{
             marginTop: '1rem',
@@ -181,8 +124,7 @@ export default async function WholesaleLandingPage(): Promise<JSX.Element> {
             opacity: 0.85,
           }}
         >
-          // standard tier opens at 50 units · premium at 200 units. mix and
-          match flavors against the same tier.
+          // mix and match flavors against the same tier.
         </p>
       </div>
 
