@@ -4,6 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { createCheckoutSession } from '@/lib/stripe';
 import { checkoutRequestSchema } from '@/lib/validators';
+import { findRedeemableCode } from '@/lib/wholesale-codes';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -101,6 +102,29 @@ export async function POST(request: NextRequest) {
     (item) => productsById.get(item.productId)?.preorder_only === true
   );
 
+  // Optional wholesale discount code. Validated against the codes table; an
+  // invalid or already-used code is rejected so the customer gets clear
+  // feedback rather than a silently-ignored discount. The code isn't marked
+  // redeemed here — that happens once the order is actually paid (Stripe
+  // webhook), so an abandoned checkout never burns a one-time code.
+  let discountCode: string | null = null;
+  let discountPercentOff = 0;
+  let discountCents = 0;
+  if (parsed.discountCode) {
+    const code = await findRedeemableCode(parsed.discountCode);
+    if (!code) {
+      return NextResponse.json(
+        { error: 'That discount code is invalid or has already been used.' },
+        { status: 400 }
+      );
+    }
+    discountCode = code.code;
+    discountPercentOff = code.percent_off;
+    discountCents = Math.round((totalCents * code.percent_off) / 100);
+  }
+
+  const totalAfterDiscount = Math.max(0, totalCents - discountCents);
+
   // If the caller has an active session, attach their user_id so the order
   // shows up in their account history. Guests check out without a session
   // and the order stays user_id=null (retrievable via the order id link).
@@ -121,7 +145,10 @@ export async function POST(request: NextRequest) {
       user_id: authedUserId,
       user_email: parsed.email,
       status: 'pending',
-      total_cents: totalCents,
+      subtotal_cents: totalCents,
+      discount_code: discountCode,
+      discount_cents: discountCents,
+      total_cents: totalAfterDiscount,
       shipping_address: parsed.shippingAddress,
     })
     .select()
@@ -213,6 +240,7 @@ export async function POST(request: NextRequest) {
       successUrl: `${origin}/checkout/success?order_id=${order.id}&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${origin}/checkout/cancelled?order_id=${order.id}`,
       subtotalCents: totalCents,
+      ...(discountPercentOff > 0 ? { discountPercentOff } : {}),
       items: parsed.items.map((item) => {
         const product = productsById.get(item.productId)!;
         return {

@@ -36,6 +36,14 @@ interface ProductRow {
   sku: string | null;
 }
 
+interface CodeRow {
+  id: string;
+  code: string;
+  percent_off: number;
+  kind: 'first_order' | 'referral';
+  redeemed_at: string | null;
+}
+
 const STATUS_COPY: Record<
   WholesaleAccountRow['approval_status'],
   { headline: string; body: string; color: string }
@@ -117,11 +125,12 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
 
   const status = STATUS_COPY[account.approval_status];
 
-  // If approved, fetch tier pricing for the account's tier.
+  // If approved, fetch tier pricing for the account's tier + welcome codes.
   let pricing: PricingRow[] = [];
   let products: ProductRow[] = [];
+  let codes: CodeRow[] = [];
   if (account.approval_status === 'approved') {
-    const [pricingRes, productsRes] = await Promise.all([
+    const [pricingRes, productsRes, codesRes] = await Promise.all([
       supabaseAdmin
         .from('wholesale_pricing')
         .select('id, product_id, tier, price_cents, min_quantity')
@@ -131,9 +140,15 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
         .select('id, name, sku')
         .like('sku', 'KP-%')
         .not('sku', 'like', 'KP-PACK%'),
+      supabaseAdmin
+        .from('wholesale_discount_codes')
+        .select('id, code, percent_off, kind, redeemed_at')
+        .eq('wholesale_account_id', account.id)
+        .order('created_at', { ascending: true }),
     ]);
     pricing = (pricingRes.data ?? []) as PricingRow[];
     products = (productsRes.data ?? []) as ProductRow[];
+    codes = (codesRes.data ?? []) as CodeRow[];
   }
 
   const productById = new Map(products.map((p) => [p.id, p]));
@@ -249,6 +264,69 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
           </details>
         ) : null}
       </div>
+
+      {account.approval_status === 'approved' && codes.length > 0 && (
+        <div
+          className="card"
+          style={{ padding: '2rem', borderColor: 'var(--lime)' }}
+        >
+          <p className="stat-label" style={{ marginBottom: '0.75rem' }}>
+            // your welcome codes · {codes[0].percent_off}% off · one-time use
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--mono)',
+              fontSize: 13,
+              lineHeight: 1.7,
+              color: 'var(--paper)',
+              marginBottom: '1.5rem',
+            }}
+          >
+            one for your first order, the rest to hand out to referrals. each
+            works once. apply at checkout.
+          </p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+              gap: '0.75rem',
+            }}
+          >
+            {codes.map((c) => (
+              <div
+                key={c.id}
+                style={{
+                  border: '1px solid var(--lime)',
+                  borderRadius: 8,
+                  padding: '0.85rem 1rem',
+                  background: 'var(--midnight)',
+                  opacity: c.redeemed_at ? 0.45 : 1,
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: 'var(--mono)',
+                    fontSize: 16,
+                    fontWeight: 700,
+                    letterSpacing: '0.06em',
+                    color: 'var(--lime)',
+                    textDecoration: c.redeemed_at ? 'line-through' : 'none',
+                  }}
+                >
+                  {c.code}
+                </div>
+                <div
+                  className="stat-label"
+                  style={{ marginTop: '0.35rem' }}
+                >
+                  {c.kind === 'first_order' ? 'first order' : 'referral'}
+                  {c.redeemed_at ? ' · used' : ''}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {account.approval_status === 'approved' && sortedPricing.length > 0 && (
         <div className="card" style={{ padding: '2rem' }}>

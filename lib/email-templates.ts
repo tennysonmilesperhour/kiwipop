@@ -267,6 +267,56 @@ kiwi pop · salt lake city, ut · kiwipop.fun`,
   };
 }
 
+export function wholesaleApprovedEmail(params: {
+  businessName: string;
+  codes: Array<{ code: string; kind: 'first_order' | 'referral' }>;
+  percentOff: number;
+}): { subject: string; html: string; text: string } {
+  const firstOrder = params.codes.filter((c) => c.kind === 'first_order');
+  const referrals = params.codes.filter((c) => c.kind === 'referral');
+
+  const codeChip = (code: string) =>
+    `<div style="display:inline-block; margin:6px 8px 6px 0; padding:10px 16px; background:rgba(168,255,60,0.10); border:1px solid #a8ff3c; border-radius:6px; font-family:'Courier New',monospace; font-size:16px; font-weight:700; letter-spacing:0.08em; color:#a8ff3c;">${code}</div>`;
+
+  return {
+    subject: `you're approved · ${params.percentOff}% off inside · kiwi pop`,
+    html: layout(`
+      <h1>you're in, ${params.businessName}.</h1>
+      <p>your wholesale account is <span class="highlight">approved</span>. as a welcome, here are
+      <strong>${params.codes.length} one-time-use ${params.percentOff}% off codes</strong> tied to your account.</p>
+
+      <p><span class="highlight">your first order</span> — use this on your first wholesale order:</p>
+      <p>${firstOrder.map((c) => codeChip(c.code)).join('')}</p>
+
+      <p><span class="highlight">refer ${referrals.length} friends</span> — hand these out; each is good for ${params.percentOff}% off, once:</p>
+      <p>${referrals.map((c) => codeChip(c.code)).join('')}</p>
+
+      <div class="fact">
+        each code works once and is unique to your account. apply it at checkout — the
+        ${params.percentOff}% comes off your product subtotal automatically.
+      </div>
+
+      <a href="https://www.kiwipop.fun/wholesale/account" class="cta">view your account →</a>
+    `),
+    text: `you're in, ${params.businessName}.
+
+your wholesale account is approved. as a welcome, here are ${params.codes.length} one-time-use ${params.percentOff}% off codes tied to your account.
+
+your first order (use on your first wholesale order):
+${firstOrder.map((c) => `  ${c.code}`).join('\n')}
+
+refer ${referrals.length} friends (each good for ${params.percentOff}% off, once):
+${referrals.map((c) => `  ${c.code}`).join('\n')}
+
+each code works once and is unique to your account. apply it at checkout — the ${params.percentOff}% comes off your product subtotal automatically.
+
+view your account → https://www.kiwipop.fun/wholesale/account
+
+---
+kiwi pop · salt lake city, ut · kiwipop.fun`,
+  };
+}
+
 export function reviewRequestEmail(_params: {
   orderId: string;
 }): { subject: string; html: string; text: string } {

@@ -22,6 +22,7 @@ export const checkoutRequestSchema = z.object({
   shippingAddress: shippingAddressSchema,
   items: z.array(checkoutItemSchema).min(1, 'Cart is empty').max(50),
   marketingOptIn: z.boolean().optional().default(false),
+  discountCode: z.string().trim().min(1).max(60).optional(),
 });
 
 export type CheckoutRequest = z.infer<typeof checkoutRequestSchema>;

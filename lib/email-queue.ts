@@ -8,6 +8,7 @@ import {
   firstPurchasePushEmail,
   orderConfirmationEmail,
   reviewRequestEmail,
+  wholesaleApprovedEmail,
 } from '@/lib/email-templates';
 
 /* =========================================================
@@ -23,7 +24,8 @@ export type EmailType =
   | 'ingredient_deep_dive'
   | 'first_purchase_push'
   | 'order_confirmation'
-  | 'review_request';
+  | 'review_request'
+  | 'wholesale_approved';
 
 interface QueueEmailParams {
   to: string;
@@ -263,6 +265,17 @@ function buildTemplate(
     case 'review_request':
       return reviewRequestEmail({
         orderId: (metadata?.orderId as string) ?? '',
+      });
+    case 'wholesale_approved':
+      if (!metadata?.codes) return null;
+      return wholesaleApprovedEmail({
+        businessName: (metadata.businessName as string) ?? 'there',
+        codes:
+          (metadata.codes as Array<{
+            code: string;
+            kind: 'first_order' | 'referral';
+          }>) ?? [],
+        percentOff: (metadata.percentOff as number) ?? 25,
       });
     default:
       return null;

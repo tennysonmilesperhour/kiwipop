@@ -30,6 +30,14 @@ export default function CheckoutPage() {
   const [hasEditedEmail, setHasEditedEmail] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(true);
 
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState<{
+    code: string;
+    percentOff: number;
+  } | null>(null);
+  const [discountStatus, setDiscountStatus] = useState<string>('');
+  const [checkingDiscount, setCheckingDiscount] = useState(false);
+
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState<ShippingAddress>({
     firstName: '',
@@ -77,10 +85,54 @@ export default function CheckoutPage() {
     setAddress((prev) => ({ ...prev, [key]: value }));
   };
 
+  const applyDiscount = async () => {
+    const code = discountCode.trim();
+    if (!code) return;
+    setCheckingDiscount(true);
+    setDiscountStatus('');
+    try {
+      const response = await fetch('/api/discount/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      });
+      const json = (await response.json()) as {
+        valid?: boolean;
+        code?: string;
+        percentOff?: number;
+      };
+      if (json.valid && json.code && json.percentOff) {
+        setAppliedDiscount({ code: json.code, percentOff: json.percentOff });
+        setDiscountCode(json.code);
+        setDiscountStatus(`${json.percentOff}% off applied`);
+      } else {
+        setAppliedDiscount(null);
+        setDiscountStatus('invalid or already-used code');
+      }
+    } catch {
+      setAppliedDiscount(null);
+      setDiscountStatus('could not check that code');
+    } finally {
+      setCheckingDiscount(false);
+    }
+  };
+
+  const clearDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode('');
+    setDiscountStatus('');
+  };
+
+  const discountCents = appliedDiscount
+    ? Math.round((total * appliedDiscount.percentOff) / 100)
+    : 0;
+  const shippingCents = total >= 4000 ? 0 : 499;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
+    const codeToSend = (appliedDiscount?.code ?? discountCode).trim();
     const payload = {
       email,
       shippingAddress: address,
@@ -89,6 +141,7 @@ export default function CheckoutPage() {
         productId: item.productId,
         quantity: item.quantity,
       })),
+      ...(codeToSend ? { discountCode: codeToSend } : {}),
     };
 
     const validation = checkoutRequestSchema.safeParse(payload);
@@ -323,20 +376,80 @@ export default function CheckoutPage() {
           </div>
 
           <div className="border-t pt-4">
+            <div className="form-group" style={{ marginBottom: '1rem' }}>
+              <label className="form-label">Discount code</label>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input
+                  type="text"
+                  value={discountCode}
+                  onChange={(e) => {
+                    setDiscountCode(e.target.value.toUpperCase());
+                    if (appliedDiscount) {
+                      setAppliedDiscount(null);
+                      setDiscountStatus('');
+                    }
+                  }}
+                  className="form-input"
+                  placeholder="WHOLESALE CODE"
+                  style={{ flex: 1, textTransform: 'uppercase' }}
+                  autoCapitalize="characters"
+                  autoComplete="off"
+                />
+                {appliedDiscount ? (
+                  <button
+                    type="button"
+                    onClick={clearDiscount}
+                    className="btn"
+                  >
+                    Remove
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={applyDiscount}
+                    className="btn btn-secondary"
+                    disabled={checkingDiscount || !discountCode.trim()}
+                  >
+                    {checkingDiscount ? '…' : 'Apply'}
+                  </button>
+                )}
+              </div>
+              {discountStatus && (
+                <p
+                  style={{
+                    fontSize: '0.8rem',
+                    marginTop: '0.4rem',
+                    color: appliedDiscount ? 'var(--lime)' : 'var(--magenta)',
+                  }}
+                >
+                  {discountStatus}
+                </p>
+              )}
+            </div>
+
             <div className="summary-row">
               <span>Subtotal:</span>
               <span>{formatCentsToUSD(total)}</span>
             </div>
+            {appliedDiscount && (
+              <div className="summary-row" style={{ color: 'var(--lime)' }}>
+                <span>
+                  Discount ({appliedDiscount.code} · {appliedDiscount.percentOff}
+                  %):
+                </span>
+                <span>−{formatCentsToUSD(discountCents)}</span>
+              </div>
+            )}
             <div className="summary-row">
               <span>Shipping:</span>
               <span>
-                {total >= 4000 ? 'free · over $40' : '$4.99 standard · US'}
+                {shippingCents === 0 ? 'free · over $40' : '$4.99 standard · US'}
               </span>
             </div>
             <div className="summary-row summary-total">
               <span>Total:</span>
               <span>
-                {formatCentsToUSD(total + (total >= 4000 ? 0 : 499))}
+                {formatCentsToUSD(total - discountCents + shippingCents)}
               </span>
             </div>
           </div>
