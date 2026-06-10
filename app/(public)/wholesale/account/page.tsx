@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { formatCentsToUSD } from '@/lib/format';
+import { FLAVORS_BY_SKU } from '@/lib/flavors';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
@@ -33,27 +34,42 @@ interface PricingRow {
 interface ProductRow {
   id: string;
   name: string;
-  sku: string | null;
+  sku: string;
 }
 
 const STATUS_COPY: Record<
   WholesaleAccountRow['approval_status'],
-  { headline: string; body: string; color: string }
+  { headline: React.ReactNode; body: string; color: string; accent: string }
 > = {
   pending: {
-    headline: 'in the queue.',
+    headline: (
+      <>
+        in the <span className="ws-accent">queue</span>.
+      </>
+    ),
     body: "we batch-review applications. typical turnaround is 2 business days. we'll email the contact email on file with the decision.",
     color: 'var(--sodium)',
+    accent: 'ws-card--sodium',
   },
   approved: {
-    headline: "you're approved.",
-    body: "tier pricing is below. to place your first preorder, email thekiwipop@gmail.com with quantities by flavor and we'll send a quote with a payment link.",
+    headline: (
+      <>
+        you&apos;re <span className="ws-accent">approved</span>.
+      </>
+    ),
+    body: "tier pricing is below — and the full line sheet is one click away. to place your first preorder, email thekiwipop@gmail.com with quantities by flavor and we'll send a quote with a payment link.",
     color: 'var(--lime)',
+    accent: 'ws-card--lime',
   },
   rejected: {
-    headline: 'not this round.',
+    headline: (
+      <>
+        not this <span className="ws-accent">round</span>.
+      </>
+    ),
     body: "we couldn't make it work this cycle. reapply once anything changes (new shop, new channel, new volume) and we'll take a fresh look.",
     color: 'var(--magenta)',
+    accent: 'ws-card--accent',
   },
 };
 
@@ -77,36 +93,14 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
 
   if (!account) {
     return (
-      <div className="page-container" style={{ maxWidth: 600 }}>
-        <p
-          className="hero-tagline"
-          style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
-        >
-          // wholesale · account
-        </p>
-        <h1
-          style={{
-            fontFamily: 'var(--display)',
-            fontWeight: 800,
-            fontSize: 'clamp(2rem, 6vw, 3.5rem)',
-            letterSpacing: '-0.03em',
-            textTransform: 'lowercase',
-            color: 'var(--paper)',
-            marginBottom: '1rem',
-          }}
-        >
-          no application yet.
+      <div className="page-container wholesale-suite" style={{ maxWidth: 600 }}>
+        <p className="ws-eyebrow">wholesale · account</p>
+        <h1 className="ws-h1">
+          no application <span className="ws-accent">yet</span>.
         </h1>
-        <p
-          style={{
-            fontFamily: 'var(--mono)',
-            fontSize: 13,
-            color: 'var(--bone)',
-            marginBottom: '2rem',
-          }}
-        >
-          this email doesn&apos;t have a wholesale application on file. take
-          a minute and apply.
+        <p className="ws-lede">
+          this email doesn&apos;t have a wholesale application on file. take a
+          minute and apply.
         </p>
         <Link href="/wholesale/apply" className="btn btn-primary">
           apply now →
@@ -116,11 +110,12 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
   }
 
   const status = STATUS_COPY[account.approval_status];
+  const isApproved = account.approval_status === 'approved';
 
   // If approved, fetch tier pricing for the account's tier.
   let pricing: PricingRow[] = [];
   let products: ProductRow[] = [];
-  if (account.approval_status === 'approved') {
+  if (isApproved) {
     const [pricingRes, productsRes] = await Promise.all([
       supabaseAdmin
         .from('wholesale_pricing')
@@ -137,85 +132,49 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
   }
 
   const productById = new Map(products.map((p) => [p.id, p]));
-  const sortedPricing = [...pricing].sort((a, b) => {
-    const aName = productById.get(a.product_id)?.name ?? '';
-    const bName = productById.get(b.product_id)?.name ?? '';
-    return aName.localeCompare(bName);
-  });
+  const flavorName = (p: ProductRow | undefined): string =>
+    p ? FLAVORS_BY_SKU[p.sku]?.name ?? p.name.toLowerCase() : '';
+  const sortedPricing = [...pricing].sort((a, b) =>
+    flavorName(productById.get(a.product_id)).localeCompare(
+      flavorName(productById.get(b.product_id))
+    )
+  );
 
   return (
-    <div className="page-container">
-      <p
-        className="hero-tagline"
-        style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
-      >
-        // wholesale · account
+    <div className="page-container wholesale-suite">
+      <p className="ws-eyebrow" style={{ color: status.color }}>
+        wholesale · account
       </p>
-      <h1
-        style={{
-          fontFamily: 'var(--display)',
-          fontWeight: 800,
-          fontSize: 'clamp(2rem, 7vw, 4.5rem)',
-          letterSpacing: '-0.04em',
-          textTransform: 'lowercase',
-          color: status.color,
-          marginBottom: '1rem',
-        }}
-      >
-        {status.headline}
-      </h1>
-      <p
-        style={{
-          fontFamily: 'var(--mono)',
-          fontSize: 14,
-          lineHeight: 1.7,
-          color: 'var(--paper)',
-          maxWidth: 720,
-          marginBottom: '2.5rem',
-        }}
-      >
-        {status.body}
-      </p>
+      <h1 className="ws-h1">{status.headline}</h1>
+      <p className="ws-lede">{status.body}</p>
 
-      <div
-        className="card"
-        style={{ background: 'var(--midnight)', padding: '2rem' }}
-      >
-        <p className="stat-label" style={{ marginBottom: '1rem' }}>
-          // application on file
-        </p>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: '1rem',
-            fontFamily: 'var(--mono)',
-            fontSize: 13,
-          }}
-        >
+      <div className={`ws-card ${status.accent}`}>
+        <p className="ws-section-label">// application on file</p>
+        <div className="ws-stat-grid">
           <div>
-            <div className="stat-label">business</div>
-            <div style={{ marginTop: '0.4rem' }}>{account.business_name}</div>
+            <div className="ws-stat-label">business</div>
+            <div className="ws-stat-value">{account.business_name}</div>
           </div>
           <div>
-            <div className="stat-label">status</div>
+            <div className="ws-stat-label">status</div>
             <div
-              style={{
-                marginTop: '0.4rem',
-                color: status.color,
-                fontWeight: 700,
-              }}
+              className="ws-stat-value"
+              style={{ color: status.color, fontWeight: 700 }}
             >
               {account.approval_status}
             </div>
           </div>
           <div>
-            <div className="stat-label">tier</div>
-            <div style={{ marginTop: '0.4rem' }}>{account.tier}</div>
+            <div className="ws-stat-label">tier</div>
+            <div className="ws-stat-value">
+              <span className={`ws-badge ws-badge--${account.tier}`}>
+                {account.tier}
+              </span>
+            </div>
           </div>
           <div>
-            <div className="stat-label">applied</div>
-            <div style={{ marginTop: '0.4rem' }}>
+            <div className="ws-stat-label">applied</div>
+            <div className="ws-stat-value">
               {new Date(account.created_at).toLocaleDateString()}
             </div>
           </div>
@@ -225,10 +184,9 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
             <summary
               style={{
                 cursor: 'pointer',
-                fontFamily: 'var(--mono)',
-                fontSize: 11,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: '0.04em',
                 color: 'var(--bone)',
               }}
             >
@@ -237,8 +195,8 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
             <pre
               style={{
                 marginTop: '0.75rem',
-                fontFamily: 'var(--mono)',
-                fontSize: 12,
+                fontFamily: 'var(--ws-body, inherit)',
+                fontSize: 13,
                 color: 'var(--bone)',
                 whiteSpace: 'pre-wrap',
                 lineHeight: 1.6,
@@ -250,60 +208,73 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
         ) : null}
       </div>
 
-      {account.approval_status === 'approved' && sortedPricing.length > 0 && (
-        <div className="card" style={{ padding: '2rem' }}>
-          <p className="stat-label" style={{ marginBottom: '1rem' }}>
-            // your tier · {account.tier}
-          </p>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>flavor</th>
-                <th>per pop</th>
-                <th>min order</th>
-                <th>case of 50</th>
-                <th>case of 200</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedPricing.map((row) => {
-                const product = productById.get(row.product_id);
-                if (!product) return null;
-                return (
-                  <tr key={row.id}>
-                    <td className="font-mono">
-                      {product.name.toLowerCase()}
-                    </td>
-                    <td style={{ color: 'var(--lime)' }}>
-                      {formatCentsToUSD(row.price_cents)}
-                    </td>
-                    <td>{row.min_quantity}</td>
-                    <td>{formatCentsToUSD(row.price_cents * 50)}</td>
-                    <td>{formatCentsToUSD(row.price_cents * 200)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+      {isApproved && sortedPricing.length > 0 && (
+        <div className="ws-card ws-card--cyan">
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+              marginBottom: '1.1rem',
+            }}
+          >
+            <p
+              className="ws-section-label"
+              style={{ color: 'var(--cyan)', margin: 0 }}
+            >
+              // your tier · {account.tier}
+            </p>
+            <Link
+              href="/wholesale/line-sheet"
+              className="btn btn-secondary"
+              style={{ padding: '0.5rem 1rem', fontSize: 13 }}
+            >
+              full line sheet →
+            </Link>
+          </div>
+          <div className="ws-table-scroll">
+            <table className="ws-table">
+              <thead>
+                <tr>
+                  <th>flavor</th>
+                  <th>per pop</th>
+                  <th>min order</th>
+                  <th>case of {sortedPricing[0]?.min_quantity ?? 50}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedPricing.map((row) => {
+                  const product = productById.get(row.product_id);
+                  if (!product) return null;
+                  return (
+                    <tr key={row.id}>
+                      <td className="ws-flavor">{flavorName(product)}</td>
+                      <td
+                        className={`ws-num ${account.tier === 'premium' ? 'ws-prem' : 'ws-std'}`}
+                      >
+                        {formatCentsToUSD(row.price_cents)}
+                      </td>
+                      <td className="ws-num">{row.min_quantity}</td>
+                      <td className="ws-case ws-num">
+                        {formatCentsToUSD(row.price_cents * row.min_quantity)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
-      {account.approval_status === 'approved' && (
-        <div
-          className="card"
-          style={{
-            padding: '2rem',
-            borderColor: 'var(--lime)',
-            background: 'var(--midnight)',
-          }}
-        >
-          <p className="stat-label" style={{ marginBottom: '1rem' }}>
-            // place a preorder
-          </p>
+      {isApproved && (
+        <div className="ws-card ws-card--accent">
+          <p className="ws-section-label">// place a preorder</p>
           <p
             style={{
-              fontFamily: 'var(--mono)',
-              fontSize: 13,
+              fontSize: 14,
               lineHeight: 1.7,
               color: 'var(--paper)',
               marginBottom: '1.5rem',
@@ -323,19 +294,26 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
             >
               draft preorder email →
             </a>
-            <Link href="/wholesale/apply" className="btn">
-              update application
+            <Link href="/wholesale/line-sheet" className="btn btn-secondary">
+              view line sheet
             </Link>
           </div>
         </div>
       )}
 
-      {account.approval_status !== 'approved' && (
-        <div style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+      {!isApproved && (
+        <div
+          style={{
+            marginTop: '2rem',
+            display: 'flex',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
+          }}
+        >
           <Link href="/wholesale/apply" className="btn btn-primary">
             update application
           </Link>
-          <Link href="/wholesale" className="btn">
+          <Link href="/wholesale" className="btn btn-secondary">
             back to wholesale
           </Link>
         </div>
