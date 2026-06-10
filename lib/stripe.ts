@@ -54,6 +54,36 @@ interface CreateCheckoutSessionParams {
    * omitted, no shipping_options are attached (current behavior).
    */
   subtotalCents?: number;
+  /**
+   * Percent discount to apply to the product subtotal (e.g. 25 for 25% off).
+   * Attached as a one-time Stripe coupon so it shows on the receipt and is
+   * reflected in session.amount_total. Optional.
+   */
+  discountPercentOff?: number;
+}
+
+/**
+ * Retrieve (or lazily create) a reusable one-time percent-off coupon for a
+ * given percentage. Stripe coupons are reusable across sessions; `duration:
+ * 'once'` means it only discounts the single payment it's attached to.
+ */
+async function getOrCreateOnceCoupon(percentOff: number): Promise<string> {
+  const id = `kiwipop-${percentOff}off-once`;
+  try {
+    const existing = await stripe.coupons.retrieve(id);
+    if (existing && !(existing as { deleted?: boolean }).deleted) {
+      return existing.id;
+    }
+  } catch {
+    // Not found — fall through and create it.
+  }
+  const created = await stripe.coupons.create({
+    id,
+    percent_off: percentOff,
+    duration: 'once',
+    name: `${percentOff}% off (one-time)`,
+  });
+  return created.id;
 }
 
 /**
@@ -109,6 +139,14 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
       ? [{ shipping_rate: STANDARD_DOMESTIC_SHIPPING_RATE }]
       : [];
 
+  // A wholesale welcome code (or any percent discount) is attached as a
+  // one-time Stripe coupon. Stripe applies it to the product line items and
+  // reflects it in session.amount_total (which the webhook persists).
+  const discountCouponId =
+    params.discountPercentOff && params.discountPercentOff > 0
+      ? await getOrCreateOnceCoupon(params.discountPercentOff)
+      : null;
+
   const sessionBase: Omit<Stripe.Checkout.SessionCreateParams, 'line_items'> = {
     mode: 'payment',
     payment_method_types: ['card'],
@@ -121,6 +159,7 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
     },
     shipping_address_collection: { allowed_countries: ['US'] },
     ...(shippingOptions.length > 0 ? { shipping_options: shippingOptions } : {}),
+    ...(discountCouponId ? { discounts: [{ coupon: discountCouponId }] } : {}),
   };
 
   try {

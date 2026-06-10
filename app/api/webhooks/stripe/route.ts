@@ -3,6 +3,7 @@ import type Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { queuePostPurchaseSeries } from '@/lib/email-queue';
+import { redeemCodeForOrder } from '@/lib/wholesale-codes';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -62,7 +63,7 @@ async function handleCheckoutSessionCompleted(
   const amountTotal =
     typeof session.amount_total === 'number' ? session.amount_total : null;
 
-  const { error } = await supabaseAdmin
+  const { data: updatedOrder, error } = await supabaseAdmin
     .from('orders')
     .update({
       status: 'paid',
@@ -70,11 +71,18 @@ async function handleCheckoutSessionCompleted(
       ...(amountTotal !== null ? { total_cents: amountTotal } : {}),
       updated_at: new Date().toISOString(),
     })
-    .eq('id', orderId);
+    .eq('id', orderId)
+    .select('discount_code')
+    .maybeSingle<{ discount_code: string | null }>();
 
   if (error) {
     console.error('[stripe-webhook] failed to mark order paid', { orderId, error });
     return;
+  }
+
+  // Burn the one-time wholesale code now that payment has actually landed.
+  if (updatedOrder?.discount_code) {
+    await redeemCodeForOrder(updatedOrder.discount_code, orderId);
   }
 
   await decrementInventoryForOrder(orderId);

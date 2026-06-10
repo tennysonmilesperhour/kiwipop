@@ -26,6 +26,15 @@ interface WholesalePricing {
   min_quantity: number;
 }
 
+interface WholesaleCode {
+  id: string;
+  wholesale_account_id: string;
+  code: string;
+  percent_off: number;
+  kind: 'first_order' | 'referral';
+  redeemed_at: string | null;
+}
+
 interface ProductOption {
   id: string;
   name: string;
@@ -75,6 +84,10 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 export default function WholesalePage() {
   const [accounts, setAccounts] = useState<WholesaleAccount[]>([]);
+  const [codesByAccount, setCodesByAccount] = useState<
+    Record<string, WholesaleCode[]>
+  >({});
+  const [generatingCodes, setGeneratingCodes] = useState(false);
   const [pricing, setPricing] = useState<WholesalePricing[]>([]);
   const [products, setProducts] = useState<ProductOption[]>([]);
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
@@ -98,19 +111,29 @@ export default function WholesalePage() {
 
   const refresh = async () => {
     setLoading(true);
-    const [acctRes, priceRes, prodRes, settingsRes] = await Promise.all([
-      supabase
-        .from('wholesale_accounts')
-        .select('*')
-        .order('created_at', { ascending: false }),
-      supabase
-        .from('wholesale_pricing')
-        .select('*')
-        .order('tier', { ascending: true }),
-      supabase.from('products').select('id, name, cost_cents').order('name'),
-      fetch('/api/admin/settings').then((r) => (r.ok ? r.json() : null)),
-    ]);
+    const [acctRes, codesRes, priceRes, prodRes, settingsRes] =
+      await Promise.all([
+        supabase
+          .from('wholesale_accounts')
+          .select('*')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('wholesale_discount_codes')
+          .select('id, wholesale_account_id, code, percent_off, kind, redeemed_at')
+          .order('created_at', { ascending: true }),
+        supabase
+          .from('wholesale_pricing')
+          .select('*')
+          .order('tier', { ascending: true }),
+        supabase.from('products').select('id, name, cost_cents').order('name'),
+        fetch('/api/admin/settings').then((r) => (r.ok ? r.json() : null)),
+      ]);
     setAccounts(acctRes.data ?? []);
+    const grouped: Record<string, WholesaleCode[]> = {};
+    for (const row of (codesRes.data ?? []) as WholesaleCode[]) {
+      (grouped[row.wholesale_account_id] ??= []).push(row);
+    }
+    setCodesByAccount(grouped);
     setPricing(priceRes.data ?? []);
     setProducts(prodRes.data ?? []);
     if (settingsRes) {
@@ -152,6 +175,24 @@ export default function WholesalePage() {
 
   const handleReject = (account: WholesaleAccount) =>
     updateAccount(account.id, { approval_status: 'rejected' });
+
+  const handleGenerateCodes = async (account: WholesaleAccount) => {
+    setGeneratingCodes(true);
+    setError('');
+    try {
+      const response = await fetch(
+        `/api/admin/wholesale-accounts/${account.id}/codes`,
+        { method: 'POST' }
+      );
+      const json = await response.json();
+      if (!response.ok) throw new Error(json.error ?? 'Could not issue codes');
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not issue codes');
+    } finally {
+      setGeneratingCodes(false);
+    }
+  };
 
   const handleCreatePricing = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -461,6 +502,66 @@ export default function WholesalePage() {
                   {new Date(selectedAccount.created_at).toLocaleString()}
                 </p>
               </div>
+
+              {selectedAccount.approval_status === 'approved' && (
+                <div className="pt-2">
+                  <p className="text-gray-600">Welcome discount codes</p>
+                  {(codesByAccount[selectedAccount.id]?.length ?? 0) > 0 ? (
+                    <div className="flex flex-col gap-1 mt-1">
+                      {codesByAccount[selectedAccount.id].map((c) => (
+                        <div
+                          key={c.id}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '0.5rem',
+                          }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() =>
+                              navigator.clipboard?.writeText(c.code)
+                            }
+                            title="Click to copy"
+                            className="font-mono text-xs"
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: c.redeemed_at
+                                ? 'var(--admin-text-muted)'
+                                : 'var(--c-lime)',
+                              cursor: 'pointer',
+                              padding: 0,
+                              textDecoration: c.redeemed_at
+                                ? 'line-through'
+                                : 'none',
+                            }}
+                          >
+                            {c.code}
+                          </button>
+                          <span
+                            className="text-xs"
+                            style={{ color: 'var(--admin-text-muted)' }}
+                          >
+                            {c.percent_off}% ·{' '}
+                            {c.kind === 'first_order' ? 'first order' : 'referral'}
+                            {c.redeemed_at ? ' · used' : ''}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleGenerateCodes(selectedAccount)}
+                      className="btn btn-secondary mt-1"
+                      disabled={generatingCodes}
+                    >
+                      {generatingCodes ? 'Issuing…' : 'Issue & email codes'}
+                    </button>
+                  )}
+                </div>
+              )}
 
               {selectedAccount.approval_status === 'pending' && (
                 <div className="flex flex-col gap-2 pt-4">

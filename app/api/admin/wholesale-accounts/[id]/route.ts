@@ -3,6 +3,13 @@ import { ZodError } from 'zod';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { wholesaleAccountUpdateSchema } from '@/lib/validators';
+import {
+  ensureWholesaleCodes,
+  resolveAccountEmail,
+  WHOLESALE_DISCOUNT_PERCENT,
+  type WholesaleDiscountCode,
+} from '@/lib/wholesale-codes';
+import { sendEmailNow } from '@/lib/email-queue';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -58,5 +65,28 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
     );
   }
 
-  return NextResponse.json({ account: data });
+  // On approval, mint the account's 4 welcome discount codes (idempotent) and
+  // email them out. Failures here must not fail the approval itself.
+  let codes: WholesaleDiscountCode[] = [];
+  if (parsed.approval_status === 'approved') {
+    try {
+      codes = await ensureWholesaleCodes(params.id);
+
+      const to = await resolveAccountEmail(params.id);
+      if (to) {
+        await sendEmailNow(to, 'wholesale_approved', {
+          businessName: (data as { business_name?: string }).business_name,
+          percentOff: WHOLESALE_DISCOUNT_PERCENT,
+          codes: codes.map((c) => ({ code: c.code, kind: c.kind })),
+        });
+      }
+    } catch (err) {
+      console.error('[wholesale-accounts] code generation/email failed', {
+        accountId: params.id,
+        err,
+      });
+    }
+  }
+
+  return NextResponse.json({ account: data, codes });
 }
