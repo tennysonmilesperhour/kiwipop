@@ -3763,3 +3763,177 @@ textarea.form-input,
     animation: none !important;
   }
 }
+
+/* =========================================================
+   18. WHOLESALE SUITE — on-brand, colorful, non-mono
+   Scoped theme for the wholesale apply + account pages. Fixes
+   the "matrix" look (all lime-on-black + typewriter font) by
+   moving body copy to Space Grotesk (the landing typeface) and
+   spreading accents across magenta / cyan / sodium / lime. Dark
+   base is kept (it's the storefront) but it reads colorful, not
+   monochrome-green. Scoped under .wholesale-suite so the rest of
+   the storefront — including the public overview and the light
+   /wholesale/line-sheet print doc — stays untouched.
+   ========================================================= */
+.wholesale-suite {
+  --ws-body: 'Space Grotesk', var(--font-space-grotesk), 'Helvetica Neue', Arial, sans-serif;
+  --ws-display: var(--display);
+  --ws-surface: rgba(255, 255, 255, 0.035);
+  --ws-line: rgba(244, 240, 232, 0.14);
+  font-family: var(--ws-body);
+  color: var(--paper);
+}
+.wholesale-suite ::selection { background: var(--magenta); color: var(--midnight); }
+
+/* ---- type ---- */
+.ws-eyebrow {
+  font-family: var(--ws-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 0.75rem;
+}
+.ws-h1 {
+  font-family: var(--ws-display);
+  font-weight: 800;
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--paper);
+  margin-bottom: 1rem;
+}
+.ws-h1 .ws-accent { color: var(--magenta); }
+.ws-lede {
+  font-family: var(--ws-body);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--bone);
+  max-width: 64ch;
+  margin-bottom: 2.5rem;
+}
+.ws-section-label {
+  font-family: var(--ws-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sodium);
+  margin-bottom: 1.1rem;
+}
+
+/* ---- cards ---- */
+.ws-card {
+  background: var(--ws-surface);
+  border: 1px solid var(--ws-line);
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+.ws-card--accent { border-top: 3px solid var(--magenta); }
+.ws-card--cyan { border-top: 3px solid var(--cyan); }
+.ws-card--sodium { border-top: 3px solid var(--sodium); }
+.ws-card--lime { border-top: 3px solid var(--lime); }
+
+/* ---- forms (override the mono globals, scoped) ---- */
+.wholesale-suite .form-label {
+  font-family: var(--ws-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--bone);
+}
+.wholesale-suite .form-input,
+.wholesale-suite .form-select,
+.wholesale-suite .form-textarea {
+  font-family: var(--ws-body);
+  font-size: 15px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border-color: var(--ws-line);
+}
+.wholesale-suite .form-input:focus,
+.wholesale-suite .form-select:focus,
+.wholesale-suite .form-textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.16);
+}
+.wholesale-suite .form-group { margin-bottom: 1.25rem; }
+
+/* ---- buttons (scoped: lead with magenta, not lime) ---- */
+.wholesale-suite .btn {
+  font-family: var(--ws-body);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-radius: 999px;
+  padding: 0.8rem 1.5rem;
+}
+.wholesale-suite .btn-primary {
+  background: var(--magenta);
+  color: var(--paper);
+  border-color: var(--magenta);
+}
+.wholesale-suite .btn-primary:hover {
+  background: var(--magenta);
+  box-shadow: 0 0 22px rgba(255, 45, 138, 0.45);
+}
+.wholesale-suite .btn:hover { border-color: var(--cyan); }
+.wholesale-suite .btn-secondary:hover { color: var(--cyan); }
+
+/* ---- tier table (account pricing) ---- */
+.ws-table { width: 100%; border-collapse: collapse; font-family: var(--ws-body); }
+.ws-table th {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+  border-bottom: 1px solid var(--ws-line);
+  white-space: nowrap;
+}
+.ws-table td {
+  padding: 0.85rem 0.9rem;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(244, 240, 232, 0.07);
+  vertical-align: middle;
+}
+.ws-table tbody tr:last-child td { border-bottom: none; }
+.ws-table .ws-flavor { font-weight: 700; color: var(--paper); }
+.ws-table .ws-std { color: var(--cyan); font-weight: 700; }
+.ws-table .ws-prem { color: var(--magenta); font-weight: 700; }
+.ws-table .ws-case { color: var(--paper); }
+.ws-table .ws-num { font-variant-numeric: tabular-nums; }
+.ws-table-scroll { overflow-x: auto; margin: 0 -0.25rem; }
+
+/* ---- tier / status badges + stat grid ---- */
+.ws-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.ws-badge--standard { background: rgba(0, 240, 255, 0.14); color: var(--cyan); }
+.ws-badge--premium { background: rgba(255, 45, 138, 0.16); color: var(--magenta); }
+.ws-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.25rem;
+}
+.ws-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.ws-stat-value { margin-top: 0.4rem; font-size: 1.05rem; font-weight: 600; color: var(--paper); }

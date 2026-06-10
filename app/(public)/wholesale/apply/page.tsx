@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import {
   wholesaleApplicationSchema,
@@ -39,7 +38,6 @@ const EMPTY_FORM: FormState = {
 
 export default function WholesaleApplyPage(): JSX.Element {
   const { user, loading } = useAuth();
-  const router = useRouter();
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
@@ -109,46 +107,22 @@ export default function WholesaleApplyPage(): JSX.Element {
 
   if (loading) {
     return (
-      <div className="page-container">
-        <p style={{ color: 'var(--bone)', textTransform: 'uppercase', letterSpacing: '0.2em' }}>
-          loading…
-        </p>
+      <div className="page-container wholesale-suite">
+        <p className="ws-lede">loading…</p>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="page-container" style={{ maxWidth: 560 }}>
-        <p
-          className="hero-tagline"
-          style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
-        >
-          // wholesale · apply
-        </p>
-        <h1
-          style={{
-            fontFamily: 'var(--display)',
-            fontWeight: 800,
-            fontSize: 'clamp(2rem, 6vw, 3.5rem)',
-            letterSpacing: '-0.03em',
-            textTransform: 'lowercase',
-            color: 'var(--paper)',
-            marginBottom: '1rem',
-          }}
-        >
-          sign in first.
+      <div className="page-container wholesale-suite" style={{ maxWidth: 600 }}>
+        <p className="ws-eyebrow">wholesale · apply</p>
+        <h1 className="ws-h1">
+          sign in <span className="ws-accent">first</span>.
         </h1>
-        <p
-          style={{
-            fontFamily: 'var(--mono)',
-            fontSize: 13,
-            color: 'var(--bone)',
-            marginBottom: '2rem',
-          }}
-        >
+        <p className="ws-lede">
           wholesale applications get tied to a profile so you can check status
-          later. takes a minute.
+          and tier pricing later. takes a minute.
         </p>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <Link
@@ -159,7 +133,7 @@ export default function WholesaleApplyPage(): JSX.Element {
           </Link>
           <Link
             href={`/auth/signin?next=${encodeURIComponent('/wholesale/apply')}`}
-            className="btn"
+            className="btn btn-secondary"
           >
             sign in
           </Link>
@@ -173,44 +147,28 @@ export default function WholesaleApplyPage(): JSX.Element {
 
   if (success) {
     return (
-      <div className="page-container" style={{ maxWidth: 600 }}>
-        <p
-          className="hero-tagline"
-          style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
-        >
-          // wholesale · received
+      <div className="page-container wholesale-suite" style={{ maxWidth: 640 }}>
+        <p className="ws-eyebrow" style={{ color: 'var(--lime)' }}>
+          wholesale · received
         </p>
-        <h1
-          style={{
-            fontFamily: 'var(--display)',
-            fontWeight: 800,
-            fontSize: 'clamp(2rem, 7vw, 4rem)',
-            letterSpacing: '-0.04em',
-            textTransform: 'lowercase',
-            color: 'var(--lime)',
-            marginBottom: '1rem',
-          }}
-        >
-          {success.status === 'approved'
-            ? "you're already in."
-            : 'application received.'}
+        <h1 className="ws-h1">
+          {success.status === 'approved' ? (
+            <>
+              you&apos;re <span className="ws-accent">already in</span>.
+            </>
+          ) : (
+            <>
+              application <span className="ws-accent">received</span>.
+            </>
+          )}
         </h1>
-        <p
-          style={{
-            fontFamily: 'var(--mono)',
-            fontSize: 14,
-            color: 'var(--paper)',
-            marginBottom: '2rem',
-          }}
-        >
-          {success.message}
-        </p>
+        <p className="ws-lede">{success.message}</p>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <Link href="/wholesale/account" className="btn btn-primary">
             view application status →
           </Link>
-          <Link href="/" className="btn">
-            back to dawn
+          <Link href="/wholesale/line-sheet" className="btn btn-secondary">
+            see the line sheet
           </Link>
         </div>
       </div>
@@ -218,40 +176,23 @@ export default function WholesaleApplyPage(): JSX.Element {
   }
 
   return (
-    <div className="page-container" style={{ maxWidth: 720 }}>
-      <p
-        className="hero-tagline"
-        style={{ color: 'var(--bone)', marginBottom: '0.5rem' }}
-      >
-        // wholesale · apply
-      </p>
-      <h1
-        style={{
-          fontFamily: 'var(--display)',
-          fontWeight: 800,
-          fontSize: 'clamp(2rem, 6vw, 3.5rem)',
-          letterSpacing: '-0.03em',
-          textTransform: 'lowercase',
-          color: 'var(--paper)',
-          marginBottom: '0.5rem',
-        }}
-      >
-        tell us about your shop.
+    <div className="page-container wholesale-suite" style={{ maxWidth: 760 }}>
+      <p className="ws-eyebrow">wholesale · apply</p>
+      <h1 className="ws-h1">
+        tell us about your <span className="ws-accent">shop</span>.
       </h1>
-      <p
-        style={{
-          fontFamily: 'var(--mono)',
-          fontSize: 13,
-          color: 'var(--bone)',
-          marginBottom: '2rem',
-        }}
-      >
-        we read every one. no template responses.
+      <p className="ws-lede">
+        we read every one — no template responses. give us the basics and a
+        feel for the spot, and we&apos;ll get back fast.
       </p>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {error && (
+        <div className="alert alert-error" style={{ marginBottom: '1.5rem' }}>
+          {error}
+        </div>
+      )}
 
-      <div className="card">
+      <div className="ws-card ws-card--accent">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">business name *</label>
@@ -262,6 +203,7 @@ export default function WholesaleApplyPage(): JSX.Element {
               className="form-input"
               required
               autoComplete="organization"
+              placeholder="what's on the sign"
             />
           </div>
 
@@ -285,6 +227,7 @@ export default function WholesaleApplyPage(): JSX.Element {
                 onChange={(e) => updateField('contact_phone', e.target.value)}
                 className="form-input"
                 autoComplete="tel"
+                placeholder="optional"
               />
             </div>
           </div>
@@ -297,7 +240,7 @@ export default function WholesaleApplyPage(): JSX.Element {
                 value={form.tax_id}
                 onChange={(e) => updateField('tax_id', e.target.value)}
                 className="form-input"
-                placeholder="optional · helps us approve faster"
+                placeholder="optional · approves you faster"
               />
             </div>
             <div className="form-group">
@@ -310,7 +253,7 @@ export default function WholesaleApplyPage(): JSX.Element {
                   updateField('expected_monthly_units', e.target.value)
                 }
                 className="form-input"
-                placeholder="ballpark is fine"
+                placeholder="a ballpark is fine"
               />
             </div>
           </div>
@@ -344,7 +287,7 @@ export default function WholesaleApplyPage(): JSX.Element {
               onChange={(e) => updateField('message', e.target.value)}
               rows={4}
               className="form-textarea"
-              placeholder="festival you're vending, the city, anything that helps us picture the spot"
+              placeholder="the festival you're vending, the city, anything that helps us picture the spot"
             />
           </div>
 
@@ -358,31 +301,9 @@ export default function WholesaleApplyPage(): JSX.Element {
         </form>
       </div>
 
-      <p
-        style={{
-          marginTop: '1.5rem',
-          fontFamily: 'var(--mono)',
-          fontSize: 11,
-          color: 'var(--bone)',
-          letterSpacing: '0.1em',
-        }}
-      >
-        // signed in as <strong>{user.email}</strong> · this account holds your
-        application status.{' '}
-        <button
-          type="button"
-          onClick={() => router.push('/wholesale')}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--lime)',
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-            padding: 0,
-          }}
-        >
-          back to wholesale →
-        </button>
+      <p style={{ marginTop: '1.25rem', fontSize: 13, color: 'var(--bone)' }}>
+        signed in as <strong>{user.email}</strong> — this account holds your
+        application status and tier pricing.
       </p>
     </div>
   );
