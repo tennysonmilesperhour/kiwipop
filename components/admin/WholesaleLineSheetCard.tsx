@@ -5,9 +5,10 @@ import { useState } from 'react';
 const LINE_SHEET_PATH = '/wholesale/line-sheet';
 
 /**
- * Admin shortcut to the public wholesale line sheet — the shareable, printable
- * brand + pricing one-pager you hand to prospective wholesale clients. Copy the
- * link to drop in an email, or open it to print / save as PDF.
+ * Admin shortcut to the public wholesale brand & price sheet — the shareable,
+ * printable two-pager you hand to prospective wholesale clients (brand sheet on
+ * page 1, tiered pricing on page 2). Copy the link to drop in an email, or open
+ * it to print / save as PDF.
  */
 export function WholesaleLineSheetCard(): JSX.Element {
   const [copied, setCopied] = useState(false);
@@ -42,7 +43,7 @@ export function WholesaleLineSheetCard(): JSX.Element {
     >
       <div style={{ minWidth: 240 }}>
         <h2 className="card-title" style={{ marginBottom: '0.35rem' }}>
-          Wholesale line sheet
+          Wholesale brand &amp; price sheet
         </h2>
         <p
           style={{
@@ -52,9 +53,10 @@ export function WholesaleLineSheetCard(): JSX.Element {
             maxWidth: 520,
           }}
         >
-          Shareable brand + pricing one-pager for prospects. Send the link, or
-          open it and use your browser&apos;s &ldquo;Save as PDF.&rdquo; It
-          pulls live tier pricing automatically.
+          Shareable two-pager for prospects — brand sheet on page 1, tiered
+          pricing on page 2. Send the link, or open it and use your
+          browser&apos;s &ldquo;Save as PDF.&rdquo; It pulls live tier pricing
+          automatically.
         </p>
         <code
           style={{
