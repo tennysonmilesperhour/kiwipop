@@ -418,7 +418,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">here to make you more kissable.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower that wakes the palate, increases salivation) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside.
+              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower that wakes the palate, increases salivation) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · coconut oil + isomalt base · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside. contains coconut (a tree nut).
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
@@ -1178,7 +1178,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/legal/accessibility">accessibility</Link>
         </div>
         <div className="legal">
-          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, B12, MAGNESIUM GLYCINATE, TAURINE, ELECTROLYTES, EDIBLE MICA + A PER-FLAVOR ADAPTOGEN (GINSENG/SPIRULINA, ASHWAGANDHA, MACA/CINNAMON, OR L-THEANINE/CHAMOMILE). SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS. KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
+          <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, B12, MAGNESIUM GLYCINATE, TAURINE, ELECTROLYTES, COCONUT OIL, EDIBLE MICA + A PER-FLAVOR ADAPTOGEN (GINSENG/SPIRULINA, ASHWAGANDHA, MACA/CINNAMON, OR L-THEANINE/CHAMOMILE) ON A COCONUT OIL + ISOMALT BASE. <strong>ALLERGEN: CONTAINS COCONUT (A TREE NUT).</strong> SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS. KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
         </div>

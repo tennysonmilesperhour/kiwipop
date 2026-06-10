@@ -40,6 +40,9 @@ export default function FdaDisclaimerPage() {
               functional ingredients listed below</li>
           <li>anyone with a sensitivity to sugar alcohols (isomalt, xylitol)
               that causes GI distress</li>
+          <li>anyone with a coconut or tree-nut allergy (every flavor
+              contains coconut oil, and the FDA classifies coconut as a tree
+              nut)</li>
         </ul>
 
         <h2>sugar alcohols</h2>
@@ -86,12 +89,29 @@ export default function FdaDisclaimerPage() {
           these are appropriate for you, ask your doctor.
         </p>
 
+        <p><strong>base + sweeteners (every flavor):</strong></p>
+        <ul>
+          <li>coconut oil</li>
+          <li>isomalt (sugar alcohol base)</li>
+          <li>xylitol + monk fruit (sweeteners)</li>
+          <li>edible mica luster dust, citric acid, and per-flavor
+              flavoring and natural color</li>
+        </ul>
+
         <h2>allergens</h2>
         <p>
-          made in a facility that handles small-batch food products. the
-          recipe does not intentionally use peanuts, tree nuts, dairy, soy,
-          wheat, eggs, fish, or shellfish, but cross-contact is possible. if
-          you have a serious allergy, email{' '}
+          <strong style={{ color: 'var(--magenta)' }}>
+            contains coconut (a tree nut).
+          </strong>{' '}
+          every flavor is made on a coconut oil base, and the FDA classifies
+          coconut as a tree nut, so kiwi pop contains a tree-nut allergen. if
+          you have a coconut or tree-nut allergy, do not eat it.
+        </p>
+        <p>
+          aside from coconut, the recipe does not intentionally use peanuts,
+          other tree nuts, dairy, soy, wheat, eggs, fish, or shellfish, but
+          cross-contact is possible. made in a facility that handles
+          small-batch food products. if you have a serious allergy, email{' '}
           <a href="mailto:thekiwipop@gmail.com">thekiwipop@gmail.com</a> for the
           current batch&apos;s facility statement before ordering.
         </p>

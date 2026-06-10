@@ -485,6 +485,17 @@ export default function ProductClient({ params }: ProductClientProps) {
           kiwi powder · citric acid · edible mica luster dust ·
           ~35 cal · &lt;1g of sugar · ~9g net carbs · vegan
         </p>
+        <p
+          style={{
+            marginTop: '0.5rem',
+            fontFamily: 'var(--mono)',
+            fontSize: 11,
+            color: 'var(--magenta)',
+            opacity: 0.9,
+          }}
+        >
+          // allergen: contains coconut (a tree nut)
+        </p>
       </div>
     </div>
   );
