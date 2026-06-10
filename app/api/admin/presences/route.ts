@@ -52,7 +52,9 @@ export async function POST(request: NextRequest) {
     label,
     kind,
     color,
-    emoji: typeof b.emoji === 'string' && b.emoji.trim() ? b.emoji.trim() : '⭐',
+    // No default star: the map marker is already a star, so defaulting to '⭐'
+    // double-renders. Leave it null unless the operator picks a real badge.
+    emoji: typeof b.emoji === 'string' && b.emoji.trim() ? b.emoji.trim() : null,
     message: typeof b.message === 'string' ? b.message.trim() || null : null,
     auto_off_on_exit: typeof b.auto_off_on_exit === 'boolean' ? b.auto_off_on_exit : true,
     created_by: auth.userId,

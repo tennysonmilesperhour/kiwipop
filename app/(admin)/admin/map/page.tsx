@@ -64,7 +64,7 @@ export default function AdminMapPage() {
   const [pLabel, setPLabel] = useState('');
   const [pKind, setPKind] = useState('rover');
   const [pColor, setPColor] = useState('magenta');
-  const [pEmoji, setPEmoji] = useState('⭐');
+  const [pEmoji, setPEmoji] = useState('');
   const [pMessage, setPMessage] = useState('');
 
   const load = useCallback(async () => {

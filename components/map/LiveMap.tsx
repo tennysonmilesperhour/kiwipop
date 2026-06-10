@@ -19,9 +19,16 @@ function escapeHtml(s: string): string {
   );
 }
 
+// The live marker is already a star shape, so a star-emoji badge would just
+// render a second star floating on top of it (the "two stars for one person"
+// bug). Skip star glyphs; any other emoji still shows as a small corner badge.
+const STAR_GLYPHS = new Set(['⭐', '🌟', '★', '☆', '✦', '✧', '🌠', '✨']);
+
 function markerHtml(p: MapPoint): string {
   const live = p.live ? ' is-live' : '';
-  const emoji = p.emoji && p.live ? `<span class="kp-star-emoji">${escapeHtml(p.emoji)}</span>` : '';
+  const badge = p.emoji?.trim() ?? '';
+  const showEmoji = p.live && badge !== '' && !STAR_GLYPHS.has(badge);
+  const emoji = showEmoji ? `<span class="kp-star-emoji">${escapeHtml(badge)}</span>` : '';
   return `<div class="kp-star-marker${live}" style="color:${p.color}">
     <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
       <path d="${STAR_PATH}" fill="currentColor" stroke="rgba(5,5,16,0.85)" stroke-width="1"/>
