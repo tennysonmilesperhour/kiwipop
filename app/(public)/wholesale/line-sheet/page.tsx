@@ -1,12 +1,36 @@
 import type { Metadata } from 'next';
 import { formatCentsToUSD } from '@/lib/format';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { FLAVORS, FUNCTIONALS } from '@/lib/flavors';
+import { FLAVORS, FUNCTIONALS, TIMELINE } from '@/lib/flavors';
 import { LineSheetActions } from './LineSheetActions';
 
-const title = 'wholesale line sheet';
+const title = 'wholesale brand & price sheet';
 const description =
-  'kiwi pop wholesale line sheet — brand, product lineup, tiered pricing, and ordering terms for boutiques, bars, and festival vendors.';
+  'kiwi pop wholesale brand & price sheet — brand story, product lineup, formulation, tiered pricing, and ordering terms for boutiques, bars, and festival vendors.';
+
+/**
+ * The "lead with the no's" formulation claims that anchor the brand sheet.
+ * Clean-label positioning a health-conscious buyer can repeat to their own
+ * customers — each `no` is the headline, `what` the substitution, `why` the
+ * one-line justification.
+ */
+const FORMULATION_CLAIMS = [
+  {
+    no: 'No corn syrup',
+    what: 'xylitol + monk fruit',
+    why: 'Isomalt base, tooth-friendly and low-glycemic. Under 1g sugar.',
+  },
+  {
+    no: 'No artificial dyes',
+    what: 'color from botanicals',
+    why: 'Spirulina, turmeric, matcha, and lucuma do the color — never artificial dye.',
+  },
+  {
+    no: 'No caffeine crash',
+    what: 'theobromine, not caffeine',
+    why: 'A smooth lift from theobromine plus a per-flavor adaptogen. Lifted, not wired.',
+  },
+] as const;
 
 export const metadata: Metadata = {
   title,
@@ -89,10 +113,16 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
     <div className="ls-doc">
       <style>{lineSheetCss}</style>
 
+      {/* ============================================================
+          PAGE 1 — BRAND SHEET
+          The story-and-substance front page that leads the PDF: what
+          kiwi pop is, the sensory hook, the experience, the formulation,
+          and who it's for. The price sheet follows on page 2.
+          ============================================================ */}
       <header className="ls-head">
         <div>
           <div className="ls-brand">KIWI POP</div>
-          <div className="ls-sub">Wholesale Line Sheet · {today}</div>
+          <div className="ls-sub">Wholesale Brand Sheet · {today}</div>
         </div>
         <div className="ls-contact">
           <div>thekiwipop@gmail.com</div>
@@ -125,6 +155,95 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
           <span>individually foiled</span>
         </div>
       </div>
+
+      <section className="ls-section">
+        <h2 className="ls-h2">What it is</h2>
+        <p className="ls-body">
+          Kiwi Pop is a hard-candy lollipop with a functional payload — sitting
+          in the fast-growing intersection of confectionery and functional
+          wellness. The indulgence and impulse-buy appeal of candy, with an
+          active formulation that delivers a real sensory and physical effect.
+          Under 1g sugar, ~35 calories, no crash, no compromise on flavor.
+        </p>
+      </section>
+
+      <section className="ls-section">
+        <h2 className="ls-h2">The hook</h2>
+        <div className="ls-hook">
+          <div className="ls-hook-name">jambu — the buzz button</div>
+          <p>
+            An electric mouth-tingle on the first lick, from jambu (<em>acmella
+            oleracea</em>), the Brazilian buzz-button flower. It&apos;s the
+            signature sensory moment customers can&apos;t get anywhere else —
+            the reason they pick it up, and the reason they come back. Impossible
+            to copy on a shelf full of ordinary candy.
+          </p>
+        </div>
+      </section>
+
+      <section className="ls-section">
+        <h2 className="ls-h2">The experience</h2>
+        <p className="ls-note">
+          What a single pop actually feels like, start to finish.
+        </p>
+        <ul className="ls-timeline">
+          {TIMELINE.map((moment) => (
+            <li key={moment.index}>
+              <span className="ls-time">{moment.index}</span>
+              <div>
+                <strong>{moment.title}</strong>
+                <span className="ls-time-body">{moment.body}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="ls-section">
+        <h2 className="ls-h2">The formulation</h2>
+        <p className="ls-note">
+          Clean-label positioning that holds up to scrutiny — lead with the
+          no&apos;s.
+        </p>
+        <div className="ls-claims">
+          {FORMULATION_CLAIMS.map((claim) => (
+            <div className="ls-claim" key={claim.no}>
+              <div className="ls-claim-no">{claim.no}</div>
+              <div className="ls-claim-what">{claim.what}</div>
+              <p className="ls-claim-why">{claim.why}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="ls-section">
+        <h2 className="ls-h2">Who it&apos;s for</h2>
+        <p className="ls-body">
+          Kiwi Pop is built for the late-night and the neon-lit — candy for
+          people who curate their aesthetic as carefully as their supplement
+          stack. It lands in boutiques, late-night bars, festival booths, and
+          gift shops that want a high-margin impulse buy nobody else carries.
+          The brand doesn&apos;t whisper wellness — it glows.
+        </p>
+      </section>
+
+      {/* ============================================================
+          PAGE 2 — PRICE SHEET
+          Lineup, payload spec, tiered wholesale pricing, and terms.
+          page-break-before puts it on its own sheet in the printed PDF.
+          ============================================================ */}
+      <div className="ls-page-break" aria-hidden="true" />
+
+      <header className="ls-head ls-head--page2">
+        <div>
+          <div className="ls-brand">KIWI POP</div>
+          <div className="ls-sub">Wholesale Price Sheet · {today}</div>
+        </div>
+        <div className="ls-contact">
+          <div>thekiwipop@gmail.com</div>
+          <div>kiwipop.fun/wholesale</div>
+        </div>
+      </header>
 
       <section className="ls-section">
         <h2 className="ls-h2">The lineup</h2>
@@ -323,6 +442,81 @@ const lineSheetCss = `
   border-bottom: 1px solid #14121a;
 }
 .ls-note { font-size: 13px; color: #6b6675; margin: 0 0 12px; }
+.ls-body { font-size: 14.5px; margin: 0; max-width: 660px; }
+
+/* The jambu hook — the one callout that gets a tinted box so it reads as the
+   headline feature on the brand sheet. */
+.ls-hook {
+  border: 1px solid #f2c7dd;
+  border-left: 4px solid #ff2d8a;
+  background: #fff5fa;
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.ls-hook-name {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #c01f6e;
+  margin-bottom: 6px;
+}
+.ls-hook p { margin: 0; font-size: 14px; }
+
+/* "The experience" timeline — index column + title/body. */
+.ls-timeline { list-style: none; margin: 0; padding: 0; }
+.ls-timeline li {
+  display: flex;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid #efedf3;
+}
+.ls-timeline li:last-child { border-bottom: none; }
+.ls-time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7b2dff;
+  min-width: 52px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.ls-timeline strong {
+  display: block;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+.ls-time-body { font-size: 13px; color: #6b6675; }
+
+/* "The formulation" — the no's, three across. */
+.ls-claims {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.ls-claim {
+  border: 1px solid #e3e0e8;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.ls-claim-no { font-size: 15px; font-weight: 800; }
+.ls-claim-what {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1d7a33;
+  font-weight: 700;
+  margin: 4px 0 8px;
+}
+.ls-claim-why { font-size: 12.5px; color: #6b6675; margin: 0; }
+
+/* Page break between the brand sheet (page 1) and the price sheet (page 2).
+   On screen it's a labeled divider; in print it forces a fresh page. */
+.ls-page-break {
+  margin: 40px 0;
+  border-top: 2px dashed #d6d2dc;
+}
+.ls-head--page2 { margin-top: 4px; }
+
 .ls-flavors {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -421,6 +615,7 @@ const lineSheetCss = `
   .ls-head { flex-direction: column; }
   .ls-contact { text-align: left; }
   .ls-flavors, .ls-payload { grid-template-columns: 1fr; }
+  .ls-claims { grid-template-columns: 1fr; }
 }
 
 @media print {
@@ -429,5 +624,10 @@ const lineSheetCss = `
   .ls-doc { padding: 0; max-width: none; }
   .ls-section { break-inside: avoid; }
   .ls-flavor { break-inside: avoid; }
+  .ls-claim { break-inside: avoid; }
+  .ls-hook { break-inside: avoid; }
+  /* Start the price sheet on its own page in the PDF; hide the on-screen
+     dashed divider since the page break does the separating. */
+  .ls-page-break { break-before: page; margin: 0; border: none; }
 }
 `;
