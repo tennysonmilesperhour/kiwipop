@@ -48,7 +48,7 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'Who should not eat Kiwi Pop?',
-    a: 'Anyone under 18, anyone pregnant or nursing (precautionary), anyone on prescription medication that warrants checking new dietary supplements with a doctor, and anyone with a sugar-alcohol sensitivity that causes GI distress. If you have a known plant allergy (especially to the daisy / Asteraceae family) talk to your doctor before trying jambu. Full advisory on our /legal/fda-disclaimer page.',
+    a: 'Anyone under 18, anyone pregnant or nursing (precautionary), anyone on prescription medication that warrants checking new dietary supplements with a doctor, and anyone with a sugar-alcohol sensitivity that causes GI distress. Every flavor is made on a coconut oil base, and the FDA classifies coconut as a tree nut, so do not eat Kiwi Pop if you have a coconut or tree-nut allergy. If you have a known plant allergy (especially to the daisy / Asteraceae family) talk to your doctor before trying jambu. Full advisory on our /legal/fda-disclaimer page.',
   },
   {
     q: 'My dog got into one, what do I do?',

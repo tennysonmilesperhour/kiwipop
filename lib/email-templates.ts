@@ -58,10 +58,11 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
       <p>you just joined something small and weird and kind of beautiful.</p>
       <p>kiwi pop is a <span class="highlight">lollipop-shaped party supplement</span>:
       jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick),
-      theobromine, B12, magnesium glycinate, taurine, electrolytes, edible mica glitter,
+      theobromine, B12, magnesium glycinate, taurine, electrolytes, coconut oil, edible mica glitter,
       and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger,
       maca + cinnamon in caramel apple, L-theanine + chamomile in mint).
-      less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.</p>
+      less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
+      heads up: every flavor contains coconut (a tree nut).</p>
       <p>jambu is the same flower bartenders use for the &ldquo;electric daisy&rdquo; tingle in
       cocktails, and it&rsquo;s been studied for its effect on saliva flow and oral sensation, and
       it&rsquo;s been in the human food supply for centuries. sources cited on
@@ -77,7 +78,7 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
 
 you just joined something small and weird and kind of beautiful.
 
-kiwi pop is a lollipop-shaped party supplement: jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, B12, magnesium glycinate, taurine, electrolytes, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
+kiwi pop is a lollipop-shaped party supplement: jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, B12, magnesium glycinate, taurine, electrolytes, coconut oil, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city. heads up: every flavor contains coconut (a tree nut).
 
 jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails, and it's been studied for its effect on saliva flow and oral sensation, and it's been in the human food supply for centuries. sources cited at https://www.kiwipop.fun/research.
 
@@ -118,7 +119,7 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
       </ul>
       
       <div class="fact">
-        <strong>the base:</strong> isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle. that's the shimmer.
+        <strong>the base:</strong> coconut oil + isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle. that's the shimmer. heads up: every flavor contains coconut, which the FDA classifies as a tree nut.
       </div>
       
       <p>less than 1g sugar. ~35 calories. vegan. no artificial colors. no corn syrup. no bs.</p>
@@ -145,7 +146,7 @@ the shared functional base, same dose in every flavor:
 • mary caramel apple cinn: maca + cinnamon. grounded energy; reinforces caramel.
 • molly matcha mint: L-theanine + chamomile. calm-focus; clean alongside mint.
 
-the base: isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle.
+the base: coconut oil + isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle. heads up: every flavor contains coconut, which the FDA classifies as a tree nut.
 
 less than 1g sugar. ~35 calories. vegan. no artificial colors. no corn syrup. no bs.
 

@@ -23,9 +23,10 @@ export interface FlavorBrandInfo {
   /**
    * The adaptogen + direction unique to this flavor. Every flavor shares
    * the same base functional payload (jambu, theobromine, magnesium
-   * glycinate, taurine, electrolytes, B12, xylitol) — the adaptogen is
-   * what's tuned per flavor to match the sensory profile. Used on the
-   * flavor card, product page, and per-flavor description copy.
+   * glycinate, taurine, electrolytes, B12, xylitol) on a shared coconut oil
+   * + isomalt base. The adaptogen is what's tuned per flavor to match the
+   * sensory profile. Used on the flavor card, product page, and per-flavor
+   * description copy.
    *
    * Source: kiwi_pop_costing_v2.xlsx Recipes tab (per-flavor swaps).
    */
@@ -45,7 +46,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#a8ff3c',
     status: 'live',
     description:
-      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. xylitol-sweetened (tooth-friendly, no insulin spike) with a touch of monk fruit on an isomalt base. shared functional base + ginseng & spirulina to keep it balanced and bright. a little secret in your mouth.",
+      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. xylitol-sweetened (tooth-friendly, no insulin spike) with a touch of monk fruit on a coconut oil + isomalt base. shared functional base + ginseng & spirulina to keep it balanced and bright. a little secret in your mouth. contains coconut (a tree nut).",
     pickerLabel: 'kiwi',
     adaptogen: 'ginseng + spirulina',
     direction: 'balanced',
@@ -60,7 +61,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#ffce1f',
     status: 'soon',
     description:
-      "the g is for ginger. bright lemon out front, ginger snap on the back end, sharper, more awake. freeze-dried lemon and ground ginger riding on the same isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. coming soon.",
+      "the g is for ginger. bright lemon out front, ginger snap on the back end, sharper, more awake. freeze-dried lemon and ground ginger riding on the same coconut oil + isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. contains coconut (a tree nut). coming soon.",
     pickerLabel: 'lemon ginger',
     adaptogen: 'ashwagandha',
     direction: 'calm-warming',
@@ -75,7 +76,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#00f0ff',
     status: 'soon',
     description:
-      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling: mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. coming soon.",
+      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling: mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert, all on a coconut oil + isomalt base. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. contains coconut (a tree nut). coming soon.",
     pickerLabel: 'mint',
     adaptogen: 'L-theanine + chamomile',
     direction: 'calm-focus',
@@ -90,7 +91,7 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#d97539',
     status: 'soon',
     description:
-      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon. maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. coming soon.",
+      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon on a coconut oil + isomalt base. maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. contains coconut (a tree nut). coming soon.",
     pickerLabel: 'caramel apple',
     adaptogen: 'maca + cinnamon',
     direction: 'grounded energy',
