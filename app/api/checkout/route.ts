@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { createCheckoutSession } from '@/lib/stripe';
 import { checkoutRequestSchema } from '@/lib/validators';
-import { findRedeemableCode } from '@/lib/wholesale-codes';
+import { resolveDiscount } from '@/lib/discounts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -109,9 +109,10 @@ export async function POST(request: NextRequest) {
   // webhook), so an abandoned checkout never burns a one-time code.
   let discountCode: string | null = null;
   let discountPercentOff = 0;
+  let discountAmountCents = 0;
   let discountCents = 0;
   if (parsed.discountCode) {
-    const code = await findRedeemableCode(parsed.discountCode);
+    const code = await resolveDiscount(parsed.discountCode);
     if (!code) {
       return NextResponse.json(
         { error: 'That discount code is invalid or has already been used.' },
@@ -119,8 +120,14 @@ export async function POST(request: NextRequest) {
       );
     }
     discountCode = code.code;
-    discountPercentOff = code.percent_off;
-    discountCents = Math.round((totalCents * code.percent_off) / 100);
+    if (code.percentOff > 0) {
+      discountPercentOff = code.percentOff;
+      discountCents = Math.round((totalCents * code.percentOff) / 100);
+    } else {
+      // Fixed-amount reward code — never discount below zero.
+      discountAmountCents = Math.min(code.amountOffCents, totalCents);
+      discountCents = discountAmountCents;
+    }
   }
 
   const totalAfterDiscount = Math.max(0, totalCents - discountCents);
@@ -241,6 +248,7 @@ export async function POST(request: NextRequest) {
       cancelUrl: `${origin}/checkout/cancelled?order_id=${order.id}`,
       subtotalCents: totalCents,
       ...(discountPercentOff > 0 ? { discountPercentOff } : {}),
+      ...(discountAmountCents > 0 ? { discountAmountCents } : {}),
       items: parsed.items.map((item) => {
         const product = productsById.get(item.productId)!;
         return {

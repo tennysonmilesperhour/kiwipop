@@ -3,7 +3,8 @@ import type Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { queuePostPurchaseSeries } from '@/lib/email-queue';
-import { redeemCodeForOrder } from '@/lib/wholesale-codes';
+import { redeemDiscountForOrder } from '@/lib/discounts';
+import { consumeIngredientsAndAlert } from '@/lib/inventory';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -80,12 +81,27 @@ async function handleCheckoutSessionCompleted(
     return;
   }
 
-  // Burn the one-time wholesale code now that payment has actually landed.
+  // Burn the one-time discount code (wholesale or rewards) now that payment
+  // has actually landed.
   if (updatedOrder?.discount_code) {
-    await redeemCodeForOrder(updatedOrder.discount_code, orderId);
+    await redeemDiscountForOrder(updatedOrder.discount_code, orderId);
   }
 
   await decrementInventoryForOrder(orderId);
+
+  // Deduct ingredient-level raw materials for this order and alert admins if a
+  // flavor dropped below the 50-pop threshold. Best-effort — never blocks.
+  await consumeIngredientsAndAlert(orderId).catch((err) => {
+    console.error('[stripe-webhook] ingredient consumption failed', { orderId, err });
+  });
+
+  // Award rewards points to the buyer's account (no-op for guest checkout).
+  const { error: pointsError } = await supabaseAdmin.rpc('award_points_for_order', {
+    p_order_id: orderId,
+  });
+  if (pointsError) {
+    console.error('[stripe-webhook] award_points_for_order failed', { orderId, pointsError });
+  }
 
   // ---- Post-purchase email series ----
   // Fire-and-forget: send order confirmation + queue review request.

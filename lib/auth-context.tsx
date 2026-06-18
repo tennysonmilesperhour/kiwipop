@@ -9,14 +9,26 @@ interface Profile {
   email: string;
   display_name: string;
   role: 'customer' | 'admin';
+  account_type: 'retail' | 'wholesale';
+  points_balance: number;
   created_at: string;
+}
+
+export interface SignUpOptions {
+  accountType?: 'retail' | 'wholesale';
+  businessName?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, displayName: string) => Promise<void>;
+  signUp: (
+    email: string,
+    password: string,
+    displayName: string,
+    options?: SignUpOptions
+  ) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   isAdmin: boolean;
@@ -94,13 +106,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function signUp(email: string, password: string, displayName: string) {
+  async function signUp(
+    email: string,
+    password: string,
+    displayName: string,
+    options?: SignUpOptions
+  ) {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           display_name: displayName,
+          account_type: options?.accountType ?? 'retail',
+          ...(options?.businessName
+            ? { business_name: options.businessName }
+            : {}),
         },
       },
     });

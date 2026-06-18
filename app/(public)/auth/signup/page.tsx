@@ -17,6 +17,8 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [accountType, setAccountType] = useState<'retail' | 'wholesale'>('retail');
+  const [businessName, setBusinessName] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,10 +26,17 @@ export default function SignUp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (accountType === 'wholesale' && !businessName.trim()) {
+      setError('business name is required for a wholesale account');
+      return;
+    }
     setLoading(true);
 
     try {
-      await signUp(email, password, displayName);
+      await signUp(email, password, displayName, {
+        accountType,
+        businessName: accountType === 'wholesale' ? businessName.trim() : undefined,
+      });
       setSuccess(true);
       setTimeout(() => router.push(next), 1800);
     } catch (err) {
@@ -84,6 +93,48 @@ export default function SignUp() {
         {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">account type</label>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              {(['retail', 'wholesale'] as const).map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setAccountType(type)}
+                  className="btn"
+                  style={{
+                    flex: 1,
+                    borderColor:
+                      accountType === type ? 'var(--lime)' : 'var(--bone)',
+                    color: accountType === type ? 'var(--lime)' : 'var(--bone)',
+                    fontWeight: accountType === type ? 700 : 400,
+                  }}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+            <p style={{ color: 'var(--bone)', fontSize: 11, marginTop: '0.4rem' }}>
+              {accountType === 'retail'
+                ? 'earn 5 points per $1 — 500 points = $5 off.'
+                : 'wholesale pricing unlocks after we approve your application.'}
+            </p>
+          </div>
+
+          {accountType === 'wholesale' && (
+            <div className="form-group">
+              <label className="form-label">business name</label>
+              <input
+                type="text"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                className="form-input"
+                required
+                autoComplete="organization"
+              />
+            </div>
+          )}
+
           <div className="form-group">
             <label className="form-label">display name</label>
             <input
