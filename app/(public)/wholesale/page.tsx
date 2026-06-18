@@ -150,9 +150,9 @@ export default function WholesaleLandingPage(): JSX.Element {
           <li>
             <span className="wholesale-step-num">03</span>
             <div>
-              <strong>place a preorder</strong>: once approved you can
-              preorder full cases at tier pricing. we lock the batch and ship
-              when the run is ready.
+              <strong>place an order</strong>: once approved you can order
+              full cases at tier pricing. we confirm stock and ship from salt
+              lake.
             </div>
           </li>
           <li>

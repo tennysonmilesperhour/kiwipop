@@ -40,7 +40,7 @@ export function FundraiserBar({ snapshot }: FundraiserBarProps) {
           DONATE · BACK THE LAUNCH →
         </Link>
         <Link className="kp-fr-cta pink" href="/#shop">
-          PRE-ORDER →
+          SHOP ALL FLAVORS →
         </Link>
         <Link className="kp-fr-cta" href="/wholesale/apply">
           ORDER SAMPLES FOR WHOLESALE →

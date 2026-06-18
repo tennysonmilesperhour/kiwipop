@@ -88,7 +88,7 @@ export default function VarietyPage() {
       >
         equal amounts of every flavor in one box · kiwi pop · luci ginger lemon ·
         molly matcha mint · mary caramel apple cinn · same functional payload across all
-        four · ships preorder when the batch is ready.
+        four · in stock, ships now.
       </p>
 
       <div
@@ -287,7 +287,7 @@ export default function VarietyPage() {
             {added
               ? '✓ added'
               : selectedProduct
-                ? `preorder · ${formatCentsToUSD(linePriceCents)}`
+                ? `add to cart · ${formatCentsToUSD(linePriceCents)}`
                 : 'unavailable'}
           </button>
           {added ? (
@@ -311,7 +311,7 @@ export default function VarietyPage() {
               margin: 0,
             }}
           >
-            preorder · ships when the batch is ready
+            in stock · ships now
           </p>
         </div>
       </div>
