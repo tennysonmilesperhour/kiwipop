@@ -282,7 +282,7 @@ Total monthly cost while small: **$0–$25/month.**
 **Admin cockpit (private):**
 - Dashboard — today's orders, current inventory, this drop's burn rate, cash position
 - Orders — every order, status, fulfillment, refunds
-- Inventory — finished pops *and* raw ingredients (isomalt, xylitol, monk fruit extract, coconut oil, kiwi powder, theobromine, ginseng, magnesium glycinate, taurine, B12 methylcobalamin, electrolyte blend, spirulina, citric acid, mica, wrappers, sticks)
+- Inventory — finished pops *and* raw ingredients (isomalt, xylitol, monk fruit extract, coconut oil, kiwi powder, theobromine, ginseng, magnesium glycinate, taurine, B12 methylcobalamin, electrolyte blend, spirulina, citric acid, mica, sticks)
 - Drops — schedule a drop, set quantity caps, set go-live date, write copy, set color story
 - Customers — full list with order count, lifetime value, last order date
 - Financials — live P&L, cost-per-pop, margin per flavor, break-even quantities, runway
