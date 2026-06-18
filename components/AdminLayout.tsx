@@ -13,6 +13,7 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: '/admin/dashboard', label: 'dashboard' },
   { href: '/admin/orders', label: 'orders' },
   { href: '/admin/inventory', label: 'inventory' },
+  { href: '/admin/ingredients', label: 'ingredients' },
   { href: '/admin/products', label: 'products' },
   { href: '/admin/wholesale', label: 'wholesale' },
   { href: '/admin/manufacturing', label: 'manufacturing' },
@@ -26,6 +27,7 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: '/admin/list', label: 'marketing list' },
   { href: '/admin/pitch', label: 'pitch deck' },
   { href: '/admin/campaign', label: 'campaign updates' },
+  { href: '/admin/team', label: 'admin team' },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {

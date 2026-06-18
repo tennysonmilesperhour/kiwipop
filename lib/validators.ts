@@ -189,18 +189,53 @@ export type SupplierCreate = z.infer<typeof supplierCreateSchema>;
 export const supplierUpdateSchema = supplierCreateSchema.partial();
 export type SupplierUpdate = z.infer<typeof supplierUpdateSchema>;
 
+const optionalUrl = z.string().trim().url().max(2000).nullable().optional().or(z.literal(''));
+
 export const rawMaterialCreateSchema = z.object({
   name: z.string().trim().min(1).max(200),
   sku: z.string().trim().min(1).max(50),
-  quantity_available: z.number().int().min(0).default(0),
-  quantity_reserved: z.number().int().min(0).default(0),
-  reorder_point: z.number().int().min(0).default(0),
+  // Stock is tracked by weight/volume/count so quantities can be fractional.
+  quantity_available: z.number().min(0).default(0),
+  quantity_reserved: z.number().min(0).default(0),
+  reorder_point: z.number().min(0).default(0),
+  unit: z.enum(['g', 'kg', 'ml', 'l', 'ea']).optional(),
+  cost_per_unit_cents: z.number().min(0).nullable().optional(),
+  reference_url: optionalUrl,
+  pack_weight: z.number().min(0).nullable().optional(),
+  pack_price_cents: z.number().int().min(0).nullable().optional(),
+  wholesale_url: optionalUrl,
+  wholesale_pack_weight: z.number().min(0).nullable().optional(),
+  wholesale_pack_price_cents: z.number().int().min(0).nullable().optional(),
   supplier_id: z.string().uuid().nullable().optional(),
 });
 
 export type RawMaterialCreate = z.infer<typeof rawMaterialCreateSchema>;
 export const rawMaterialUpdateSchema = rawMaterialCreateSchema.partial();
 export type RawMaterialUpdate = z.infer<typeof rawMaterialUpdateSchema>;
+
+// Restocking a raw material: either a saved preset ("retail" / "wholesale"
+// pack) or a manual weight + cost entry.
+export const rawMaterialRestockSchema = z
+  .object({
+    source: z.enum(['retail', 'wholesale', 'manual']),
+    // Required for manual; optional for presets (falls back to saved pack).
+    quantityAdded: z.number().positive().optional(),
+    costCents: z.number().int().min(0).optional(),
+    referenceUrl: optionalUrl,
+  })
+  .refine(
+    (v) => v.source !== 'manual' || (typeof v.quantityAdded === 'number' && v.quantityAdded > 0),
+    { message: 'A manual restock needs a positive quantity', path: ['quantityAdded'] }
+  );
+
+export type RawMaterialRestock = z.infer<typeof rawMaterialRestockSchema>;
+
+// Grant/revoke admin access by email.
+export const adminGrantSchema = z.object({
+  email: z.string().trim().email().max(255),
+  note: z.string().trim().max(200).optional().or(z.literal('')),
+});
+export type AdminGrant = z.infer<typeof adminGrantSchema>;
 
 export const batchUpdateSchema = z.object({
   batch_number: z.string().trim().min(1).max(50).optional(),

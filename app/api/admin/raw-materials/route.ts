@@ -31,18 +31,36 @@ export async function POST(request: NextRequest) {
     throw err;
   }
 
+  const insertRow: Record<string, unknown> = {
+    name: parsed.name,
+    sku: parsed.sku,
+    quantity_available: parsed.quantity_available,
+    quantity_reserved: parsed.quantity_reserved,
+    reorder_point: parsed.reorder_point,
+    supplier_id: parsed.supplier_id || null,
+    last_restocked:
+      parsed.quantity_available > 0 ? new Date().toISOString() : null,
+  };
+
+  // Optional ingredient-tracking fields (unit, cost, restock presets/links).
+  const optionalKeys = [
+    'unit',
+    'cost_per_unit_cents',
+    'reference_url',
+    'pack_weight',
+    'pack_price_cents',
+    'wholesale_url',
+    'wholesale_pack_weight',
+    'wholesale_pack_price_cents',
+  ] as const;
+  for (const key of optionalKeys) {
+    const value = (parsed as Record<string, unknown>)[key];
+    if (value !== undefined) insertRow[key] = value === '' ? null : value;
+  }
+
   const { data, error } = await supabaseAdmin
     .from('raw_materials')
-    .insert({
-      name: parsed.name,
-      sku: parsed.sku,
-      quantity_available: parsed.quantity_available,
-      quantity_reserved: parsed.quantity_reserved,
-      reorder_point: parsed.reorder_point,
-      supplier_id: parsed.supplier_id || null,
-      last_restocked:
-        parsed.quantity_available > 0 ? new Date().toISOString() : null,
-    })
+    .insert(insertRow)
     .select()
     .single();
 

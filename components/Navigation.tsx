@@ -19,7 +19,7 @@ const LINKS: Array<{ href: string; label: string }> = [
 ];
 
 export function Navigation() {
-  const { user, signOut, isAdmin } = useAuth();
+  const { user, signOut, isAdmin, profile } = useAuth();
   const cartCount = useCart((s) => s.getTotalItems());
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,21 +46,43 @@ export function Navigation() {
           </Link>
         ))}
         {user ? (
-          <button
-            type="button"
-            onClick={() => {
-              setMenuOpen(false);
-              signOut();
-            }}
-            className="nav-link"
-            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-          >
-            sign out
-          </button>
+          <>
+            <Link
+              className="nav-link"
+              href={profile?.account_type === 'wholesale' ? '/wholesale/account' : '/account'}
+              onClick={() => setMenuOpen(false)}
+            >
+              account
+            </Link>
+            {isAdmin ? (
+              <Link className="nav-link" href="/admin/dashboard" onClick={() => setMenuOpen(false)}>
+                admin
+              </Link>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                signOut();
+              }}
+              className="nav-link"
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            >
+              sign out
+            </button>
+          </>
         ) : (
-          <Link className="nav-link" href="/auth/signin" onClick={() => setMenuOpen(false)}>
-            sign in
-          </Link>
+          <>
+            <Link className="nav-link" href="/auth/signin" onClick={() => setMenuOpen(false)}>
+              sign in
+            </Link>
+            <Link className="nav-link" href="/auth/signup" onClick={() => setMenuOpen(false)}>
+              create account
+            </Link>
+            <Link className="nav-link" href="/auth/signin?admin=1" onClick={() => setMenuOpen(false)}>
+              admin login
+            </Link>
+          </>
         )}
       </div>
 

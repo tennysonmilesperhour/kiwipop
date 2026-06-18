@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { findRedeemableCode } from '@/lib/wholesale-codes';
+import { resolveDiscount } from '@/lib/discounts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ valid: false }, { status: 200 });
   }
 
-  const match = await findRedeemableCode(code);
+  const match = await resolveDiscount(code);
   if (!match) {
     return NextResponse.json({ valid: false }, { status: 200 });
   }
@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({
     valid: true,
     code: match.code,
-    percentOff: match.percent_off,
+    percentOff: match.percentOff,
+    amountOffCents: match.amountOffCents,
   });
 }

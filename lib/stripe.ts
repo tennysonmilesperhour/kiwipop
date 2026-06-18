@@ -60,6 +60,12 @@ interface CreateCheckoutSessionParams {
    * reflected in session.amount_total. Optional.
    */
   discountPercentOff?: number;
+  /**
+   * Fixed discount in cents to apply (e.g. 500 for $5 off) — used by rewards
+   * codes. Attached as a one-time amount_off Stripe coupon. Optional. If both
+   * percent and amount are provided, percent wins.
+   */
+  discountAmountCents?: number;
 }
 
 /**
@@ -82,6 +88,31 @@ async function getOrCreateOnceCoupon(percentOff: number): Promise<string> {
     percent_off: percentOff,
     duration: 'once',
     name: `${percentOff}% off (one-time)`,
+  });
+  return created.id;
+}
+
+/**
+ * Retrieve (or lazily create) a reusable one-time amount-off coupon for a
+ * given cents value (e.g. a $5 rewards code). `duration: 'once'` keeps it to
+ * the single payment it's attached to.
+ */
+async function getOrCreateOnceAmountCoupon(amountCents: number): Promise<string> {
+  const id = `kiwipop-amt${amountCents}-once`;
+  try {
+    const existing = await stripe.coupons.retrieve(id);
+    if (existing && !(existing as { deleted?: boolean }).deleted) {
+      return existing.id;
+    }
+  } catch {
+    // Not found — fall through and create it.
+  }
+  const created = await stripe.coupons.create({
+    id,
+    amount_off: amountCents,
+    currency: 'usd',
+    duration: 'once',
+    name: `$${(amountCents / 100).toFixed(2)} off (one-time)`,
   });
   return created.id;
 }
@@ -145,6 +176,8 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
   const discountCouponId =
     params.discountPercentOff && params.discountPercentOff > 0
       ? await getOrCreateOnceCoupon(params.discountPercentOff)
+      : params.discountAmountCents && params.discountAmountCents > 0
+      ? await getOrCreateOnceAmountCoupon(params.discountAmountCents)
       : null;
 
   const sessionBase: Omit<Stripe.Checkout.SessionCreateParams, 'line_items'> = {
