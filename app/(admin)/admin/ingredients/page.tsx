@@ -20,12 +20,23 @@ interface Material {
   wholesale_pack_price_cents: number | null;
 }
 
+interface BreakdownLine {
+  materialId: string;
+  name: string;
+  sku: string;
+  unit: string;
+  perPop: number;
+  stock: number;
+  supported: number;
+}
+
 interface Flavor {
   product_id: string;
   sku: string;
   name: string;
   producible: number;
   low: boolean;
+  breakdown: BreakdownLine[];
 }
 
 interface IngredientsResponse {
@@ -60,6 +71,7 @@ export default function IngredientsPage() {
   const [manualCost, setManualCost] = useState('');
   const [editId, setEditId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<EditForm | null>(null);
+  const [openFlavor, setOpenFlavor] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -177,36 +189,113 @@ export default function IngredientsPage() {
         {loading ? (
           <p>Loading…</p>
         ) : (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-              gap: '0.75rem',
-            }}
-          >
-            {(data?.flavors ?? []).map((f) => (
-              <div
-                key={f.product_id}
-                style={{
-                  border: `1px solid ${f.low ? 'var(--c-magenta)' : 'var(--c-lime)'}`,
-                  borderRadius: 10,
-                  padding: '1rem',
-                }}
-              >
-                <div style={{ fontSize: 12, opacity: 0.7 }}>{f.name}</div>
-                <div
-                  style={{
-                    fontSize: 28,
-                    fontWeight: 800,
-                    color: f.low ? 'var(--c-magenta)' : 'var(--c-lime)',
-                  }}
-                >
-                  {f.producible}
-                </div>
-                <div style={{ fontSize: 11, opacity: 0.6 }}>{f.low ? '⚠ low stock' : 'pops'}</div>
-              </div>
-            ))}
-          </div>
+          <>
+            <p className="text-sm text-gray-600 mb-3">
+              Click a flavor to see which ingredient is the bottleneck.
+            </p>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '0.75rem',
+              }}
+            >
+              {(data?.flavors ?? []).map((f) => {
+                const open = openFlavor === f.product_id;
+                const accent = f.low ? 'var(--c-magenta)' : 'var(--c-lime)';
+                return (
+                  <button
+                    key={f.product_id}
+                    type="button"
+                    onClick={() => setOpenFlavor(open ? null : f.product_id)}
+                    style={{
+                      border: `1px solid ${accent}`,
+                      borderRadius: 10,
+                      padding: '1rem',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      background: open ? 'var(--admin-accent-tint)' : 'transparent',
+                      color: 'inherit',
+                    }}
+                  >
+                    <div style={{ fontSize: 12, opacity: 0.7 }}>{f.name}</div>
+                    <div style={{ fontSize: 28, fontWeight: 800, color: accent }}>
+                      {f.producible}
+                    </div>
+                    <div style={{ fontSize: 11, opacity: 0.6 }}>
+                      {f.low ? '⚠ low stock' : 'pops'} · {open ? 'hide ▲' : 'breakdown ▾'}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {openFlavor &&
+              (() => {
+                const f = data?.flavors.find((x) => x.product_id === openFlavor);
+                if (!f) return null;
+                const limiting = f.breakdown[0]?.supported;
+                return (
+                  <div
+                    style={{
+                      marginTop: '1rem',
+                      border: '1px solid var(--admin-border-strong)',
+                      borderRadius: 10,
+                      padding: '1rem',
+                    }}
+                  >
+                    <h3 style={{ fontWeight: 700, marginBottom: '0.25rem' }}>
+                      {f.name} — ingredient breakdown
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Each ingredient can support this many pops at current stock. The
+                      smallest number (highlighted) is what caps this flavor at{' '}
+                      <strong>{f.producible}</strong>.
+                    </p>
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Ingredient</th>
+                          <th>In stock</th>
+                          <th>Per pop</th>
+                          <th>Supports</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {f.breakdown.map((b) => {
+                          const isLimiting = b.supported === limiting;
+                          return (
+                            <tr key={b.materialId}>
+                              <td className={isLimiting ? 'font-bold' : ''}>
+                                {b.name}
+                                {isLimiting ? (
+                                  <span style={{ color: 'var(--c-magenta)' }}> · bottleneck</span>
+                                ) : null}
+                              </td>
+                              <td>
+                                {b.stock.toLocaleString(undefined, { maximumFractionDigits: 2 })}{' '}
+                                {b.unit}
+                              </td>
+                              <td>
+                                {b.perPop} {b.unit}
+                              </td>
+                              <td
+                                style={{
+                                  fontWeight: 700,
+                                  color: isLimiting ? 'var(--c-magenta)' : 'var(--c-lime)',
+                                }}
+                              >
+                                {b.supported.toLocaleString()} pops
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })()}
+          </>
         )}
       </div>
 
