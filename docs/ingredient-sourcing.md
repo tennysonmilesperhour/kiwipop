@@ -32,7 +32,6 @@ Amazon picks prioritize **lowest price‑per‑ounce** at a reasonable pack size
 | Turmeric extract 95% | **$3.63** | BulkSupplements 1 kg / ~$127.97 | PureBulk curcumin 95% |
 | Taurine | **$0.62** | Micro Ingredients 1 kg / ~$21.99 | Nutricost 1 kg / ~$23.95 |
 | B12 methylcobalamin | n/v | BulkSupplements — **use the 1% blend**, not pure | PureBulk methylcobalamin |
-| Ginkgo biloba extract | **$1.08** | BulkSupplements 1 kg / ~$38 | BulkSupplements wholesale |
 | Bamboo/paper sticks | **~$0.009 ea** | Wilton 100‑ct | WebstaurantStore 15,000/case / ~$132.99 |
 | Round labels | **~$0.04 ea** | Amazon 1.5" round | OnlineLabels OL5375 2" / $7.87 per 200 |
 | Jambu / Acmella oleracea | n/v | **not on Amazon as food‑grade powder** | Wellgreen / Ingredients Online (B2B quote) |
@@ -47,6 +46,9 @@ Amazon picks prioritize **lowest price‑per‑ounce** at a reasonable pack size
 | Chamomile extract | **$2.86** | BulkSupplements 500 g / ~$50.37 | BulkSupplements wholesale |
 | Culinary matcha | **$1.16** | BulkSupplements 1 kg / ~$40.96 | bulk.matcha.com 1 kg / ~$45.48 |
 | Lucuma | n/v | Food to Live 2 lb | Dolce Superfoods bulk |
+| Peppermint essential oil | to source | — | LorAnn / Starwest / bulk EO suppliers |
+| Spearmint essential oil | to source | — | LorAnn / Starwest / bulk EO suppliers |
+| Apple powder (freeze-dried) | to source | — | Z Natural Foods / Nutrada (freeze-dried fruit) |
 
 `n/v` = no price verifiable in‑tool (page blocked / quote‑only). Exact listing URLs are
 stored on each material's `reference_url` / `wholesale_url` in the database.
@@ -54,7 +56,7 @@ stored on each material's `reference_url` / `wholesale_url` in the database.
 ## One‑stop wholesale partners
 
 1. **WebstaurantStore** — candy base + packaging (isomalt, sugars, sticks). Bulk‑retail, no application. <https://www.webstaurantstore.com/>
-2. **BulkSupplements.com (Wholesale)** — cheapest single source for the actives: taurine, theanine, theobromine, magnesium glycinate, B12, ginkgo, ginseng, turmeric 95%, monk fruit, spirulina, maca, chamomile, matcha. Formal wholesale tier. <https://wholesale.bulksupplements.com/>
+2. **BulkSupplements.com (Wholesale)** — cheapest single source for the actives: taurine, theanine, theobromine, magnesium glycinate, B12, ginseng, turmeric 95%, monk fruit, spirulina, maca, chamomile, matcha. Formal wholesale tier. <https://wholesale.bulksupplements.com/>
 3. **Starwest Botanicals** — USDA‑organic botanicals/spices: ginger, Ceylon cinnamon, spirulina, maca, chamomile. Wholesale program, Net‑30. <https://www.starwest-botanicals.com/wholesale-homepage/>
 4. **Z Natural Foods** — freeze‑dried fruit powders, matcha, spirulina, superfood powders; custom blending. <https://www.znaturalfoods.com/pages/bulk>
 5. **PureBulk** — sweeteners/sugar alcohols, vitamins, minerals, extracts; wholesale + private‑label tier. <https://purebulk.com/>
