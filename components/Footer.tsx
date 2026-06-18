@@ -32,6 +32,9 @@ export function Footer() {
           <Link href="/research" className="footer-link">
             research
           </Link>
+          <Link href="/labels" className="footer-link">
+            ingredients
+          </Link>
           <Link href="/legal/privacy" className="footer-link">
             privacy
           </Link>
