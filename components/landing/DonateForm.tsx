@@ -328,7 +328,7 @@ export function DonateForm({ snapshot }: DonateFormProps) {
                 ← BACK TO LANDING
               </Link>
               <Link className="kp-fr-cta pink" href="/wholesale/contact">
-                WHOLESALE PREORDER →
+                WHOLESALE ORDER →
               </Link>
             </div>
           </div>

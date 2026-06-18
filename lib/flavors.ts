@@ -59,9 +59,9 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     fn: 'shared base · ashwagandha · luster dust',
     flavor: 'lemon + ginger · sharp and citrus',
     color: '#ffce1f',
-    status: 'soon',
+    status: 'live',
     description:
-      "the g is for ginger. bright lemon out front, ginger snap on the back end, sharper, more awake. freeze-dried lemon and ground ginger riding on the same coconut oil + isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. contains coconut (a tree nut). coming soon.",
+      "the g is for ginger. bright lemon out front, ginger snap on the back end, sharper, more awake. freeze-dried lemon and ground ginger riding on the same coconut oil + isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. contains coconut (a tree nut).",
     pickerLabel: 'lemon ginger',
     adaptogen: 'ashwagandha',
     direction: 'calm-warming',
@@ -74,9 +74,9 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     fn: 'shared base · L-theanine + chamomile · luster dust',
     flavor: 'matcha + mint · cool, clean, lifted',
     color: '#00f0ff',
-    status: 'soon',
+    status: 'live',
     description:
-      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling: mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert, all on a coconut oil + isomalt base. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. contains coconut (a tree nut). coming soon.",
+      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling: mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert, all on a coconut oil + isomalt base. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. contains coconut (a tree nut).",
     pickerLabel: 'mint',
     adaptogen: 'L-theanine + chamomile',
     direction: 'calm-focus',
@@ -89,9 +89,9 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     fn: 'shared base · maca + cinnamon · luster dust',
     flavor: 'caramel apple + cinnamon · warm, glossy, autumnal',
     color: '#d97539',
-    status: 'soon',
+    status: 'live',
     description:
-      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon on a coconut oil + isomalt base. maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. contains coconut (a tree nut). coming soon.",
+      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon on a coconut oil + isomalt base. maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. contains coconut (a tree nut).",
     pickerLabel: 'caramel apple',
     adaptogen: 'maca + cinnamon',
     direction: 'grounded energy',
@@ -119,8 +119,8 @@ export const FLAVOR_IMG: Record<string, string> = {
 /**
  * Per-flavor pack SKUs for the [1, 6, 20] ladder. Single defaults to the
  * flavor's own SKU; 6-pack and 20-pack point at flavor-specific bundle
- * SKUs (preorder-only for the three preorder flavors, live for kiwi
- * kitty via the existing KP-PACK-6 / KP-PACK-20 rows).
+ * SKUs. Kiwi kitty uses the shared KP-PACK-6 / KP-PACK-20 rows; the other
+ * three flavors have their own per-flavor bundle SKUs.
  */
 export const PACK_SKUS_BY_FLAVOR: Record<
   string,

@@ -137,19 +137,19 @@ const SHEET = {
       name: 'luci ginger lemon',
       descriptor: 'lemon + ginger · sharp, bright, awake.',
       color: '#ffce1f',
-      status: 'soon',
+      status: 'live',
     },
     {
       name: 'molly matcha mint',
       descriptor: 'matcha + mint · green, cool, grassy.',
       color: '#00f0ff',
-      status: 'soon',
+      status: 'live',
     },
     {
       name: 'mary caramel apple cinn',
       descriptor: 'caramel apple + cinnamon · warm, spiced, nostalgic.',
       color: '#ff2d8a',
-      status: 'soon',
+      status: 'live',
     },
   ] as Flavor[],
 

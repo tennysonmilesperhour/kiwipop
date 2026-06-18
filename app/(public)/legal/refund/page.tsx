@@ -44,11 +44,10 @@ export default function RefundPage() {
           refund the order. we&apos;d rather hear about it than lose you.
         </p>
 
-        <h2>cancelled / preorder refunds</h2>
+        <h2>cancellations</h2>
         <p>
-          preorder cancellations get a full refund as long as the batch
-          hasn&apos;t shipped. once it&apos;s on the truck, treat it like a
-          regular order.
+          cancellations get a full refund as long as the order hasn&apos;t
+          shipped. once it&apos;s on the truck, treat it like a regular order.
         </p>
 
         <h2>refund processing</h2>

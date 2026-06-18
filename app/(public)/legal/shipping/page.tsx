@@ -57,11 +57,10 @@ export default function ShippingPage() {
           your order number and a photo if relevant. we&apos;ll fix it.
         </p>
 
-        <h2>preorders</h2>
+        <h2>availability</h2>
         <p>
-          three of our four flavors are <em>coming soon</em>. preordering
-          means we charge you now and ship when the batch is ready. an email
-          goes out the day before the truck moves.
+          all four flavors are <em>in stock and shipping now</em>. orders are
+          charged at checkout and go out from salt lake on the schedule above.
         </p>
       </div>
 

@@ -31,7 +31,7 @@ const FLAVOR_DOT_COLOR: Record<string, string> = {
 
 const FESTIVAL_TICKER = [
   'DROP 001 · KIWI POP · LIVE',
-  '3 PREORDERS OPEN',
+  'ALL 4 FLAVORS LIVE',
   'HEALTH IS INEVITABLE · KINDNESS IS INVINCIBLE',
   'BEYOND WONDERLAND · 2026.07',
   'COACHELLA W2 · 2026.04',
@@ -471,7 +471,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <div className="row">
               <span className="label">FLAVOR</span>
               <span className="label">
-                <span className="kw">{liveFlavors.length} LIVE · {products.flavors.length - liveFlavors.length} PREORDER</span>
+                <span className="kw">ALL {products.flavors.length} FLAVORS LIVE</span>
               </span>
             </div>
             <div className="flav-pick">
@@ -490,7 +490,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                       borderLeftColor: selected ? FLAVOR_DOT_COLOR[flavor.sku] : undefined,
                     }}
                     aria-pressed={selected}
-                    title={flavor.status === 'soon' ? 'preorder' : 'in stock'}
+                    title="in stock"
                   >
                     {flavor.pickerLabel}
                   </button>
@@ -521,7 +521,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <span className="label">
                 <span className="kw">
                   {kind === 'variety'
-                    ? '8 FOR $30 · 20 FOR $60 · 40 FOR $100 · PREORDER'
+                    ? '8 FOR $30 · 20 FOR $60 · 40 FOR $100'
                     : '$5 SINGLE · 6 FOR $25 · 20 FOR $60'}
                 </span>
               </span>
@@ -687,7 +687,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                 key={flavor.sku}
                 href={href}
                 className={`fc ${cardSkuKey}`}
-                aria-label={`${flavor.name}, ${isLive ? 'shop' : 'preorder'}`}
+                aria-label={`${flavor.name}, ${isLive ? 'shop' : 'coming soon'}`}
               >
                 <div className="img">
                   {/* CSS-bg → <Image> swap. The .img class keeps
@@ -702,7 +702,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                   />
                 </div>
                 <span className={`status-pill ${isLive ? 'live' : 'soon'}`}>
-                  {isLive ? `LIVE · ${inStock} LEFT` : 'PREORDER'}
+                  {isLive ? `LIVE · ${inStock} LEFT` : 'COMING SOON'}
                 </span>
                 <div className="top">
                   <span className="num">00{idx + 1} · {flavor.flavor.split(' ')[0].toUpperCase()}</span>
@@ -723,7 +723,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                     <span className="mg">+ {flavor.adaptogen} · {flavor.direction}</span>
                     <br />
                     {flavor.product
-                      ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{isLive ? 'SHOP →' : 'PREORDER →'}</span></>
+                      ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{isLive ? 'SHOP →' : 'COMING SOON'}</span></>
                       : <span className="mg">NOTIFY ME →</span>}
                   </div>
                 </div>
@@ -1150,7 +1150,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               key={flavor.sku}
               href={flavor.product ? `/products/${flavor.product.id}` : '#shop'}
             >
-              {flavor.name} {flavor.status === 'soon' ? '· preorder' : null}
+              {flavor.name} {flavor.status === 'soon' ? '· coming soon' : null}
             </Link>
           ))}
         </div>

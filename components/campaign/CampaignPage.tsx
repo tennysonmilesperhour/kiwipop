@@ -341,7 +341,7 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
           {/* Quick links */}
           <div className="cp-links-card">
             <Link href="/" className="cp-link">🛒 SHOP KIWI POP</Link>
-            <Link href="/wholesale/apply" className="cp-link">📦 WHOLESALE PREORDER</Link>
+            <Link href="/wholesale/apply" className="cp-link">📦 WHOLESALE ORDER</Link>
             <a
               href="https://instagram.com/the.kiwi.pop"
               target="_blank"

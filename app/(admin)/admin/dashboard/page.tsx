@@ -521,7 +521,7 @@ export default function AdminDashboard() {
             ) : (
               <p>
                 no products yet. run migration 004 in supabase to seed kiwi
-                kitty + the three preorder flavors.
+                kitty + the other three flavors.
               </p>
             )}
             <Link
