@@ -312,6 +312,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/variety" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>VARIETY</Link>
           <Link href="/wholesale" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>WHOLESALE</Link>
           <Link href="/find-us" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>FIND US</Link>
+          <Link href="/auth/signin?next=/admin/dashboard" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>ADMIN</Link>
           <div className="kp-nav-more">
             <button
               type="button"
@@ -329,6 +330,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               <Link href="/variety" role="menuitem">VARIETY</Link>
               <Link href="/wholesale" role="menuitem">WHOLESALE</Link>
               <Link href="/find-us" role="menuitem">FIND US</Link>
+              <Link href="/auth/signin?next=/admin/dashboard" role="menuitem">ADMIN</Link>
             </div>
           </div>
         </div>
@@ -1163,6 +1165,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <Link href="/faq">faq</Link>
           <Link href="/research">research</Link>
           <Link href="/donate">donate</Link>
+          <Link href="/auth/signin?next=/admin/dashboard">admin login</Link>
         </div>
         <div className="col">
           <h4>CONTACT</h4>
