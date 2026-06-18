@@ -43,13 +43,14 @@ const FLAVOR_SPECIFIC_INGREDIENTS: Record<string, string[]> = {
     'turmeric (color)',
   ],
   'KP-MANGO-MOLLY': [
-    'natural peppermint + spearmint flavor',
+    'peppermint essential oil',
+    'spearmint essential oil',
     'matcha (color)',
   ],
   'KP-MARY-MINT': [
-    'natural caramel + green apple flavor',
+    'lucuma caramel flavor',
+    'apple powder',
     'ceylon cinnamon',
-    'lucuma',
   ],
 };
 
