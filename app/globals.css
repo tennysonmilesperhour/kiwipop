@@ -13,7 +13,7 @@
   --bone: #d8d2c4;
 
   /* Neons */
-  --lime: #a8ff3c;
+  --lime: #ff44cc;
   --cyan: #00f0ff;
   --magenta: #ff2d8a;
   --ultraviolet: #7b2dff;
@@ -252,7 +252,7 @@ button { font: inherit; }
 }
 .nav-cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 0 18px rgba(168, 255, 60, 0.4);
+  box-shadow: 0 0 18px rgba(255, 68, 204, 0.4);
 }
 .cart-badge {
   display: inline-block;
@@ -485,7 +485,7 @@ button { font: inherit; }
   height: auto;
   z-index: 2;
   opacity: 0.95;
-  filter: drop-shadow(0 0 40px rgba(168, 255, 60, 0.3));
+  filter: drop-shadow(0 0 40px rgba(255, 68, 204, 0.3));
 }
 
 .hero-pop {
@@ -496,7 +496,7 @@ button { font: inherit; }
   height: auto;
   z-index: 2;
   filter: drop-shadow(0 0 60px rgba(0, 240, 255, 0.35))
-    drop-shadow(0 0 80px rgba(168, 255, 60, 0.25));
+    drop-shadow(0 0 80px rgba(255, 68, 204, 0.25));
   pointer-events: none;
 }
 .hero-pop img {
@@ -1153,7 +1153,7 @@ button { font: inherit; }
 .form-select:focus,
 .form-textarea:focus {
   border-color: var(--lime);
-  box-shadow: 0 0 0 3px rgba(168, 255, 60, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 68, 204, 0.15);
 }
 .form-input::placeholder { color: rgba(244, 240, 232, 0.35); }
 .form-textarea { resize: vertical; min-height: 90px; }
@@ -1185,7 +1185,7 @@ button { font: inherit; }
   color: var(--midnight);
   border-color: var(--lime);
 }
-.btn-primary:hover { background: var(--lime); box-shadow: 0 0 18px rgba(168, 255, 60, 0.45); }
+.btn-primary:hover { background: var(--lime); box-shadow: 0 0 18px rgba(255, 68, 204, 0.45); }
 .btn-secondary {
   background: transparent;
   color: var(--paper);
@@ -1209,7 +1209,7 @@ button { font: inherit; }
 .admin-layout {
   /* Brand neons from the storefront — re-aliased so this block
      reads as a self-contained palette. */
-  --c-lime: #a8ff3c;
+  --c-lime: #ff44cc;
   --c-cyan: #00f0ff;
   --c-magenta: #ff2d8a;
   --c-uv: #7b2dff;
@@ -1229,9 +1229,9 @@ button { font: inherit; }
   --admin-text-muted: #7d7a70;
   --admin-accent: var(--c-lime);
   --admin-accent-soft: var(--c-cyan);
-  --admin-accent-tint: rgba(168, 255, 60, 0.10);
+  --admin-accent-tint: rgba(255, 68, 204, 0.10);
   --admin-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
-  --admin-shadow-hover: 0 12px 40px rgba(168, 255, 60, 0.18);
+  --admin-shadow-hover: 0 12px 40px rgba(255, 68, 204, 0.18);
   /* Brand neons read fine as text on dark surfaces — no
      darkened variants needed; alias them through so existing
      inline styles using --c-*-text keep working. */
@@ -1318,14 +1318,14 @@ button { font: inherit; }
   color: var(--c-cyan);
 }
 .nav-item-active {
-  background: rgba(168, 255, 60, 0.12);
+  background: rgba(255, 68, 204, 0.12);
   color: var(--c-lime);
   font-weight: 700;
   box-shadow: 0 0 0 1px var(--c-lime) inset,
     -8px 0 22px -10px var(--c-lime);
 }
 .nav-item-active:hover {
-  background: rgba(168, 255, 60, 0.16);
+  background: rgba(255, 68, 204, 0.16);
   color: var(--c-lime);
 }
 .admin-content { padding: 0; min-width: 0; color: var(--admin-text); }
@@ -1863,7 +1863,7 @@ button { font: inherit; }
 
 /* Denser row + checkbox styling */
 .admin-layout .orders-table tbody tr.is-selected {
-  background: rgba(168, 255, 60, 0.06);
+  background: rgba(255, 68, 204, 0.06);
   box-shadow: inset 3px 0 0 var(--c-lime);
 }
 .admin-layout .orders-table input[type="checkbox"] {
@@ -2242,7 +2242,7 @@ button { font: inherit; }
   background: var(--c-lime);
   color: var(--admin-bg-1);
   border: 1px solid var(--c-lime);
-  box-shadow: 0 4px 18px rgba(168, 255, 60, 0.32);
+  box-shadow: 0 4px 18px rgba(255, 68, 204, 0.32);
   font-weight: 700;
 }
 .admin-content .btn-primary:hover,
@@ -2250,7 +2250,7 @@ button { font: inherit; }
   background: transparent;
   color: var(--c-lime);
   border-color: var(--c-lime);
-  box-shadow: 0 6px 22px rgba(168, 255, 60, 0.5),
+  box-shadow: 0 6px 22px rgba(255, 68, 204, 0.5),
     0 0 0 1px var(--c-lime) inset;
 }
 .admin-content .btn-secondary,
@@ -2321,7 +2321,7 @@ button { font: inherit; }
 .text-red-600 { color: var(--magenta) !important; }
 .text-green-600 { color: var(--lime) !important; }
 .text-gray-600 { color: var(--bone) !important; }
-.bg-green-100 { background: rgba(168, 255, 60, 0.15) !important; }
+.bg-green-100 { background: rgba(255, 68, 204, 0.15) !important; }
 .bg-red-100 { background: rgba(255, 45, 138, 0.15) !important; }
 .bg-yellow-100 { background: rgba(255, 206, 31, 0.15) !important; }
 .text-green-800 { color: var(--lime) !important; }
@@ -2335,7 +2335,7 @@ button { font: inherit; }
 .admin-layout .text-red-600 { color: var(--c-magenta-text) !important; }
 .admin-layout .text-green-600 { color: var(--c-lime-text) !important; }
 .admin-layout .text-gray-600 { color: var(--admin-text-soft) !important; }
-.admin-layout .bg-green-100 { background: rgba(168, 255, 60, 0.18) !important; }
+.admin-layout .bg-green-100 { background: rgba(255, 68, 204, 0.18) !important; }
 .admin-layout .bg-red-100 { background: rgba(255, 45, 138, 0.14) !important; }
 .admin-layout .bg-yellow-100 { background: rgba(255, 206, 31, 0.22) !important; }
 .admin-layout .text-green-800 { color: var(--c-lime-text) !important; }
@@ -2637,7 +2637,7 @@ button { font: inherit; }
 .comment-card--highlight {
   background: var(--midnight);
   border-color: var(--lime);
-  box-shadow: 0 0 28px rgba(168, 255, 60, 0.18);
+  box-shadow: 0 0 28px rgba(255, 68, 204, 0.18);
 }
 .comment-card--highlight .comment-text { color: var(--lime); font-size: 1.4rem; }
 .comment-text {
@@ -2711,7 +2711,7 @@ button { font: inherit; }
   color: var(--lime);
   text-decoration: none;
 }
-.contact-link:hover { text-shadow: 0 0 12px rgba(168, 255, 60, 0.6); }
+.contact-link:hover { text-shadow: 0 0 12px rgba(255, 68, 204, 0.6); }
 
 .terminal-block {
   background: var(--midnight);
@@ -2787,7 +2787,7 @@ button { font: inherit; }
   font-weight: 800;
 }
 .legal-prose a { color: var(--lime); }
-.legal-prose a:hover { text-shadow: 0 0 12px rgba(168, 255, 60, 0.6); }
+.legal-prose a:hover { text-shadow: 0 0 12px rgba(255, 68, 204, 0.6); }
 .legal-page > .btn { margin-top: 2.5rem; }
 
 /* =========================================================
@@ -2944,7 +2944,7 @@ button { font: inherit; }
 .pitch-slide--thesis {
   background: var(--midnight);
   border-color: var(--lime);
-  box-shadow: inset 0 0 30px rgba(168, 255, 60, 0.06);
+  box-shadow: inset 0 0 30px rgba(255, 68, 204, 0.06);
 }
 .pitch-slide--exit {
   background: var(--midnight);
@@ -3000,7 +3000,7 @@ button { font: inherit; }
   height: 4px;
   background: var(--lime);
   margin-bottom: 4px;
-  box-shadow: 0 0 8px rgba(168, 255, 60, 0.4);
+  box-shadow: 0 0 8px rgba(255, 68, 204, 0.4);
 }
 .pitch-bar-pct {
   font-family: var(--mono);
@@ -3539,7 +3539,7 @@ textarea.form-input,
   position: relative;
   justify-self: center;
   filter: drop-shadow(0 0 60px rgba(0, 240, 255, 0.3))
-    drop-shadow(0 0 90px rgba(168, 255, 60, 0.22));
+    drop-shadow(0 0 90px rgba(255, 68, 204, 0.22));
 }
 .brand-hero-shot img { width: 100%; height: auto; max-width: 440px; display: block; }
 
