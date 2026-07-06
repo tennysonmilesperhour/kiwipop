@@ -79,6 +79,28 @@ end of transmission_`}
 
       <div className="card" style={{ padding: '2rem' }}>
         <p className="stat-label" style={{ marginBottom: '0.8rem' }}>
+          // the map · where the community buys
+        </p>
+        <p
+          style={{
+            fontSize: 11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: 'var(--bone)',
+            opacity: 0.7,
+            marginBottom: '1.25rem',
+          }}
+        >
+          // a living map of every metro kiwi pop has shipped to. watch the
+          stars light up as the community grows.
+        </p>
+        <Link href="/community" className="btn btn-primary">
+          see the map →
+        </Link>
+      </div>
+
+      <div className="card" style={{ padding: '2rem' }}>
+        <p className="stat-label" style={{ marginBottom: '0.8rem' }}>
           // retail · stock kiwi pop
         </p>
         <p

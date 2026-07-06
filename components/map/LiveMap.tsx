@@ -24,25 +24,40 @@ function escapeHtml(s: string): string {
 // bug). Skip star glyphs; any other emoji still shows as a small corner badge.
 const STAR_GLYPHS = new Set(['⭐', '🌟', '★', '☆', '✦', '✧', '🌠', '✨']);
 
-function markerHtml(p: MapPoint): string {
+// Order-map stars scale with volume so the map reads as a heat map. Area grows
+// ~linearly with order count (sqrt of the radius) and is clamped so a lone
+// order still reads and a hot metro doesn't swallow the map.
+function starSize(p: MapPoint): number {
+  if (p.count == null) return 34;
+  return Math.round(Math.min(64, 30 + Math.sqrt(Math.max(1, p.count)) * 9));
+}
+
+function markerHtml(p: MapPoint, size: number): string {
   const live = p.live ? ' is-live' : '';
   const badge = p.emoji?.trim() ?? '';
   const showEmoji = p.live && badge !== '' && !STAR_GLYPHS.has(badge);
   const emoji = showEmoji ? `<span class="kp-star-emoji">${escapeHtml(badge)}</span>` : '';
-  return `<div class="kp-star-marker${live}" style="color:${p.color}">
-    <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+  // Show the order count centered on the star (order map only).
+  const count =
+    p.count != null && p.count > 0
+      ? `<span class="kp-star-count">${escapeHtml(String(p.count))}</span>`
+      : '';
+  return `<div class="kp-star-marker${live}" style="color:${p.color};width:${size}px;height:${size}px">
+    <svg viewBox="0 0 24 24" width="${size}" height="${size}" aria-hidden="true">
       <path d="${STAR_PATH}" fill="currentColor" stroke="rgba(5,5,16,0.85)" stroke-width="1"/>
-    </svg>${emoji}
+    </svg>${emoji}${count}
   </div>`;
 }
 
 function makeIcon(p: MapPoint): L.DivIcon {
+  const size = starSize(p);
+  const half = size / 2;
   return L.divIcon({
     className: 'kp-star-icon',
-    html: markerHtml(p),
-    iconSize: [34, 34],
-    iconAnchor: [17, 17],
-    popupAnchor: [0, -14],
+    html: markerHtml(p, size),
+    iconSize: [size, size],
+    iconAnchor: [half, half],
+    popupAnchor: [0, -half + 3],
   });
 }
 
@@ -59,8 +74,15 @@ function popupHtml(p: MapPoint): string {
     parts.push(`<span class="kp-popup-live" style="color:${p.color}">● ${seen}</span>`);
   }
   parts.push(`<strong class="kp-popup-name">${escapeHtml(p.name)}</strong>`);
-  parts.push(`<span class="kp-popup-kind">${escapeHtml(p.kind)}</span>`);
-  if (p.description) parts.push(`<p class="kp-popup-desc">${escapeHtml(p.description)}</p>`);
+  if (p.count != null && p.count > 0) {
+    const label = p.count === 1 ? '1 order' : `${p.count} orders`;
+    parts.push(
+      `<span class="kp-popup-count" style="color:${p.color}">◆ ${escapeHtml(label)}</span>`,
+    );
+  } else {
+    parts.push(`<span class="kp-popup-kind">${escapeHtml(p.kind)}</span>`);
+    if (p.description) parts.push(`<p class="kp-popup-desc">${escapeHtml(p.description)}</p>`);
+  }
   if (p.address) parts.push(`<p class="kp-popup-addr">${escapeHtml(p.address)}</p>`);
   if (p.url) {
     const safe = /^https?:\/\//i.test(p.url) ? p.url : `https://${p.url}`;
