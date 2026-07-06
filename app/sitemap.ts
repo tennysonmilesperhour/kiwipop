@@ -7,6 +7,7 @@ const STATIC_PATHS = [
   '',
   '/about',
   '/find-us',
+  '/community',
   '/variety',
   '/merch',
   '/wholesale',

@@ -25,6 +25,8 @@ export function resolveColor(color?: string | null): string {
 
 export type LocationKind = 'store' | 'retail' | 'popup' | 'festival';
 export type PresenceKind = 'rover' | 'booth';
+/** Aggregated buyer cluster on the customer-facing order map. */
+export type OrderKind = 'orders';
 
 /**
  * A presence is only "live" on the public map while it's flagged live AND was
@@ -40,12 +42,12 @@ export const DEFAULT_ZONE_RADIUS_M = 800;
 /** Default map center — Salt Lake City, where Kiwi Pop ships from. */
 export const DEFAULT_CENTER: [number, number] = [40.7608, -111.891];
 
-/** A point rendered on the public map (fixed location or live presence). */
+/** A point rendered on a public map (fixed location, live presence, or buyer cluster). */
 export interface MapPoint {
   id: string;
-  source: 'location' | 'live';
+  source: 'location' | 'live' | 'order';
   name: string;
-  kind: LocationKind | PresenceKind;
+  kind: LocationKind | PresenceKind | OrderKind;
   lat: number;
   lng: number;
   color: string; // resolved hex
@@ -55,6 +57,8 @@ export interface MapPoint {
   url?: string | null;
   live?: boolean;
   lastSeenMinutes?: number | null;
+  /** Number of orders aggregated at this point (order map only). Drives marker size + badge. */
+  count?: number | null;
 }
 
 /** Haversine distance in meters between two lat/lng points. */
