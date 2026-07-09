@@ -239,6 +239,10 @@ export default function Landing({ products, fundraiser }: LandingProps) {
 
   const handleAddToCart = () => {
     if (!checkoutProduct) return;
+    if (addState === 'added') {
+      router.push('/cart');
+      return;
+    }
     addItem({
       productId: checkoutProduct.id,
       name: checkoutProduct.name,
