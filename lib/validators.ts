@@ -230,6 +230,18 @@ export const rawMaterialRestockSchema = z
 
 export type RawMaterialRestock = z.infer<typeof rawMaterialRestockSchema>;
 
+// Manual signed stock adjustment (waste / spoilage / recount correction). A
+// negative delta removes stock, a positive delta adds it; both are logged with
+// an optional free-text reason.
+export const rawMaterialAdjustSchema = z.object({
+  delta: z
+    .number()
+    .refine((n) => Number.isFinite(n) && n !== 0, 'Adjustment must be a non-zero number'),
+  note: z.string().trim().max(300).optional().or(z.literal('')),
+});
+
+export type RawMaterialAdjust = z.infer<typeof rawMaterialAdjustSchema>;
+
 // Grant/revoke admin access by email.
 export const adminGrantSchema = z.object({
   email: z.string().trim().email().max(255),

@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { consumeIngredientsForOrder, checkAndAlertLowStock } from '@/lib/inventory';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -49,6 +50,18 @@ export async function POST(request: NextRequest) {
       { error: 'Failed to update orders', details: error.message },
       { status: 500 },
     );
+  }
+
+  // Marking orders fulfilled (shipped/completed) deducts their ingredients from
+  // raw-material stock. Idempotent per order at the DB level, so re-runs and the
+  // shipped → completed progression never double-deduct. Best-effort: failures
+  // are logged, never surfaced as a 500, so the status flip still succeeds.
+  if (status === 'shipped' || status === 'completed') {
+    for (const id of orderIds) {
+      // eslint-disable-next-line no-await-in-loop
+      await consumeIngredientsForOrder(id);
+    }
+    await checkAndAlertLowStock();
   }
 
   return NextResponse.json({ ok: true, updated: orderIds.length, status });

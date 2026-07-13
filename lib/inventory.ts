@@ -17,14 +17,16 @@ interface ProducibleRow {
 }
 
 /**
- * Deduct raw-material ingredients for a paid order, then check whether any
- * flavor has dropped below the producible-pops threshold and email the admins
- * on a *new* crossing (so we don't spam on every subsequent order).
+ * Deduct raw-material ingredients for a single order. Idempotent at the DB
+ * level (`consume_ingredients_for_order` claims the order via
+ * `orders.ingredients_consumed_at` before deducting), so it's safe to call more
+ * than once — e.g. when an order goes paid → shipped → completed, only the
+ * first fulfillment step actually deducts.
  *
- * Fire-and-forget safe: every step is wrapped so a failure here never breaks
- * the Stripe webhook. Best-effort by design.
+ * Best-effort: errors are logged, never thrown, so this never breaks the caller
+ * (order-status update or webhook).
  */
-export async function consumeIngredientsAndAlert(orderId: string): Promise<void> {
+export async function consumeIngredientsForOrder(orderId: string): Promise<void> {
   const { error: consumeError } = await supabaseAdmin.rpc(
     'consume_ingredients_for_order',
     { p_order_id: orderId }
@@ -34,10 +36,19 @@ export async function consumeIngredientsAndAlert(orderId: string): Promise<void>
       orderId,
       consumeError,
     });
-    // Still check stock — the order may have failed to deduct but other
-    // orders may have left us low.
   }
+}
 
+/**
+ * Deduct ingredients for one order, then check whether any flavor has dropped
+ * below the producible-pops threshold and email the admins on a *new* crossing
+ * (so we don't spam on every subsequent order).
+ *
+ * Fire-and-forget safe: every step is wrapped so a failure here never breaks
+ * the caller. Best-effort by design.
+ */
+export async function consumeIngredientsAndAlert(orderId: string): Promise<void> {
+  await consumeIngredientsForOrder(orderId);
   await checkAndAlertLowStock();
 }
 

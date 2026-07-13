@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { stripe } from '@/lib/stripe';
 import { orderStatusSchema } from '@/lib/validators';
+import { consumeIngredientsAndAlert } from '@/lib/inventory';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -102,6 +103,16 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
       { error: 'Failed to update order', details: updateError.message },
       { status: 500 }
     );
+  }
+
+  // Marking an order fulfilled (shipped/completed) deducts its ingredients from
+  // raw-material stock. Idempotent at the DB level, so the paid → shipped →
+  // completed progression only deducts once. Best-effort — never blocks the
+  // status update.
+  if (parsed.status === 'shipped' || parsed.status === 'completed') {
+    await consumeIngredientsAndAlert(order.id).catch((err) => {
+      console.error('[orders] ingredient consumption failed', { orderId: order.id, err });
+    });
   }
 
   return NextResponse.json({ ok: true, status: parsed.status });
