@@ -4,7 +4,6 @@ import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { queuePostPurchaseSeries } from '@/lib/email-queue';
 import { redeemDiscountForOrder } from '@/lib/discounts';
-import { consumeIngredientsAndAlert } from '@/lib/inventory';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -89,11 +88,9 @@ async function handleCheckoutSessionCompleted(
 
   await decrementInventoryForOrder(orderId);
 
-  // Deduct ingredient-level raw materials for this order and alert admins if a
-  // flavor dropped below the 50-pop threshold. Best-effort — never blocks.
-  await consumeIngredientsAndAlert(orderId).catch((err) => {
-    console.error('[stripe-webhook] ingredient consumption failed', { orderId, err });
-  });
+  // NOTE: raw-material (ingredient) deduction intentionally does NOT happen here.
+  // It runs when the order is marked fulfilled (shipped/completed) from the
+  // admin orders page — see app/api/admin/orders/[id] and .../bulk-status.
 
   // Award rewards points to the buyer's account (no-op for guest checkout).
   const { error: pointsError } = await supabaseAdmin.rpc('award_points_for_order', {

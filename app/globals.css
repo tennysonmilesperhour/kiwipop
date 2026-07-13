@@ -2267,6 +2267,25 @@ button { font: inherit; }
   border-color: var(--c-cyan);
   box-shadow: 0 0 18px rgba(0, 240, 255, 0.22);
 }
+.admin-content .btn-danger,
+.admin-layout .btn-danger {
+  background: transparent;
+  color: var(--c-magenta);
+  border: 1px solid var(--c-magenta);
+  font-weight: 600;
+}
+.admin-content .btn-danger:hover,
+.admin-layout .btn-danger:hover {
+  background: var(--c-magenta);
+  color: var(--admin-bg-1);
+  border-color: var(--c-magenta);
+  box-shadow: 0 0 18px rgba(255, 68, 204, 0.4);
+}
+.admin-content .btn-danger:disabled,
+.admin-layout .btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* =========================================================
    20. ALERTS

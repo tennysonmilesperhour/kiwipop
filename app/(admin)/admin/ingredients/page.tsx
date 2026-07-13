@@ -39,8 +39,14 @@ interface Flavor {
   breakdown: BreakdownLine[];
 }
 
+interface Supplier {
+  id: string;
+  name: string;
+}
+
 interface IngredientsResponse {
   materials: Material[];
+  suppliers: Supplier[];
   flavors: Flavor[];
   threshold: number;
 }
@@ -55,6 +61,36 @@ interface EditForm {
   wholesalePackWeight: string;
   wholesalePackPriceUsd: string;
 }
+
+interface AddForm {
+  name: string;
+  sku: string;
+  unit: string;
+  quantityAvailable: string;
+  reorderPoint: string;
+  referenceUrl: string;
+  packWeight: string;
+  packPriceUsd: string;
+  wholesaleUrl: string;
+  wholesalePackWeight: string;
+  wholesalePackPriceUsd: string;
+  supplierId: string;
+}
+
+const EMPTY_ADD_FORM: AddForm = {
+  name: '',
+  sku: '',
+  unit: 'g',
+  quantityAvailable: '',
+  reorderPoint: '',
+  referenceUrl: '',
+  packWeight: '',
+  packPriceUsd: '',
+  wholesaleUrl: '',
+  wholesalePackWeight: '',
+  wholesalePackPriceUsd: '',
+  supplierId: '',
+};
 
 const num = (s: string): number | null => {
   const n = parseFloat(s);
@@ -72,6 +108,12 @@ export default function IngredientsPage() {
   const [editId, setEditId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<EditForm | null>(null);
   const [openFlavor, setOpenFlavor] = useState<string | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState<AddForm>(EMPTY_ADD_FORM);
+  const [adding, setAdding] = useState(false);
+  const [removeId, setRemoveId] = useState<string | null>(null);
+  const [removeQty, setRemoveQty] = useState('');
+  const [removeNote, setRemoveNote] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -167,16 +209,288 @@ export default function IngredientsPage() {
     }
   };
 
+  const createIngredient = async () => {
+    if (!addForm.name.trim() || !addForm.sku.trim()) {
+      setError('Name and SKU are required to add an ingredient.');
+      return;
+    }
+    setAdding(true);
+    setError('');
+    try {
+      const usdToCents = (s: string): number | null => {
+        const n = num(s);
+        return n != null ? Math.round(n * 100) : null;
+      };
+      const body: Record<string, unknown> = {
+        name: addForm.name.trim(),
+        sku: addForm.sku.trim(),
+        unit: addForm.unit,
+        quantity_available: num(addForm.quantityAvailable) ?? 0,
+        reorder_point: num(addForm.reorderPoint) ?? 0,
+        reference_url: addForm.referenceUrl.trim() || '',
+        pack_weight: num(addForm.packWeight),
+        pack_price_cents: usdToCents(addForm.packPriceUsd),
+        wholesale_url: addForm.wholesaleUrl.trim() || '',
+        wholesale_pack_weight: num(addForm.wholesalePackWeight),
+        wholesale_pack_price_cents: usdToCents(addForm.wholesalePackPriceUsd),
+        supplier_id: addForm.supplierId || null,
+      };
+      const res = await fetch('/api/admin/raw-materials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Add failed');
+      setAddOpen(false);
+      setAddForm(EMPTY_ADD_FORM);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Add failed');
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  const deleteMaterial = async (m: Material) => {
+    const ok = window.confirm(
+      `Delete "${m.name}"?\n\nThis permanently removes the ingredient and its restock history. ` +
+        `If it's part of any flavor recipe (bill of materials), those recipe lines are removed too, ` +
+        `which changes how many pops those flavors can make.\n\nThis cannot be undone.`
+    );
+    if (!ok) return;
+    setBusyId(m.id);
+    setError('');
+    try {
+      const res = await fetch(`/api/admin/raw-materials/${m.id}`, { method: 'DELETE' });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? 'Delete failed');
+      if (removeId === m.id) setRemoveId(null);
+      if (editId === m.id) {
+        setEditId(null);
+        setEditForm(null);
+      }
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Delete failed');
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const adjustDown = async (m: Material) => {
+    const qty = num(removeQty);
+    if (qty == null || qty <= 0) {
+      setError('Enter a positive quantity to remove.');
+      return;
+    }
+    setBusyId(m.id);
+    setError('');
+    try {
+      const res = await fetch(`/api/admin/raw-materials/${m.id}/adjust`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // Negative delta = remove stock (waste / spoilage / recount correction).
+        body: JSON.stringify({ delta: -qty, note: removeNote.trim() || undefined }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Adjustment failed');
+      setRemoveId(null);
+      setRemoveQty('');
+      setRemoveNote('');
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Adjustment failed');
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Ingredients</h1>
-        <button onClick={() => void load()} className="btn">
-          ↻ Refresh
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              setError('');
+              setAddForm(EMPTY_ADD_FORM);
+              setAddOpen((v) => !v);
+            }}
+            className="btn btn-primary"
+          >
+            {addOpen ? 'Close' : '+ Add ingredient'}
+          </button>
+          <button onClick={() => void load()} className="btn">
+            ↻ Refresh
+          </button>
+        </div>
       </div>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
+
+      {/* Add new ingredient */}
+      {addOpen && (
+        <div className="card mb-6" style={{ borderColor: 'var(--c-lime)' }}>
+          <h2 className="card-title">Add a new ingredient</h2>
+          <p className="text-sm text-gray-600 mb-3">
+            Track a new raw material. Only a name and SKU are required — pack presets &amp;
+            links are optional and can be filled in later with Edit. Cost per unit is learned
+            the first time you restock from a pack.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="form-group">
+              <label className="form-label">Name *</label>
+              <input
+                className="form-input"
+                placeholder="e.g. Citric acid"
+                value={addForm.name}
+                onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">SKU *</label>
+              <input
+                className="form-input"
+                placeholder="e.g. RM-CITRIC"
+                value={addForm.sku}
+                onChange={(e) => setAddForm({ ...addForm, sku: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Base unit</label>
+              <select
+                className="form-select"
+                value={addForm.unit}
+                onChange={(e) => setAddForm({ ...addForm, unit: e.target.value })}
+              >
+                {['g', 'kg', 'ml', 'l', 'ea'].map((u) => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Supplier</label>
+              <select
+                className="form-select"
+                value={addForm.supplierId}
+                onChange={(e) => setAddForm({ ...addForm, supplierId: e.target.value })}
+              >
+                <option value="">— none —</option>
+                {(data?.suppliers ?? []).map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Starting stock ({addForm.unit})</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                className="form-input"
+                value={addForm.quantityAvailable}
+                onChange={(e) => setAddForm({ ...addForm, quantityAvailable: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Reorder point ({addForm.unit})</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                className="form-input"
+                value={addForm.reorderPoint}
+                onChange={(e) => setAddForm({ ...addForm, reorderPoint: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group col-span-2">
+              <label className="form-label">Retail reference link (Amazon, etc.)</label>
+              <input
+                type="url"
+                className="form-input"
+                placeholder="https://amazon.com/..."
+                value={addForm.referenceUrl}
+                onChange={(e) => setAddForm({ ...addForm, referenceUrl: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Retail pack weight ({addForm.unit})</label>
+              <input
+                type="number"
+                step="0.01"
+                className="form-input"
+                value={addForm.packWeight}
+                onChange={(e) => setAddForm({ ...addForm, packWeight: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Retail pack price (USD)</label>
+              <input
+                type="number"
+                step="0.01"
+                className="form-input"
+                value={addForm.packPriceUsd}
+                onChange={(e) => setAddForm({ ...addForm, packPriceUsd: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group col-span-2">
+              <label className="form-label">Wholesale reference link</label>
+              <input
+                type="url"
+                className="form-input"
+                placeholder="https://..."
+                value={addForm.wholesaleUrl}
+                onChange={(e) => setAddForm({ ...addForm, wholesaleUrl: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Wholesale pack weight ({addForm.unit})</label>
+              <input
+                type="number"
+                step="0.01"
+                className="form-input"
+                value={addForm.wholesalePackWeight}
+                onChange={(e) => setAddForm({ ...addForm, wholesalePackWeight: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Wholesale pack price (USD)</label>
+              <input
+                type="number"
+                step="0.01"
+                className="form-input"
+                value={addForm.wholesalePackPriceUsd}
+                onChange={(e) =>
+                  setAddForm({ ...addForm, wholesalePackPriceUsd: e.target.value })
+                }
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button className="btn btn-primary" disabled={adding} onClick={createIngredient}>
+              {adding ? 'Adding…' : 'Add ingredient'}
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => {
+                setAddOpen(false);
+                setAddForm(EMPTY_ADD_FORM);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Producible per flavor */}
       <div className="card mb-6">
@@ -397,8 +711,27 @@ export default function IngredientsPage() {
                         >
                           Manual…
                         </button>
+                        <button
+                          className="btn"
+                          title="Remove stock — waste, spoilage, or a recount correction"
+                          onClick={() => {
+                            setRemoveId(removeId === m.id ? null : m.id);
+                            setRemoveQty('');
+                            setRemoveNote('');
+                          }}
+                        >
+                          Remove…
+                        </button>
                         <button className="btn btn-secondary" onClick={() => openEdit(m)}>
                           Edit
+                        </button>
+                        <button
+                          className="btn btn-danger"
+                          disabled={busyId === m.id}
+                          title="Delete this ingredient"
+                          onClick={() => deleteMaterial(m)}
+                        >
+                          Delete
                         </button>
                       </div>
 
@@ -444,6 +777,43 @@ export default function IngredientsPage() {
                             }}
                           >
                             {busyId === m.id ? 'Adding…' : 'Add'}
+                          </button>
+                        </div>
+                      )}
+
+                      {removeId === m.id && (
+                        <div
+                          className="flex gap-2 items-end"
+                          style={{ marginTop: '0.5rem', flexWrap: 'wrap' }}
+                        >
+                          <div>
+                            <label className="form-label text-xs">Remove ({m.unit})</label>
+                            <input
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              className="form-input w-24"
+                              value={removeQty}
+                              onChange={(e) => setRemoveQty(e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <label className="form-label text-xs">Reason (optional)</label>
+                            <input
+                              type="text"
+                              className="form-input"
+                              style={{ minWidth: 200 }}
+                              placeholder="spillage, spoilage, recount…"
+                              value={removeNote}
+                              onChange={(e) => setRemoveNote(e.target.value)}
+                            />
+                          </div>
+                          <button
+                            className="btn btn-danger"
+                            disabled={busyId === m.id}
+                            onClick={() => adjustDown(m)}
+                          >
+                            {busyId === m.id ? 'Removing…' : 'Remove stock'}
                           </button>
                         </div>
                       )}
