@@ -496,6 +496,20 @@ export default function ProductClient({ params }: ProductClientProps) {
         >
           // allergen: contains coconut (a tree nut)
         </p>
+        <p
+          style={{
+            marginTop: '0.5rem',
+            fontFamily: 'var(--mono)',
+            fontSize: 11,
+            color: 'var(--bone)',
+            opacity: 0.7,
+            lineHeight: 1.6,
+          }}
+        >
+          // good to know: for very sensitive stomachs, the xylitol + magnesium
+          combo can occasionally be a lot. it&apos;s rare — but if that&apos;s
+          you, enjoy your pop with a little food rather than on an empty stomach.
+        </p>
       </div>
     </div>
   );
