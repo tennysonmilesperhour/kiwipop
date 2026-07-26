@@ -208,11 +208,11 @@ export function Onepager({ fontVars }: OnepagerProps) {
 
           <p className="hero-sub" {...langProps('en')}>
             <strong>Kiwi Pop is a functional lollipop, made for the night.</strong>
-            {' '}Less than 1g of sugar. Around 35 calories. Vegan. A measured blend of botanicals and electrolytes: a shared base in every flavor (jambu, theobromine, B12, magnesium glycinate, taurine, electrolytes) plus an adaptogen tuned per flavor (ginseng + spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile), thought through for long hours and warm rooms. Honest about what&apos;s in it. Honest about what it isn&apos;t.
+            {' '}Less than 1g of sugar. Around 35 calories. Vegan. A measured blend of botanicals and electrolytes: a shared base in every flavor (theobromine, B12, magnesium glycinate, taurine, electrolytes) plus an adaptogen tuned per flavor (ginseng + spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile), thought through for long hours and warm rooms. Honest about what&apos;s in it. Honest about what it isn&apos;t — including the fact that the mouth tingle our US pop is known for has no authorised route into the EU yet.
           </p>
           <p className="hero-sub" {...langProps('es')}>
             <strong>Kiwi Pop es una piruleta funcional, pensada para la noche.</strong>
-            {' '}Menos de 1g de azúcar. Alrededor de 35 calorías. Vegana. Una mezcla medida de plantas y electrolitos: base común en cada sabor (jambú, teobromina, B12, glicinato de magnesio, taurina, electrolitos) más un adaptógeno afinado por sabor (ginseng + espirulina, ashwagandha, maca + canela o L-teanina + manzanilla), pensada para horas largas y salas con ritmo. Transparente con lo que lleva. Transparente con lo que no.
+            {' '}Menos de 1g de azúcar. Alrededor de 35 calorías. Vegana. Una mezcla medida de plantas y electrolitos: base común en cada sabor (teobromina, B12, glicinato de magnesio, taurina, electrolitos) más un adaptógeno afinado por sabor (ginseng + espirulina, ashwagandha, maca + canela o L-teanina + manzanilla), pensada para horas largas y salas con ritmo. Transparente con lo que lleva. Transparente con lo que no, incluido el hecho de que el cosquilleo por el que se conoce nuestra piruleta estadounidense todavía no tiene vía autorizada en la UE.
           </p>
 
           <div className="hero-stats">
@@ -266,8 +266,8 @@ export function Onepager({ fontVars }: OnepagerProps) {
             <div className="why-card">
               <h3 {...langProps('en')}>Designed for long nights.</h3>
               <h3 {...langProps('es')}>Pensada para noches largas.</h3>
-              <p {...langProps('en')}>Magnesium for the legs. Electrolytes for sweat. Theobromine and B12 for steady energy. A small mouth tingle from jambu that wakes the palate. The chemistry of a long night, in a lollipop.</p>
-              <p {...langProps('es')}>Magnesio para las piernas. Electrolitos para el sudor. Teobromina y B12 para una energía estable. Un cosquilleo en la boca por el jambú que despierta el paladar. La química de una noche larga, en una piruleta.</p>
+              <p {...langProps('en')}>Magnesium for the legs. Electrolytes for sweat. Theobromine and B12 for steady energy. The chemistry of a long night, in a lollipop. (The mouth tingle is the one piece we cannot bring to the EU yet — see the FAQ.)</p>
+              <p {...langProps('es')}>Magnesio para las piernas. Electrolitos para el sudor. Teobromina y B12 para una energía estable. La química de una noche larga, en una piruleta. (El cosquilleo es lo único que aún no podemos traer a la UE: véanse las preguntas frecuentes.)</p>
             </div>
             <div className="why-card">
               <h3 {...langProps('en')}>Sits next to what you already sell.</h3>
@@ -290,13 +290,13 @@ export function Onepager({ fontVars }: OnepagerProps) {
           <div className="inside-grid">
             <div className="ing featured">
               <span className="name">
-                <span {...langProps('en')}>Jambu extract</span>
-                <span {...langProps('es')}>Extracto de jambú</span>
+                <span {...langProps('en')}>Jambu extract — US only</span>
+                <span {...langProps('es')}>Extracto de jambú — solo EE. UU.</span>
               </span>
-              <span className="dose">~30 mg*</span>
+              <span className="dose">—</span>
               <span className="role">
-                <span {...langProps('en')}>mouth tingle, salivation</span>
-                <span {...langProps('es')}>cosquilleo, salivación</span>
+                <span {...langProps('en')}>mouth tingle; not authorised in the EU</span>
+                <span {...langProps('es')}>cosquilleo; no autorizado en la UE</span>
               </span>
             </div>
             <div className="ing">
@@ -320,10 +320,10 @@ export function Onepager({ fontVars }: OnepagerProps) {
                 <span {...langProps('en')}>Magnesium glycinate</span>
                 <span {...langProps('es')}>Magnesio glicinato</span>
               </span>
-              <span className="dose">300 mg*</span>
+              <span className="dose">≤250 mg*</span>
               <span className="role">
-                <span {...langProps('en')}>muscle support</span>
-                <span {...langProps('es')}>soporte muscular</span>
+                <span {...langProps('en')}>muscle support; capped at the EFSA supplemental limit (US pop is 300 mg)</span>
+                <span {...langProps('es')}>soporte muscular; limitado al máximo EFSA (la piruleta de EE. UU. lleva 300 mg)</span>
               </span>
             </div>
             <div className="ing">
@@ -382,10 +382,10 @@ export function Onepager({ fontVars }: OnepagerProps) {
 
           <div className="estimate-note">
             <span {...langProps('en')}>
-              <strong>* On the formula.</strong> The European version of Kiwi Pop is still being finalized. Doses shown above are current estimates based on the US version and the standard food-flavor use of jambu extract; the exact final amounts will be confirmed once we complete EU regulatory review and a small-batch trial. We&apos;ll share the final spec sheet with you in writing before any wholesale order is fulfilled.
+              <strong>* On the formula.</strong> The European version of Kiwi Pop is still being finalized, and it is not simply the US pop with a translated label. Two differences are already known: jambu and chilcuague, the two ingredients behind the mouth tingle, are unauthorised novel foods in the EU and are excluded; and magnesium comes down from 300 mg to at most 250 mg to stay inside the EFSA upper level for supplemental magnesium. Other doses are current estimates based on the US version and will be confirmed once we complete EU regulatory review and a small-batch trial. We&apos;ll share the final spec sheet with you in writing before any wholesale order is fulfilled.
             </span>
             <span {...langProps('es')}>
-              <strong>* Sobre la fórmula.</strong> La versión europea de Kiwi Pop todavía se está terminando de definir. Las dosis indicadas son estimaciones actuales basadas en la versión estadounidense y en el uso habitual del extracto de jambú como aromatizante alimentario. Las cantidades definitivas se confirmarán cuando completemos la revisión regulatoria en la UE y una prueba de lote pequeño. Compartiremos contigo la ficha técnica definitiva por escrito antes de servir cualquier pedido al por mayor.
+              <strong>* Sobre la fórmula.</strong> La versión europea de Kiwi Pop todavía se está terminando de definir, y no es simplemente la piruleta estadounidense con la etiqueta traducida. Ya conocemos dos diferencias: el jambú y el chilcuague, los dos ingredientes responsables del cosquilleo, no están autorizados como nuevos alimentos en la UE y quedan excluidos; y el magnesio baja de 300 mg a un máximo de 250 mg para respetar el límite superior de la EFSA. El resto de dosis son estimaciones basadas en la versión estadounidense y se confirmarán cuando completemos la revisión regulatoria en la UE y una prueba de lote pequeño. Compartiremos contigo la ficha técnica definitiva por escrito antes de servir cualquier pedido al por mayor.
             </span>
           </div>
         </section>
@@ -1165,10 +1165,19 @@ const SPEC_GROUPS: SpecGroup[] = [
         labelEn: 'Full ingredient list (descending by weight, EU format)',
         labelEs: 'Lista completa de ingredientes (orden decreciente por peso, formato UE)',
         valueEn:
-          'Isomalt, xylitol, natural flavors, glycerin, citric acid, magnesium glycinate, taurine, theobromine, electrolyte blend (sodium, potassium), L-ascorbic acid, ginseng extract, blue spirulina, jambu (Acmella oleracea) extract, methylcobalamin (B12), edible mica (E555). Final order and inclusion subject to EU regulatory review.',
+          'Isomalt (E953), xylitol (E967), natural flavourings, glycerol (E422), acidity regulator: citric acid (E330), magnesium glycinate, taurine, theobromine, electrolyte blend (sodium, potassium), L-ascorbic acid, ginseng extract, blue spirulina, methylcobalamin (B12), colour: mica (E555). Jambu and chilcuague are deliberately absent — see the Novel Food row below. Final order and inclusion subject to EU regulatory review.',
         valueEs:
-          'Isomalt, xilitol, aromas naturales, glicerina, ácido cítrico, glicinato de magnesio, taurina, teobromina, mezcla de electrolitos (sodio, potasio), ácido L-ascórbico, extracto de ginseng, espirulina azul, extracto de jambú (Acmella oleracea), metilcobalamina (B12), mica comestible (E555). Orden e inclusión finales sujetos a revisión regulatoria UE.',
+          'Isomalt (E953), xilitol (E967), aromas naturales, glicerol (E422), corrector de acidez: ácido cítrico (E330), glicinato de magnesio, taurina, teobromina, mezcla de electrolitos (sodio, potasio), ácido L-ascórbico, extracto de ginseng, espirulina azul, metilcobalamina (B12), colorante: mica (E555). El jambú y el chilcuague están ausentes deliberadamente: véase la fila de Nuevos Alimentos más abajo. Orden e inclusión finales sujetos a revisión regulatoria UE.',
         status: 'estimate',
+      },
+      {
+        labelEn: 'Difference vs. the US formula',
+        labelEs: 'Diferencia respecto a la fórmula estadounidense',
+        valueEn:
+          'The US formula carries two spilanthol sources for the mouth tingle — jambu (Acmella oleracea) and chilcuague (Heliopsis longipes). Neither is an authorised novel food in the EU, so both are excluded from the European version and the tingle is currently unresolved for this market. Other differences: magnesium comes down to ≤250 mg to stay within the EFSA supplemental upper level, and the US "dietary supplement" framing does not carry over.',
+        valueEs:
+          'La fórmula estadounidense incorpora dos fuentes de espilantol para el cosquilleo: jambú (Acmella oleracea) y chilcuague (Heliopsis longipes). Ninguna está autorizada como nuevo alimento en la UE, por lo que ambas quedan excluidas de la versión europea y el cosquilleo está pendiente de resolver en este mercado. Otras diferencias: el magnesio baja a ≤250 mg para respetar el límite superior de la EFSA, y el encuadre estadounidense como «complemento alimenticio» no es trasladable.',
+        status: 'tbd',
       },
       {
         labelEn: 'Allergens',
@@ -1338,10 +1347,10 @@ const SPEC_GROUPS: SpecGroup[] = [
         labelEn: 'EU Novel Food status',
         labelEs: 'Estado en el Catálogo de Nuevos Alimentos UE',
         valueEn:
-          'All ingredients to be confirmed against EU Novel Food Catalogue',
+          'Two confirmed exclusions, both from the US formula: jambu (Acmella oleracea) and chilcuague (Heliopsis longipes) are NOT authorised novel foods in the EU. The Commission terminated NF 2019/1369 (Acmella oleracea extract) in Nov 2025 and NF 2019/1394 (spilanthol extract powder) in Mar 2026 without adding either to the Union list; chilcuague has never been submitted. Remaining ingredients still to be confirmed against the Catalogue.',
         valueEs:
-          'Todos los ingredientes pendientes de confirmar en el Catálogo de Nuevos Alimentos UE',
-        status: 'estimate',
+          'Dos exclusiones confirmadas, ambas de la fórmula estadounidense: el jambú (Acmella oleracea) y el chilcuague (Heliopsis longipes) NO están autorizados como nuevos alimentos en la UE. La Comisión dio por terminados los expedientes NF 2019/1369 (extracto de Acmella oleracea) en nov. 2025 y NF 2019/1394 (espilantol en polvo) en mar. 2026 sin incluirlos en la lista de la Unión; el chilcuague nunca se ha presentado. El resto de ingredientes queda pendiente de confirmar en el Catálogo.',
+        status: 'tbd',
       },
       {
         labelEn: 'Country of origin labeling',
@@ -1365,14 +1374,20 @@ const FAQS: FaqEntry[] = [
   {
     qEn: 'What is jambu, and is it safe?',
     qEs: '¿Qué es el jambú y es seguro?',
-    aEn: 'Jambu (also called paracress, or by its scientific name Acmella oleracea) is a flowering plant from South America. Its extract is what creates the small mouth tingle and slight numbing sensation, similar to what you feel from Sichuan peppercorns or sherbet powder. It’s used as a flavor in chewing gum, oral-care products, and certain foods. The European Food Safety Authority (EFSA) has reviewed the active compound, spilanthol, and established a safe daily intake. The amount in one Kiwi Pop is well below that level, in the range used as a standard food flavoring rather than a supplement dose. It’s not psychoactive and doesn’t interact with alcohol.',
-    aEs: 'El jambú (también llamado paracress, o por su nombre científico Acmella oleracea) es una planta con flor originaria de América del Sur. Su extracto es lo que produce ese pequeño cosquilleo y leve adormecimiento en la boca, parecido a lo que se siente con la pimienta de Sichuan o el polvo efervescente. Se utiliza como aromatizante en chicles, productos de higiene bucal y ciertos alimentos. La Autoridad Europea de Seguridad Alimentaria (EFSA) ha revisado el compuesto activo, el espilantol, y ha establecido una ingesta diaria segura. La cantidad en una Kiwi Pop está muy por debajo de ese nivel, en el rango habitual de un aromatizante alimentario, no de una dosis de suplemento. No es psicoactivo y no interactúa con el alcohol.',
+    aEn: 'Jambu (also called paracress, or by its scientific name Acmella oleracea) is a flowering plant from South America. Its extract is what creates the small mouth tingle and slight numbing sensation, similar to what you feel from Sichuan peppercorns or sherbet powder. It’s used as a flavor in chewing gum, oral-care products, and certain foods, and it is what gives the US product its signature hook. We have to be straight with you about its European status: jambu extract is not an authorised novel food in the EU. The Commission terminated the authorisation procedure for Acmella oleracea extract (NF 2019/1369) in November 2025, and for spilanthol extract powder (NF 2019/1394) in March 2026, in both cases without adding them to the Union list. That means we cannot currently put it in a product sold in Spain, and we are not going to pretend otherwise. See the question below on what that means for the European launch.',
+    aEs: 'El jambú (también llamado paracress, o por su nombre científico Acmella oleracea) es una planta con flor originaria de América del Sur. Su extracto es lo que produce ese pequeño cosquilleo y leve adormecimiento en la boca, parecido a lo que se siente con la pimienta de Sichuan o el polvo efervescente. Se utiliza como aromatizante en chicles, productos de higiene bucal y ciertos alimentos, y es lo que da al producto estadounidense su sello distintivo. Debemos ser claros sobre su situación en Europa: el extracto de jambú no está autorizado como nuevo alimento en la UE. La Comisión dio por terminado el procedimiento de autorización del extracto de Acmella oleracea (NF 2019/1369) en noviembre de 2025, y el del espilantol en polvo (NF 2019/1394) en marzo de 2026, en ambos casos sin incluirlos en la lista de la Unión. Esto significa que actualmente no podemos incorporarlo a un producto vendido en España, y no vamos a fingir lo contrario. Véase la siguiente pregunta sobre lo que esto implica para el lanzamiento europeo.',
+  },
+  {
+    qEn: 'So does the European Kiwi Pop have the tingle at all?',
+    qEs: '¿La Kiwi Pop europea tiene cosquilleo, entonces?',
+    aEn: 'As things stand today, no — and this is the biggest open item on the European launch, so we would rather you hear it from us at the start than discover it at the sampling. Both of our tingle ingredients are unauthorised novel foods in the EU: jambu (see above) and chilcuague (Heliopsis longipes), the Mexican root in the US formula whose alkamide, affinin, is the same molecule as jambu’s spilanthol. Chilcuague has never been submitted for authorisation at all. That leaves three honest options: launch a European pop built on the rest of the formula, which is a genuinely good low-sugar functional lollipop but without the sensory hook; pursue our own novel food dossier, which is a multi-year, expensive process; or hold the European launch until there is a route. We would like your read on which of those is worth doing, because you know your floor better than we do. What we will not do is ship you a pop that quietly drops the hook and hope nobody notices.',
+    aEs: 'Tal y como están las cosas hoy, no — y este es el punto abierto más importante del lanzamiento europeo, así que preferimos que lo sepáis por nosotros desde el principio y no en la degustación. Nuestros dos ingredientes responsables del cosquilleo no están autorizados como nuevos alimentos en la UE: el jambú (véase arriba) y el chilcuague (Heliopsis longipes), la raíz mexicana de la fórmula estadounidense cuya alcamida, la afinina, es la misma molécula que el espilantol del jambú. El chilcuague ni siquiera se ha presentado nunca a autorización. Quedan tres opciones honestas: lanzar una piruleta europea con el resto de la fórmula, que sigue siendo una buena piruleta funcional baja en azúcar pero sin el gancho sensorial; presentar nuestro propio expediente de nuevo alimento, un proceso de varios años y costoso; o aplazar el lanzamiento europeo hasta que exista una vía. Nos gustaría conocer vuestra opinión sobre cuál merece la pena, porque conocéis vuestra sala mejor que nosotros. Lo que no haremos es enviaros una piruleta que renuncie al gancho en silencio esperando que nadie se dé cuenta.',
   },
   {
     qEn: 'How does it taste? Will my customers actually like it?',
     qEs: '¿A qué sabe? ¿Le gustará a mis clientes?',
-    aEn: 'The base flavor is fruit-forward and bright. Kiwi (sweet and tart) is the lead, with lemon-ginger, mint, and caramel apple flavors planned. The jambu tingle is light, not aggressive, and arrives a few seconds after the first lick. Most people read it as a fun surprise rather than a strong sensation. The xylitol base sweetens like sugar but is tooth-friendly and won’t spike blood sugar. We always send a sample case before any commitment so your team can taste it and your floor can react before you decide.',
-    aEs: 'El sabor base es afrutado y brillante. El kiwi (dulce y ácido) es el principal, con sabores de limón-jengibre, menta y manzana acaramelada también previstos. El cosquilleo del jambú es ligero, no agresivo, y aparece a los pocos segundos del primer chupetón. La mayoría de la gente lo percibe como una sorpresa divertida más que como una sensación fuerte. La base de xilitol endulza como el azúcar pero es respetuosa con los dientes y no eleva la glucosa en sangre. Siempre enviamos una caja de muestra antes de cualquier compromiso, para que tu equipo lo pruebe y veas cómo reacciona la sala antes de decidir.',
+    aEn: 'The base flavor is fruit-forward and bright. Kiwi (sweet and tart) is the lead, with lemon-ginger, mint, and caramel apple flavors planned. The xylitol base sweetens like sugar but is tooth-friendly and won’t spike blood sugar. Note that the European version will taste like the US one but without the tingle, for the regulatory reasons above — so if we send you a US sample to try, the tingle in it is not something we can currently sell you. We would rather you taste both and tell us whether the untingled version still earns its shelf space.',
+    aEs: 'El sabor base es afrutado y brillante. El kiwi (dulce y ácido) es el principal, con sabores de limón-jengibre, menta y manzana acaramelada también previstos. La base de xilitol endulza como el azúcar pero es respetuosa con los dientes y no eleva la glucosa en sangre. Ten en cuenta que la versión europea sabrá igual que la estadounidense pero sin el cosquilleo, por los motivos regulatorios expuestos arriba: si te enviamos una muestra estadounidense, el cosquilleo que notes no es algo que podamos venderte hoy. Preferimos que probéis ambas y nos digáis si la versión sin cosquilleo se gana igualmente su sitio en el lineal.',
   },
   {
     qEn: 'How is this different from an energy drink or a functional shot?',

@@ -78,7 +78,7 @@ export default function OGImage() {
               letterSpacing: '0.06em',
             }}
           >
-            jambu · theobromine · magnesium · taurine · b12 · electrolytes · adaptogen per flavor
+            jambu · chilcuague · theobromine · magnesium · taurine · b12 · electrolytes · adaptogen per flavor
           </div>
         </div>
 

@@ -68,6 +68,10 @@ export default function AboutPage() {
             flower) for an electric mouth tingle on the first lick;
             it&apos;s been used for centuries in brazilian, indian, and
             east african cooking and is standard now in modern bartending.
+            chilcuague (the mexican golden root) behind it, carrying the
+            same active alkamide slower and warmer so the tingle lasts
+            the whole pop instead of the first ten seconds; it&apos;s been
+            a seasoning in the sierra gorda highlands just as long.
             the shared base (theobromine, b12, magnesium glycinate,
             taurine, electrolytes) measured by gram, not by vibe. plus
             an adaptogen tuned per flavor: ginseng + spirulina in kiwi

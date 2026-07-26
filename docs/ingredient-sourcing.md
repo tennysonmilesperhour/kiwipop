@@ -35,6 +35,7 @@ Amazon picks prioritize **lowest price‑per‑ounce** at a reasonable pack size
 | Bamboo/paper sticks | **~$0.009 ea** | Wilton 100‑ct | WebstaurantStore 15,000/case / ~$132.99 |
 | Round labels | **~$0.04 ea** | Amazon 1.5" round | OnlineLabels OL5375 2" / $7.87 per 200 |
 | Jambu / Acmella oleracea | n/v | **not on Amazon as food‑grade powder** | Wellgreen / Ingredients Online (B2B quote) |
+| Chilcuague / Heliopsis longipes | n/v | ethnobotanical sellers only (Katukina, Maya Herbs, SAI Herbs on eBay) | direct from Sierra Gorda co‑ops (Guanajuato / Querétaro / San Luis Potosí) — quote |
 | Theobromine | **$1.42** | BulkSupplements 1 kg / ~$49.99 | BulkSupplements direct |
 | Magnesium glycinate | **$1.30** | BulkSupplements 500 g / ~$22.97 | BulkSupplements 25 kg / ~$365.65 (~$0.41/oz) |
 | Panax ginseng extract | **$3.17** | BulkSupplements 250 g / ~$27.97 | BulkSupplements direct (quote) |
@@ -93,7 +94,7 @@ if the smaller pop still lands.
 
 ## Edible luster dust — halved at the recipe, not just the invoice
 
-Migration 042 cut the dose from **0.1 g → 0.05 g per pop**. At the $1.00/g placeholder
+Migration 043 cut the dose from **0.1 g → 0.05 g per pop**. At the $1.00/g placeholder
 that's 10¢ → 5¢, taking it from the second-largest BOM line to a mid-pack one. The swirl
 runs through the middle of the pop rather than coating it, so half the dose still reads.
 
@@ -118,6 +119,8 @@ assuming this.**
 
 - **Prices are snippet estimates, not confirmed live prices** (403 egress block). Re‑check each URL in a browser, or pull via a price API, before committing the cost sheet.
 - **Jambu / Acmella oleracea** has no consumer food‑grade powder channel — it's a B2B oleoresin (spilanthol‑standardized), quote‑based, ~1 kg MOQ. Treat as a special‑order line.
+- **Chilcuague / Heliopsis longipes** is the second spilanthol source in the base (its alkamide, affinin, is the same molecule). Today it is only available through ethnobotanical/shamanic retailers selling whole or powdered root for non‑food framing — **there is no food‑grade, food‑safety‑documented supply chain yet.** Before this goes into a production batch we need a supplier who will provide a CoA, heavy‑metal and micro testing, and a food‑grade attestation; the Sierra Gorda growing co‑ops are the route worth pursuing. Also note the plant is wild‑harvested and subject to over‑collection pressure in its native range — sustainability of supply is a real risk, not a formality.
+- **Chilcuague is US‑only.** It is **not** an authorised novel food in the EU (Regulation 2015/2283), so the European formula excludes it. Do not put it on any EU‑facing spec sheet as an included ingredient.
 - **Monk fruit:** the cheap BulkSupplements SKU uses a maltodextrin carrier; for a pure high‑mogroside‑V extract, source a 50%+ grade from a B2B supplier.
 - **B12:** pure methylcobalamin is ~1,000,000 IU/g — micro‑dose territory. Buy the **1% methylcobalamin blend** (on a carrier) for practical blending.
 - **KSM‑66 ashwagandha:** many Amazon hits are capsules or non‑genuine; verify the KSM‑66 trademark on the live listing (Nootropics Depot is the credible powder source).

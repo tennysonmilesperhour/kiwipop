@@ -9,7 +9,7 @@ the volume that funds payroll comes from retail doors and one distributor.
 **Written:** 2026-07-26. All baseline figures pulled live from Supabase project
 `yibliuftqrnfguctrqca` and the repo's cost model on that date.
 
-> **Update 2026-07-26 — §3 Levers 1 and 2 are now shipped.** Migration 042 halved the
+> **Update 2026-07-26 — §3 Levers 1 and 2 are now shipped.** Migration 043 halved the
 > glitter dose (0.1 g → 0.05 g/pop), repointed isomalt at a real wholesale tier, and
 > repriced wholesale to the margin ladder below. Landed cost is now **$0.90/pop**
 > (`diy_tier2`), not $0.95. Sales comp is designed in
@@ -68,9 +68,9 @@ Current active basis is `diy_tier2`:
 | `copacker` | $0.75 | $0.75 | External manufacturer, all-in. A quoted price, not a materials build-up — renegotiate against the new spec at contract time. |
 
 The bill of materials in the database sums to only **$0.48–$0.55/pop** for the four flavors,
-but **five ingredients carry no cost at all** — jambu, B12, coconut oil, monk fruit, and the
-electrolyte blend. The tier figure is the realistic number; the BOM is the incomplete one.
-(Fixing those five costs is a task in §7.)
+but **six ingredients carry no cost at all** — jambu, chilcuague, B12, coconut oil, monk
+fruit, and the electrolyte blend. The tier figure is the realistic number; the BOM is the
+incomplete one. (Fixing those six costs is a task in §7.)
 
 ### Where the money actually goes (Kiwi Pop, per pop)
 
@@ -95,7 +95,7 @@ useful thing in the cost data and it should drive every sourcing decision.
 | ~~standard~~ | ~~$2.00~~ | ~~50~~ | ~~**60%**~~ |
 | ~~premium~~ | ~~$1.65~~ | ~~200~~ | ~~**67%**~~ |
 
-**Repriced in migration 042** — see Lever 1 below for the ladder that replaced this.
+**Repriced in migration 043** — see Lever 1 below for the ladder that replaced this.
 
 Specialty and impulse retail needs **40–50%** margin to say yes; above that we were just
 donating margin. Industry guidance puts specialty/convenience at a holdable 2.0–2.5x
@@ -103,14 +103,14 @@ keystone. The old ladder gave away roughly **25% of wholesale revenue for nothin
 premium tier handed a distributor price to anyone who bought 200 pops ($330).
 
 There was also a live pricing bug: **`KP-PACK-12` at $18.00 for 12 pops = $1.50/pop**, below
-every wholesale tier, on a public SKU. It was `in_stock = 0` so nothing leaked; migration 042
+every wholesale tier, on a public SKU. It was `in_stock = 0` so nothing leaked; migration 043
 repriced it to $42.00 ($3.50/pop), between the 6-pack ($4.17) and the 20-pack ($3.00).
 
 ---
 
 ## 3. The three levers, in order of value
 
-### Lever 1 — Reprice wholesale ✅ *shipped in migration 042*
+### Lever 1 — Reprice wholesale ✅ *shipped in migration 043*
 
 | Tier | DB key | Price/pop | MOQ | Retailer margin | Our margin |
 |---|---|---|---|---|---|
@@ -137,7 +137,7 @@ Attack the two lines that are 63% of cost:
 | Line | Now | Target | Route | Saving/pop |
 |---|---|---|---|---|
 | **Isomalt** ✅ | $0.0164/g | **$0.0107/g** (Bakers Authority 45 lb, $218.10 — confirmed) | Deeper rungs (25 kg industrial, 500 kg import) laddered in `docs/ingredient-sourcing.md` | **−8.6¢** |
-| **Luster dust** ✅ | 0.1 g @ $1.00/g | **0.05 g** — dose halved in migration 042 | Bulk 1 kg tier still to negotiate; would take it to ~1.9¢/pop | **−5¢** |
+| **Luster dust** ✅ | 0.1 g @ $1.00/g | **0.05 g** — dose halved in migration 043 | Bulk 1 kg tier still to negotiate; would take it to ~1.9¢/pop | **−5¢** |
 | Labels | $0.039 ea | ~$0.015 ea | OnlineLabels 1,000+ roll instead of 200-packs | −2.4¢ |
 | Magnesium glycinate | $0.046/g | $0.015/g | BulkSupplements 25 kg tier | −0.9¢ |
 | Lemon powder (lemon SKU) | $0.057/g | $0.019/g | BulkSupplements 25 kg | −3.8¢ (that SKU) |
@@ -300,9 +300,10 @@ Three ways to cover it, in preference order:
    intent** versus 66 paid — every one of those is a cart that never reached payment. Fixing
    even a third of that is ~$1,200 of recovered lifetime revenue at current AOV and scales
    with everything else. Highest-ROI engineering task in the repo.
-2. ~~**Retire or reprice `KP-PACK-12`**~~ ✅ repriced to $42.00 in migration 042.
-3. **Price the five uncosted ingredients** (jambu, B12, coconut oil, monk fruit, electrolyte)
-   so the BOM stops understating true cost by ~40%.
+2. ~~**Retire or reprice `KP-PACK-12`**~~ ✅ repriced to $42.00 in migration 043.
+3. **Price the six uncosted ingredients** (jambu, chilcuague, B12, coconut oil, monk fruit,
+   electrolyte) so the BOM stops understating true cost by ~40%. Chilcuague was added to the
+   shared base in migration 042 and is unpriced — it lands in the same bucket as jambu below.
 4. **Update `app_settings.monthly_overhead_cents`** from $150 to a real number (~$1,400) and
    `target_monthly_volume` to the current month's plan figure, so admin break-even is honest.
 5. **The wholesale referral codes are built and unused** — `wholesale_discount_codes` has 0
@@ -327,10 +328,12 @@ Three ways to cover it, in preference order:
    (already noted in the ingredient panel — it must make it onto the physical label). Retail
    doors will also ask for a **certificate of insurance**; product liability runs ~$1,500–2,400/yr
    and is budgeted above. **Sort this in August or it blocks October.**
-2. **Jambu (acmella oleracea) has no confirmed food-grade supply chain and no cost in the
-   model.** It is in every SKU's BOM at 0.005 g and priced at zero. It is a quote-only B2B
-   oleoresin with ~1 kg MOQ. If it can't be sourced compliantly at volume, the formula needs a
-   decision before the co-packer run, not after.
+2. **The two alkamide actives — jambu and chilcuague — have no confirmed food-grade supply
+   chain and no cost in the model.** Both are in every SKU's BOM and priced at zero. Jambu is
+   a quote-only B2B oleoresin with ~1 kg MOQ; chilcuague (*heliopsis longipes*) currently has
+   no channel beyond ethnobotanical sellers and Sierra Gorda co-ops. They are the product's
+   signature hook, so this is not a line to substitute quietly — but if neither can be sourced
+   compliantly at volume, the formula needs a decision **before** the co-packer run, not after.
 3. **Door productivity is the assumption most likely to be wrong.** The plan needs 60
    pops/month of reorder per door. Sensitivity:
 
@@ -357,9 +360,9 @@ Three ways to cover it, in preference order:
 ## 9. The 90-day action list
 
 ### August — pricing, sourcing, first doors
-- [x] ~~Reprice wholesale to $2.50 / $2.25 / $1.85 tiers~~ ✅ migration 042
-- [x] ~~Halve the glitter dose; repoint isomalt at a wholesale tier; fix `KP-PACK-12`~~ ✅ migration 042
-- [ ] Price the five uncosted BOM lines; update `app_settings.monthly_overhead_cents`
+- [x] ~~Reprice wholesale to $2.50 / $2.25 / $1.85 tiers~~ ✅ migration 043
+- [x] ~~Halve the glitter dose; repoint isomalt at a wholesale tier; fix `KP-PACK-12`~~ ✅ migration 043
+- [ ] Price the six uncosted BOM lines (incl. chilcuague); update `app_settings.monthly_overhead_cents`
 - [ ] Open wholesale accounts: WebstaurantStore, BulkSupplements, Starwest (ask for Net-30)
 - [ ] **Confirm the $218.10 Bakers Authority isomalt price in a browser and place the first
       45 lb order** — it's the one figure the new cost basis rests on

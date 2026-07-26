@@ -72,6 +72,13 @@ const SHEET = {
       hook: 'the hook · impossible to copy',
     },
     {
+      name: 'chilcuague',
+      benefit:
+        'the mexican golden root (heliopsis longipes). same active alkamide as jambu, slower and warmer — it holds the tingle open for the whole pop instead of just the first lick. US formula only, like jambu: neither is an authorised novel food in the EU.',
+      color: '#ffce1f',
+      hook: 'the hold · the second half of the hook',
+    },
+    {
       name: 'theobromine',
       benefit:
         '175 mg. a smooth, sustained lift — like a square of dark chocolate, none of the caffeine jitter.',
@@ -202,7 +209,7 @@ const SHEET = {
 export const metadata: Metadata = {
   title: 'brand sheet · for wholesale partners',
   description:
-    'kiwi pop wholesale brand sheet — a <1g-sugar functional lollipop with jambu (the buzz-button tingle), theobromine, magnesium glycinate, taurine, electrolytes, b12, and a per-flavor adaptogen. everything a buyer needs to evaluate stocking kiwi pop.',
+    'kiwi pop wholesale brand sheet — a <1g-sugar functional lollipop with jambu + chilcuague (the buzz-button tingle), theobromine, magnesium glycinate, taurine, electrolytes, b12, and a per-flavor adaptogen. everything a buyer needs to evaluate stocking kiwi pop.',
   openGraph: {
     title: 'kiwi pop · wholesale brand sheet',
     description:

@@ -2,7 +2,7 @@
 
 A structure to hand to a salesperson who owns wholesale door acquisition.
 
-**Written 2026-07-26.** Priced against the tier ladder set in migration 042 and the
+**Written 2026-07-26.** Priced against the tier ladder set in migration 043 and the
 volume ramp in `docs/revenue-plan-2026.md`.
 
 ---
@@ -117,8 +117,8 @@ already landed. Nothing is at risk.
 | Control | High — they're yours | Low — they set their own hours |
 
 **Recommendation: Option A**, with the draw reviewed at 90 days. At this stage the
-doors need to be signed a specific way (display placement at the register, the jambu
-demo, the margin conversation) and that's easier to enforce when you're paying a base.
+doors need to be signed a specific way (display placement at the register, the
+buzz-button demo, the margin conversation) and that's easier to enforce when you're paying a base.
 Move to Option B only if you find someone who already sells into this exact channel.
 
 ---
@@ -187,8 +187,8 @@ anything.
 
 - The line sheet at `kiwipop.fun/wholesale/line-sheet` — print to PDF, it's built for it.
   The margin block up top is the whole pitch: **50% at the Door tier.**
-- A counter display and 20 loose pops for sampling. The jambu tingle closes doors; a
-  description of the jambu tingle does not.
+- A counter display and 20 loose pops for sampling. The buzz-button tingle (jambu +
+  chilcuague) closes doors; a description of it does not.
 - Their own set of wholesale referral codes to hand out.
 - The target list: smoke shops, head shops, vape, dispensary-adjacent retail, festival
   and event vendors, record shops, streetwear, club merch counters.
