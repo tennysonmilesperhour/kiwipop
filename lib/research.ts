@@ -38,7 +38,10 @@ night where you want to feel something but not feel awful tomorrow.
 each ingredient maps to that moment cleanly. jambu wakes the palate
 on the first lick. it's a sensory hook, a conversation starter, and
 the literature on its active compound (spilanthol) is what put it in
-modern bartending and oral-care products. theobromine, b12, and
+modern bartending and oral-care products. chilcuague, the mexican
+golden root, carries the same alkamide (affinin) with a slower,
+warmer, more numbing profile — it extends the tingle past jambu's
+initial fizz rather than duplicating it. theobromine, b12, and
 taurine give a clean, jitter-free lift; magnesium and electrolytes
 manage the soft-tissue and hydration cost of dancing for hours.
 the sweet half (xylitol, isomalt, monk fruit) is a deliberate
@@ -111,6 +114,56 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         url: pubmed('Alkamids: a new class of plant-derived bioactive compounds'),
         summary:
           'a chemistry-side review of the alkamide family that includes spilanthol. explains how alkamides interact with oral sensory receptors to produce the tingling, fizzy sensation that distinguishes jambu from other functional botanicals.',
+      },
+    ],
+  },
+  {
+    name: 'chilcuague (Heliopsis longipes / affinin)',
+    blurb:
+      'the mexican golden root, native to the sierra gorda highlands of guanajuato, querétaro, and san luis potosí. a traditional condiment in salsas, stews, and mezcal, and a folk remedy for numbing toothache. its active alkamide, affinin, is the same molecule as jambu\'s spilanthol — but the root profile reads slower, warmer, and more numbing, which is why it sits alongside jambu rather than replacing it. note: chilcuague is not currently an authorised novel food in the EU, so it appears in the US formula only.',
+    studies: [
+      {
+        title:
+          'Purely olefinic alkamides in Heliopsis longipes and Acmella (Spilanthes) oppositifolia',
+        authors: 'Molina-Torres J, Salgado-Garciglia R, Ramírez-Chávez E, Del Río RE',
+        journal: 'Biochemical Systematics and Ecology',
+        year: 1996,
+        url: pubmed(
+          'Purely olefinic alkamides in Heliopsis longipes and Acmella (Spilanthes) oppositifolia',
+        ),
+        summary:
+          'the paper that put the two plants side by side chemically. identifies affinin as the dominant alkamide in heliopsis longipes root and compares it directly with the alkamides of acmella (jambu), establishing that the two share the same active molecular family.',
+      },
+      {
+        title:
+          'Antimicrobial properties of alkamides present in flavouring plants traditionally used in Mesoamerica: affinin and capsaicin',
+        authors: 'Molina-Torres J, García-Chávez A, Ramírez-Chávez E',
+        journal: 'Journal of Ethnopharmacology',
+        year: 1999,
+        url: pubmed(
+          'Antimicrobial properties of alkamides present in flavouring plants traditionally used in Mesoamerica: affinin and capsaicin',
+        ),
+        summary:
+          'documents affinin in its traditional context as a mesoamerican flavouring plant, alongside capsaicin. useful for the food-use history: it treats chilcuague as a culinary seasoning first, which is the use pattern kiwi pop follows.',
+      },
+      {
+        title: 'Antinociceptive effect of Heliopsis longipes extract and affinin in mice',
+        authors: 'Déciga-Campos M, Rios MY, Aguilar-Guadarrama AB',
+        journal: 'Planta Medica',
+        year: 2010,
+        url: pubmed('Antinociceptive effect of Heliopsis longipes extract and affinin in mice'),
+        summary:
+          'an animal study isolating affinin from chilcuague root and measuring its local numbing activity. relevant here only as the mechanism behind the warm, slightly numbing mouth sensation — kiwi pop uses a food-flavor amount, far below the doses studied.',
+      },
+      {
+        title:
+          'Affinin (Spilanthol), Isolated from Heliopsis longipes, Induces Vasodilation via Activation of Gasotransmitters and Prostacyclin Signaling Pathways',
+        authors: 'Castro-Ruiz JE, Rojas-Molina A, Luna-Vázquez FJ, et al',
+        journal: 'International Journal of Molecular Sciences',
+        year: 2017,
+        url: 'https://www.mdpi.com/1422-0067/18/1/218',
+        summary:
+          'confirms in its title and methods what matters most for the label: the affinin isolated from heliopsis longipes is spilanthol, the same compound jambu is known for. a pharmacology paper rather than a food-use one, included for the chemical identity.',
       },
     ],
   },

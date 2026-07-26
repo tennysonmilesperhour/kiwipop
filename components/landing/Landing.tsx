@@ -424,7 +424,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           <p className="sub">
             <span className="em">here to make you more kissable.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower that wakes the palate, increases salivation) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · coconut oil + isomalt base · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside. contains coconut (a tree nut).
+              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower that wakes the palate, increases salivation) + chilcuague (the mexican golden root that holds the tingle) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · coconut oil + isomalt base · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside. contains coconut (a tree nut).
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
@@ -779,7 +779,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="lm">SUNRISE.</span>
           </h2>
           <p className="quote">
-            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth: about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick, and a small electric tingle from the jambu flower.
+            gum and mints just don&apos;t hit the way they used to. <span className="em">a little secret</span> in your mouth: about 35 calories, &lt;1g of sugar, edible mica glitter that catches the light at the lick, and a small electric tingle from the jambu flower that chilcuague root keeps going.
           </p>
         </div>
       </section>
@@ -800,7 +800,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <span className="em">measured by gram · not by vibe.</span>
             <br />
             <span style={{ display: 'inline-block', marginTop: '0.5rem', opacity: 0.85 }}>
-              the headline is jambu, a brazilian flower used in cocktails and oral-care for the way it lights up the mouth. sources cited on the{' '}
+              the headline is jambu, a brazilian flower used in cocktails and oral-care for the way it lights up the mouth, with chilcuague, the mexican golden root, holding the sensation open behind it. sources cited on the{' '}
               <Link href="/research" style={{ color: 'var(--lime)' }}>
                 research page
               </Link>

@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     template: '%s · kiwi pop',
   },
   description:
-    "lollipop shaped party supplements. <1g of sugar, vegan, xylitol-sweetened (tooth-friendly, low-glycemic), functional lollipops with edible mica glitter. shared functional base across every flavor (jambu for the buzz-button mouth tingle, theobromine, magnesium glycinate, taurine, b12, electrolytes) plus an adaptogen tuned to each flavor's direction (ginseng + spirulina, ashwagandha, maca + cinnamon, or l-theanine + chamomile). candy for people who don't eat candy.",
+    "lollipop shaped party supplements. <1g of sugar, vegan, xylitol-sweetened (tooth-friendly, low-glycemic), functional lollipops with edible mica glitter. shared functional base across every flavor (jambu for the buzz-button mouth tingle, chilcuague to hold it, theobromine, magnesium glycinate, taurine, b12, electrolytes) plus an adaptogen tuned to each flavor's direction (ginseng + spirulina, ashwagandha, maca + cinnamon, or l-theanine + chamomile). candy for people who don't eat candy.",
   applicationName: 'kiwi pop',
   authors: [{ name: 'kiwi pop' }],
   alternates: {
@@ -79,6 +79,7 @@ export const metadata: Metadata = {
     'functional candy',
     'theobromine lollipop',
     'jambu lollipop',
+    'chilcuague lollipop',
     'buzz button candy',
     'rave snack',
     'after-hours candy',
@@ -135,7 +136,7 @@ const ORGANIZATION_LD = {
   url: siteUrl,
   logo: `${siteUrl}/landing/img/kiwi-kitty-pop.webp`,
   description:
-    "Lollipop shaped party supplements. Functional candy with a shared base across every flavor: jambu (the Brazilian buzz-button flower, for an electric mouth tingle), theobromine, B12, magnesium glycinate, taurine, and electrolytes, plus a flavor-specific adaptogen (ginseng + spirulina in Kiwi Pop, ashwagandha in Luci Ginger Lemon, maca + cinnamon in Mary Caramel Apple Cinn, L-theanine + chamomile in Molly Matcha Mint). Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.",
+    "Lollipop shaped party supplements. Functional candy with a shared base across every flavor: jambu (the Brazilian buzz-button flower, for an electric mouth tingle), chilcuague (the Mexican golden root, which holds that tingle open), theobromine, B12, magnesium glycinate, taurine, and electrolytes, plus a flavor-specific adaptogen (ginseng + spirulina in Kiwi Pop, ashwagandha in Luci Ginger Lemon, maca + cinnamon in Mary Caramel Apple Cinn, L-theanine + chamomile in Molly Matcha Mint). Sweetened with xylitol (tooth-friendly, low-glycemic) and a touch of monk fruit. Less than 1g of sugar, vegan, ~35 calories per pop.",
   foundingLocation: {
     '@type': 'Place',
     name: 'Salt Lake City, Utah',

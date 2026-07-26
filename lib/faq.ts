@@ -16,11 +16,11 @@ export interface FaqItem {
 export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   {
     q: 'What does Kiwi Pop feel like?',
-    a: 'The first lick brings a bright, electric tingle on the tongue and lips. That is jambu, the small flowering plant from Brazil also called the buzz button. Behind the tingle, the rest of the formula is doing quieter work: theobromine for a clean lift, magnesium and taurine to soften the edges, electrolytes and B12 for that "you ate something real" feeling. Most people describe it as alert, social, and a little playful.',
+    a: 'The first lick brings a bright, electric tingle on the tongue and lips. That is jambu, the small flowering plant from Brazil also called the buzz button, backed by chilcuague, the Mexican golden root that holds the sensation open a little longer and turns it warmer. Behind the tingle, the rest of the formula is doing quieter work: theobromine for a clean lift, magnesium and taurine to soften the edges, electrolytes and B12 for that "you ate something real" feeling. Most people describe it as alert, social, and a little playful.',
   },
   {
     q: 'How long until I feel the tingle, and how long does it last?',
-    a: 'Instantly. The jambu sensation kicks in on the first lick and stays roughly as long as the pop does, a few minutes of light, fizzy mouth-tingle. The other functional ingredients (theobromine, magnesium, B12, electrolytes) take about 15–30 minutes to settle in.',
+    a: 'Instantly. The jambu sensation kicks in on the first lick and stays roughly as long as the pop does, a few minutes of light, fizzy mouth-tingle. Chilcuague arrives a beat later and carries it — a warmer, slightly numbing spread rather than a fizz. The other functional ingredients (theobromine, magnesium, B12, electrolytes) take about 15–30 minutes to settle in.',
   },
   {
     q: 'How many should I have?',
@@ -39,6 +39,10 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
     a: 'Jambu (Acmella oleracea), also called paracress, electric daisy, or the buzz button, is a small yellow-and-red flower native to South America. The active compound, spilanthol, produces the distinctive electric, salivating tingle. Jambu has a long culinary history in Brazilian, Indian, and East African cuisine and is widely used as a flavor in cocktails, chewing gum, and oral-care products. Reported uses include oral cooling, palate stimulation, and increased saliva flow. It is generally regarded as safe in food amounts and is used in Kiwi Pop in food-flavor quantities, not as a supplement dose. It is not psychoactive and does not interact with alcohol. The studies behind every ingredient in the formula are listed on our /research page.',
   },
   {
+    q: 'What is chilcuague, and why is it in there next to jambu?',
+    a: 'Chilcuague (Heliopsis longipes), also called chilcuán, Aztec root, or golden root, is a plant native to the Sierra Gorda highlands of central Mexico — Guanajuato, Querétaro, and San Luis Potosí. The root is the part used, and its active alkamide, affinin, is the same molecule as the spilanthol in jambu. It is a traditional Mexican condiment, added to salsas, stews, and mezcal, and has a long folk-medicine history for numbing toothache. In Kiwi Pop it does something jambu cannot do alone: jambu delivers a fast, fizzy spark on the first lick, and chilcuague holds that sensation open, warmer and more numbing, for the rest of the pop. Both are used at food-flavor amounts, not supplement doses. Neither is psychoactive. Note that chilcuague is not currently authorised as a food ingredient in the EU, so our European formula differs — see /wholesale for details.',
+  },
+  {
     q: 'When do people typically have a Kiwi Pop?',
     a: 'Festivals, house parties, dinner with friends, post-work decompress, sober-curious nights out, the ride home, the green room. Anywhere the conversation could use a little electricity.',
   },
@@ -48,7 +52,7 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'Who should not eat Kiwi Pop?',
-    a: 'Anyone under 18, anyone pregnant or nursing (precautionary), anyone on prescription medication that warrants checking new dietary supplements with a doctor, and anyone with a sugar-alcohol sensitivity that causes GI distress. Every flavor is made on a coconut oil base, and the FDA classifies coconut as a tree nut, so do not eat Kiwi Pop if you have a coconut or tree-nut allergy. If you have a known plant allergy (especially to the daisy / Asteraceae family) talk to your doctor before trying jambu. Full advisory on our /legal/fda-disclaimer page.',
+    a: 'Anyone under 18, anyone pregnant or nursing (precautionary), anyone on prescription medication that warrants checking new dietary supplements with a doctor, and anyone with a sugar-alcohol sensitivity that causes GI distress. Every flavor is made on a coconut oil base, and the FDA classifies coconut as a tree nut, so do not eat Kiwi Pop if you have a coconut or tree-nut allergy. If you have a known plant allergy (especially to the daisy / Asteraceae family) talk to your doctor first — both jambu and chilcuague are Asteraceae. Full advisory on our /legal/fda-disclaimer page.',
   },
   {
     q: 'My dog got into one, what do I do?',

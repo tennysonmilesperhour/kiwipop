@@ -58,6 +58,7 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
       <p>you just joined something small and weird and kind of beautiful.</p>
       <p>kiwi pop is a <span class="highlight">lollipop-shaped party supplement</span>:
       jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick),
+      chilcuague (the mexican golden root, which holds that tingle open a little longer),
       theobromine, B12, magnesium glycinate, taurine, electrolytes, coconut oil, edible mica glitter,
       and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger,
       maca + cinnamon in caramel apple, L-theanine + chamomile in mint).
@@ -78,7 +79,7 @@ export function welcomeEmail(email: string): { subject: string; html: string; te
 
 you just joined something small and weird and kind of beautiful.
 
-kiwi pop is a lollipop-shaped party supplement: jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), theobromine, B12, magnesium glycinate, taurine, electrolytes, coconut oil, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city. heads up: every flavor contains coconut (a tree nut).
+kiwi pop is a lollipop-shaped party supplement: jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), chilcuague (the mexican golden root, which holds that tingle open a little longer), theobromine, B12, magnesium glycinate, taurine, electrolytes, coconut oil, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city. heads up: every flavor contains coconut (a tree nut).
 
 jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails, and it's been studied for its effect on saliva flow and oral sensation, and it's been in the human food supply for centuries. sources cited at https://www.kiwipop.fun/research.
 
@@ -104,6 +105,7 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
       <p><span class="highlight">the shared functional base, same dose in every flavor:</span></p>
       <ul>
         <li><strong>jambu</strong>: the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.</li>
+        <li><strong>chilcuague</strong>: the depth. mexican golden root (heliopsis longipes), a traditional seasoning from the sierra gorda highlands. its alkamide, affinin, is the same molecule as jambu's spilanthol, but reads slower and warmer, so the tingle holds instead of fading after the first lick. food-flavor amount, not a supplement dose.</li>
         <li><strong>theobromine</strong>: the gentle lift. it's what makes chocolate feel good, smooth energy without the jitters of caffeine.</li>
         <li><strong>B12</strong>: the essentials. methylcobalamin form. keeps your energy metabolism running.</li>
         <li><strong>magnesium glycinate</strong>: the one you're probably deficient in. helps with muscle relaxation, sleep, mood. glycinate form for absorption.</li>
@@ -133,6 +135,7 @@ you signed up a couple days ago. here's the part where most brands would send yo
 the shared functional base, same dose in every flavor:
 
 • jambu: the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.
+• chilcuague: the depth. mexican golden root (heliopsis longipes), a traditional seasoning from the sierra gorda highlands. its alkamide, affinin, is the same molecule as jambu's spilanthol, but reads slower and warmer, so the tingle holds instead of fading after the first lick. food-flavor amount, not a supplement dose.
 • theobromine: the gentle lift. it's what makes chocolate feel good, smooth energy without the jitters of caffeine.
 • B12: methylcobalamin form. keeps your energy metabolism running.
 • magnesium glycinate: helps with muscle relaxation, sleep, mood. glycinate form for absorption.

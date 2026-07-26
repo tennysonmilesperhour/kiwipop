@@ -65,6 +65,7 @@ const SHARED_TAIL_INGREDIENTS = [
   'xylitol',
   'monk fruit extract',
   'jambu (acmella oleracea)',
+  'chilcuague (heliopsis longipes)',
   'theobromine',
   'magnesium glycinate',
   'taurine',
