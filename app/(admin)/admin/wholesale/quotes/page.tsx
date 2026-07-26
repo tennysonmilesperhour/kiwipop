@@ -35,7 +35,12 @@ interface WholesalePricingRow {
 interface AppSettings {
   monthly_overhead_cents: number;
   target_monthly_volume: number;
-  active_cost_basis?: 'diy_tier1' | 'diy_tier2' | 'diy_tier3' | 'copacker';
+  active_cost_basis?:
+    | 'diy_tier1'
+    | 'diy_tier2'
+    | 'diy_tier3'
+    | 'copacker'
+    | 'inhouse';
 }
 
 interface QuoteLine {

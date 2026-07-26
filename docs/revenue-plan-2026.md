@@ -15,6 +15,13 @@ the volume that funds payroll comes from retail doors and one distributor.
 > (`diy_tier2`), not $0.95. Sales comp is designed in
 > [`docs/sales-commission-plan.md`](./sales-commission-plan.md); the isomalt sourcing
 > ladder is in [`docs/ingredient-sourcing.md`](./ingredient-sourcing.md).
+>
+> **Update 2026-07-26 (later) — the co-packer is off the table for 2026.** Production
+> moves to **paid staff in a rented commissary kitchen** instead. See
+> [`docs/production-staffing-plan.md`](./production-staffing-plan.md). This changes §3
+> Lever 3 and the December P&L: COGS goes to **~$1.13/pop** rather than $0.75, and
+> December's salary pool lands at **~$6,600 unless the sourcing and throughput levers in
+> §6 of that doc are pulled.** They should be.
 
 ---
 
@@ -157,25 +164,33 @@ inventory build in §6.
 > check before it drives a purchase order. The luster dust figure in particular is a
 > placeholder ($1.00/g exactly) and is probably the least reliable input in the whole model.
 
-### Lever 3 — Co-packer (Oct trigger) — buys back time, not money
+### Lever 3 — ~~Co-packer~~ → **staffed in-house production** *(revised)*
 
-Be clear-eyed: **the co-packer at $0.75/pop is more expensive than large-bulk DIY at $0.72.**
-It is not a cost play. It is a capacity play.
+**Superseded.** The original argument was that ~156 production hours/month at December
+volume would force a co-packer by October. **That estimate was too high** — it assumed
+the 55-pop kitchen batch worked sequentially by one person. At commissary scale, with
+bigger batches and a 3-person parallel line, throughput is closer to **75 pops per
+person-hour**, which puts December at **~108 person-hours — about 8 clock-hours a week.**
 
-The production math at target volume:
+So the capacity argument for a co-packer largely evaporates. What replaces it:
 
-| | Dec target (8,120 pops) | Stretch (12,000 pops) |
+| | Per pop | Dec total |
 |---|---|---|
-| Batches at 55 pops/batch | 148 | 218 |
-| Cook/pour/set/destick @ 45 min | 111 hrs | 164 hrs |
-| Wrap/label/pack @ 20 sec/pop | 45 hrs | 67 hrs |
-| **Total production hours** | **~156 hrs/mo** | **~231 hrs/mo** |
+| Co-packer (all-in, **unquoted estimate**) | $0.75 | $6,090 |
+| In-house, tier-2 materials + $0.45 conversion | $1.35 | $10,962 |
+| **In-house, tier-3 materials + $0.45 conversion** | **$1.13** | **$9,176** |
 
-156 hours is **most of a full-time person** — and it is the same person who needs to be
-signing 14 doors a month. At the stretch case DIY simply breaks.
+In-house is ~$0.38/pop worse than the modelled co-packer — but that $0.75 has never been
+quoted, a real specialty run would plausibly come back at $1.00–1.40/pop, and the
+co-packer's **500–1,000 lb minimum run ($9,400–18,750)** is most of the working-capital
+problem in §6. Labour flexes with demand; a 25,000-pop PO does not.
 
-**Trigger: start co-packer conversations in August, commit when monthly volume crosses
-~4,000 pops (projected October).**
+**Decision: in-house for 2026.** Hire one person in August, a second in October, a third
+in November — not three in August, when there are only 19 hours of work. Get three
+co-packer quotes in August anyway, as the benchmark that decides 2027.
+
+Full model, cost tables, gap-closing levers, and the W-2 / workers' comp / food-handler
+checklist: [`docs/production-staffing-plan.md`](./production-staffing-plan.md).
 
 Two constraints to solve before committing:
 
@@ -216,25 +231,35 @@ Assumptions, stated so they can be argued with:
 | DTC revenue | $800 | $1,280 | $1,920 | $2,880 | $4,160 |
 | Event revenue | $1,250 | $2,500 | $3,000 | $3,500 | $3,500 |
 | **Revenue** | **$4,300** | **$8,430** | **$13,208** | **$17,865** | **$21,985** |
-| **Gross profit** | ~$2,400 | ~$4,900 | ~$8,230 | ~$11,150 | ~$13,740 |
+| **Gross profit** *(co-packer basis)* | ~$2,400 | ~$4,900 | ~$8,230 | ~$11,150 | ~$13,740 |
+| **Gross profit** *(in-house, tier-3)* | ~$1,870 | ~$3,850 | ~$6,440 | ~$8,690 | ~$10,650 |
 | Opex + marketing | $2,000 | $2,200 | $2,400 | $2,400 | $2,400 |
-| **Available for salary** | $400 | $2,700 | $5,830 | $8,750 | $11,340 |
-| **Salary drawn** | $0 | $0 | **$4,000** | **$8,000** | **$8,000** |
-| Retained | $400 | $2,700 | $1,830 | $750 | $3,340 |
+| Sales commission (Option A) | $270 | $504 | $1,026 | $1,443 | $1,691 |
+| **Available for salary** *(in-house)* | −$400 | $1,150 | $3,010 | $4,850 | **$6,560** |
+| **Salary drawn** | $0 | $0 | **$3,000** | **$4,800** | **$6,500** |
 
-**Aug–Dec totals: ~$65,800 revenue, ~23,500 pops, $20,000 of salary paid, ~$9,000 retained.**
+**Read that last row honestly.** On in-house production at *today's* sourcing trajectory,
+December lands around **$6,500/month of salary, not $8,000.** The gap is ~$1,440 and it
+closes on **sourcing and throughput, not on selling more** — see §6 of the staffing plan.
+Pull the tier-3 materials lever (~$1,790/mo) and the $8,000 is back on the table.
 
-December exits at a **~$264k annualized run rate**, and the retained cash plus November's
-buffer is what funds the January co-packer run.
+**Aug–Dec totals: ~$65,800 revenue, ~23,500 pops.** December exits at a **~$264k
+annualized run rate.**
 
-### Fixed opex assumed (~$1,400/mo at scale)
+Without the co-packer's first run to fund, the retained cash goes to equipment
+(~$1,200 of moulds and a heat sealer, which pays for itself in ~6 weeks of labour) and a
+Q1 buffer instead.
+
+### Fixed opex assumed (~$1,520/mo at scale)
 
 Hosting/software $150 · product liability insurance $175 · bookkeeping $200 · packing
-supplies $150 · Faire and marketplace fees + trade-show amortization $400 · misc/travel $325.
-Marketing and sampling budget runs $600–$1,000/mo on top.
+supplies $150 · Faire and marketplace fees + trade-show amortization $400 · **payroll
+service $120** · misc/travel $325. Marketing and sampling runs $600–$1,000/mo on top.
 
-Note this is ~9x the `monthly_overhead_cents` currently set in `app_settings` ($150). That
-setting needs updating or the admin break-even math will read optimistic all quarter.
+Kitchen rent and wages are **not** here — they're COGS, and they scale with volume.
+
+`app_settings.monthly_overhead_cents` was updated to $1,520 in migration 044 (it had been
+sitting at $150, which made every break-even read in the admin optimistic).
 
 ---
 
@@ -247,7 +272,7 @@ person cooking candy.** That is the whole reason the co-packer trigger exists.
 |---|---|---|
 | **Wholesale / sales** | Outbound to doors, Faire, distributor relationship, trade shows, reorder follow-up | **Doors signed (14/mo) and reorder rate** |
 | *(if hired out)* | See [`docs/sales-commission-plan.md`](./sales-commission-plan.md) — draw + commission, ~$1,700/mo at December volume | Same |
-| **Production / ops** | Batches until October, then co-packer management, inventory, fulfillment, ShipStation | **Cost per pop, and zero stockouts** |
+| **Production / ops** | Runs the commissary line and the paid crew, inventory, fulfillment, ShipStation | **Cost per pop, measured throughput, zero stockouts** |
 | **Brand / DTC / events** | Storefront, email, social, festival booths, content, customer support | **Event revenue and list growth** |
 
 **14 doors/month is ~3.5 per week.** For a $375 opening order on an impulse product with a
@@ -277,8 +302,12 @@ Revenue growth of this shape consumes cash before it produces it. Ingredients ge
 |---|---|---|---|---|---|
 | COGS spent (prior month's build) | ~$1,300 | ~$2,600 | ~$3,500 | ~$4,900 | ~$6,100 |
 
-**Peak working-capital need is roughly $8,000–$12,000**, hitting hardest in October–November
-when the co-packer's first-run deposit lands on top of ongoing DIY production.
+**Revised down to roughly $4,000–$6,000** now that there's no co-packer first run to
+pre-fund. In-house production buys materials for the pops about to be sold, week by week,
+so working capital tracks a few weeks of COGS rather than a 25,000-pop commitment. The
+new cash timing risk is smaller but sharper: **payroll runs every two weeks whether or not
+a wholesale invoice has cleared.** Keep one month of payroll (~$3,000 by December) as an
+untouched float.
 
 Three ways to cover it, in preference order:
 
@@ -286,11 +315,11 @@ Three ways to cover it, in preference order:
    after a few paid orders). Cheapest financing there is.
 2. **Distributor prepayment or a deposit** on the first large PO — a distributor buying 2,500
    pops can reasonably pay 50% up front, which directly funds the co-packer run.
-3. **The campaign / cash donations** already wired into the admin (`cash_donations`,
-   `CampaignPage` mentions co-packer deposits explicitly). Use it for the co-packer
-   commitment, not for operating expenses.
+3. **The campaign / cash donations** already wired into the admin (`cash_donations`).
+   Use it for the equipment spend and the payroll float, not for operating expenses.
 
-**Do not commit to a 1,000 lb co-packer run without one of these in hand.**
+**Do not hire the second or third person before the volume that justifies them is
+actually booked.**
 
 ---
 
@@ -347,8 +376,11 @@ Three ways to cover it, in preference order:
    At 25/mo the plan does not work on doors alone and must lean harder on distributors and
    events. **Measure this from the first six accounts in September** — it is the earliest
    reliable signal we will get, and it should reset the whole forecast.
-4. **Co-packer MOQ vs. our volume.** Covered in §3; the mitigation is a startup-friendly
-   co-packer and a deposit-funded first run.
+4. **Throughput is an estimate, not a measurement.** The whole staffing plan rests on
+   75 pops per person-hour. If it's really 50, December needs 162 person-hours and
+   3 × 10 hrs/week doesn't cover it. **Measure it on the first three sessions in August**
+   and correct `lib/production-cost.ts` — it's a cheap measurement and everything is
+   downstream of it.
 5. **Distributor concentration.** By December the distributor is ~13% of revenue, which is
    fine. If they grow past ~25%, they own our pricing. Keep direct doors the majority.
 6. **Seasonality.** Festival revenue is warm-weather and holiday-market weighted. January and
@@ -373,6 +405,11 @@ Three ways to cover it, in preference order:
 - [ ] **Sign 6 doors.** Issue their referral codes.
 - [ ] Fix checkout abandonment
 - [ ] Request 3 co-packer quotes with our actual spec (isomalt, actives, mica, ~18 g/pop)
+      — as the 2027 benchmark, not to commit
+- [ ] **First production hire** + workers' comp, payroll service, food handler permits
+- [ ] Book the commissary (hourly + $450/mo minimum beats the 20 hrs/week block)
+- [ ] **Measure actual pops-per-person-hour on the first three sessions**
+- [ ] Order extra moulds, a second induction burner, and a heat sealer (~$1,200)
 
 ### September — prove the reorder rate
 - [ ] **Sign 10 more doors** (16 total)
@@ -384,15 +421,18 @@ Three ways to cover it, in preference order:
 ### October — the pivot month
 - [ ] **Sign 12 more doors** (28 total)
 - [ ] **Sign the distributor**; take a deposit on the first PO
-- [ ] **Commit to the co-packer** (volume crosses 4,000 pops — DIY is now the bottleneck)
-- [ ] Switch `active_cost_basis` to `copacker`
-- [ ] **First salary draw: $4,000**
+- [ ] **Second production hire** (volume crosses 4,000 pops)
+- [ ] Switch `active_cost_basis` to `inhouse`
+- [ ] **First salary draw: $3,000**
 
 ### November–December — hold the line
 - [ ] 14 doors/month; hold reorder rate ≥60 pops
+- [ ] **Third production hire** (November)
 - [ ] Holiday DTC push to the (by now much larger) email list
-- [ ] **$8,000/month salary from November**
-- [ ] Bank December's retained cash against Q1 seasonality
+- [ ] **$4,800 → $6,500/month salary** — or $8,000 if the tier-3 materials lever landed
+- [ ] Bank December's retained cash + one month of payroll float against Q1 seasonality
+- [ ] January: reassess the co-packer with a real quote and six months of measured
+      throughput in hand
 
 ---
 
@@ -405,10 +445,13 @@ single new customer. From there the plan is arithmetic: **56 retail doors and on
 signed at roughly 14 doors a month, each reordering 60 pops a month**, plus a holiday DTC
 push and one or two festival weekends a month, produces about **$22,000 of December revenue
 and $13,700 of gross profit** — enough for $8,000 of salary with $3,300 left over. The
-binding constraint is not demand and it is not cost; it is that one of three people has to
-own door acquisition full-time, which means production has to leave the kitchen by October.
-The co-packer does not save money. It buys back the 156 hours a month that make the sales
-number possible.
+binding constraint is not demand and it is not cost; it is that one person has to own door
+acquisition full-time. Production is now solved differently than first planned — **paid
+staff on a commissary line rather than a co-packer**, which costs ~$0.38/pop more than the
+(never actually quoted) co-packer price but removes a $9–19k minimum-run commitment, keeps
+the formula in-house, and lets the largest controllable cost flex with real demand. That
+trade lands December's salary at ~$6,500 rather than $8,000 — a gap that closes on
+**sourcing and throughput, not on selling harder.**
 
 ---
 

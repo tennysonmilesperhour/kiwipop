@@ -305,7 +305,7 @@ export const appSettingsUpdateSchema = z.object({
   monthly_overhead_cents: z.number().int().min(0).optional(),
   target_monthly_volume: z.number().int().positive().optional(),
   active_cost_basis: z
-    .enum(['diy_tier1', 'diy_tier2', 'diy_tier3', 'copacker'])
+    .enum(['diy_tier1', 'diy_tier2', 'diy_tier3', 'copacker', 'inhouse'])
     .optional(),
 });
 

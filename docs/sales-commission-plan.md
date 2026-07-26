@@ -30,9 +30,14 @@ reorder.** Everything below is built to avoid that.
 | | Per pop |
 |---|---|
 | Door tier price | $2.50 |
-| Landed cost (`diy_tier2`, post-glitter-cut) | $0.90 |
+| Landed cost, in-house at tier-3 materials + $0.45 conversion | $1.13 |
 | Freight/handling allowance | ~$0.10 |
-| **Contribution** | **~$1.50 (60%)** |
+| **Contribution** | **~$1.27 (51%)** |
+
+> Updated for the move to staffed in-house production (see
+> [`docs/production-staffing-plan.md`](./production-staffing-plan.md)). The earlier
+> version of this table used the co-packer's $0.75/pop, which is no longer the plan.
+> Contribution is 23¢/pop thinner, so the affordability check below moved too.
 
 Industry benchmarks for CPG sales comp: **7–15% of gross wholesale sales**, or
 **20–30% of gross margin**, for a full-service independent rep carrying their own
@@ -112,11 +117,14 @@ already landed. Nothing is at risk.
 | | Option A (draw) | Option B (pure) |
 |---|---|---|
 | Aug–Dec cost | ~$6,160 | ~$8,050 |
+| December salary left over | $6,561 | $5,561 |
 | Cost if they underperform | Up to $5,000 sunk | $0 |
 | Attracts | Part-timer, junior, someone you're training | Experienced rep with existing accounts |
 | Control | High — they're yours | Low — they set their own hours |
 
-**Recommendation: Option A**, with the draw reviewed at 90 days. At this stage the
+**Recommendation: Option A**, now more strongly than before — the switch to staffed
+in-house production took 23¢/pop out of contribution, and Option B's extra $1,000/month
+is money December doesn't have. Review the draw at 90 days. At this stage the
 doors need to be signed a specific way (display placement at the register, the
 buzz-button demo, the margin conversation) and that's easier to enforce when you're paying a base.
 Move to Option B only if you find someone who already sells into this exact channel.
@@ -125,19 +133,25 @@ Move to Option B only if you find someone who already sells into this exact chan
 
 ## Does it fit the $8,000 salary target?
 
-Yes, with headroom. December, from the revenue plan:
+Not on its own — and that's a production-cost issue, not a commission one. December,
+rebuilt on in-house production:
 
-| | |
-|---|---|
-| Gross profit | $13,738 |
-| Less opex + marketing | −$2,400 |
-| Less sales commission (Option A) | −$1,691 |
-| **Available for salary** | **$9,647** |
-| Salary target | $8,000 |
-| **Headroom** | **$1,647** |
+| | Option A | Option B |
+|---|---|---|
+| Gross profit (in-house, tier-3 materials) | $10,652 | $10,652 |
+| Less opex + marketing | −$2,400 | −$2,400 |
+| Less sales commission | −$1,691 | −$2,691 |
+| **Available for salary** | **$6,561** | **$5,561** |
+| Salary target | $8,000 | $8,000 |
+| **Gap** | **−$1,439** | **−$2,439** |
 
-Under Option B the headroom drops to ~$650 — still positive, but thin enough that a
-soft December would eat it. That's the real argument for Option A.
+The commission is not what breaks it — even at zero commission December lands at $8,252,
+barely clearing. **The gap closes on materials sourcing and line throughput**, both
+covered in §6 of the staffing plan; pulling the tier-3 materials lever alone (~$1,790/mo)
+puts Option A back above target.
+
+What this *does* settle is the choice between the two options. **Option B's extra $1,000/mo
+is a real problem now** — it's most of a second gap on top of the first. Take Option A.
 
 **Note:** this treats the salesperson as a *fourth* person whose cost sits outside the
 $8,000 pool. If they're one of the existing three, the commission is part of their
