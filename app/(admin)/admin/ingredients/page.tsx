@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
+import { CostBasisNote } from '@/components/admin/CostBasisNote';
+import { SourcingLevers } from '@/components/admin/SourcingLevers';
 import { formatCentsToUSD } from '@/lib/format';
 
 interface Material {
@@ -328,6 +330,9 @@ export default function IngredientsPage() {
       </div>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
+
+      <SourcingLevers />
+      <CostBasisNote />
 
       {/* Add new ingredient */}
       {addOpen && (

@@ -1,6 +1,7 @@
 'use client';
 
 import { AdminLayout } from '@/components/AdminLayout';
+import { CostBasisNote } from '@/components/admin/CostBasisNote';
 import { useProducts } from '@/lib/hooks';
 import { formatCentsToUSD } from '@/lib/format';
 import { useState } from 'react';
@@ -168,6 +169,8 @@ export default function ProductsPage() {
       <h1 className="text-3xl font-bold mb-6">Products</h1>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
+
+      <CostBasisNote compact />
 
       {mode === 'idle' && (
         <button

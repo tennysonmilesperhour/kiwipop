@@ -2,6 +2,8 @@
 
 import { AdminLayout } from '@/components/AdminLayout';
 import { SheetEmbed } from '@/components/admin/SheetEmbed';
+import { ProductionPlanCard } from '@/components/admin/ProductionPlanCard';
+import { CostBasisNote } from '@/components/admin/CostBasisNote';
 import { supabase } from '@/lib/supabase';
 import { useState, useEffect } from 'react';
 import { formatCentsToUSD } from '@/lib/format';
@@ -287,6 +289,9 @@ export default function ManufacturingPage() {
       </div>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
+
+      <ProductionPlanCard />
+      <CostBasisNote compact />
 
       {drawer === 'batch' && (
         <div className="card mb-6">
