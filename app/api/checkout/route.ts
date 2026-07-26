@@ -247,6 +247,7 @@ export async function POST(request: NextRequest) {
       successUrl: `${origin}/checkout/success?order_id=${order.id}&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${origin}/checkout/cancelled?order_id=${order.id}`,
       subtotalCents: totalCents,
+      shippingCountry: parsed.shippingAddress.country,
       ...(discountPercentOff > 0 ? { discountPercentOff } : {}),
       ...(discountAmountCents > 0 ? { discountAmountCents } : {}),
       items: parsed.items.map((item) => {

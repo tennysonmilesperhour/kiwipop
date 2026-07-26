@@ -488,7 +488,7 @@ export default function OrdersPage() {
     if (eligible.length === 0) return;
     if (
       !confirm(
-        `Buy USPS labels for all ${eligible.length} order${
+        `Buy the correct domestic or international labels for all ${eligible.length} order${
           eligible.length === 1 ? '' : 's'
         } in the fulfillment queue? Already-labeled orders are skipped. Print them with "print unprinted labels" when you're ready.`,
       )
@@ -674,7 +674,7 @@ export default function OrdersPage() {
               className="btn btn-primary"
               onClick={handleBuyAll}
               disabled={buyAllBusy || !!bulkBusy}
-              title="Buy USPS labels for every order in the fulfillment queue"
+              title="Buy the correct carrier label for every order in the fulfillment queue"
             >
               {buyAllBusy
                 ? 'buying all…'
@@ -814,7 +814,7 @@ export default function OrdersPage() {
             >
               {bulkBusy === 'labels'
                 ? 'buying & merging…'
-                : `buy ${selected.size} USPS label${selected.size === 1 ? '' : 's'}`}
+                : `buy ${selected.size} shipping label${selected.size === 1 ? '' : 's'}`}
             </button>
             <button
               type="button"
@@ -1504,8 +1504,10 @@ function OrderModal({
                         color: 'var(--admin-text-soft)',
                       }}
                     >
-                      Buy the cheapest USPS service via ShipStation. Fulfills the
-                      order and stamps it as shipped.
+                      U.S. orders use USPS via ShipStation. Canada and other
+                      international orders use the cheapest configured UPS,
+                      DHL Express, or FedEx rate via EasyPost, including customs
+                      paperwork. Buying a label marks the order shipped.
                     </p>
                     <button
                       type="button"
@@ -1519,7 +1521,7 @@ function OrderModal({
                       {labelLoading
                         ? 'buying label…'
                         : order.status === 'paid' || order.status === 'shipped'
-                          ? 'buy USPS label'
+                          ? 'buy shipping label'
                           : `cannot buy — order is ${order.status}`}
                     </button>{' '}
                     <a

@@ -60,7 +60,7 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'Where do you ship and how fast?',
-    a: 'Domestic United States only right now. We ship within 1–3 business days via USPS or UPS. Free shipping over $40, flat $4.99 under that. Canada and international are on the waitlist.',
+    a: 'We ship to the United States, Canada, and selected international destinations. U.S. orders ship via USPS; international orders use a tracked carrier. U.S. shipping is free over $40 or $4.99 under that, Canada is $14.99, and other supported international destinations are $24.99. Import duties may apply.',
   },
   {
     q: 'What if my order arrives damaged or missing pops?',

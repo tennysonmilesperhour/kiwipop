@@ -1,7 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { buyUspsLabel, isShipStationConfigured } from '@/lib/shipstation';
+import {
+  buyLabelForDestination,
+  isLabelProviderConfigured,
+  labelProviderConfigurationError,
+  labelProviderForCountry,
+} from '@/lib/shipping-labels';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -22,6 +27,7 @@ interface OrderRow {
   status: string;
   user_email: string | null;
   shipping_address: ShippingAddress | null;
+  subtotal_cents: number | null;
 }
 
 interface RouteContext {
@@ -39,7 +45,7 @@ interface ExistingShipmentRow {
 }
 
 /**
- * Buy a USPS label via ShipStation for a paid order, store the resulting
+ * Buy a country-appropriate label for a paid order, store the resulting
  * tracking + provider shipment id in the shipments table, and flip the
  * order to `shipped`. The label PDF itself is fetched on-demand by
  * `/api/admin/shipments/[id]/label.pdf` (so we don't bloat the DB) — the
@@ -51,16 +57,6 @@ interface ExistingShipmentRow {
 export async function POST(request: NextRequest, { params }: RouteContext) {
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
-
-  if (!isShipStationConfigured()) {
-    return NextResponse.json(
-      {
-        error:
-          'SHIPSTATION_API_KEY / SHIPSTATION_API_SECRET are not configured. Add them in Vercel → Project Settings → Environment Variables to enable USPS label printing.',
-      },
-      { status: 503 },
-    );
-  }
 
   // When the client is auto-printing the freshly-bought label, mark it printed
   // so it doesn't also show up in the "print unprinted labels" batch.
@@ -74,7 +70,7 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
 
   const { data: order, error: orderError } = await supabaseAdmin
     .from('orders')
-    .select('id, status, user_email, shipping_address')
+    .select('id, status, user_email, shipping_address, subtotal_cents')
     .eq('id', params.id)
     .maybeSingle<OrderRow>();
 
@@ -86,6 +82,13 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
   }
   if (!order) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+  }
+  const destinationCountry = order.shipping_address?.country || 'US';
+  if (!isLabelProviderConfigured(destinationCountry)) {
+    return NextResponse.json(
+      { error: labelProviderConfigurationError(destinationCountry) },
+      { status: 503 },
+    );
   }
   if (order.shipping_address?.kind === 'donation') {
     return NextResponse.json(
@@ -129,7 +132,7 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
 
   let label;
   try {
-    label = await buyUspsLabel({
+    label = await buyLabelForDestination({
       to: {
         name: fullName,
         street1: addr.address,
@@ -140,31 +143,30 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
         email: order.user_email ?? null,
       },
       metadata: `order:${order.id.slice(0, 8)}`,
+      customsValueCents: order.subtotal_cents ?? 100,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'ShipStation error';
+    const message = err instanceof Error ? err.message : 'Shipping provider error';
     return NextResponse.json({ error: message }, { status: 502 });
   }
 
   // The label_url we save points at our own endpoint, which streams the
-  // stored base64 PDF (persisted just below). ShipStation V1 has no
-  // re-fetch-by-id endpoint, so we keep the blob ourselves.
+  // stored base64 PDF (persisted just below).
   const origin =
     process.env.NEXT_PUBLIC_SITE_URL ?? request.nextUrl.origin;
 
   const now = new Date().toISOString();
   const insertedShipment = {
     order_id: order.id,
-    carrier: 'usps',
+    carrier: label.carrier,
     tracking_number: label.trackingNumber,
     label_url: '', // filled in below once we know the shipment row id
     shipped_at: now,
-    provider: 'shipstation',
+    provider: labelProviderForCountry(destinationCountry),
     provider_shipment_id: label.providerShipmentId,
     service_level: label.serviceLevel,
     rate_cents: label.rateCents,
-    // Persist the PDF ShipStation handed back on createlabel. V1 has no
-    // re-fetch-by-id endpoint, so the label.pdf route serves this blob.
+    // Persist the provider PDF so the label.pdf route can serve it reliably.
     label_pdf_base64: label.labelDataB64,
     printed_at: markPrinted ? now : null,
   };
@@ -179,7 +181,7 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     return NextResponse.json(
       {
         error:
-          'Label was bought from ShipStation but failed to save locally. Tracking number is included; print directly from ShipStation if needed.',
+          `Label was bought from ${labelProviderForCountry(destinationCountry)} but failed to save locally. Tracking number is included; print it from the provider dashboard if needed.`,
         details: shipmentError?.message,
         trackingNumber: label.trackingNumber,
         providerShipmentId: label.providerShipmentId,

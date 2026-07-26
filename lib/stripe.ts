@@ -1,6 +1,11 @@
 import 'server-only';
 
 import Stripe from 'stripe';
+import {
+  shippingChargeCents,
+  shippingRegion,
+  type SupportedShippingCountry,
+} from '@/lib/shipping';
 
 let cached: Stripe | null = null;
 
@@ -54,6 +59,7 @@ interface CreateCheckoutSessionParams {
    * omitted, no shipping_options are attached (current behavior).
    */
   subtotalCents?: number;
+  shippingCountry: SupportedShippingCountry;
   /**
    * Percent discount to apply to the product subtotal (e.g. 25 for 25% off).
    * Attached as a one-time Stripe coupon so it shows on the receipt and is
@@ -117,22 +123,6 @@ async function getOrCreateOnceAmountCoupon(amountCents: number): Promise<string>
   return created.id;
 }
 
-/**
- * Stripe Shipping Rate ID for the standard US-domestic option. Pulled
- * from STRIPE_SHIPPING_RATE_DOMESTIC if set, otherwise falls back to the
- * production rate created in the Stripe dashboard. Kept in code so a
- * missing env var doesn't silently disable shipping.
- */
-const STANDARD_DOMESTIC_SHIPPING_RATE =
-  process.env.STRIPE_SHIPPING_RATE_DOMESTIC ?? 'shr_1TTXXlLMKed5UHTWC8xs9zTm';
-
-/**
- * Free shipping kicks in once subtotal hits this threshold (matches the
- * promise on /legal/shipping). Override via FREE_SHIPPING_THRESHOLD_CENTS.
- */
-const FREE_SHIPPING_THRESHOLD_CENTS =
-  Number(process.env.FREE_SHIPPING_THRESHOLD_CENTS ?? '4000') || 4000;
-
 export async function createCheckoutSession(params: CreateCheckoutSessionParams) {
   const inlineLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
     params.items.map((item) => ({
@@ -158,17 +148,36 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
         )
       : inlineLineItems;
 
-  // Shipping: free over the threshold, $5 standard otherwise. Stripe collects
-  // the shipping address so the rate can be applied + so we get a
-  // delivery-grade address attached to the session/payment_intent.
-  const subtotal = params.subtotalCents ?? null;
-  const needsShippingCharge =
-    subtotal !== null && subtotal < FREE_SHIPPING_THRESHOLD_CENTS;
-
-  const shippingOptions: Stripe.Checkout.SessionCreateParams.ShippingOption[] =
-    needsShippingCharge
-      ? [{ shipping_rate: STANDARD_DOMESTIC_SHIPPING_RATE }]
-      : [];
+  const subtotal = params.subtotalCents ?? 0;
+  const shippingAmount = shippingChargeCents(subtotal, params.shippingCountry);
+  const region = shippingRegion(params.shippingCountry);
+  const shippingLabel =
+    region === 'domestic'
+      ? shippingAmount === 0
+        ? 'Free U.S. shipping'
+        : 'Standard U.S. shipping'
+      : region === 'canada'
+        ? 'Canada tracked shipping'
+        : 'International tracked shipping';
+  const shippingOptions: Stripe.Checkout.SessionCreateParams.ShippingOption[] = [
+    {
+      shipping_rate_data: {
+        type: 'fixed_amount',
+        fixed_amount: { amount: shippingAmount, currency: 'usd' },
+        display_name: shippingLabel,
+        delivery_estimate:
+          region === 'domestic'
+            ? {
+                minimum: { unit: 'business_day', value: 3 },
+                maximum: { unit: 'business_day', value: 7 },
+              }
+            : {
+                minimum: { unit: 'business_day', value: 7 },
+                maximum: { unit: 'business_day', value: 21 },
+              },
+      },
+    },
+  ];
 
   // A wholesale welcome code (or any percent discount) is attached as a
   // one-time Stripe coupon. Stripe applies it to the product line items and
@@ -190,8 +199,12 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
     payment_intent_data: {
       metadata: { orderId: params.orderId },
     },
-    shipping_address_collection: { allowed_countries: ['US'] },
-    ...(shippingOptions.length > 0 ? { shipping_options: shippingOptions } : {}),
+    // Lock Stripe to the country the customer entered so the charge and the
+    // persisted fulfillment destination can never disagree.
+    shipping_address_collection: {
+      allowed_countries: [params.shippingCountry],
+    },
+    shipping_options: shippingOptions,
     ...(discountCouponId ? { discounts: [{ coupon: discountCouponId }] } : {}),
   };
 

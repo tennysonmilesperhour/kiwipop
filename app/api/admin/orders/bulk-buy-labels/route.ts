@@ -3,7 +3,12 @@ import { z } from 'zod';
 import { PDFDocument } from 'pdf-lib';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { buyUspsLabel, isShipStationConfigured } from '@/lib/shipstation';
+import {
+  buyLabelForDestination,
+  isLabelProviderConfigured,
+  labelProviderConfigurationError,
+  labelProviderForCountry,
+} from '@/lib/shipping-labels';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -31,6 +36,7 @@ interface OrderRow {
   status: string;
   user_email: string | null;
   shipping_address: ShippingAddress | null;
+  subtotal_cents: number | null;
 }
 
 interface ExistingShipment {
@@ -53,7 +59,7 @@ interface PerOrderResult {
 }
 
 /**
- * Buy USPS labels for a batch of paid orders in parallel and return one
+ * Buy country-appropriate labels for a batch of paid orders in parallel and return one
  * combined multi-page PDF (4×6 page per label). Works with `pdf-lib` to
  * merge the per-label base64 PDFs from ShipStation. Idempotent per order:
  * if a tracking number already exists for an order in the request, that
@@ -69,16 +75,6 @@ interface PerOrderResult {
 export async function POST(request: NextRequest) {
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
-
-  if (!isShipStationConfigured()) {
-    return NextResponse.json(
-      {
-        error:
-          'SHIPSTATION_API_KEY / SHIPSTATION_API_SECRET are not configured.',
-      },
-      { status: 503 },
-    );
-  }
 
   let body: unknown;
   try {
@@ -100,7 +96,7 @@ export async function POST(request: NextRequest) {
 
   const { data: orders, error: ordersError } = await supabaseAdmin
     .from('orders')
-    .select('id, status, user_email, shipping_address')
+    .select('id, status, user_email, shipping_address, subtotal_cents')
     .in('id', orderIds)
     .returns<OrderRow[]>();
 
@@ -161,12 +157,20 @@ export async function POST(request: NextRequest) {
       if (!addr || !addr.address || !addr.city || !addr.state || !addr.zip) {
         return { orderId, ok: false, error: 'Missing shipping address' };
       }
+      const destinationCountry = addr.country || 'US';
+      if (!isLabelProviderConfigured(destinationCountry)) {
+        return {
+          orderId,
+          ok: false,
+          error: labelProviderConfigurationError(destinationCountry),
+        };
+      }
 
       try {
         const fullName =
           [addr.firstName, addr.lastName].filter(Boolean).join(' ').trim() ||
           'Kiwi Pop Customer';
-        const label = await buyUspsLabel({
+        const label = await buyLabelForDestination({
           to: {
             name: fullName,
             street1: addr.address,
@@ -177,6 +181,7 @@ export async function POST(request: NextRequest) {
             email: order.user_email ?? null,
           },
           metadata: `order:${orderId.slice(0, 8)}`,
+          customsValueCents: order.subtotal_cents ?? 100,
         });
 
         const now = new Date().toISOString();
@@ -184,11 +189,11 @@ export async function POST(request: NextRequest) {
           .from('shipments')
           .insert({
             order_id: orderId,
-            carrier: 'usps',
+            carrier: label.carrier,
             tracking_number: label.trackingNumber,
             label_url: '',
             shipped_at: now,
-            provider: 'shipstation',
+            provider: labelProviderForCountry(destinationCountry),
             provider_shipment_id: label.providerShipmentId,
             service_level: label.serviceLevel,
             rate_cents: label.rateCents,
@@ -229,7 +234,8 @@ export async function POST(request: NextRequest) {
           rateCents: label.rateCents,
         };
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'ShipStation error';
+        const message =
+          err instanceof Error ? err.message : 'Shipping provider error';
         return { orderId, ok: false, error: message };
       }
     }),
