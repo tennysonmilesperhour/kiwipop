@@ -93,14 +93,75 @@ as load‑bearing:
 | Molly's Mint | 4.90¢ | $0.496 |
 | Mary Caramel Apple | 9.72¢ | $0.532 |
 
-**Two notes on jambu.** It is the least reliable number here — no consumer food‑grade
-channel exists at all, so $0.80/g is inferred from it being a standardised oleoresin
-rather than a dried root. It could plausibly be half that or triple. And at a 0.005 g
-dose it barely matters financially (0.4¢/pop) — **the jambu problem is a supply and
-compliance problem, not a cost problem.** Same for chilcuague: $0.55/g is real, but an
-eBay ethnobotanical listing is not a wholesale channel with a COA, a food‑grade
-attestation, or lot traceability. Both need a qualified supplier before wholesale scales,
-and neither will move the cost model when they get one.
+## Jambu / spilanthes — the MOQ problem was arithmetic, not sourcing
+
+The old note said jambu had "no consumer food-grade channel" and only a quote-only B2B
+oleoresin at ~1 kg MOQ, and treated that as a blocker. **Run the numbers on that MOQ:**
+
+> 0.005 g/pop × 8,120 pops/month = **40.6 g per month**. 1 kg is **24 years of supply.**
+
+Nobody was ever going to buy that. The real requirement is ~40 g/month of something
+spilanthol-bearing, documented, and food-grade — which several suppliers sell.
+
+| Option | Form | Scale | $/g | ¢/pop @0.005 g | Verdict |
+|---|---|---|---|---|---|
+| **Barlowe's Herbal Elixirs** — Spilanthes Acmella **10:1 extract** | capsules, 60 × 500 mg = 30 g | $14.95 | **$0.498** | **0.25¢** | **Switch to this now.** USA-made, glass-bottled, stearate-free, sold direct. 30 g ≈ 6,000 pops. |
+| **NaturMed Scientific** — Spilanthes acmella **CO2 extract** | powder, up to 30% spilanthol | quote | quote | — | **The upgrade.** Highest potency, US-based, CO2 extracts often sell below 1 kg. Get a quote for 50–100 g. |
+| **Mountain Rose Herbs** — Spilanthes, organic | dried aerial (leaf + flower) | retail + bulk lb | ~$0.05–0.09 est. | — | **Best on documentation** — organic certified, COA available, real wholesale programme. But it is *herb*, not extract. |
+| **Hawaii Pharm** — alcohol-free glycerite | liquid tincture | 2–32 fl oz | — | — | **No.** Adding a water/glycerin liquid to isomalt at ~300 °F spatters and risks recrystallisation. |
+| Wellgreen / E.K. Herb — 10:1, 20:1, 5% spilanthol | powder | **1 kg MOQ** | low | — | ISO/GMP/Halal/Kosher. Correct for 2027. Absurd today. |
+
+**Recommendation: Barlowe's now, NaturMed quote in parallel.** The cost is a rounding
+error either way (0.25¢/pop vs the 0.40¢ placeholder it replaces) — what you are buying
+is a real supplier with a real label, which is what a wholesale buyer or a commissary
+will ask for.
+
+Two cautions:
+
+- **It is a capsule product.** 60 capsules to empty per bottle, ~1.4 bottles a month by
+  December. Ask Barlowe's for bulk powder direct before accepting that as the workflow.
+- **Do not change grade without re-testing the dose.** 0.005 g is right for a 10:1
+  extract. Dried aerial herb is far less concentrated — plausibly 10–50× more by weight
+  for the same tingle, which means noticeably more plant colour, bitterness, and
+  particulate in a clear isomalt candy. That is a bench test, not a spreadsheet edit.
+
+## Foil wrapper — a third of every pack is thrown away
+
+The line sheet tells wholesale buyers the pops are **"individually foiled."** Until
+migration 046 there was **no wrapper line in the bill of materials at all** — only a
+sticker. We were making a public product claim we weren't costing.
+
+Current pack ([Amazon B094J7NFWZ](https://www.amazon.com/dp/B094J7NFWZ)): 600 pcs,
+4×4 in food-grade aluminium, six colours at 100 each. **Four colours are used, two are
+waste** — so a 600-piece pack yields **400 usable wrappers.**
+
+| | Cost |
+|---|---|
+| Pack (est. $15.99 — confirm from the order) | $15.99 / 600 = $0.0267 nominal |
+| **True cost per usable wrapper** | **$15.99 / 400 = $0.040** |
+| **Per pop** | **4.0¢** — as big as the label sticker |
+
+The two dead colours add **50% to the effective cost of every wrapper.** Three ways out,
+best last:
+
+1. **Buy four single-colour packs** instead of one six-colour pack. Waste → zero.
+   4.0¢ → ~2.7¢/pop, **~$105/month** at December volume.
+2. **Buy a bulk single-colour count** (1,000-sheet packs exist at ~$0.015–0.020/sheet).
+   → ~1.5–2.0¢/pop.
+3. **Use one foil colour for all four flavours** and let the label carry flavour
+   identity — it already does. That unlocks option 2 at full scale: **4.0¢ → ~1.5¢,
+   about $200/month.** The trade is losing a colour cue on the shelf, which matters less
+   than it sounds in a counter display where the label is what gets read.
+
+Meanwhile: **don't bin the two unused colours.** Use them for event samples, seasonal
+runs, and the wholesale display units.
+
+> **Jambu superseded.** The $0.80/g placeholder above was replaced in migration 046 with
+> a real supplier at $0.498/g — see the section immediately above. **Chilcuague is now the
+> only remaining sourcing risk**: $0.55/g is a real price, but an eBay ethnobotanical
+> listing is not a wholesale channel with a COA, a food-grade attestation, or lot
+> traceability. Ask the seller for a COA; if none exists, the Sierra Gorda co-ops or a US
+> botanical importer are the route. It will not move the cost model either way.
 
 ## Isomalt — the sourcing ladder
 

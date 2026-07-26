@@ -22,6 +22,13 @@ the volume that funds payroll comes from retail doors and one distributor.
 > Lever 3 and the December P&L: COGS goes to **~$1.13/pop** rather than $0.75, and
 > December's salary pool lands at **~$6,600 unless the sourcing and throughput levers in
 > §6 of that doc are pulled.** They should be.
+>
+> **Update 2026-07-26 (later still).** Migration 046 added the **missing foil wrapper**
+> (4¢/pop — the line sheet has been claiming "individually foiled" against a BOM that had
+> no wrapper in it) and repointed **jambu at a real supplier**: its "1 kg MOQ blocker" was
+> arithmetic, not sourcing — we use 40.6 g/month, so 1 kg was 24 years of stock.
+> **All open items across every plan are now consolidated in
+> [`docs/open-items.md`](./open-items.md)** with a recommendation each.
 
 ---
 
@@ -100,7 +107,8 @@ see §7.
 | Kiwi powder | 5.5¢ | 10% |
 | Xylitol | 4.8¢ | 9% |
 | **Label sticker** | **3.9¢** | **7%** |
-| Everything else (13 lines) | 6.7¢ | 11% |
+| **Foil wrapper** (added migration 046) | **4.0¢** | **7%** |
+| Everything else (14 lines) | 6.7¢ | 11% |
 
 **Two ingredients are 63% of our cost.** Every actives line combined — theobromine, ginseng,
 taurine, magnesium, turmeric, spirulina — is under 5¢. The functional payload is essentially
@@ -342,20 +350,18 @@ actually booked.**
    even a third of that is ~$1,200 of recovered lifetime revenue at current AOV and scales
    with everything else. Highest-ROI engineering task in the repo.
 2. ~~**Retire or reprice `KP-PACK-12`**~~ ✅ repriced to $42.00 in migration 043.
-3. ~~**Price the uncosted ingredients**~~ ✅ all thirteen priced in migration 045. **What it
-   uncovered is more important than what it fixed:** the complete BOM is $0.50–0.53/pop
-   against a `diy_tier2` figure of $0.90 — **a ~40¢/pop gap the uncosted lines do not
-   explain.** Three candidates, in order of likelihood:
-   - **Yield loss.** Hand-poured isomalt breaks, under-fills, and sets badly. 15–25% scrap
-     is normal and would account for ~$0.10.
-   - **A missing wrapper line.** The line sheet tells buyers the pops are "individually
-     foiled," but there is **no foil or cello wrapper in the BOM at all** — only a sticker.
-     At ~1–3¢ each that's a real omission on a public product claim.
-   - **Unallocated buffer** baked into the tier figure when it was seeded.
+3. ~~**Price the uncosted ingredients**~~ ✅ all thirteen priced in migration 045, and the
+   ~~**missing foil wrapper**~~ ✅ added in migration 046 at 4¢/pop. **What's left is more
+   important than what was fixed:** the complete BOM is now $0.53–0.57/pop against a
+   `diy_tier2` figure of $0.90 — **~33–42¢/pop still unexplained.** Candidates: yield loss
+   on hand-poured isomalt (15–25% scrap would be ~$0.10), unallocated buffer, or a second
+   BOM omission — the foil was one, so another isn't unthinkable.
 
-   Until this is resolved, `diy_tier2` is a guess wearing a precise number's clothes, and
-   every margin in the admin inherits it. **Reconcile it before the tier-3 purchase orders**,
-   because that's the moment the model starts driving real money.
+   Until resolved, `diy_tier2` is a guess wearing a precise number's clothes and every
+   margin in the admin inherits it. **Measure scrap on the first three commissary sessions**
+   — you're measuring throughput in those same sessions anyway, so it's free — and
+   **reconcile before the tier-3 purchase orders.** Correcting the tier *down* would improve
+   the December number.
 4. **Update `app_settings.monthly_overhead_cents`** from $150 to a real number (~$1,400) and
    `target_monthly_volume` to the current month's plan figure, so admin break-even is honest.
 5. **The wholesale referral codes are built and unused** — `wholesale_discount_codes` has 0
@@ -380,15 +386,14 @@ actually booked.**
    (already noted in the ingredient panel — it must make it onto the physical label). Retail
    doors will also ask for a **certificate of insurance**; product liability runs ~$1,500–2,400/yr
    and is budgeted above. **Sort this in August or it blocks October.**
-2. **The two alkamide actives are a supply problem, not a cost problem.** Now that both are
-   priced, that distinction is clear: jambu costs 0.4¢/pop and chilcuague 0.28¢/pop. Money
-   was never the issue. What is: chilcuague is currently bought from an **eBay ethnobotanical
-   listing** — no COA, no food-grade attestation, no lot traceability — and jambu has no
-   consumer food-grade channel at all, only a quote-only B2B oleoresin at ~1 kg MOQ.
-   Both are the product's signature hook, so substituting quietly isn't an option. **A
-   wholesale buyer's first compliance question will be about these two lines**, and a
-   commissary or a future co-packer will ask before they'll run. Qualify a real supplier for
-   both — with documentation — before wholesale scales past a handful of doors.
+2. **Chilcuague is the last unresolved sourcing risk.** Jambu is solved — its "1 kg MOQ
+   blocker" turned out to be arithmetic rather than sourcing (we use 40.6 g/month, so 1 kg
+   was 24 years of stock), and migration 046 repointed it at a real USA supplier at 0.25¢/pop.
+   Chilcuague still comes from an **eBay ethnobotanical listing** — no COA, no food-grade
+   attestation, no lot traceability. At 0.28¢/pop it was never a cost problem. **It is the
+   question a wholesale buyer or a commissary will ask first**, and it is the product's
+   signature hook, so substituting quietly isn't an option. Ask the seller for a COA; failing
+   that, the Sierra Gorda co-ops or a US botanical importer.
 3. **Door productivity is the assumption most likely to be wrong.** The plan needs 60
    pops/month of reorder per door. Sensitivity:
 
@@ -423,7 +428,9 @@ actually booked.**
 - [x] ~~Price the uncosted BOM lines~~ ✅ migration 045 (all 13)
 - [ ] **Reconcile the ~40¢/pop gap between the complete BOM and `diy_tier2`** — measure
       actual yield loss on the first sessions, and add the missing foil/cello wrapper line
-- [ ] Qualify a documented supplier for jambu and chilcuague (COA + food-grade attestation)
+- [x] ~~Qualify a documented supplier for jambu~~ ✅ migration 046 (Barlowe's 10:1)
+- [ ] Get a chilcuague COA, or move to a documented supplier
+- [ ] Switch the foil order off the 6-colour pack — a third of it is waste (§2 of open-items)
 - [ ] Open wholesale accounts: WebstaurantStore, BulkSupplements, Starwest (ask for Net-30)
 - [ ] **Confirm the $218.10 Bakers Authority isomalt price in a browser and place the first
       45 lb order** — it's the one figure the new cost basis rests on
