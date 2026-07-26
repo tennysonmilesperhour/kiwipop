@@ -2,6 +2,12 @@ import type { Metadata } from 'next';
 import { formatCentsToUSD } from '@/lib/format';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { FLAVORS, FUNCTIONALS, TIMELINE } from '@/lib/flavors';
+import {
+  TIER_META,
+  WHOLESALE_TIERS,
+  retailerMarginPercent,
+  type WholesaleTier,
+} from '@/lib/wholesale-tiers';
 import { LineSheetActions } from './LineSheetActions';
 
 const title = 'wholesale brand & price sheet';
@@ -51,20 +57,26 @@ interface ProductLite {
 interface PricingByProduct {
   productName: string;
   retailCents: number;
-  standardCents?: number;
-  premiumCents?: number;
+  /** Per-tier price in cents, keyed by the stored tier name. */
+  tierCents: Partial<Record<WholesaleTier, number>>;
 }
 
-async function loadPricing(): Promise<PricingByProduct[]> {
+/** Minimums shown on the sheet, read from the live pricing rows. */
+type TierMinimums = Partial<Record<WholesaleTier, number>>;
+
+async function loadPricing(): Promise<{
+  rows: PricingByProduct[];
+  minimums: TierMinimums;
+}> {
   const { data: products } = await supabaseAdmin
     .from('products')
     .select('id, name, sku, price_cents');
 
   const { data: pricing } = await supabaseAdmin
     .from('wholesale_pricing')
-    .select('product_id, tier, price_cents');
+    .select('product_id, tier, price_cents, min_quantity');
 
-  if (!products) return [];
+  if (!products) return { rows: [], minimums: {} };
 
   // Index single-pop products by SKU and tier pricing by product id, then walk
   // the canonical FLAVORS list so the sheet shows exactly the four flavors in
@@ -74,34 +86,44 @@ async function loadPricing(): Promise<PricingByProduct[]> {
     if (product.sku) bySku.set(product.sku, product);
   }
 
-  const tiersByProduct = new Map<string, { standard?: number; premium?: number }>();
+  const tiersByProduct = new Map<string, Partial<Record<WholesaleTier, number>>>();
+  const minimums: TierMinimums = {};
   for (const row of pricing ?? []) {
+    const tier = row.tier as WholesaleTier;
+    if (!WHOLESALE_TIERS.includes(tier)) continue;
     const productId = row.product_id as string;
     const entry = tiersByProduct.get(productId) ?? {};
-    const cents = row.price_cents as number;
-    if ((row.tier as string) === 'standard') entry.standard = cents;
-    if ((row.tier as string) === 'premium') entry.premium = cents;
+    entry[tier] = row.price_cents as number;
     tiersByProduct.set(productId, entry);
+    // Minimums are uniform per tier across flavors; take the lowest seen so a
+    // stray row can't inflate the number a buyer reads.
+    const min = row.min_quantity as number;
+    minimums[tier] = Math.min(minimums[tier] ?? min, min);
   }
 
   const rows: PricingByProduct[] = [];
   for (const flavor of FLAVORS) {
     const product = bySku.get(flavor.sku);
     if (!product) continue;
-    const tiers = tiersByProduct.get(product.id) ?? {};
     rows.push({
       productName: flavor.name,
       retailCents: product.price_cents,
-      standardCents: tiers.standard,
-      premiumCents: tiers.premium,
+      tierCents: tiersByProduct.get(product.id) ?? {},
     });
   }
 
-  return rows;
+  return { rows, minimums };
 }
 
 export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
-  const pricing = await loadPricing();
+  const { rows: pricing, minimums } = await loadPricing();
+  // Only show tiers we actually have prices for, so the table can't render an
+  // empty column if a tier hasn't been seeded yet.
+  const activeTiers = WHOLESALE_TIERS.filter((t) =>
+    pricing.some((row) => row.tierCents[t] != null)
+  );
+  const minFor = (tier: WholesaleTier) =>
+    minimums[tier] ?? TIER_META[tier].targetMinQuantity;
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -289,40 +311,95 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
       </section>
 
       <section className="ls-section">
+        <h2 className="ls-h2">Your margin</h2>
+        <p className="ls-note">
+          Pricing is built backwards from what you keep, not forwards from what
+          we spend. Every tier clears the 40–50% specialty retail benchmark at
+          the $5.00 shelf price.
+        </p>
+        <div className="ls-margins">
+          {activeTiers.map((tier) => {
+            // Margin is identical across flavors (uniform tier pricing), so the
+            // first flavor with a price for this tier is representative.
+            const sample = pricing.find((row) => row.tierCents[tier] != null);
+            const margin = retailerMarginPercent(
+              sample?.retailCents,
+              sample?.tierCents[tier]
+            );
+            return (
+              <div className="ls-margin" key={tier}>
+                <div className="ls-margin-pct">
+                  {margin != null ? `${margin}%` : '—'}
+                </div>
+                <div className="ls-margin-tier">{TIER_META[tier].label}</div>
+                <div className="ls-margin-min">
+                  {minFor(tier).toLocaleString()}+ pops
+                </div>
+                <p className="ls-margin-who">{TIER_META[tier].who}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="ls-section">
         <h2 className="ls-h2">Wholesale pricing · per pop</h2>
-        {pricing.length === 0 ? (
+        {activeTiers.length === 0 ? (
           <p className="ls-note">
             Tier pricing is being finalized — email us for current rates.
           </p>
         ) : (
-          <table className="ls-table">
-            <thead>
-              <tr>
-                <th>Flavor</th>
-                <th>Retail (MSRP)</th>
-                <th>Standard · 50+</th>
-                <th>Premium · 200+</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pricing.map((row) => (
-                <tr key={row.productName}>
-                  <td>{row.productName.toLowerCase()}</td>
-                  <td>{formatCentsToUSD(row.retailCents)}</td>
-                  <td>
-                    {row.standardCents != null
-                      ? formatCentsToUSD(row.standardCents)
-                      : '—'}
-                  </td>
-                  <td>
-                    {row.premiumCents != null
-                      ? formatCentsToUSD(row.premiumCents)
-                      : '—'}
-                  </td>
+          <>
+            <table className="ls-table">
+              <thead>
+                <tr>
+                  <th>Flavor</th>
+                  <th>Retail (MSRP)</th>
+                  {activeTiers.map((tier) => (
+                    <th key={tier}>
+                      {TIER_META[tier].label} · {minFor(tier).toLocaleString()}+
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {pricing.map((row) => (
+                  <tr key={row.productName}>
+                    <td>{row.productName.toLowerCase()}</td>
+                    <td>{formatCentsToUSD(row.retailCents)}</td>
+                    {activeTiers.map((tier) => (
+                      <td key={tier}>
+                        {row.tierCents[tier] != null
+                          ? formatCentsToUSD(row.tierCents[tier] as number)
+                          : '—'}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan={2}>Your margin at MSRP</td>
+                  {activeTiers.map((tier) => {
+                    const sample = pricing.find(
+                      (row) => row.tierCents[tier] != null
+                    );
+                    const margin = retailerMarginPercent(
+                      sample?.retailCents,
+                      sample?.tierCents[tier]
+                    );
+                    return (
+                      <td key={tier}>{margin != null ? `${margin}%` : '—'}</td>
+                    );
+                  })}
+                </tr>
+              </tfoot>
+            </table>
+            <p className="ls-note ls-note--tight">
+              Mix and match flavors freely against the same tier — the minimum
+              is total pops, not per flavor.
+            </p>
+          </>
         )}
       </section>
 
@@ -330,8 +407,21 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
         <h2 className="ls-h2">Ordering terms</h2>
         <ul className="ls-terms">
           <li>
-            <strong>Minimums.</strong> Standard tier opens at 50 units; premium
-            pricing at 200 units. Mix and match flavors against the same tier.
+            <strong>Minimums.</strong>{' '}
+            {activeTiers
+              .map(
+                (tier) =>
+                  `${TIER_META[tier].label} opens at ${minFor(
+                    tier
+                  ).toLocaleString()} pops`
+              )
+              .join('; ')}
+            . Mix and match flavors against the same tier.
+          </li>
+          <li>
+            <strong>Counter display.</strong> A 50-pop display fixture ships
+            free with any opening order of 150+ pops. It&apos;s an impulse buy —
+            it needs to live at the register, not on a shelf.
           </li>
           <li>
             <strong>Lead time.</strong> Made to order in batches. Expect roughly
@@ -442,6 +532,53 @@ const lineSheetCss = `
   border-bottom: 1px solid #14121a;
 }
 .ls-note { font-size: 13px; color: #6b6675; margin: 0 0 12px; }
+.ls-note--tight { margin: 10px 0 0; }
+
+/* "Your margin" — the tier ladder led by what the buyer keeps, since that's
+   the number that decides whether they stock it. */
+.ls-margins {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.ls-margin {
+  border: 1px solid #e3e0e8;
+  border-top: 4px solid #7b2dff;
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: #faf9fc;
+}
+.ls-margin-pct {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1d7a33;
+}
+.ls-margin-tier {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.ls-margin-min {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6675;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.ls-margin-who { font-size: 12.5px; color: #6b6675; margin: 8px 0 0; }
+.ls-table tfoot td {
+  padding: 9px 10px;
+  border-top: 2px solid #14121a;
+  font-weight: 700;
+  font-size: 12.5px;
+}
+.ls-table tfoot td:first-child {
+  text-transform: none;
+  color: #6b6675;
+  font-weight: 600;
+}
 .ls-body { font-size: 14.5px; margin: 0; max-width: 660px; }
 
 /* The jambu hook — the one callout that gets a tinted box so it reads as the
@@ -616,6 +753,7 @@ const lineSheetCss = `
   .ls-contact { text-align: left; }
   .ls-flavors, .ls-payload { grid-template-columns: 1fr; }
   .ls-claims { grid-template-columns: 1fr; }
+  .ls-margins { grid-template-columns: 1fr; }
 }
 
 @media print {
@@ -624,6 +762,7 @@ const lineSheetCss = `
   .ls-doc { padding: 0; max-width: none; }
   .ls-section { break-inside: avoid; }
   .ls-flavor { break-inside: avoid; }
+  .ls-margin { break-inside: avoid; }
   .ls-claim { break-inside: avoid; }
   .ls-hook { break-inside: avoid; }
   /* Start the price sheet on its own page in the PDF; hide the on-screen

@@ -6,6 +6,12 @@ import { SheetEmbed } from '@/components/admin/SheetEmbed';
 import { WholesaleLineSheetCard } from '@/components/admin/WholesaleLineSheetCard';
 import { supabase } from '@/lib/supabase';
 import { formatCentsToUSD } from '@/lib/format';
+import {
+  TIER_META,
+  WHOLESALE_TIERS,
+  tierLabel,
+  type WholesaleTier,
+} from '@/lib/wholesale-tiers';
 import { useState, useEffect } from 'react';
 
 interface WholesaleAccount {
@@ -13,7 +19,7 @@ interface WholesaleAccount {
   business_name: string;
   user_id: string | null;
   approval_status: 'pending' | 'approved' | 'rejected';
-  tier: 'standard' | 'premium';
+  tier: WholesaleTier;
   tax_id: string | null;
   created_at: string;
 }
@@ -21,7 +27,7 @@ interface WholesaleAccount {
 interface WholesalePricing {
   id: string;
   product_id: string;
-  tier: 'standard' | 'premium';
+  tier: WholesaleTier;
   price_cents: number;
   min_quantity: number;
 }
@@ -64,14 +70,14 @@ const BASIS_HINTS: Record<CostBasis, string> = {
 
 interface PricingForm {
   product_id: string;
-  tier: 'standard' | 'premium';
+  tier: WholesaleTier;
   priceUsd: string;
   min_quantity: number;
 }
 
 const EMPTY_PRICING: PricingForm = {
   product_id: '',
-  tier: 'standard',
+  tier: 'standard' as WholesaleTier,
   priceUsd: '',
   min_quantity: 100,
 };
@@ -446,7 +452,7 @@ export default function WholesalePage() {
                           {account.approval_status}
                         </span>
                       </td>
-                      <td className="capitalize">{account.tier}</td>
+                      <td className="capitalize">{tierLabel(account.tier)}</td>
                       <td className="text-sm">
                         {new Date(account.created_at).toLocaleDateString()}
                       </td>
@@ -486,8 +492,11 @@ export default function WholesalePage() {
                   className="form-select text-sm"
                   disabled={submitting}
                 >
-                  <option value="standard">Standard</option>
-                  <option value="premium">Premium</option>
+                  {WHOLESALE_TIERS.map((t) => (
+                    <option key={t} value={t}>
+                      {TIER_META[t].label}
+                    </option>
+                  ))}
                 </select>
               </div>
               {selectedAccount.tax_id && (
@@ -572,7 +581,7 @@ export default function WholesalePage() {
                     className="btn btn-primary"
                     disabled={submitting}
                   >
-                    Approve as {selectedAccount.tier}
+                    Approve as {tierLabel(selectedAccount.tier)}
                   </button>
                   <button
                     onClick={() => handleReject(selectedAccount)}
@@ -808,13 +817,16 @@ export default function WholesalePage() {
                   onChange={(e) =>
                     setPricingForm({
                       ...pricingForm,
-                      tier: e.target.value as 'standard' | 'premium',
+                      tier: e.target.value as WholesaleTier,
                     })
                   }
                   className="form-select"
                 >
-                  <option value="standard">Standard</option>
-                  <option value="premium">Premium</option>
+                  {WHOLESALE_TIERS.map((t) => (
+                    <option key={t} value={t}>
+                      {TIER_META[t].label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="form-group">
@@ -957,7 +969,7 @@ export default function WholesalePage() {
                 return (
                   <tr key={row.id}>
                     <td className="font-medium">{productName(row.product_id)}</td>
-                    <td className="capitalize">{row.tier}</td>
+                    <td className="capitalize">{tierLabel(row.tier)}</td>
                     <td>{row.min_quantity}</td>
                     <td>
                       {isEditing ? (

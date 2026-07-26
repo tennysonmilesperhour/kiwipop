@@ -118,7 +118,7 @@ export type ReturnCreate = z.infer<typeof returnCreateSchema>;
 export const wholesaleApprovalSchema = z.object({
   accountId: z.string().uuid(),
   status: z.enum(['pending', 'approved', 'rejected']),
-  tier: z.enum(['standard', 'premium']).optional(),
+  tier: z.enum(['standard', 'premium', 'distributor']).optional(),
 });
 
 export type WholesaleApproval = z.infer<typeof wholesaleApprovalSchema>;
@@ -162,7 +162,7 @@ export type SheetUpsert = z.infer<typeof sheetUpsertSchema>;
 
 export const wholesaleAccountUpdateSchema = z.object({
   approval_status: z.enum(['pending', 'approved', 'rejected']).optional(),
-  tier: z.enum(['standard', 'premium']).optional(),
+  tier: z.enum(['standard', 'premium', 'distributor']).optional(),
   business_name: z.string().trim().min(1).max(200).optional(),
   tax_id: z.string().trim().max(100).optional().or(z.literal('')),
 });
@@ -171,7 +171,7 @@ export type WholesaleAccountUpdate = z.infer<typeof wholesaleAccountUpdateSchema
 
 export const wholesalePricingCreateSchema = z.object({
   product_id: z.string().uuid(),
-  tier: z.enum(['standard', 'premium']),
+  tier: z.enum(['standard', 'premium', 'distributor']),
   price_cents: z.number().int().positive(),
   min_quantity: z.number().int().positive(),
 });

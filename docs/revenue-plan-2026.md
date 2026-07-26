@@ -9,6 +9,13 @@ the volume that funds payroll comes from retail doors and one distributor.
 **Written:** 2026-07-26. All baseline figures pulled live from Supabase project
 `yibliuftqrnfguctrqca` and the repo's cost model on that date.
 
+> **Update 2026-07-26 — §3 Levers 1 and 2 are now shipped.** Migration 042 halved the
+> glitter dose (0.1 g → 0.05 g/pop), repointed isomalt at a real wholesale tier, and
+> repriced wholesale to the margin ladder below. Landed cost is now **$0.90/pop**
+> (`diy_tier2`), not $0.95. Sales comp is designed in
+> [`docs/sales-commission-plan.md`](./sales-commission-plan.md); the isomalt sourcing
+> ladder is in [`docs/ingredient-sourcing.md`](./ingredient-sourcing.md).
+
 ---
 
 ## 1. Where we actually are
@@ -53,24 +60,24 @@ small that the absolute dollars are modest. It is not reachable on DTC order-by-
 The repo already carries a four-tier cost basis on every product (`products.cost_basis_cents`).
 Current active basis is `diy_tier2`:
 
-| Basis | $/pop | What it means |
-|---|---|---|
-| `diy_tier1` | $1.27 | Small craft/Amazon packs |
-| **`diy_tier2`** | **$0.95** | **Current — Amazon-anchored mid packs** |
-| `diy_tier3` | $0.72 | Large-bulk lots, real inventory commitment |
-| `copacker` | $0.75 | External manufacturer, all-in incl. labor + packaging |
+| Basis | $/pop (orig.) | $/pop (post-042) | What it means |
+|---|---|---|---|
+| `diy_tier1` | $1.27 | $1.20 | Small craft/Amazon packs |
+| **`diy_tier2`** | $0.95 | **$0.90** | **Current — Amazon-anchored mid packs** |
+| `diy_tier3` | $0.72 | $0.68 | Large-bulk lots, real inventory commitment |
+| `copacker` | $0.75 | $0.75 | External manufacturer, all-in. A quoted price, not a materials build-up — renegotiate against the new spec at contract time. |
 
 The bill of materials in the database sums to only **$0.48–$0.55/pop** for the four flavors,
 but **five ingredients carry no cost at all** — jambu, B12, coconut oil, monk fruit, and the
-electrolyte blend. The $0.95 figure is the realistic number; the BOM is the incomplete one.
+electrolyte blend. The tier figure is the realistic number; the BOM is the incomplete one.
 (Fixing those five costs is a task in §7.)
 
 ### Where the money actually goes (Kiwi Pop, per pop)
 
 | Ingredient | ¢/pop | Share of BOM |
 |---|---|---|
-| **Isomalt** (15 g) | **24.6¢** | **45%** |
-| **Edible luster dust** (0.1 g) | **10.0¢** | **18%** |
+| **Isomalt** (15 g) | **24.6¢** → **16.0¢** ✅ | **45%** |
+| **Edible luster dust** (0.1 g → 0.05 g) | **10.0¢** → **5.0¢** ✅ | **18%** |
 | Kiwi powder | 5.5¢ | 10% |
 | Xylitol | 4.8¢ | 9% |
 | **Label sticker** | **3.9¢** | **7%** |
@@ -85,29 +92,35 @@ useful thing in the cost data and it should drive every sourcing decision.
 
 | Tier | Price/pop | MOQ | Retailer margin at $5 MSRP |
 |---|---|---|---|
-| standard | $2.00 | 50 | **60%** |
-| premium | $1.65 | 200 | **67%** |
+| ~~standard~~ | ~~$2.00~~ | ~~50~~ | ~~**60%**~~ |
+| ~~premium~~ | ~~$1.65~~ | ~~200~~ | ~~**67%**~~ |
 
-Specialty and impulse retail needs **40–50%** margin to say yes; above that we are just
+**Repriced in migration 042** — see Lever 1 below for the ladder that replaced this.
+
+Specialty and impulse retail needs **40–50%** margin to say yes; above that we were just
 donating margin. Industry guidance puts specialty/convenience at a holdable 2.0–2.5x
-keystone. **We are giving away roughly 25% of wholesale revenue for nothing**, and the
-premium tier hands a distributor price to anyone who buys 200 pops ($330).
+keystone. The old ladder gave away roughly **25% of wholesale revenue for nothing**, and the
+premium tier handed a distributor price to anyone who bought 200 pops ($330).
 
-There is also a live pricing bug: **`KP-PACK-12` is listed at $18.00 for 12 pops = $1.50/pop**,
-below every wholesale tier, on a public SKU. It is currently `in_stock = 0`, so nothing has
-leaked, but it should be retired or repriced before it can.
+There was also a live pricing bug: **`KP-PACK-12` at $18.00 for 12 pops = $1.50/pop**, below
+every wholesale tier, on a public SKU. It was `in_stock = 0` so nothing leaked; migration 042
+repriced it to $42.00 ($3.50/pop), between the 6-pack ($4.17) and the 20-pack ($3.00).
 
 ---
 
 ## 3. The three levers, in order of value
 
-### Lever 1 — Reprice wholesale (do this in week 1, costs nothing)
+### Lever 1 — Reprice wholesale ✅ *shipped in migration 042*
 
-| New tier | Price/pop | MOQ | Who it's for | Retailer margin |
-|---|---|---|---|---|
-| **Door** | **$2.50** | 100 | Shops, festival vendors, dispensary-adjacent | 50% |
-| **Volume** | **$2.25** | 500 | Small chains, multi-location | 55% |
-| **Distributor** | **$1.85** | 2,500 | Resells to doors at $2.50–2.75 | — |
+| Tier | DB key | Price/pop | MOQ | Retailer margin | Our margin |
+|---|---|---|---|---|---|
+| **Door** | `standard` | **$2.50** | 100 | **50%** | 64% |
+| **Volume** | `premium` | **$2.25** | 500 | **55%** | 60% |
+| **Distributor** | `distributor` | **$1.85** | 2,500 | **63%** (resells at $2.50, keeps 26%) | 51% |
+
+Live and verified across all four flavors. Labels and margin helpers live in
+`lib/wholesale-tiers.ts`; the vendor-facing line sheet leads with the retailer's margin
+rather than our price.
 
 Effect: **+25% revenue per pop** on the main tier, **+12%** on distributor volume, with zero
 cost increase and no credible pushback — 50% is still a good margin for a shop.
@@ -117,19 +130,22 @@ opening-order unit for an impulse product at the register. Give the display fixt
 opening orders of 150+. This makes the ask concrete, raises door productivity, and turns
 "want to try some?" into a $375 line item.
 
-### Lever 2 — Ingredient wholesale accounts (Aug–Sept, moves COGS $0.95 → ~$0.72)
+### Lever 2 — Ingredient wholesale accounts (partially shipped; moves COGS $0.95 → ~$0.72)
 
 Attack the two lines that are 63% of cost:
 
 | Line | Now | Target | Route | Saving/pop |
 |---|---|---|---|---|
-| **Isomalt** | $0.0164/g | ~$0.008/g | Bakers Authority 45 lb bag / WebstaurantStore 25 lb tier (we're currently priced off the 10 lb) | **−12¢** |
-| **Luster dust** | $1.00/g (placeholder) | ~$0.37/g | Bakell 1 kg container — they advertise up to 63% off small-jar pricing; wholesale is by the case | **−6¢** |
+| **Isomalt** ✅ | $0.0164/g | **$0.0107/g** (Bakers Authority 45 lb, $218.10 — confirmed) | Deeper rungs (25 kg industrial, 500 kg import) laddered in `docs/ingredient-sourcing.md` | **−8.6¢** |
+| **Luster dust** ✅ | 0.1 g @ $1.00/g | **0.05 g** — dose halved in migration 042 | Bulk 1 kg tier still to negotiate; would take it to ~1.9¢/pop | **−5¢** |
 | Labels | $0.039 ea | ~$0.015 ea | OnlineLabels 1,000+ roll instead of 200-packs | −2.4¢ |
 | Magnesium glycinate | $0.046/g | $0.015/g | BulkSupplements 25 kg tier | −0.9¢ |
 | Lemon powder (lemon SKU) | $0.057/g | $0.019/g | BulkSupplements 25 kg | −3.8¢ (that SKU) |
 
-**≈21¢/pop, about 22% of current COGS.** At December volume that is ~$1,700/month.
+**≈21¢/pop, about 22% of the original COGS.** At December volume that is ~$1,700/month.
+The isomalt and glitter lines above are done — landed cost is **$0.90/pop** today, and
+the remaining rows (labels, magnesium, lemon powder) plus the deeper isomalt rungs are
+what carry it to $0.72.
 
 Open formal accounts with the three that matter: **WebstaurantStore** (base + packaging),
 **BulkSupplements Wholesale** (all actives in one place), **Starwest Botanicals** (organic
@@ -230,6 +246,7 @@ person cooking candy.** That is the whole reason the co-packer trigger exists.
 | Role | Owns | The number they're judged on |
 |---|---|---|
 | **Wholesale / sales** | Outbound to doors, Faire, distributor relationship, trade shows, reorder follow-up | **Doors signed (14/mo) and reorder rate** |
+| *(if hired out)* | See [`docs/sales-commission-plan.md`](./sales-commission-plan.md) — draw + commission, ~$1,700/mo at December volume | Same |
 | **Production / ops** | Batches until October, then co-packer management, inventory, fulfillment, ShipStation | **Cost per pop, and zero stockouts** |
 | **Brand / DTC / events** | Storefront, email, social, festival booths, content, customer support | **Event revenue and list growth** |
 
@@ -283,7 +300,7 @@ Three ways to cover it, in preference order:
    intent** versus 66 paid — every one of those is a cart that never reached payment. Fixing
    even a third of that is ~$1,200 of recovered lifetime revenue at current AOV and scales
    with everything else. Highest-ROI engineering task in the repo.
-2. **Retire or reprice `KP-PACK-12`** ($1.50/pop, below distributor price).
+2. ~~**Retire or reprice `KP-PACK-12`**~~ ✅ repriced to $42.00 in migration 042.
 3. **Price the five uncosted ingredients** (jambu, B12, coconut oil, monk fruit, electrolyte)
    so the BOM stops understating true cost by ~40%.
 4. **Update `app_settings.monthly_overhead_cents`** from $150 to a real number (~$1,400) and
@@ -293,9 +310,11 @@ Three ways to cover it, in preference order:
    channel already coded and sitting idle. Turn it on with the first six accounts.
 6. **Email list is 70 people.** Every event, every wholesale door, every order should feed it.
    A list of 1,000 by December is worth roughly one extra DTC month in Q4.
-7. **Reduce isomalt from 15 g to 12 g per pop.** Saves ~5¢/pop and cuts shipping weight ~17%.
-   This changes the product, so it is a taste decision, not a finance one — but it is worth
-   testing.
+7. **Reduce isomalt from 15 g to 12 g per pop.** Saves ~3¢/pop at the new wholesale rate and
+   cuts shipping weight ~17%. This changes the product, so it is a taste decision, not a
+   finance one — but it is worth testing. (The glitter equivalent of this is already done.)
+8. **Negotiate the Bakell 1 kg luster-dust case price.** The halved dose plus a bulk tier
+   would take glitter from 10¢/pop to ~1.9¢ — the last big win left in the BOM.
 
 ---
 
@@ -338,10 +357,14 @@ Three ways to cover it, in preference order:
 ## 9. The 90-day action list
 
 ### August — pricing, sourcing, first doors
-- [ ] Reprice wholesale to $2.50 / $2.25 / $1.85 tiers; update `wholesale_pricing`
-- [ ] Retire `KP-PACK-12`; price the five uncosted BOM lines; update `app_settings`
+- [x] ~~Reprice wholesale to $2.50 / $2.25 / $1.85 tiers~~ ✅ migration 042
+- [x] ~~Halve the glitter dose; repoint isomalt at a wholesale tier; fix `KP-PACK-12`~~ ✅ migration 042
+- [ ] Price the five uncosted BOM lines; update `app_settings.monthly_overhead_cents`
 - [ ] Open wholesale accounts: WebstaurantStore, BulkSupplements, Starwest (ask for Net-30)
-- [ ] Verify isomalt and luster-dust bulk pricing in a browser; place the first bulk orders
+- [ ] **Confirm the $218.10 Bakers Authority isomalt price in a browser and place the first
+      45 lb order** — it's the one figure the new cost basis rests on
+- [ ] Get a Bakell 1 kg luster-dust case quote
+- [ ] Hire or assign the wholesale seller; add `rep_id` to `wholesale_accounts` first
 - [ ] **Start the regulatory work**: facility registration, label panel decision, insurance quote
 - [ ] Build the 50-pop counter display and the one-page line sheet
 - [ ] **Sign 6 doors.** Issue their referral codes.
