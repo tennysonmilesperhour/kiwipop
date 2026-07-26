@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { formatCentsToUSD } from '@/lib/format';
+import { tierLabel, type WholesaleTier } from '@/lib/wholesale-tiers';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
@@ -17,7 +18,7 @@ interface WholesaleAccountRow {
   id: string;
   business_name: string;
   approval_status: 'pending' | 'approved' | 'rejected';
-  tier: 'standard' | 'premium';
+  tier: WholesaleTier;
   created_at: string;
   intake_notes: string | null;
 }
@@ -25,7 +26,7 @@ interface WholesaleAccountRow {
 interface PricingRow {
   id: string;
   product_id: string;
-  tier: 'standard' | 'premium';
+  tier: WholesaleTier;
   price_cents: number;
   min_quantity: number;
 }
@@ -226,7 +227,7 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
           </div>
           <div>
             <div className="stat-label">tier</div>
-            <div style={{ marginTop: '0.4rem' }}>{account.tier}</div>
+            <div style={{ marginTop: '0.4rem' }}>{tierLabel(account.tier)}</div>
           </div>
           <div>
             <div className="stat-label">applied</div>
@@ -331,7 +332,7 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
       {account.approval_status === 'approved' && sortedPricing.length > 0 && (
         <div className="card" style={{ padding: '2rem' }}>
           <p className="stat-label" style={{ marginBottom: '1rem' }}>
-            // your tier · {account.tier}
+            // your tier · {tierLabel(account.tier)}
           </p>
           <table className="table">
             <thead>
@@ -395,7 +396,7 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <a
               href={`mailto:thekiwipop@gmail.com?subject=Order%20%C2%B7%20${encodeURIComponent(account.business_name)}&body=${encodeURIComponent(
-                `Hi,\n\nThis is ${account.business_name} (${user.email}). We're approved on the ${account.tier} tier.\n\nQuantities:\n  Kiwi Pop: __\n  Luci Ginger Lemon: __\n  Molly Matcha Mint: __\n  Mary Caramel Apple Cinn: __\n\nShipping to:\n  ___\n\nThanks!`
+                `Hi,\n\nThis is ${account.business_name} (${user.email}). We're approved on the ${tierLabel(account.tier)} tier.\n\nQuantities:\n  Kiwi Pop: __\n  Luci Ginger Lemon: __\n  Molly Matcha Mint: __\n  Mary Caramel Apple Cinn: __\n\nShipping to:\n  ___\n\nThanks!`
               )}`}
               className="btn btn-primary"
             >

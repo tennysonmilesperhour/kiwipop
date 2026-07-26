@@ -4,6 +4,11 @@ import Link from 'next/link';
 import { AdminLayout } from '@/components/AdminLayout';
 import { supabase } from '@/lib/supabase';
 import { formatCentsToUSD } from '@/lib/format';
+import {
+  tierLabel,
+  tierRank,
+  type WholesaleTier,
+} from '@/lib/wholesale-tiers';
 import { useState, useEffect } from 'react';
 
 interface ProductOption {
@@ -16,13 +21,13 @@ interface ProductOption {
 interface WholesaleAccountOption {
   id: string;
   business_name: string;
-  tier: 'standard' | 'premium';
+  tier: WholesaleTier;
   approval_status: 'pending' | 'approved' | 'rejected';
 }
 
 interface WholesalePricingRow {
   product_id: string;
-  tier: 'standard' | 'premium';
+  tier: WholesaleTier;
   price_cents: number;
   min_quantity: number;
 }
@@ -121,30 +126,28 @@ export default function WholesaleQuotesPage() {
   // by `quantity` for the given product. Falls back to retail price.
   const tierPriceCents = (
     productId: string,
-    accountTier: 'standard' | 'premium' | undefined,
+    accountTier: WholesaleTier | undefined,
     quantity: number
-  ): { price_cents: number; tier: 'standard' | 'premium' | 'retail' } => {
+  ): { price_cents: number; tier: WholesaleTier | 'retail' } => {
     const p = product(productId);
     if (!p) return { price_cents: 0, tier: 'retail' };
     const rows = pricing.filter((r) => r.product_id === productId);
     if (rows.length === 0)
       return { price_cents: p.price_cents, tier: 'retail' };
 
-    // If the customer is on the premium account tier AND the line qty meets
-    // the premium min, prefer premium. Otherwise the highest tier whose min
-    // is met by qty. Otherwise retail.
+    // Highest min-quantity tier the line qualifies for, then retail.
     const sorted = [...rows].sort((a, b) => b.min_quantity - a.min_quantity);
     const candidates = sorted.filter((r) => quantity >= r.min_quantity);
     if (candidates.length === 0)
       return { price_cents: p.price_cents, tier: 'retail' };
 
-    // Respect account-tier ceiling: a standard account can't get premium
-    // pricing even if they meet the qty threshold.
-    const ceiling = accountTier ?? 'premium';
-    const allowed = candidates.filter((r) =>
-      ceiling === 'standard' ? r.tier === 'standard' : true
-    );
-    const pick = allowed[0] ?? candidates[0];
+    // Respect the account-tier ceiling: an account can reach its own tier and
+    // anything shallower, never deeper. A Door account hitting 2,500 units
+    // still pays Door pricing — distributor rates are negotiated, not earned
+    // by quantity alone.
+    const ceiling = tierRank(accountTier ?? 'distributor');
+    const allowed = candidates.filter((r) => tierRank(r.tier) <= ceiling);
+    const pick = allowed[0] ?? candidates[candidates.length - 1];
     return { price_cents: pick.price_cents, tier: pick.tier };
   };
 
@@ -333,7 +336,7 @@ export default function WholesaleQuotesPage() {
             <option value="">— pick an approved account —</option>
             {accounts.map((a) => (
               <option key={a.id} value={a.id}>
-                {a.business_name} · {a.tier}
+                {a.business_name} · {tierLabel(a.tier)}
               </option>
             ))}
           </select>
@@ -416,6 +419,8 @@ export default function WholesaleQuotesPage() {
                           color:
                             tier === 'retail'
                               ? 'var(--admin-text-muted)'
+                              : tier === 'distributor'
+                              ? 'var(--c-magenta-text)'
                               : tier === 'premium'
                               ? 'var(--c-uv-text)'
                               : 'var(--c-cyan-text)',
@@ -424,7 +429,7 @@ export default function WholesaleQuotesPage() {
                           letterSpacing: '0.05em',
                         }}
                       >
-                        {tier}
+                        {tier === 'retail' ? 'retail' : tierLabel(tier)}
                       </td>
                       <td>
                         <input

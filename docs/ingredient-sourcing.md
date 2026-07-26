@@ -54,6 +54,57 @@ Amazon picks prioritize **lowest price‑per‑ounce** at a reasonable pack size
 `n/v` = no price verifiable in‑tool (page blocked / quote‑only). Exact listing URLs are
 stored on each material's `reference_url` / `wholesale_url` in the database.
 
+## Isomalt — the sourcing ladder
+
+Isomalt is **the single largest cost line in the product** — 15 g/pop, ~45% of the
+bill of materials before the glitter cut, and now well over half of it. It deserves
+its own ladder. Each rung is a real step down in $/g, and each has a different
+commitment attached.
+
+| Rung | Source | Pack | Price | $/g | ¢/pop (15 g) | What it costs you |
+|---|---|---|---|---|---|---|
+| 0 | LorAnn 10 lb (WebstaurantStore) | 4,536 g | $74.49 | $0.0164 | **24.6¢** | *Where we were.* Bulk-retail, not wholesale. |
+| 1 | LorAnn 25 lb (WebstaurantStore) | 11,340 g | ~$150 est. | ~$0.0132 | ~19.8¢ | Nothing — same cart, bigger bag. |
+| 2 | **Bakers Authority 45 lb** (Isomalt ST‑M) | 20,412 g | **$218.10** | **$0.0107** | **16.0¢** | **Current wholesale preset.** ~$218 per order, no application. |
+| 3 | Beneo / Cargill via a US food-ingredient distributor | 25 kg bags | quote | ~$0.004–0.006 est. | ~6–9¢ | Trade references, sometimes a resale certificate. Quote-only. |
+| 4 | Direct import (Foodchem, Sinofi, Made-in-China suppliers) | 25 kg bags, 500 kg MOQ | ~$2.75–3.00/kg | ~$0.0029 | **~4.3¢** | ~$1,400 per order, FDA prior notice, importer of record, 6–10 wk sea freight. |
+
+**Where to be, and when:**
+
+- **Now → October: rung 2.** $218.10 for 45 lb is the cheapest source that needs no
+  application, no trade references, and no import paperwork. One bag is ~1,360 pops
+  of isomalt. Takes 24.6¢ → 16.0¢ per pop immediately.
+- **Q4, alongside the co-packer conversation: get rung 3 quotes.** Beneo Palatinit is
+  the actual manufacturer of Isomalt ST‑M; Cargill sells IsomaltiDex. Ask their US
+  distributors for a 25 kg price. This is the rung a real confectionery brand sits on.
+- **Rung 4 is a 2027 decision, not a 2026 one.** The per-gram price is spectacular —
+  roughly 6x cheaper than where we started — but 500 kg is ~33,000 pops of isomalt,
+  and importing food ingredients means FDA prior notice, an importer of record,
+  customs brokerage, and a two-month lead time. Don't take this on while also
+  standing up a co-packer.
+
+> Rungs 1, 3, and 4 are **estimates from search snippets** — the supplier pages are
+> 403-blocked from this environment. Rung 2 ($218.10) is the one confirmed figure and
+> is what's loaded into `raw_materials.wholesale_pack_price_cents`.
+
+**Note on dose:** at 15 g of isomalt per pop, a pop is ~18 g finished and 1 lb ≈ 25
+pops. Dropping to 12 g would cut ~3¢/pop at rung 2 and ~17% of shipping weight. That's
+a product decision, not a sourcing one — but it's the cheapest cost reduction available
+if the smaller pop still lands.
+
+## Edible luster dust — halved at the recipe, not just the invoice
+
+Migration 043 cut the dose from **0.1 g → 0.05 g per pop**. At the $1.00/g placeholder
+that's 10¢ → 5¢, taking it from the second-largest BOM line to a mid-pack one. The swirl
+runs through the middle of the pop rather than coating it, so half the dose still reads.
+
+The $1.00/g figure is itself the least reliable number in this document — it's a round
+placeholder, not a quote. Bakell sells luster dust in 25 g / 50 g / 1 lb / **1 kg**
+tiers and advertises up to 63% off small-jar pricing at volume, wholesale by the case.
+A 1 kg container should land near **$0.37/g**, which at the new 0.05 g dose would be
+**~1.9¢/pop** — down from 10¢ where we started. **Confirm the 1 kg case price before
+assuming this.**
+
 ## One‑stop wholesale partners
 
 1. **WebstaurantStore** — candy base + packaging (isomalt, sugars, sticks). Bulk‑retail, no application. <https://www.webstaurantstore.com/>
