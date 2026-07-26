@@ -72,8 +72,8 @@ export default function TermsPage() {
         </p>
         <p>
           kiwi pop is a dietary supplement in confection form. every flavor
-          shares the same functional base (jambu, theobromine, b12,
-          magnesium glycinate, taurine, electrolytes) plus a flavor-specific
+          shares the same functional base (jambu, chilcuague, theobromine,
+          b12, magnesium glycinate, taurine, electrolytes) plus a flavor-specific
           adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon
           ginger, maca + cinnamon in caramel apple, l-theanine + chamomile
           in mint). also contains sugar alcohols (isomalt, xylitol). any

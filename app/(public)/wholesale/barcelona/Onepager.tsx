@@ -1171,6 +1171,15 @@ const SPEC_GROUPS: SpecGroup[] = [
         status: 'estimate',
       },
       {
+        labelEn: 'Difference vs. the US formula',
+        labelEs: 'Diferencia respecto a la fórmula estadounidense',
+        valueEn:
+          'The US formula also contains chilcuague (Heliopsis longipes), a Mexican root that carries the same tingle-producing alkamide as jambu. It is not an authorised novel food in the EU, so it is excluded here. The European version relies on jambu alone for the tingle; expect a slightly shorter-lived sensation.',
+        valueEs:
+          'La fórmula estadounidense incluye además chilcuague (Heliopsis longipes), una raíz mexicana que aporta el mismo alcamida responsable del cosquilleo que el jambú. No está autorizado como nuevo alimento en la UE, por lo que queda excluido aquí. La versión europea depende únicamente del jambú para el cosquilleo; la sensación dura algo menos.',
+        status: 'estimate',
+      },
+      {
         labelEn: 'Allergens',
         labelEs: 'Alérgenos',
         valueEn: 'None of the 14 EU-declarable allergens',
@@ -1338,9 +1347,9 @@ const SPEC_GROUPS: SpecGroup[] = [
         labelEn: 'EU Novel Food status',
         labelEs: 'Estado en el Catálogo de Nuevos Alimentos UE',
         valueEn:
-          'All ingredients to be confirmed against EU Novel Food Catalogue',
+          'All ingredients to be confirmed against EU Novel Food Catalogue. Known exception: chilcuague (Heliopsis longipes), which is in the US formula, is NOT an authorised novel food in the EU and is therefore excluded from the European version.',
         valueEs:
-          'Todos los ingredientes pendientes de confirmar en el Catálogo de Nuevos Alimentos UE',
+          'Todos los ingredientes pendientes de confirmar en el Catálogo de Nuevos Alimentos UE. Excepción conocida: el chilcuague (Heliopsis longipes), presente en la fórmula estadounidense, NO está autorizado como nuevo alimento en la UE y queda excluido de la versión europea.',
         status: 'estimate',
       },
       {
@@ -1367,6 +1376,12 @@ const FAQS: FaqEntry[] = [
     qEs: '¿Qué es el jambú y es seguro?',
     aEn: 'Jambu (also called paracress, or by its scientific name Acmella oleracea) is a flowering plant from South America. Its extract is what creates the small mouth tingle and slight numbing sensation, similar to what you feel from Sichuan peppercorns or sherbet powder. It’s used as a flavor in chewing gum, oral-care products, and certain foods. The European Food Safety Authority (EFSA) has reviewed the active compound, spilanthol, and established a safe daily intake. The amount in one Kiwi Pop is well below that level, in the range used as a standard food flavoring rather than a supplement dose. It’s not psychoactive and doesn’t interact with alcohol.',
     aEs: 'El jambú (también llamado paracress, o por su nombre científico Acmella oleracea) es una planta con flor originaria de América del Sur. Su extracto es lo que produce ese pequeño cosquilleo y leve adormecimiento en la boca, parecido a lo que se siente con la pimienta de Sichuan o el polvo efervescente. Se utiliza como aromatizante en chicles, productos de higiene bucal y ciertos alimentos. La Autoridad Europea de Seguridad Alimentaria (EFSA) ha revisado el compuesto activo, el espilantol, y ha establecido una ingesta diaria segura. La cantidad en una Kiwi Pop está muy por debajo de ese nivel, en el rango habitual de un aromatizante alimentario, no de una dosis de suplemento. No es psicoactivo y no interactúa con el alcohol.',
+  },
+  {
+    qEn: 'I saw chilcuague on your US materials. Is it in the European product?',
+    qEs: 'He visto chilcuague en vuestra documentación estadounidense. ¿Está en el producto europeo?',
+    aEn: 'No, and we want to be direct about why. Chilcuague (Heliopsis longipes) is a Mexican root used traditionally as a seasoning; its active alkamide, affinin, is the same molecule as the spilanthol in jambu, and in the US formula it extends the tingle so it lasts the length of the pop. It is not currently an authorised novel food in the EU, so we have excluded it from the European version rather than ship something we could not defend to AESAN. The European pop uses jambu alone. If chilcuague is authorised later, we would only add it after telling you in writing first.',
+    aEs: 'No, y queremos ser claros sobre el motivo. El chilcuague (Heliopsis longipes) es una raíz mexicana usada tradicionalmente como condimento; su alcamida activa, la afinina, es la misma molécula que el espilantol del jambú, y en la fórmula estadounidense prolonga el cosquilleo durante todo el caramelo. Actualmente no está autorizado como nuevo alimento en la UE, así que lo hemos excluido de la versión europea en lugar de enviar algo que no podríamos defender ante AESAN. La piruleta europea usa solo jambú. Si el chilcuague se autoriza más adelante, solo lo incorporaríamos tras comunicároslo por escrito.',
   },
   {
     qEn: 'How does it taste? Will my customers actually like it?',

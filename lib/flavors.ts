@@ -22,8 +22,8 @@ export interface FlavorBrandInfo {
   pickerLabel: string;
   /**
    * The adaptogen + direction unique to this flavor. Every flavor shares
-   * the same base functional payload (jambu, theobromine, magnesium
-   * glycinate, taurine, electrolytes, B12, xylitol) on a shared coconut oil
+   * the same base functional payload (jambu, chilcuague, theobromine,
+   * magnesium glycinate, taurine, electrolytes, B12, xylitol) on a coconut oil
    * + isomalt base. The adaptogen is what's tuned per flavor to match the
    * sensory profile. Used on the flavor card, product page, and per-flavor
    * description copy.
@@ -249,6 +249,11 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
     why: 'the spark. brazilian flower (acmella oleracea). electric mouth tingle on the first lick, also called the buzz button.',
   },
   {
+    name: 'chilcuague',
+    amount: 'food-flavor amount',
+    why: 'the depth. mexican golden root (heliopsis longipes). its alkamide, affinin, is the same molecule as jambu\'s spilanthol — it holds the tingle open longer and turns it warm and numbing instead of just fizzy.',
+  },
+  {
     name: 'theobromine',
     amount: '175 mg',
     why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
@@ -325,7 +330,7 @@ export const TIMELINE: readonly TimelineMoment[] = [
   {
     index: '00:20',
     title: 'the spark',
-    body: 'jambu hits. the brazilian buzz-button flower wakes the palate, fizzy mouth-tingle, watering, fully awake. people have used it this way for centuries.',
+    body: 'jambu hits. the brazilian buzz-button flower wakes the palate, fizzy mouth-tingle, watering, fully awake. chilcuague, the mexican golden root, comes in just behind it and holds the tingle open — warmer, a little numbing. people have used both this way for centuries.',
   },
   {
     index: '02:00',

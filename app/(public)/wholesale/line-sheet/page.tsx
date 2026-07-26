@@ -170,13 +170,21 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
       <section className="ls-section">
         <h2 className="ls-h2">The hook</h2>
         <div className="ls-hook">
-          <div className="ls-hook-name">jambu — the buzz button</div>
+          <div className="ls-hook-name">jambu + chilcuague — the buzz button</div>
           <p>
             An electric mouth-tingle on the first lick, from jambu (<em>acmella
-            oleracea</em>), the Brazilian buzz-button flower. It&apos;s the
+            oleracea</em>), the Brazilian buzz-button flower. Chilcuague
+            (<em>heliopsis longipes</em>), the Mexican golden root, carries the
+            same active alkamide with a slower, warmer, more numbing profile —
+            it keeps the tingle going for the length of the pop rather than
+            letting it fade after the first few seconds. Together they&apos;re the
             signature sensory moment customers can&apos;t get anywhere else —
             the reason they pick it up, and the reason they come back. Impossible
             to copy on a shelf full of ordinary candy.
+          </p>
+          <p className="ls-note">
+            Chilcuague is in the US formula. It is not currently an authorised
+            novel food in the EU — EU orders ship a jambu-only formula.
           </p>
         </div>
       </section>

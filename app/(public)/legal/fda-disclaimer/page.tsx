@@ -70,6 +70,7 @@ export default function FdaDisclaimerPage() {
         <p><strong>shared base · same dose in every flavor:</strong></p>
         <ul>
           <li>jambu (acmella oleracea): food-flavor amount</li>
+          <li>chilcuague (heliopsis longipes): food-flavor amount</li>
           <li>theobromine: 175 mg</li>
           <li>magnesium glycinate: 300 mg</li>
           <li>taurine: 250 mg</li>
