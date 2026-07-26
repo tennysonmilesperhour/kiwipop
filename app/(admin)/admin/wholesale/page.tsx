@@ -47,7 +47,12 @@ interface ProductOption {
   cost_cents: number;
 }
 
-type CostBasis = 'diy_tier1' | 'diy_tier2' | 'diy_tier3' | 'copacker';
+type CostBasis =
+  | 'diy_tier1'
+  | 'diy_tier2'
+  | 'diy_tier3'
+  | 'copacker'
+  | 'inhouse';
 
 interface AppSettings {
   monthly_overhead_cents: number;
@@ -60,12 +65,14 @@ const BASIS_LABELS: Record<CostBasis, string> = {
   diy_tier2: 'DIY · Amazon-anchored',
   diy_tier3: 'DIY · large bulk',
   copacker: 'Copacker',
+  inhouse: 'In-house · staffed',
 };
 const BASIS_HINTS: Record<CostBasis, string> = {
   diy_tier1: 'Small-bulk ingredient prices — what 1-flavor batches cost on craft suppliers / Amazon small packs.',
   diy_tier2: 'Next pouch/lot size up on the same Amazon listings — achievable today, ~25% cheaper than Tier 1.',
   diy_tier3: 'Large-bulk lots (4500–10000g pouches, 10000-count packaging) — real inventory commitment, ~25% cheaper than Tier 2.',
-  copacker: 'External manufacturer at ~$0.75/pop including labor + packaging — viable above ~1000/mo, frees up the founders.',
+  copacker: 'External manufacturer at ~$0.75/pop including labor + packaging — viable above ~1000/mo, frees up the founders. Unquoted estimate; carries a 500–1000 lb minimum run.',
+  inhouse: 'Tier-2 materials plus ~$0.45/pop of paid staff and commissary rent — a 3-person line at $22.50/hr loaded. No minimum run, no lead time. See lib/production-cost.ts.',
 };
 
 interface PricingForm {
@@ -634,7 +641,13 @@ export default function WholesalePage() {
             style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}
           >
             {(
-              ['diy_tier1', 'diy_tier2', 'diy_tier3', 'copacker'] as CostBasis[]
+              [
+                'diy_tier1',
+                'diy_tier2',
+                'diy_tier3',
+                'copacker',
+                'inhouse',
+              ] as CostBasis[]
             ).map((basis) => {
               const active = settings.active_cost_basis === basis;
               const saving = savingBasis === basis;
