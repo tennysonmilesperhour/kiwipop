@@ -74,7 +74,7 @@ const SHEET = {
     {
       name: 'chilcuague',
       benefit:
-        'the mexican golden root (heliopsis longipes). same active alkamide as jambu, slower and warmer — it holds the tingle open for the whole pop instead of just the first lick. US formula only; not yet an authorised novel food in the EU.',
+        'the mexican golden root (heliopsis longipes). same active alkamide as jambu, slower and warmer — it holds the tingle open for the whole pop instead of just the first lick. US formula only, like jambu: neither is an authorised novel food in the EU.',
       color: '#ffce1f',
       hook: 'the hold · the second half of the hook',
     },

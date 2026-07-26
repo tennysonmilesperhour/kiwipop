@@ -183,8 +183,10 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
             to copy on a shelf full of ordinary candy.
           </p>
           <p className="ls-note">
-            Chilcuague is in the US formula. It is not currently an authorised
-            novel food in the EU — EU orders ship a jambu-only formula.
+            US formula only. Neither jambu nor chilcuague is an authorised novel
+            food in the EU, so the hook has no route into the European market
+            yet — EU buyers should read the Novel Food section of the wholesale
+            one-pager before committing to anything.
           </p>
         </div>
       </section>

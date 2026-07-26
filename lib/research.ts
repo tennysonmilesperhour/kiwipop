@@ -120,7 +120,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'chilcuague (Heliopsis longipes / affinin)',
     blurb:
-      'the mexican golden root, native to the sierra gorda highlands of guanajuato, querétaro, and san luis potosí. a traditional condiment in salsas, stews, and mezcal, and a folk remedy for numbing toothache. its active alkamide, affinin, is the same molecule as jambu\'s spilanthol — but the root profile reads slower, warmer, and more numbing, which is why it sits alongside jambu rather than replacing it. note: chilcuague is not currently an authorised novel food in the EU, so it appears in the US formula only.',
+      'the mexican golden root, native to the sierra gorda highlands of guanajuato, querétaro, and san luis potosí. a traditional condiment in salsas, stews, and mezcal, and a folk remedy for numbing toothache. its active alkamide, affinin, is the same molecule as jambu\'s spilanthol — but the root profile reads slower, warmer, and more numbing, which is why it sits alongside jambu rather than replacing it. note: like jambu, chilcuague is not an authorised novel food in the EU, so both appear in the US formula only.',
     studies: [
       {
         title:
