@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { AdminLayout } from '@/components/AdminLayout';
 import { SheetEmbed } from '@/components/admin/SheetEmbed';
 import { WholesaleLineSheetCard } from '@/components/admin/WholesaleLineSheetCard';
+import { PlanBanner } from '@/components/admin/PlanBanner';
+import { DoorPipeline } from '@/components/admin/DoorPipeline';
 import { supabase } from '@/lib/supabase';
 import { formatCentsToUSD } from '@/lib/format';
 import {
@@ -416,6 +418,21 @@ export default function WholesalePage() {
       </div>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
+
+      <PlanBanner
+        actualDoors={
+          accounts.filter((a) => a.approval_status === 'approved').length
+        }
+        compact
+      />
+      <DoorPipeline
+        approvedDoors={
+          accounts.filter((a) => a.approval_status === 'approved').length
+        }
+        pendingDoors={
+          accounts.filter((a) => a.approval_status === 'pending').length
+        }
+      />
 
       <WholesaleLineSheetCard />
 

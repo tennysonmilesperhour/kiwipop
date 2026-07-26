@@ -161,7 +161,7 @@ const PLAN_5K: PitchPlan = {
     "biggest risk: formulation iteration. we're tuning the functional payload (theobromine + ginseng + b12 + electrolytes) for the cleanest possible lift without losing the sensory experience that drives early product love. actively running A/B taste tests batch over batch.",
     'one regional event can flop on weather or foot traffic — no backup booth in this budget',
     'kitchen-batch labor is founder sweat equity — not priced into COGS',
-    'production capacity · 1,500 pops is a single-kitchen run · scaling past that needs co-packer paperwork that costs time, not money',
+    'production capacity · 1,500 pops is a single-kitchen run · scaling past that means a commissary line and paid staff, not a co-packer — the minimum runs are the wrong shape at this volume',
   ],
 };
 
@@ -173,12 +173,13 @@ const PLAN_25K: PitchPlan = {
     "the first lollipop that makes you feel good while you party. like willy wonka actually made functional candy for adults.",
   hypothesis:
     "gen z is drinking less. festivals are going wellness-curious. the night scene and the yoga scene already overlap. kiwi pop is the obvious product for where culture is already heading — where health and partying stop being opposites — and we're the magical, sensory entry point.",
-  why: "this is the cheque that turns proof into a real brand presence. we don't need it for a shopify theme, a custom illustrator, or a pro photographer — we already have those (ai-coded storefront, ai-iterated brand, a volunteer photographer). this cheque funds the move from kitchen to co-packer, three festival activations, and the creator + paid-ads loop that converts attention into a list and a list into repeat orders. the GHOST playbook: one limited-edition flavor drop per major festival, with collectible packaging.",
+  why: "this is the cheque that turns proof into a real brand presence. we don't need it for a shopify theme, a custom illustrator, or a pro photographer — we already have those (ai-coded storefront, ai-iterated brand, a volunteer photographer). this cheque funds the move from home kitchen to a staffed commissary line, three festival activations, and the creator + paid-ads loop that converts attention into a list and a list into repeat orders. the GHOST playbook: one limited-edition flavor drop per major festival, with collectible packaging.",
   budget: [
     {
-      label: 'co-packer batch · 8,000 pops',
+      label: 'commissary production · 8,000 pops',
       cents: 700_000,
-      detail: 'tier-3 ingredient pricing · $0.85/pop blended COGS',
+      detail:
+        'tier-3 materials + staffed line · ~$0.87/pop all-in incl. labour + kitchen rent',
     },
     {
       label: 'custom packaging · 4 flavors + sampler box + festival drop foil',
@@ -239,11 +240,11 @@ const PLAN_25K: PitchPlan = {
   milestones: [
     {
       when: 'day 0–30',
-      what: 'sign co-packer · finalize brand polish round · packaging to print · storefront already live · brief creators',
+      what: 'book the commissary · first production hire · finalize brand polish round · packaging to print · storefront already live · brief creators',
     },
     {
       when: 'day 31–60',
-      what: 'first co-packer batch in production · all 4 flavors packaged · creator content rolling · ads in test',
+      what: 'line running at volume · all 4 flavors packaged · creator content rolling · ads in test',
     },
     {
       when: 'day 61–90',
@@ -255,7 +256,7 @@ const PLAN_25K: PitchPlan = {
     },
     {
       when: 'day 181–365',
-      what: 'stable repeat cohort · second co-packer batch funded by revenue · case study deck for next raise',
+      what: 'stable repeat cohort · production scaled on revenue, not a new cheque · case study deck for next raise',
     },
   ],
   projections: [
@@ -291,8 +292,8 @@ const PLAN_25K: PitchPlan = {
     },
   ],
   risks: [
-    "biggest risk: formulation at scale. we're refining the nootropic blend (theobromine + ginseng + magnesium + b12 + electrolytes) at copacker volumes without losing the sensory experience that drives early product love. actively iterating on every batch.",
-    'co-packer minimum order quantities may push first batch above $7K',
+    "biggest risk: formulation at scale. we're refining the nootropic blend (theobromine + ginseng + magnesium + b12 + electrolytes) at commissary volumes without losing the sensory experience that drives early product love. actively iterating on every batch.",
+    'a co-packer would need a 500-1,000 lb minimum run ($9K-19K of stock) — which is why 2026 production is staffed in-house instead; revisit with real quotes in 2027',
     'festival activations are weather- and crowd-dependent · one bad weekend',
     'paid ad efficiency · meta/tiktok creative typically needs 3–5 rounds before a hook lands · budget assumes that iteration',
     'founder bandwidth · two operators across product, ops, content, and ai engineering · time is the real constraint, not capital',

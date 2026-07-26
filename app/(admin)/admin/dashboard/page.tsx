@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AdminLayout } from '@/components/AdminLayout';
+import { PlanBanner } from '@/components/admin/PlanBanner';
+import { supabase } from '@/lib/supabase';
 import { useOrders, useProducts } from '@/lib/hooks';
 import { formatCentsToUSD } from '@/lib/format';
 import { useQueryClient } from '@tanstack/react-query';
@@ -161,6 +163,9 @@ export default function AdminDashboard() {
     pendingOrders: 0,
   });
   const [financials, setFinancials] = useState<FinancialsSummary | null>(null);
+  // Approved wholesale accounts — the plan's headline operating metric, so the
+  // dashboard reads it directly rather than making the user open /admin/wholesale.
+  const [approvedDoors, setApprovedDoors] = useState<number | null>(null);
   const [listTotals, setListTotals] = useState<ListTotals | null>(null);
 
   // Auto-reconcile + pull live Stripe totals on every dashboard mount. This
@@ -198,6 +203,20 @@ export default function AdminDashboard() {
       cancelled = true;
     };
   }, [queryClient, refetchOrders]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const { count } = await supabase
+        .from('wholesale_accounts')
+        .select('id', { count: 'exact', head: true })
+        .eq('approval_status', 'approved');
+      if (!cancelled) setApprovedDoors(count ?? 0);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (orders && products) {
@@ -258,6 +277,14 @@ export default function AdminDashboard() {
   const todayCount = paidOrders.filter(
     (o) => Date.parse(o.created_at) >= todayStartMs,
   ).length;
+  // Month-to-date paid revenue, for the plan banner's this-month comparison.
+  const monthStart = new Date(now);
+  monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0, 0);
+  const monthToDateCents = paidOrders
+    .filter((o) => Date.parse(o.created_at) >= monthStart.getTime())
+    .reduce((s, o) => s + (o.total_cents || 0), 0);
+
   const sevenDayCents = sumIn(7 * ONE_DAY);
   const sevenDayCount = countIn(7 * ONE_DAY);
   const thirtyDayCents = sumIn(30 * ONE_DAY);
@@ -283,6 +310,11 @@ export default function AdminDashboard() {
             same thing — pick whichever feels faster.
           </p>
         </header>
+
+        <PlanBanner
+          actualRevenueCents={monthToDateCents}
+          actualDoors={approvedDoors ?? undefined}
+        />
 
         <div className="dashboard-grid">
           <div className="stat-card">

@@ -2,6 +2,8 @@
 
 import { AdminLayout } from '@/components/AdminLayout';
 import { SheetEmbed } from '@/components/admin/SheetEmbed';
+import { PlanBanner } from '@/components/admin/PlanBanner';
+import { CostBasisNote } from '@/components/admin/CostBasisNote';
 import { supabase } from '@/lib/supabase';
 import { formatCentsToUSD } from '@/lib/format';
 import { useState, useEffect } from 'react';
@@ -190,6 +192,9 @@ export default function FinancialsPage() {
   return (
     <AdminLayout>
       <h1 className="text-3xl font-bold mb-6">Financials</h1>
+
+      <PlanBanner />
+      <CostBasisNote />
 
       {summaryError && (
         <div className="alert alert-error mb-4">
