@@ -54,6 +54,54 @@ Amazon picks prioritize **lowest price‑per‑ounce** at a reasonable pack size
 `n/v` = no price verifiable in‑tool (page blocked / quote‑only). Exact listing URLs are
 stored on each material's `reference_url` / `wholesale_url` in the database.
 
+## The last 13 lines — priced 2026‑07‑26 (migration 045)
+
+Thirteen materials had `cost_per_unit_cents IS NULL`, so the BOM was silently valuing
+them at zero. All are now costed. **Confidence is not uniform** — treat the tier column
+as load‑bearing:
+
+| Material | Unit | Dose/pop | Cost/unit | ¢/pop | Confidence |
+|---|---|---|---|---|---|
+| **Chilcuague** (heliopsis longipes) | g | 0.005 | **$0.550** | 0.28¢ | **CONFIRMED** — eBay 100 g / $55.00 |
+| Caramel flavour (LorAnn SS) | ml | 0.25 | $0.152 | 3.80¢ | FOUND — 4 oz / $17.99 |
+| Apple powder (freeze‑dried) | g | 0.3 | $0.090 | 2.71¢ | ESTIMATE — between lemon and kiwi |
+| Ashwagandha KSM‑66 | g | 0.1 | $0.300 | 3.00¢ | ESTIMATE — branded extract premium |
+| Spearmint EO | ml | 0.1 | $0.131 | 1.31¢ | ESTIMATE — LorAnn 16 oz ≈ $62 |
+| Peppermint EO | ml | 0.1 | $0.110 | 1.10¢ | ESTIMATE — LorAnn 16 oz ≈ $52 |
+| Electrolyte blend | g | 0.25 | $0.035 | 0.88¢ | ESTIMATE — bulk KCl + sea salt |
+| Monk fruit extract | g | 0.0545 | $0.075 | 0.41¢ | ESTIMATE — BulkSupplements 1 kg |
+| **Jambu** (acmella oleracea) | g | 0.005 | $0.800 | 0.40¢ | **ESTIMATE — least reliable in the table** |
+| Lucuma | g | 0.1 | $0.040 | 0.40¢ | ESTIMATE — Food to Live 2 lb |
+| Maca (organic) | g | 0.1 | $0.032 | 0.32¢ | ESTIMATE — BulkSupplements 1 kg |
+| B12 1% methylcobalamin | g | 0.025 | $0.110 | 0.28¢ | ESTIMATE — extract tier |
+| Coconut oil | g | 0.2222 | $0.012 | 0.27¢ | ESTIMATE — Nutiva 1 gal ≈ $44 |
+
+**Anchors used to place the estimates** (all already costed in the database):
+
+| Tier | $/g | Examples |
+|---|---|---|
+| Bulk botanicals, 1 kg | $0.022–0.050 | taurine, xylitol, citric acid, theobromine, matcha, spirulina |
+| Standardised extracts | $0.092–0.128 | ginseng, L‑theanine, chamomile, turmeric 95% |
+| Freeze‑dried fruit | $0.057–0.221 | lemon → kiwi |
+
+### What it added, per flavour
+
+| Flavour | Added by these 13 | Complete BOM |
+|---|---|---|
+| Kiwi Pop | 2.50¢ | $0.520 |
+| Lemon G. Luci | 5.50¢ | $0.513 |
+| Molly's Mint | 4.90¢ | $0.496 |
+| Mary Caramel Apple | 9.72¢ | $0.532 |
+
+**Two notes on jambu.** It is the least reliable number here — no consumer food‑grade
+channel exists at all, so $0.80/g is inferred from it being a standardised oleoresin
+rather than a dried root. It could plausibly be half that or triple. And at a 0.005 g
+dose it barely matters financially (0.4¢/pop) — **the jambu problem is a supply and
+compliance problem, not a cost problem.** Same for chilcuague: $0.55/g is real, but an
+eBay ethnobotanical listing is not a wholesale channel with a COA, a food‑grade
+attestation, or lot traceability. Both need a qualified supplier before wholesale scales,
+and neither will move the cost model when they get one.
+
 ## Isomalt — the sourcing ladder
 
 Isomalt is **the single largest cost line in the product** — 15 g/pop, ~45% of the

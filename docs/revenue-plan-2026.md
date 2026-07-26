@@ -74,10 +74,22 @@ Current active basis is `diy_tier2`:
 | `diy_tier3` | $0.72 | $0.68 | Large-bulk lots, real inventory commitment |
 | `copacker` | $0.75 | $0.75 | External manufacturer, all-in. A quoted price, not a materials build-up — renegotiate against the new spec at contract time. |
 
-The bill of materials in the database sums to only **$0.48–$0.55/pop** for the four flavors,
-but **six ingredients carry no cost at all** — jambu, chilcuague, B12, coconut oil, monk
-fruit, and the electrolyte blend. The tier figure is the realistic number; the BOM is the
-incomplete one. (Fixing those six costs is a task in §7.)
+**Every BOM line is now costed** (migration 045 — chilcuague confirmed at $0.55/g from a
+real listing, the other twelve as documented placeholders). The complete BOM comes to
+**$0.50–$0.53/pop**:
+
+| | Complete BOM | `diy_tier2` | **Gap** |
+|---|---|---|---|
+| Kiwi Pop | $0.520 | $0.90 | **38.0¢** |
+| Lemon G. Luci | $0.513 | $0.97 | **45.7¢** |
+| Molly's Mint | $0.496 | $0.94 | **44.4¢** |
+| Mary Caramel Apple | $0.532 | $0.90 | **36.8¢** |
+
+**Correction to an earlier version of this doc:** it claimed the uncosted ingredients meant
+the BOM understated true cost "by ~40%." That was wrong. Costing all thirteen added only
+**2.5–9.7¢/pop** depending on flavour. The ~40¢ gap between the BOM and the tier figure is
+something else entirely, and it is now the biggest unexplained number in the cost model —
+see §7.
 
 ### Where the money actually goes (Kiwi Pop, per pop)
 
@@ -330,9 +342,20 @@ actually booked.**
    even a third of that is ~$1,200 of recovered lifetime revenue at current AOV and scales
    with everything else. Highest-ROI engineering task in the repo.
 2. ~~**Retire or reprice `KP-PACK-12`**~~ ✅ repriced to $42.00 in migration 043.
-3. **Price the six uncosted ingredients** (jambu, chilcuague, B12, coconut oil, monk fruit,
-   electrolyte) so the BOM stops understating true cost by ~40%. Chilcuague was added to the
-   shared base in migration 042 and is unpriced — it lands in the same bucket as jambu below.
+3. ~~**Price the uncosted ingredients**~~ ✅ all thirteen priced in migration 045. **What it
+   uncovered is more important than what it fixed:** the complete BOM is $0.50–0.53/pop
+   against a `diy_tier2` figure of $0.90 — **a ~40¢/pop gap the uncosted lines do not
+   explain.** Three candidates, in order of likelihood:
+   - **Yield loss.** Hand-poured isomalt breaks, under-fills, and sets badly. 15–25% scrap
+     is normal and would account for ~$0.10.
+   - **A missing wrapper line.** The line sheet tells buyers the pops are "individually
+     foiled," but there is **no foil or cello wrapper in the BOM at all** — only a sticker.
+     At ~1–3¢ each that's a real omission on a public product claim.
+   - **Unallocated buffer** baked into the tier figure when it was seeded.
+
+   Until this is resolved, `diy_tier2` is a guess wearing a precise number's clothes, and
+   every margin in the admin inherits it. **Reconcile it before the tier-3 purchase orders**,
+   because that's the moment the model starts driving real money.
 4. **Update `app_settings.monthly_overhead_cents`** from $150 to a real number (~$1,400) and
    `target_monthly_volume` to the current month's plan figure, so admin break-even is honest.
 5. **The wholesale referral codes are built and unused** — `wholesale_discount_codes` has 0
@@ -357,12 +380,15 @@ actually booked.**
    (already noted in the ingredient panel — it must make it onto the physical label). Retail
    doors will also ask for a **certificate of insurance**; product liability runs ~$1,500–2,400/yr
    and is budgeted above. **Sort this in August or it blocks October.**
-2. **The two alkamide actives — jambu and chilcuague — have no confirmed food-grade supply
-   chain and no cost in the model.** Both are in every SKU's BOM and priced at zero. Jambu is
-   a quote-only B2B oleoresin with ~1 kg MOQ; chilcuague (*heliopsis longipes*) currently has
-   no channel beyond ethnobotanical sellers and Sierra Gorda co-ops. They are the product's
-   signature hook, so this is not a line to substitute quietly — but if neither can be sourced
-   compliantly at volume, the formula needs a decision **before** the co-packer run, not after.
+2. **The two alkamide actives are a supply problem, not a cost problem.** Now that both are
+   priced, that distinction is clear: jambu costs 0.4¢/pop and chilcuague 0.28¢/pop. Money
+   was never the issue. What is: chilcuague is currently bought from an **eBay ethnobotanical
+   listing** — no COA, no food-grade attestation, no lot traceability — and jambu has no
+   consumer food-grade channel at all, only a quote-only B2B oleoresin at ~1 kg MOQ.
+   Both are the product's signature hook, so substituting quietly isn't an option. **A
+   wholesale buyer's first compliance question will be about these two lines**, and a
+   commissary or a future co-packer will ask before they'll run. Qualify a real supplier for
+   both — with documentation — before wholesale scales past a handful of doors.
 3. **Door productivity is the assumption most likely to be wrong.** The plan needs 60
    pops/month of reorder per door. Sensitivity:
 
@@ -394,7 +420,10 @@ actually booked.**
 ### August — pricing, sourcing, first doors
 - [x] ~~Reprice wholesale to $2.50 / $2.25 / $1.85 tiers~~ ✅ migration 043
 - [x] ~~Halve the glitter dose; repoint isomalt at a wholesale tier; fix `KP-PACK-12`~~ ✅ migration 043
-- [ ] Price the six uncosted BOM lines (incl. chilcuague); update `app_settings.monthly_overhead_cents`
+- [x] ~~Price the uncosted BOM lines~~ ✅ migration 045 (all 13)
+- [ ] **Reconcile the ~40¢/pop gap between the complete BOM and `diy_tier2`** — measure
+      actual yield loss on the first sessions, and add the missing foil/cello wrapper line
+- [ ] Qualify a documented supplier for jambu and chilcuague (COA + food-grade attestation)
 - [ ] Open wholesale accounts: WebstaurantStore, BulkSupplements, Starwest (ask for Net-30)
 - [ ] **Confirm the $218.10 Bakers Authority isomalt price in a browser and place the first
       45 lb order** — it's the one figure the new cost basis rests on
