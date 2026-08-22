@@ -20,6 +20,11 @@ import { ReviewSubmitModal } from './ReviewSubmitModal';
 interface LandingProps {
   products: LandingProducts;
   fundraiser: FundraiserSnapshot;
+  /**
+   * Site-wide "preorder only" mode (Admin → Products). When true the whole
+   * storefront presents everything as preorder instead of in-stock sales.
+   */
+  preorderMode?: boolean;
 }
 
 const FLAVOR_DOT_COLOR: Record<string, string> = {
@@ -85,17 +90,30 @@ const FUNCTIONAL_ICONS = [
   </g>,
 ];
 
-export default function Landing({ products, fundraiser }: LandingProps) {
+export default function Landing({ products, fundraiser, preorderMode = false }: LandingProps) {
   const router = useRouter();
   const addItem = useCart((s) => s.addItem);
   const cartCount = useCart((s) => s.getTotalItems());
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // A line is a preorder if the whole store is in preorder-only mode, or the
+  // individual product is flagged preorder.
+  const isPreorderProduct = (product?: { preorder_only: boolean } | null) =>
+    preorderMode || Boolean(product?.preorder_only);
+
+  // In preorder-only mode there are no "live" (buy-now) flavors, but the
+  // picker should still let people choose a flavor to preorder — so fall back
+  // to any flavor that has a product row.
   const liveFlavors = products.flavors.filter(
     (f) => f.product && !f.product.preorder_only,
   );
-  const initialFlavorSku = liveFlavors[0]?.sku ?? products.flavors[0]?.sku ?? '';
+  const initialFlavorSku =
+    (preorderMode
+      ? products.flavors.find((f) => f.product)?.sku
+      : liveFlavors[0]?.sku) ??
+    products.flavors[0]?.sku ??
+    '';
   const [flavorSku, setFlavorSku] = useState<string>(initialFlavorSku);
   // The flavor row has 5 buttons: the 4 single flavors plus VARIETY.
   // 'flavor' mode → pack-size row shows [1, 6, 20] tiers tied to flavorSku.
@@ -230,6 +248,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
   };
 
   const stockLine = (() => {
+    if (preorderMode) return 'KIWI POP · PREORDER';
     const launch = products.flavors.find((f) => f.sku === 'KP-KIWI-KITTY');
     if (launch?.product && launch.product.in_stock > 0) {
       return `KIWI POP · ${launch.product.in_stock} IN STOCK`;
@@ -249,7 +268,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
       price: checkoutProduct.price_cents,
       quantity: qty,
       image: checkoutProduct.image_url ?? FLAVOR_IMG[selectedFlavor?.sku ?? ''] ?? undefined,
-      isPreorder: checkoutProduct.preorder_only,
+      isPreorder: isPreorderProduct(checkoutProduct),
     });
     setAddState('added');
     setTimeout(() => setAddState('idle'), 1600);
@@ -433,7 +452,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             we&apos;re already tuning the next one. tell us what hits and what doesn&apos;t.
           </p>
           <div className="hero-ctas">
-            <a href="#shop" className="hero-cta-primary">SHOP NOW · FROM $5</a>
+            <a href="#shop" className="hero-cta-primary">
+              {preorderMode ? 'PREORDER NOW · FROM $5' : 'SHOP NOW · FROM $5'}
+            </a>
           </div>
         </div>
         <div className="below">
@@ -459,7 +480,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
           </div>
           <div className="copy-right">
             <span className="lab" style={{ borderColor: 'var(--lemon)', color: 'var(--lemon)' }}>
-              SHIPS FROM SALT LAKE · DOMESTIC FIRST
+              {preorderMode
+                ? 'PREORDER · SHIPS WHEN THE NEXT BATCH IS READY'
+                : 'SHIPS FROM SALT LAKE · DOMESTIC FIRST'}
             </span>
           </div>
         </div>
@@ -477,7 +500,11 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             <div className="row">
               <span className="label">FLAVOR</span>
               <span className="label">
-                <span className="kw">ALL {products.flavors.length} FLAVORS LIVE</span>
+                <span className="kw">
+                  {preorderMode
+                    ? `ALL ${products.flavors.length} FLAVORS · PREORDER`
+                    : `ALL ${products.flavors.length} FLAVORS LIVE`}
+                </span>
               </span>
             </div>
             <div className="flav-pick">
@@ -588,9 +615,25 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               {addState === 'added'
                 ? 'ADDED → GO TO CART'
                 : checkoutProduct
-                  ? `TAKE ONE → ADD TO CART · ${formatCentsToUSD(livePriceCents)}`
+                  ? preorderMode
+                    ? `PREORDER → ADD TO CART · ${formatCentsToUSD(livePriceCents)}`
+                    : `TAKE ONE → ADD TO CART · ${formatCentsToUSD(livePriceCents)}`
                   : 'NOTIFY ME →'}
             </button>
+            {preorderMode && checkoutProduct ? (
+              <p
+                style={{
+                  margin: '0.4rem 0 0',
+                  fontFamily: 'var(--mono)',
+                  fontSize: 11,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'var(--lemon)',
+                }}
+              >
+                preorder · charged now · ships when the next batch is ready
+              </p>
+            ) : null}
             {addState === 'added' ? (
               <button
                 type="button"
@@ -672,7 +715,9 @@ export default function Landing({ products, fundraiser }: LandingProps) {
             eternal&nbsp;<span className="lm">VIBRATIONS.</span>
           </h2>
           <div className="right">
-            SWIPE → · {liveFlavors.length} OF {products.flavors.length} LIVE
+            {preorderMode
+              ? `SWIPE → · ALL ${products.flavors.length} · PREORDER`
+              : `SWIPE → · ${liveFlavors.length} OF ${products.flavors.length} LIVE`}
             <br />
             <span className="kw">SHARED FUNCTIONAL BASE</span>
             <br />
@@ -685,15 +730,21 @@ export default function Landing({ products, fundraiser }: LandingProps) {
               : flavor.sku === 'KP-LUCY-LEMON' ? 'lemon'
               : flavor.sku === 'KP-MANGO-MOLLY' ? 'kiwi-flavor'
               : 'grape';
-            const isLive = flavor.status === 'live' && flavor.product && !flavor.product.preorder_only;
+            const isPreorder = Boolean(flavor.product) && isPreorderProduct(flavor.product);
+            const isLive =
+              !isPreorder &&
+              flavor.status === 'live' &&
+              Boolean(flavor.product) &&
+              !flavor.product?.preorder_only;
             const href = flavor.product ? `/products/${flavor.product.id}` : '#shop';
             const inStock = flavor.product?.in_stock ?? 0;
+            const railState = isLive ? 'shop' : isPreorder ? 'preorder' : 'coming soon';
             return (
               <Link
                 key={flavor.sku}
                 href={href}
                 className={`fc ${cardSkuKey}`}
-                aria-label={`${flavor.name}, ${isLive ? 'shop' : 'coming soon'}`}
+                aria-label={`${flavor.name}, ${railState}`}
               >
                 <div className="img">
                   {/* CSS-bg → <Image> swap. The .img class keeps
@@ -707,8 +758,12 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                     style={{ objectFit: 'cover', objectPosition: 'center' }}
                   />
                 </div>
-                <span className={`status-pill ${isLive ? 'live' : 'soon'}`}>
-                  {isLive ? `LIVE · ${inStock} LEFT` : 'COMING SOON'}
+                <span className={`status-pill ${isLive || isPreorder ? 'live' : 'soon'}`}>
+                  {isLive
+                    ? `LIVE · ${inStock} LEFT`
+                    : isPreorder
+                      ? 'PREORDER'
+                      : 'COMING SOON'}
                 </span>
                 <div className="top">
                   <span className="num">00{idx + 1} · {flavor.flavor.split(' ')[0].toUpperCase()}</span>
@@ -729,7 +784,7 @@ export default function Landing({ products, fundraiser }: LandingProps) {
                     <span className="mg">+ {flavor.adaptogen} · {flavor.direction}</span>
                     <br />
                     {flavor.product
-                      ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{isLive ? 'SHOP →' : 'COMING SOON'}</span></>
+                      ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{isLive ? 'SHOP →' : isPreorder ? 'PREORDER →' : 'COMING SOON'}</span></>
                       : <span className="mg">NOTIFY ME →</span>}
                   </div>
                 </div>

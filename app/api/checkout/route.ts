@@ -5,6 +5,7 @@ import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { createCheckoutSession } from '@/lib/stripe';
 import { checkoutRequestSchema } from '@/lib/validators';
 import { resolveDiscount } from '@/lib/discounts';
+import { getPreorderOnlyMode } from '@/lib/settings';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -77,6 +78,12 @@ export async function POST(request: NextRequest) {
 
   const productsById = await loadProducts(parsed.items.map((i) => i.productId));
 
+  // Site-wide "preorder only" mode (Admin → Products). When on, every line is
+  // a preorder regardless of stock, so the out-of-stock guard is skipped.
+  const preorderOnlyMode = await getPreorderOnlyMode();
+  const isPreorderItem = (product: ProductRow): boolean =>
+    preorderOnlyMode || product.preorder_only;
+
   for (const item of parsed.items) {
     const product = productsById.get(item.productId);
     if (!product) {
@@ -85,7 +92,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (product.in_stock <= 0 && !product.preorder_only) {
+    if (product.in_stock <= 0 && !isPreorderItem(product)) {
       return NextResponse.json(
         { error: `Product out of stock: ${product.name}` },
         { status: 409 }
@@ -98,9 +105,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid order total' }, { status: 400 });
   }
 
-  const isPreorderOrder = parsed.items.some(
-    (item) => productsById.get(item.productId)?.preorder_only === true
-  );
+  const isPreorderOrder = parsed.items.some((item) => {
+    const product = productsById.get(item.productId);
+    return product ? isPreorderItem(product) : false;
+  });
 
   // Optional wholesale discount code. Validated against the codes table; an
   // invalid or already-used code is rejected so the customer gets clear
@@ -175,7 +183,7 @@ export async function POST(request: NextRequest) {
       product_id: item.productId,
       quantity: item.quantity,
       price_cents: product.price_cents,
-      is_preorder: product.preorder_only,
+      is_preorder: isPreorderItem(product),
     };
   });
 

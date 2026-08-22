@@ -14,7 +14,7 @@ export async function GET() {
   const { data, error } = await supabaseAdmin
     .from('app_settings')
     .select(
-      'monthly_overhead_cents, target_monthly_volume, active_cost_basis, updated_at'
+      'monthly_overhead_cents, target_monthly_volume, active_cost_basis, preorder_only_mode, updated_at'
     )
     .eq('id', 1)
     .single();
@@ -58,7 +58,7 @@ export async function PATCH(request: NextRequest) {
     .update({ ...parsed, updated_at: new Date().toISOString() })
     .eq('id', 1)
     .select(
-      'monthly_overhead_cents, target_monthly_volume, active_cost_basis, updated_at'
+      'monthly_overhead_cents, target_monthly_volume, active_cost_basis, preorder_only_mode, updated_at'
     )
     .single();
 

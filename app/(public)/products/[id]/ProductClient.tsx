@@ -18,6 +18,8 @@ import {
 
 interface ProductClientProps {
   params: { id: string };
+  /** Site-wide "preorder only" mode — forces this product to preorder. */
+  preorderMode?: boolean;
 }
 
 interface PackTile {
@@ -33,7 +35,7 @@ const PACK_TILES: readonly PackTile[] = [
   { size: 20, label: 'party pack', perPopCents: 300, badge: 'best value' },
 ];
 
-export default function ProductClient({ params }: ProductClientProps) {
+export default function ProductClient({ params, preorderMode = false }: ProductClientProps) {
   const { data: pageProduct, isLoading, error } = useProduct(params.id);
 
   // Resolve which flavor this product belongs to (works whether the page
@@ -104,6 +106,11 @@ export default function ProductClient({ params }: ProductClientProps) {
     imageForProduct(pageProduct.sku, pageProduct.image_url) ??
     '/landing/img/kiwi-kitty-pop.webp';
 
+  // Preorder if the whole store is in preorder-only mode, or this specific
+  // product/bundle is flagged preorder.
+  const pageIsPreorder = preorderMode || Boolean(pageProduct.preorder_only);
+  const checkoutIsPreorder = preorderMode || Boolean(checkoutProduct?.preorder_only);
+
   const handleAddToCart = () => {
     if (!checkoutProduct) return;
     addItem({
@@ -114,7 +121,7 @@ export default function ProductClient({ params }: ProductClientProps) {
       // Bundles fall back to the page hero (the flavor photo) so the cart
       // line item shows something recognizable.
       image: imageForProduct(checkoutProduct.sku, checkoutProduct.image_url) ?? heroImage,
-      isPreorder: checkoutProduct.preorder_only,
+      isPreorder: checkoutIsPreorder,
       preorderDeadline: checkoutProduct.preorder_deadline,
     });
     setAdded(true);
@@ -148,7 +155,7 @@ export default function ProductClient({ params }: ProductClientProps) {
             width={600}
             height={600}
           />
-          {pageProduct.preorder_only && (
+          {pageIsPreorder && (
             <div className="preorder-badge">preorder</div>
           )}
         </div>
@@ -198,7 +205,7 @@ export default function ProductClient({ params }: ProductClientProps) {
             </div>
           )}
 
-          {pageProduct.preorder_only && (
+          {pageIsPreorder && (
             <div
               className="alert"
               style={{
@@ -216,7 +223,7 @@ export default function ProductClient({ params }: ProductClientProps) {
                     'en-US',
                     { month: 'long', day: 'numeric', year: 'numeric' }
                   )
-                : 'when the batch is ready'}
+                : 'when the next batch is ready'}
               . email goes out the day before the truck moves.
             </div>
           )}
@@ -371,7 +378,7 @@ export default function ProductClient({ params }: ProductClientProps) {
           >
             {added
               ? '✓ added'
-              : checkoutProduct?.preorder_only
+              : checkoutIsPreorder
               ? 'preorder now'
               : 'add to cart'}
           </button>
@@ -394,7 +401,11 @@ export default function ProductClient({ params }: ProductClientProps) {
             }}
           >
             <div>sku · {checkoutProduct?.sku ?? pageProduct.sku}</div>
-            <div>in stock · {checkoutProduct?.in_stock ?? pageProduct.in_stock}</div>
+            <div>
+              {checkoutIsPreorder
+                ? 'preorder · ships next batch'
+                : `in stock · ${checkoutProduct?.in_stock ?? pageProduct.in_stock}`}
+            </div>
           </div>
         </div>
       </div>

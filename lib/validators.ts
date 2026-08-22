@@ -307,6 +307,9 @@ export const appSettingsUpdateSchema = z.object({
   active_cost_basis: z
     .enum(['diy_tier1', 'diy_tier2', 'diy_tier3', 'copacker', 'inhouse'])
     .optional(),
+  // Site-wide "preorder only" mode — when true the storefront and checkout
+  // switch from normal sales to preorders as the only option.
+  preorder_only_mode: z.boolean().optional(),
 });
 
 export type AppSettingsUpdate = z.infer<typeof appSettingsUpdateSchema>;

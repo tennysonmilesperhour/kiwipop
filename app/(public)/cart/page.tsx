@@ -8,6 +8,7 @@ import Link from 'next/link';
 export default function CartPage() {
   const { items, getTotalPrice } = useCart();
   const total = getTotalPrice();
+  const hasPreorder = items.some((item) => item.isPreorder);
 
   if (items.length === 0) {
     return (
@@ -71,6 +72,22 @@ export default function CartPage() {
 
         <div className="cart-summary">
           <div className="card-title">order summary</div>
+
+          {hasPreorder && (
+            <div
+              className="alert"
+              style={{
+                marginBottom: '1rem',
+                borderColor: 'var(--ultraviolet)',
+                color: 'var(--ultraviolet)',
+                fontSize: '0.85rem',
+              }}
+            >
+              <strong style={{ letterSpacing: '0.12em' }}>PREORDER ·</strong>{' '}
+              charged now, ships when the next batch is ready. we&apos;ll email
+              you the day before it moves.
+            </div>
+          )}
 
           <div className="summary-row">
             <span>subtotal</span>

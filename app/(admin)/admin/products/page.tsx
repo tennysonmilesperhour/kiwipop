@@ -4,7 +4,7 @@ import { AdminLayout } from '@/components/AdminLayout';
 import { CostBasisNote } from '@/components/admin/CostBasisNote';
 import { useProducts } from '@/lib/hooks';
 import { formatCentsToUSD } from '@/lib/format';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ProductFormState {
   name: string;
@@ -48,6 +48,46 @@ export default function ProductsPage() {
   const [error, setError] = useState<string>('');
   const [submitting, setSubmitting] = useState(false);
   const [uploading, setUploading] = useState(false);
+
+  // Site-wide preorder-only mode (app_settings.preorder_only_mode). null while
+  // the current value is still loading.
+  const [preorderMode, setPreorderMode] = useState<boolean | null>(null);
+  const [togglingMode, setTogglingMode] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/admin/settings')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        if (!cancelled && json) setPreorderMode(Boolean(json.preorder_only_mode));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const togglePreorderMode = async () => {
+    const next = !preorderMode;
+    setTogglingMode(true);
+    setError('');
+    try {
+      const response = await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preorder_only_mode: next }),
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error ?? 'Could not update preorder mode');
+      }
+      setPreorderMode(Boolean(json.preorder_only_mode));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not update preorder mode');
+    } finally {
+      setTogglingMode(false);
+    }
+  };
 
   const resetForm = () => {
     setMode('idle');
@@ -169,6 +209,53 @@ export default function ProductsPage() {
       <h1 className="text-3xl font-bold mb-6">Products</h1>
 
       {error && <div className="alert alert-error mb-4">{error}</div>}
+
+      <div
+        className="card mb-6"
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          borderColor: preorderMode ? 'var(--c-magenta)' : undefined,
+        }}
+      >
+        <div>
+          <div
+            className="card-title"
+            style={{ marginBottom: '0.25rem' }}
+          >
+            Preorder-only mode{' '}
+            <span
+              style={{
+                color: preorderMode ? 'var(--c-magenta)' : 'var(--c-lime)',
+                fontWeight: 800,
+              }}
+            >
+              {preorderMode === null ? '…' : preorderMode ? 'ON' : 'OFF'}
+            </span>
+          </div>
+          <p style={{ fontSize: '0.85rem', opacity: 0.8, maxWidth: '48ch' }}>
+            When ON, the whole storefront switches from normal sales to
+            preorders as the only option — every flavor and pack sells as a
+            preorder regardless of stock. Flip it back OFF when the next batch
+            lands.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={togglePreorderMode}
+          disabled={preorderMode === null || togglingMode}
+          className={`btn ${preorderMode ? 'btn-secondary' : 'btn-primary'}`}
+        >
+          {togglingMode
+            ? 'Saving…'
+            : preorderMode
+              ? 'Switch back to normal sales'
+              : 'Switch to preorders only'}
+        </button>
+      </div>
 
       <CostBasisNote compact />
 
