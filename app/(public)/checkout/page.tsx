@@ -22,6 +22,7 @@ interface CheckoutResponse {
 export default function CheckoutPage() {
   const items = useCart((s) => s.items);
   const total = useCart((s) => s.getTotalPrice());
+  const hasPreorder = items.some((item) => item.isPreorder);
   const router = useRouter();
   const { user, profile } = useAuth();
 
@@ -363,6 +364,21 @@ export default function CheckoutPage() {
 
         <div className="cart-summary">
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+
+          {hasPreorder && (
+            <div
+              className="alert"
+              style={{
+                marginBottom: '1rem',
+                borderColor: 'var(--ultraviolet)',
+                color: 'var(--ultraviolet)',
+                fontSize: '0.85rem',
+              }}
+            >
+              <strong style={{ letterSpacing: '0.12em' }}>PREORDER ·</strong>{' '}
+              charged now, ships when the next batch is ready.
+            </div>
+          )}
 
           <div className="mb-4 max-h-60 overflow-y-auto">
             {items.map((item) => (

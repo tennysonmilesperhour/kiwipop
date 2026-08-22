@@ -3,6 +3,7 @@ import { JsonLd } from '@/components/JsonLd';
 import { FLAVORS_BY_SKU, FLAVOR_SKU_FOR, imageForProduct } from '@/lib/flavors';
 import { buildBreadcrumbLd, SITE_URL } from '@/lib/seo';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { getPreorderOnlyMode } from '@/lib/settings';
 import ProductClient from './ProductClient';
 
 interface ProductPageProps {
@@ -72,7 +73,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const product = await loadProduct(params.id);
+  const [product, preorderMode] = await Promise.all([
+    loadProduct(params.id),
+    getPreorderOnlyMode(),
+  ]);
 
   // Build Product JSON-LD with whatever data we have. If the row is
   // missing, fall through and let the client component render the
@@ -88,7 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       'kiwi pop functional lollipop supplement.';
     const image = imageForProduct(product.sku, product.image_url);
     const priceUsd = (product.price_cents / 100).toFixed(2);
-    const availability = product.preorder_only
+    const availability = preorderMode || product.preorder_only
       ? 'https://schema.org/PreOrder'
       : product.in_stock > 0
         ? 'https://schema.org/InStock'
@@ -121,7 +125,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       {productLd ? <JsonLd data={productLd} /> : null}
       {breadcrumbLd ? <JsonLd data={breadcrumbLd} /> : null}
-      <ProductClient params={params} />
+      <ProductClient params={params} preorderMode={preorderMode} />
     </>
   );
 }
