@@ -358,3 +358,154 @@ this is ours together. if there's a flavor you wish existed, a packaging tweak t
 kiwi pop · salt lake city, ut · kiwipop.fun`,
   };
 }
+
+// ---- internal / admin alerts ----
+
+/**
+ * Bare layout for emails that go to the team, not to customers. No marketing
+ * footer, no unsubscribe copy, no CTA — just the facts, readable on a phone.
+ */
+function internalLayout(body: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>kiwi pop · internal</title>
+<style>
+  body { margin: 0; padding: 0; background: #050510; color: #f4f0e8; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; }
+  .wrapper { max-width: 560px; margin: 0 auto; padding: 32px 24px; }
+  .logo { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #877a9e; margin-bottom: 20px; }
+  h1 { font-size: 24px; font-weight: 800; line-height: 1.2; margin: 0 0 16px; color: #a8ff3c; }
+  p { margin: 0 0 12px; color: #d8d2c4; }
+  .label { color: #877a9e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .divider { border: none; border-top: 1px solid rgba(244,240,232,0.12); margin: 24px 0; }
+  .footer { font-size: 12px; color: #877a9e; margin-top: 32px; }
+  a { color: #a8ff3c; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="logo">kiwi pop · internal alert</div>
+  ${body}
+  <hr class="divider" />
+  <div class="footer">automated notification from kiwipop.fun. sent on every paid order.</div>
+</div>
+</body>
+</html>`;
+}
+
+export interface AdminSaleAlertParams {
+  orderId: string;
+  /** Order total in cents, as actually charged by Stripe. */
+  totalCents: number;
+  /** Buyer's email, when Stripe gave us one. */
+  customerEmail: string | null;
+  items: Array<{ name: string; quantity: number; priceCents: number }>;
+  /** Discount code burned on this order, if any. */
+  discountCode?: string | null;
+  /** Formatted shipping address lines, or null for donations / no address. */
+  shippingLines?: string[];
+  /** True when the order is a donation rather than a product sale. */
+  isDonation?: boolean;
+}
+
+export function adminSaleAlertEmail(params: AdminSaleAlertParams): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const total = (params.totalCents / 100).toFixed(2);
+  const shortId = params.orderId.slice(0, 8);
+  const kind = params.isDonation ? 'donation' : 'sale';
+  const unitCount = params.items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const itemRows = params.items
+    .map(
+      (item) =>
+        `<tr>
+          <td style="padding: 8px 0; color: #d8d2c4; border-bottom: 1px solid rgba(244,240,232,0.06);">${escapeHtml(item.name)}</td>
+          <td style="padding: 8px 0; color: #d8d2c4; text-align: center; border-bottom: 1px solid rgba(244,240,232,0.06);">×${item.quantity}</td>
+          <td style="padding: 8px 0; color: #a8ff3c; text-align: right; border-bottom: 1px solid rgba(244,240,232,0.06);">$${(item.priceCents / 100).toFixed(2)}</td>
+        </tr>`
+    )
+    .join('');
+
+  const itemsText = params.items
+    .map((item) => `  ${item.name} ×${item.quantity} · $${(item.priceCents / 100).toFixed(2)}`)
+    .join('\n');
+
+  const shippingHtml =
+    params.shippingLines && params.shippingLines.length > 0
+      ? `<p><span class="label">ship to</span><br />${params.shippingLines
+          .map(escapeHtml)
+          .join('<br />')}</p>`
+      : '';
+
+  const shippingText =
+    params.shippingLines && params.shippingLines.length > 0
+      ? `\nship to:\n${params.shippingLines.map((line) => `  ${line}`).join('\n')}\n`
+      : '';
+
+  const discountHtml = params.discountCode
+    ? `<p><span class="label">discount code</span><br />${escapeHtml(params.discountCode)}</p>`
+    : '';
+
+  const discountText = params.discountCode ? `discount code: ${params.discountCode}\n` : '';
+
+  const orderUrl = 'https://www.kiwipop.fun/admin/orders';
+
+  return {
+    subject: `$${total} ${kind} · #${shortId} · kiwi pop`,
+    html: internalLayout(`
+      <h1>$${total} ${kind}.</h1>
+      <p>order <strong>#${shortId}</strong>${
+        params.isDonation ? '' : ` · ${unitCount} unit${unitCount === 1 ? '' : 's'}`
+      }</p>
+
+      <p><span class="label">customer</span><br />${
+        params.customerEmail ? escapeHtml(params.customerEmail) : 'not provided'
+      }</p>
+      ${discountHtml}
+      ${shippingHtml}
+
+      <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <thead>
+          <tr>
+            <th style="text-align: left; padding: 8px 0; color: #877a9e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid rgba(244,240,232,0.12);">item</th>
+            <th style="text-align: center; padding: 8px 0; color: #877a9e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid rgba(244,240,232,0.12);">qty</th>
+            <th style="text-align: right; padding: 8px 0; color: #877a9e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid rgba(244,240,232,0.12);">total</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="padding: 12px 0; color: #f4f0e8; font-weight: 700;">paid</td>
+            <td style="padding: 12px 0; color: #a8ff3c; font-weight: 700; text-align: right;">$${total}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <p><a href="${orderUrl}">open in admin →</a></p>
+    `),
+    text: `$${total} ${kind}.
+
+order #${shortId}${params.isDonation ? '' : ` · ${unitCount} unit${unitCount === 1 ? '' : 's'}`}
+customer: ${params.customerEmail ?? 'not provided'}
+${discountText}${shippingText}
+${itemsText}
+
+paid: $${total}
+
+open in admin: ${orderUrl}`,
+  };
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}

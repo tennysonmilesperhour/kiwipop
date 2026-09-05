@@ -9,7 +9,9 @@ import {
   orderConfirmationEmail,
   reviewRequestEmail,
   wholesaleApprovedEmail,
+  adminSaleAlertEmail,
 } from '@/lib/email-templates';
+import type { AdminSaleAlertParams } from '@/lib/email-templates';
 
 /* =========================================================
    EMAIL QUEUE — simple drip email system
@@ -25,7 +27,8 @@ export type EmailType =
   | 'first_purchase_push'
   | 'order_confirmation'
   | 'review_request'
-  | 'wholesale_approved';
+  | 'wholesale_approved'
+  | 'admin_sale_alert';
 
 interface QueueEmailParams {
   to: string;
@@ -240,6 +243,79 @@ export async function queuePostPurchaseSeries(params: {
   });
 }
 
+/**
+ * Default recipient for sale alerts. Overridable with SALE_NOTIFY_EMAIL
+ * (comma-separated for more than one inbox).
+ */
+const DEFAULT_SALE_NOTIFY_EMAIL = 'tennysontaggart@gmail.com';
+
+export function getSaleNotifyRecipients(): string[] {
+  const raw = process.env.SALE_NOTIFY_EMAIL ?? DEFAULT_SALE_NOTIFY_EMAIL;
+  return raw
+    .split(',')
+    .map((address) => address.trim())
+    .filter(Boolean);
+}
+
+/**
+ * Email the shop owner as soon as an order is paid.
+ *
+ * Deduped per (recipient, order) against the email_queue log so Stripe
+ * webhook retries — or a replayed event — don't fire a second alert for a
+ * sale that was already announced. Never throws: a notification failure must
+ * not take down the webhook, since Stripe would then retry the whole handler
+ * and re-run the inventory/points side effects.
+ */
+export async function notifyAdminOfSale(
+  params: AdminSaleAlertParams
+): Promise<void> {
+  const recipients = getSaleNotifyRecipients();
+  if (recipients.length === 0) return;
+
+  for (const to of recipients) {
+    try {
+      const { data: existing, error: dedupeError } = await supabaseAdmin
+        .from('email_queue')
+        .select('id')
+        .eq('to_email', to)
+        .eq('email_type', 'admin_sale_alert')
+        .eq('status', 'sent')
+        .eq('metadata->>orderId', params.orderId)
+        .limit(1);
+
+      if (dedupeError) {
+        // Log and send anyway — a duplicate alert beats a missed sale.
+        console.error('[email-queue] sale alert dedupe check failed', {
+          orderId: params.orderId,
+          dedupeError,
+        });
+      } else if (existing && existing.length > 0) {
+        continue;
+      }
+
+      const result = await sendEmailNow(
+        to,
+        'admin_sale_alert',
+        params as unknown as Record<string, unknown>
+      );
+
+      if (!result.ok) {
+        console.error('[email-queue] failed to send sale alert', {
+          orderId: params.orderId,
+          to,
+          reason: result.reason,
+        });
+      }
+    } catch (err) {
+      console.error('[email-queue] sale alert threw', {
+        orderId: params.orderId,
+        to,
+        err,
+      });
+    }
+  }
+}
+
 // ---- internal ----
 
 function buildTemplate(
@@ -277,6 +353,9 @@ function buildTemplate(
           }>) ?? [],
         percentOff: (metadata.percentOff as number) ?? 25,
       });
+    case 'admin_sale_alert':
+      if (!metadata?.orderId) return null;
+      return adminSaleAlertEmail(metadata as unknown as AdminSaleAlertParams);
     default:
       return null;
   }
