@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { queuePostPurchaseSeries } from '@/lib/email-queue';
+import { queuePostPurchaseSeries, notifyAdminOfSale } from '@/lib/email-queue';
 import { redeemDiscountForOrder } from '@/lib/discounts';
 
 export const runtime = 'nodejs';
@@ -42,6 +42,34 @@ async function decrementInventoryForOrder(orderId: string): Promise<void> {
   }
 }
 
+/**
+ * Donation checkouts reuse the orders table but stash a marker object in
+ * `shipping_address` instead of a real address (see /api/donate-checkout).
+ */
+function isDonationOrder(shippingAddress: Record<string, unknown> | null): boolean {
+  return shippingAddress?.kind === 'donation';
+}
+
+/** Render a stored shipping address as display lines for the sale alert. */
+function formatShippingLines(
+  shippingAddress: Record<string, unknown> | null
+): string[] {
+  if (!shippingAddress || isDonationOrder(shippingAddress)) return [];
+
+  const str = (key: string): string =>
+    typeof shippingAddress[key] === 'string' ? (shippingAddress[key] as string) : '';
+
+  const name = [str('firstName'), str('lastName')].filter(Boolean).join(' ');
+  const cityLine = [
+    [str('city'), str('state')].filter(Boolean).join(', '),
+    str('zip'),
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return [name, str('address'), cityLine, str('country')].filter(Boolean);
+}
+
 async function handleCheckoutSessionCompleted(
   session: Stripe.Checkout.Session
 ): Promise<void> {
@@ -72,8 +100,11 @@ async function handleCheckoutSessionCompleted(
       updated_at: new Date().toISOString(),
     })
     .eq('id', orderId)
-    .select('discount_code')
-    .maybeSingle<{ discount_code: string | null }>();
+    .select('discount_code, shipping_address')
+    .maybeSingle<{
+      discount_code: string | null;
+      shipping_address: Record<string, unknown> | null;
+    }>();
 
   if (error) {
     console.error('[stripe-webhook] failed to mark order paid', { orderId, error });
@@ -100,22 +131,39 @@ async function handleCheckoutSessionCompleted(
     console.error('[stripe-webhook] award_points_for_order failed', { orderId, pointsError });
   }
 
+  // ---- Order emails ----
+  const customerEmail = session.customer_details?.email ?? session.customer_email;
+
+  // Load order items with product names — used by both the customer
+  // confirmation and the internal sale alert.
+  const { data: orderItems } = await supabaseAdmin
+    .from('order_items')
+    .select('quantity, price_cents, products(name)')
+    .eq('order_id', orderId);
+
+  const emailItems = (orderItems ?? []).map((item: Record<string, unknown>) => ({
+    name: (item.products as { name: string } | null)?.name ?? 'Kiwi Pop',
+    quantity: item.quantity as number,
+    priceCents: (item.price_cents as number) * (item.quantity as number),
+  }));
+
+  // Internal alert to the shop owner. Awaited (not fire-and-forget) so the
+  // send actually completes before the serverless function is frozen, but
+  // notifyAdminOfSale swallows its own errors so a mail failure can't fail
+  // the webhook and trigger a Stripe retry of the side effects above.
+  await notifyAdminOfSale({
+    orderId,
+    totalCents: amountTotal ?? 0,
+    customerEmail: customerEmail ?? null,
+    items: emailItems,
+    discountCode: updatedOrder?.discount_code ?? null,
+    shippingLines: formatShippingLines(updatedOrder?.shipping_address ?? null),
+    isDonation: isDonationOrder(updatedOrder?.shipping_address ?? null),
+  });
+
   // ---- Post-purchase email series ----
   // Fire-and-forget: send order confirmation + queue review request.
-  const customerEmail = session.customer_details?.email ?? session.customer_email;
   if (customerEmail) {
-    // Load order items with product names for the confirmation email
-    const { data: orderItems } = await supabaseAdmin
-      .from('order_items')
-      .select('quantity, price_cents, products(name)')
-      .eq('order_id', orderId);
-
-    const emailItems = (orderItems ?? []).map((item: Record<string, unknown>) => ({
-      name: (item.products as { name: string } | null)?.name ?? 'Kiwi Pop',
-      quantity: item.quantity as number,
-      priceCents: (item.price_cents as number) * (item.quantity as number),
-    }));
-
     queuePostPurchaseSeries({
       email: customerEmail,
       orderId,
