@@ -76,9 +76,6 @@ export async function sendEmailNow(
     return { ok: false, reason: `Unknown email type: ${emailType}` };
   }
 
-  const fromEmail =
-    process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-
   const result = await sendNotificationEmail({
     to,
     subject: template.subject,
