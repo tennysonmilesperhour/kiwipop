@@ -20,28 +20,28 @@ export default function ShippingPage() {
         <ul>
           <li>
             <strong style={{ color: 'var(--lime)' }}>domestic us</strong>:
-            yes, day one
+            yes
           </li>
-          <li>canada: soon, on the list</li>
-          <li>
-            international (vienna · melbourne · london are first in line):
-            waitlist; we open it when we have stock
-          </li>
+          <li>canada: yes, tracked shipping</li>
+          <li>selected international destinations: yes, tracked shipping</li>
         </ul>
 
         <h2>how it ships</h2>
         <ul>
           <li>
-            usps or ups, calculated at checkout. shop pay express checkout
-            available.
+            us orders ship via usps. canada and international orders use an
+            available tracked international carrier.
           </li>
           <li>
-            free shipping over <strong>$40</strong>. otherwise flat{' '}
-            <strong>$4.99</strong> standard. order more pops.
+            us orders get free shipping over <strong>$40</strong>; otherwise
+            shipping is <strong>$4.99</strong>. canada is <strong>$14.99</strong>
+            and other supported international destinations are{' '}
+            <strong>$24.99</strong>.
           </li>
           <li>
-            we ship within 1–3 business days. small batch · sometimes the
-            wax cools at its own speed.
+            we ship within 1–3 business days. international transit and customs
+            clearance usually take longer, and import duties may be collected
+            by the destination country.
           </li>
         </ul>
 

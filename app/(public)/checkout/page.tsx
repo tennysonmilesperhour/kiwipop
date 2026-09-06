@@ -10,6 +10,12 @@ import {
   checkoutRequestSchema,
   type ShippingAddress,
 } from '@/lib/validators';
+import {
+  shippingChargeCents,
+  isSupportedShippingCountry,
+  shippingRegion,
+  SUPPORTED_SHIPPING_COUNTRIES,
+} from '@/lib/shipping';
 
 interface CheckoutResponse {
   orderId?: string;
@@ -127,7 +133,8 @@ export default function CheckoutPage() {
   const discountCents = appliedDiscount
     ? Math.round((total * appliedDiscount.percentOff) / 100)
     : 0;
-  const shippingCents = total >= 4000 ? 0 : 499;
+  const shippingCents = shippingChargeCents(total, address.country);
+  const selectedShippingRegion = shippingRegion(address.country);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -290,7 +297,9 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">State *</label>
+                <label className="form-label">
+                  {address.country === 'US' ? 'State' : 'State / Province'} *
+                </label>
                 <input
                   type="text"
                   value={address.state}
@@ -301,7 +310,9 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">ZIP *</label>
+                <label className="form-label">
+                  {address.country === 'US' ? 'ZIP' : 'Postal code'} *
+                </label>
                 <input
                   type="text"
                   value={address.zip}
@@ -317,13 +328,19 @@ export default function CheckoutPage() {
               <label className="form-label">Country *</label>
               <select
                 value={address.country}
-                onChange={(e) => updateAddress('country', e.target.value)}
+                onChange={(e) => {
+                  if (isSupportedShippingCountry(e.target.value)) {
+                    updateAddress('country', e.target.value);
+                  }
+                }}
                 className="form-select"
                 autoComplete="country"
               >
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="MX">Mexico</option>
+                {SUPPORTED_SHIPPING_COUNTRIES.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -459,7 +476,15 @@ export default function CheckoutPage() {
             <div className="summary-row">
               <span>Shipping:</span>
               <span>
-                {shippingCents === 0 ? 'free · over $40' : '$4.99 standard · US'}
+                {shippingCents === 0
+                  ? 'free · over $40 · US'
+                  : `${formatCentsToUSD(shippingCents)} · ${
+                      selectedShippingRegion === 'domestic'
+                        ? 'standard US'
+                        : selectedShippingRegion === 'canada'
+                          ? 'tracked Canada'
+                          : 'tracked international'
+                    }`}
               </span>
             </div>
             <div className="summary-row summary-total">

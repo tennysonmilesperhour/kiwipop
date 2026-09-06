@@ -79,7 +79,7 @@ export default function PrivacyPage() {
           <li><strong>supabase</strong>: database and authentication</li>
           <li><strong>vercel</strong>: hosting and analytics</li>
           <li><strong>resend</strong>: transactional email</li>
-          <li><strong>usps / shipping carriers</strong>: order fulfillment</li>
+          <li><strong>usps / shipstation / easypost / shipping carriers</strong>: order fulfillment</li>
         </ul>
         <p>
           these providers are contractually bound to use your data only for

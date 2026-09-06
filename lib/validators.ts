@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isSupportedShippingCountry } from '@/lib/shipping';
 
 export const shippingAddressSchema = z.object({
   firstName: z.string().trim().min(1, 'First name is required').max(100),
@@ -7,7 +8,12 @@ export const shippingAddressSchema = z.object({
   city: z.string().trim().min(1, 'City is required').max(100),
   state: z.string().trim().min(1, 'State is required').max(100),
   zip: z.string().trim().min(3, 'ZIP is required').max(20),
-  country: z.string().trim().length(2, 'Country code must be 2 letters'),
+  country: z
+    .string()
+    .trim()
+    .length(2, 'Country code must be 2 letters')
+    .transform((country) => country.toUpperCase())
+    .refine(isSupportedShippingCountry, 'We do not currently ship to that country'),
 });
 
 export type ShippingAddress = z.infer<typeof shippingAddressSchema>;

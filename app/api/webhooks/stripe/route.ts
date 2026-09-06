@@ -90,6 +90,27 @@ async function handleCheckoutSessionCompleted(
   // accurate. session.amount_total is already in cents.
   const amountTotal =
     typeof session.amount_total === 'number' ? session.amount_total : null;
+  // Stripe performs the final address collection. Persist that exact address
+  // instead of relying on the pre-payment form copy, so fulfillment and label
+  // purchasing always use what the customer confirmed at payment.
+  const stripeShipping = session.shipping_details;
+  const stripeNameParts = stripeShipping?.name?.trim().split(/\s+/) ?? [];
+  const confirmedShippingAddress = stripeShipping?.address
+    ? {
+        firstName: stripeNameParts[0] ?? '',
+        lastName: stripeNameParts.slice(1).join(' '),
+        address: [
+          stripeShipping.address.line1,
+          stripeShipping.address.line2,
+        ]
+          .filter(Boolean)
+          .join(', '),
+        city: stripeShipping.address.city ?? '',
+        state: stripeShipping.address.state ?? '',
+        zip: stripeShipping.address.postal_code ?? '',
+        country: stripeShipping.address.country ?? 'US',
+      }
+    : null;
 
   const { data: updatedOrder, error } = await supabaseAdmin
     .from('orders')
@@ -97,6 +118,9 @@ async function handleCheckoutSessionCompleted(
       status: 'paid',
       stripe_payment_intent_id: paymentIntentId,
       ...(amountTotal !== null ? { total_cents: amountTotal } : {}),
+      ...(confirmedShippingAddress
+        ? { shipping_address: confirmedShippingAddress }
+        : {}),
       updated_at: new Date().toISOString(),
     })
     .eq('id', orderId)
