@@ -27,9 +27,9 @@ export async function DELETE(_request: NextRequest, { params }: RouteContext) {
       return NextResponse.json(
         {
           error:
-            'cash_donations table not found — apply supabase/migrations/012_cash_donations.sql (`supabase db push`) and refresh.',
+            'cash_donations table not found — apply supabase/migrations/20260503021032_012_cash_donations.sql (`supabase db push`) and refresh.',
           migration_pending: true,
-          migration: '012_cash_donations.sql',
+          migration: '20260503021032_012_cash_donations.sql',
         },
         { status: 503 },
       );

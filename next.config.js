@@ -53,7 +53,16 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   async redirects() {
+    // Permanent host redirect for the production *.vercel.app alias only.
+    // Preview hosts (kiwipop-git-*.vercel.app, kiwipop-*-tennysonmilesperhour.vercel.app)
+    // do not match this exact host, so they keep serving the deployment.
     return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'kiwipop.vercel.app' }],
+        destination: 'https://www.kiwipop.fun/:path*',
+        permanent: true,
+      },
       { source: '/raffle', destination: '/', permanent: false },
       { source: '/admin/raffle', destination: '/admin/dashboard', permanent: false },
     ];

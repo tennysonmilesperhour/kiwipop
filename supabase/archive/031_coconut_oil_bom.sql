@@ -1,3 +1,8 @@
+-- ARCHIVED. Effects are already live in production (four BOM rows reference
+-- RM-COCONUT-OIL). This file has no production history row. It was moved out
+-- of supabase/migrations/ so the GitHub integration will not run it again.
+-- Do not move it back unless the version is marked applied without executing.
+--
 -- 031_coconut_oil_bom.sql
 --
 -- Add coconut oil to the per-pop bill of materials for every flavor.
