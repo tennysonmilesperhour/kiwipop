@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import {
   DOOR_OPENING_POPS,
@@ -10,6 +9,8 @@ import {
 } from '@/lib/plan';
 import { TIER_META } from '@/lib/wholesale-tiers';
 import { formatCentsToUSD } from '@/lib/format';
+
+import type { JSX } from "react";
 
 /* =========================================================
    DOOR PIPELINE

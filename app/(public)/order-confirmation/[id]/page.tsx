@@ -31,14 +31,13 @@ interface OrderRow {
 }
 
 interface OrderConfirmationProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const ID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export default async function OrderConfirmation({
-  params,
-}: OrderConfirmationProps) {
+export default async function OrderConfirmation(props: OrderConfirmationProps) {
+  const params = await props.params;
   if (!ID_REGEX.test(params.id)) {
     notFound();
   }

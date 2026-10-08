@@ -10,6 +10,8 @@ import {
 } from '@/lib/wholesale-tiers';
 import { LineSheetActions } from './LineSheetActions';
 
+import type { JSX } from "react";
+
 const title = 'wholesale brand & price sheet';
 const description =
   'kiwi pop wholesale brand & price sheet — brand story, product lineup, formulation, tiered pricing, and ordering terms for boutiques, bars, and festival vendors.';

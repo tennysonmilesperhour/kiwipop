@@ -90,7 +90,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     throw err;
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const {
     data: { user },
     error: userError,

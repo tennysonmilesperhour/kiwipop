@@ -8,10 +8,11 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export async function PATCH(request: NextRequest, { params }: RouteContext) {
+export async function PATCH(request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 
@@ -98,7 +99,8 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
   return NextResponse.json({ product });
 }
 
-export async function DELETE(_request: NextRequest, { params }: RouteContext) {
+export async function DELETE(_request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 

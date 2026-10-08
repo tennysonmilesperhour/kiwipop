@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import { formatCentsToUSD } from '@/lib/format';
 import {
@@ -13,6 +12,8 @@ import {
   productionMonth,
 } from '@/lib/production-cost';
 import { PLAN_MONTHS, currentPlanMonth } from '@/lib/plan';
+
+import type { JSX } from "react";
 
 /* =========================================================
    PRODUCTION PLAN CARD

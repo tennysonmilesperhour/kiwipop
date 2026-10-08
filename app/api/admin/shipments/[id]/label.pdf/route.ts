@@ -12,7 +12,7 @@ interface ShipmentRow {
 }
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 /**
@@ -20,7 +20,8 @@ interface RouteContext {
  * ShipStation hands back on /shipments/createlabel (their V1 API has no
  * re-fetch-by-id endpoint), so this just decodes and streams it.
  */
-export async function GET(_request: NextRequest, { params }: RouteContext) {
+export async function GET(_request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 

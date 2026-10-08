@@ -12,7 +12,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 /**
@@ -20,7 +20,8 @@ interface RouteContext {
  * wholesale account and email them out. Used for accounts approved before the
  * codes feature existed, or to re-send the welcome email.
  */
-export async function POST(_request: NextRequest, { params }: RouteContext) {
+export async function POST(_request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 

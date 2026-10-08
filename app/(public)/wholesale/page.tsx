@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { JsonLd } from '@/components/JsonLd';
 import { buildBreadcrumbLd, SHARE_IMAGE_PATH } from '@/lib/seo';
 
+import type { JSX } from "react";
+
 const title = 'wholesale · lollipop-shaped party supplements';
 const description =
   'kiwi pop on your shelf. tiered pricing, low MOQ, festival-ready. apply and we email you back.';

@@ -76,7 +76,14 @@ export async function POST(request: NextRequest) {
     throw err;
   }
 
-  const productsById = await loadProducts(parsed.items.map((i) => i.productId));
+  let productsById: Map<string, ProductRow>;
+  try {
+    productsById = await loadProducts(parsed.items.map((i) => i.productId));
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[checkout] failed to load products', err);
+    return NextResponse.json({ error: detail }, { status: 503 });
+  }
 
   // Site-wide "preorder only" mode (Admin → Products). When on, every line is
   // a preorder regardless of stock, so the out-of-stock guard is skipped.
@@ -145,7 +152,7 @@ export async function POST(request: NextRequest) {
   // and the order stays user_id=null (retrievable via the order id link).
   let authedUserId: string | null = null;
   try {
-    const supabase = createSupabaseServerClient();
+    const supabase = await createSupabaseServerClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();

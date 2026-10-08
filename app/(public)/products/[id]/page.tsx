@@ -7,7 +7,7 @@ import { getPreorderOnlyMode } from '@/lib/settings';
 import ProductClient from './ProductClient';
 
 interface ProductPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 interface ProductRow {
@@ -34,7 +34,8 @@ async function loadProduct(id: string): Promise<ProductRow | null> {
   }
 }
 
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata(props: ProductPageProps): Promise<Metadata> {
+  const params = await props.params;
   const product = await loadProduct(params.id);
   if (!product) {
     return {
@@ -76,7 +77,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage(props: ProductPageProps) {
+  const params = await props.params;
   const [product, preorderMode] = await Promise.all([
     loadProduct(params.id),
     getPreorderOnlyMode(),

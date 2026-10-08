@@ -6,14 +6,15 @@ import { FLAVOR_LABELS, FDA_NOTICE, labelForSlug } from '@/lib/labels';
 import { SITE_URL } from '@/lib/seo';
 
 interface LabelFlavorPageProps {
-  params: { flavor: string };
+  params: Promise<{ flavor: string }>;
 }
 
 export function generateStaticParams() {
   return FLAVOR_LABELS.map((label) => ({ flavor: label.slug }));
 }
 
-export function generateMetadata({ params }: LabelFlavorPageProps): Metadata {
+export async function generateMetadata(props: LabelFlavorPageProps): Promise<Metadata> {
+  const params = await props.params;
   const label = labelForSlug(params.flavor);
   if (!label) {
     return { title: 'flavor label · kiwi pop' };
@@ -26,7 +27,8 @@ export function generateMetadata({ params }: LabelFlavorPageProps): Metadata {
   };
 }
 
-export default function LabelFlavorPage({ params }: LabelFlavorPageProps) {
+export default async function LabelFlavorPage(props: LabelFlavorPageProps) {
+  const params = await props.params;
   const label = labelForSlug(params.flavor);
   if (!label) notFound();
 

@@ -87,7 +87,7 @@ end of transmission_`}
             opacity: 0.7,
           }}
         >
-          // don't see your metro lit up yet? grab a drop and start a new star.
+          // don&apos;t see your metro lit up yet? grab a drop and start a new star.
         </p>
         <div style={{ marginTop: '1.25rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <Link href="/#drop" className="btn btn-primary">

@@ -19,6 +19,13 @@ interface ShippingAddress {
   donationMessage?: string | null;
 }
 
+interface OrderLineItem {
+  id: string;
+  quantity?: number;
+  price_cents?: number;
+  products?: { name?: string | null } | null;
+}
+
 interface OrderRow {
   id: string;
   status: string;
@@ -728,7 +735,7 @@ export default function OrdersPage() {
               {buyAllResult.errors.join(' · ')}
             </>
           ) : null}
-          {' · '}use <b>print unprinted labels</b> when you're ready to print.
+          {' · '}use <b>print unprinted labels</b> when you&apos;re ready to print.
         </div>
       )}
       {unprintedPdf && (
@@ -1396,8 +1403,9 @@ function OrderModal({
               <section>
                 <h3 className="orders-modal-section-title">Items</h3>
                 <div className="orders-modal-items">
-                  {order.items?.length ? (
-                    order.items.map((item: any) => (
+                  {(order.items as OrderLineItem[] | undefined)?.length ? (
+                    (order.items as OrderLineItem[]).map((item) => {
+                      return (
                       <div key={item.id} className="orders-modal-item">
                         <span className="orders-modal-item-name">
                           {item.products?.name ?? 'Unknown'}{' '}
@@ -1411,7 +1419,8 @@ function OrderModal({
                           )}
                         </span>
                       </div>
-                    ))
+                      );
+                    })
                   ) : (
                     <p style={{ fontSize: 13 }}>no items</p>
                   )}

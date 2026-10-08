@@ -6,13 +6,11 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export async function DELETE(
-  _request: NextRequest,
-  { params }: RouteContext
-): Promise<NextResponse> {
+export async function DELETE(_request: NextRequest, props: RouteContext): Promise<NextResponse> {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 

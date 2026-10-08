@@ -1,8 +1,9 @@
 'use client';
-
 import Link from 'next/link';
 import { formatCentsToUSD } from '@/lib/format';
 import { CLOSING_LEVERS } from '@/lib/plan';
+
+import type { JSX } from "react";
 
 /* =========================================================
    SOURCING LEVERS

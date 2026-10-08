@@ -25,7 +25,7 @@ interface OrderRow {
 }
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 interface ExistingShipmentRow {
@@ -48,7 +48,8 @@ interface ExistingShipmentRow {
  * Idempotent-ish: if a shipment row already exists with a tracking number,
  * returns it instead of creating a new label.
  */
-export async function POST(request: NextRequest, { params }: RouteContext) {
+export async function POST(request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 

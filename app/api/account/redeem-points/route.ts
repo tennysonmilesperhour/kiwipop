@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
  * guards the balance, mints the code, and debits points atomically.
  */
 export async function POST() {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const {
     data: { user },
     error: userError,
