@@ -52,6 +52,12 @@ const nextConfig = {
     remotePatterns,
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      { source: '/raffle', destination: '/', permanent: false },
+      { source: '/admin/raffle', destination: '/admin/dashboard', permanent: false },
+    ];
+  },
   async headers() {
     return [
       {

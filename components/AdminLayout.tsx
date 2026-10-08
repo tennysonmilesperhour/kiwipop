@@ -21,7 +21,6 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: '/admin/logistics', label: 'logistics' },
   { href: '/admin/map', label: 'map · live' },
   { href: '/admin/sheets', label: 'sheets' },
-  { href: '/admin/raffle', label: 'raffle' },
   { href: '/admin/reviews', label: 'reviews' },
   { href: '/admin/cash-donations', label: 'cash donations' },
   { href: '/admin/list', label: 'marketing list' },

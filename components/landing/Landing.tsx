@@ -13,7 +13,7 @@ import type { LandingProducts } from '@/lib/landing-products';
 import type { FundraiserSnapshot } from '@/lib/fundraiser';
 import { JsonLd } from '@/components/JsonLd';
 import { FundraiserBar } from './FundraiserBar';
-import { RaffleForm } from './RaffleForm';
+import { isSoldOut, preorderFulfillmentNote } from '@/lib/commerce';
 import { ReelPlayer } from './ReelPlayer';
 import { ReviewSubmitModal } from './ReviewSubmitModal';
 
@@ -218,6 +218,17 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
       : packSize === 1
         ? selectedFlavor?.product
         : selectedPack?.product;
+  const checkoutIsPreorder = checkoutProduct
+    ? isPreorderProduct(checkoutProduct)
+    : false;
+  const checkoutSoldOut = Boolean(
+    checkoutProduct &&
+      isSoldOut({
+        inStock: checkoutProduct.in_stock,
+        preorderOnly: checkoutProduct.preorder_only,
+        sitePreorderMode: preorderMode,
+      })
+  );
   const fallbackPriceCents = (activeTier?.priceCents ?? 0) * qty;
   const livePriceCents =
     (checkoutProduct?.price_cents ?? activeTier?.priceCents ?? 0) * qty;
@@ -250,6 +261,16 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
   const stockLine = (() => {
     if (preorderMode) return 'KIWI POP · PREORDER';
     const launch = products.flavors.find((f) => f.sku === 'KP-KIWI-KITTY');
+    if (
+      launch?.product &&
+      isSoldOut({
+        inStock: launch.product.in_stock,
+        preorderOnly: launch.product.preorder_only,
+        sitePreorderMode: preorderMode,
+      })
+    ) {
+      return 'KIWI POP · SOLD OUT';
+    }
     if (launch?.product && launch.product.in_stock > 0) {
       return `KIWI POP · ${launch.product.in_stock} IN STOCK`;
     }
@@ -257,7 +278,7 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
   })();
 
   const handleAddToCart = () => {
-    if (!checkoutProduct) return;
+    if (!checkoutProduct || checkoutSoldOut) return;
     if (addState === 'added') {
       router.push('/cart');
       return;
@@ -268,7 +289,8 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
       price: checkoutProduct.price_cents,
       quantity: qty,
       image: checkoutProduct.image_url ?? FLAVOR_IMG[selectedFlavor?.sku ?? ''] ?? undefined,
-      isPreorder: isPreorderProduct(checkoutProduct),
+      isPreorder: checkoutIsPreorder,
+      preorderDeadline: checkoutProduct.preorder_deadline ?? undefined,
     });
     setAddState('added');
     setTimeout(() => setAddState('idle'), 1600);
@@ -331,7 +353,6 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           <a href="#flavors" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>FLAVORS</a>
           <a href="#reviews" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>REVIEWS</a>
           <Link href="/campaign" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>CAMPAIGN</Link>
-          <Link href="/raffle" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>RAFFLE</Link>
           <Link href="/variety" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>VARIETY</Link>
           <Link href="/wholesale" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>WHOLESALE</Link>
           <Link href="/find-us" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>FIND US</Link>
@@ -348,7 +369,6 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
               <a href="#flavors" role="menuitem">FLAVORS</a>
               <a href="#reviews" role="menuitem">REVIEWS</a>
               <Link href="/campaign" role="menuitem">CAMPAIGN</Link>
-              <Link href="/raffle" role="menuitem">RAFFLE</Link>
               <Link href="/variety" role="menuitem">VARIETY</Link>
               <Link href="/wholesale" role="menuitem">WHOLESALE</Link>
               <Link href="/find-us" role="menuitem">FIND US</Link>
@@ -392,9 +412,16 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
         <span className="cn">舐一下</span>
         <div className="kp-ticker">
           <div className="kp-ticker-inner">
-            {[...FESTIVAL_TICKER, ...FESTIVAL_TICKER].map((entry, i) => (
-              <span key={i}>{entry}</span>
-            ))}
+            {[...FESTIVAL_TICKER, ...FESTIVAL_TICKER].map((entry, i) => {
+              const label = !preorderMode
+                ? entry
+                : entry === 'DROP 001 · KIWI POP · LIVE'
+                  ? 'DROP 001 · KIWI POP · PREORDER'
+                  : entry === 'ALL 4 FLAVORS LIVE'
+                    ? 'ALL 4 FLAVORS · PREORDER'
+                    : entry;
+              return <span key={i}>{label}</span>;
+            })}
           </div>
         </div>
         <span className="cn">USD ▾</span>
@@ -446,8 +473,12 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
             <span className="em">heads up · v1.</span>{' '}
-            this is the first version we&apos;re shipping. first batch of {launchProduct?.in_stock ?? 200}, made small.
-            we&apos;re already tuning the next one. tell us what hits and what doesn&apos;t.
+            {preorderMode || launchProduct?.preorder_only
+              ? "this is the first version we're shipping. preorders are charged today and ship when the batch is ready."
+              : launchProduct && launchProduct.in_stock <= 0
+                ? "this is the first version we're shipping. the current batch is sold out."
+                : `this is the first version we're shipping. first batch of ${launchProduct?.in_stock ?? 200}, made small.`}
+            {' '}we&apos;re already tuning the next one. tell us what hits and what doesn&apos;t.
           </p>
           <div className="hero-ctas">
             <a href="#shop" className="hero-cta-primary">
@@ -489,9 +520,14 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           <div className="img-foot">
             <span className="ig-handle">@the.kiwi.pop · the lineup</span>
             <p className="quote">
-              made by hand in salt lake city. <span className="em">drop 001 · live now.</span>
+              made by hand in salt lake city.{' '}
+              <span className="em">
+                {preorderMode ? 'drop 001 · preorder.' : 'drop 001 · live now.'}
+              </span>
             </p>
-            <span className="who">DROP 001 · KIWI POP · LIVE NOW</span>
+            <span className="who">
+              {preorderMode ? 'DROP 001 · KIWI POP · PREORDER' : 'DROP 001 · KIWI POP · LIVE NOW'}
+            </span>
           </div>
 
           <div className="checkout">
@@ -501,7 +537,7 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
                 <span className="kw">
                   {preorderMode
                     ? `ALL ${products.flavors.length} FLAVORS · PREORDER`
-                    : `ALL ${products.flavors.length} FLAVORS LIVE`}
+                    : `ALL ${products.flavors.length} FLAVORS`}
                 </span>
               </span>
             </div>
@@ -521,7 +557,19 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
                       borderLeftColor: selected ? FLAVOR_DOT_COLOR[flavor.sku] : undefined,
                     }}
                     aria-pressed={selected}
-                    title="in stock"
+                    title={
+                      !flavor.product
+                        ? 'coming soon'
+                        : isSoldOut({
+                            inStock: flavor.product.in_stock,
+                            preorderOnly: flavor.product.preorder_only,
+                            sitePreorderMode: preorderMode,
+                          })
+                          ? 'sold out'
+                          : isPreorderProduct(flavor.product)
+                            ? 'preorder'
+                            : 'in stock'
+                    }
                   >
                     {flavor.pickerLabel}
                   </button>
@@ -608,28 +656,21 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
               type="button"
               className={`cta-take${addState === 'added' ? ' added' : ''}`}
               onClick={handleAddToCart}
-              disabled={!checkoutProduct}
+              disabled={!checkoutProduct || checkoutSoldOut}
             >
               {addState === 'added'
                 ? 'ADDED → GO TO CART'
-                : checkoutProduct
-                  ? preorderMode
-                    ? `PREORDER → ADD TO CART · ${formatCentsToUSD(livePriceCents)}`
-                    : `TAKE ONE → ADD TO CART · ${formatCentsToUSD(livePriceCents)}`
-                  : 'NOTIFY ME →'}
+                : checkoutSoldOut
+                  ? 'Sold out'
+                  : checkoutProduct
+                    ? checkoutIsPreorder
+                      ? `Preorder · ${formatCentsToUSD(livePriceCents)}`
+                      : `Add to cart · ${formatCentsToUSD(livePriceCents)}`
+                    : 'NOTIFY ME →'}
             </button>
-            {preorderMode && checkoutProduct ? (
-              <p
-                style={{
-                  margin: '0.4rem 0 0',
-                  fontFamily: 'var(--mono)',
-                  fontSize: 11,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'var(--lemon)',
-                }}
-              >
-                preorder · charged now · ships when the next batch is ready
+            {checkoutIsPreorder && checkoutProduct ? (
+              <p className="fulfillment-note">
+                {preorderFulfillmentNote(checkoutProduct.preorder_deadline)}
               </p>
             ) : null}
             {addState === 'added' ? (
@@ -737,14 +778,28 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
               : flavor.sku === 'KP-MANGO-MOLLY' ? 'kiwi-flavor'
               : 'grape';
             const isPreorder = Boolean(flavor.product) && isPreorderProduct(flavor.product);
+            const soldOut = Boolean(
+              flavor.product &&
+                isSoldOut({
+                  inStock: flavor.product.in_stock,
+                  preorderOnly: flavor.product.preorder_only,
+                  sitePreorderMode: preorderMode,
+                })
+            );
             const isLive =
               !isPreorder &&
+              !soldOut &&
               flavor.status === 'live' &&
-              Boolean(flavor.product) &&
-              !flavor.product?.preorder_only;
+              Boolean(flavor.product);
             const href = flavor.product ? `/products/${flavor.product.id}` : '#shop';
             const inStock = flavor.product?.in_stock ?? 0;
-            const railState = isLive ? 'shop' : isPreorder ? 'preorder' : 'coming soon';
+            const railState = soldOut
+              ? 'sold out'
+              : isLive
+                ? 'shop'
+                : isPreorder
+                  ? 'preorder'
+                  : 'coming soon';
             return (
               <Link
                 key={flavor.sku}
@@ -764,12 +819,14 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
                     style={{ objectFit: 'cover', objectPosition: 'center' }}
                   />
                 </div>
-                <span className={`status-pill ${isLive || isPreorder ? 'live' : 'soon'}`}>
-                  {isLive
-                    ? `LIVE · ${inStock} LEFT`
-                    : isPreorder
-                      ? 'PREORDER'
-                      : 'COMING SOON'}
+                <span className={`status-pill ${soldOut ? 'soldout' : isPreorder ? 'preorder' : isLive ? 'live' : 'soon'}`}>
+                  {soldOut
+                    ? 'SOLD OUT'
+                    : isLive
+                      ? `LIVE · ${inStock} LEFT`
+                      : isPreorder
+                        ? 'PREORDER'
+                        : 'COMING SOON'}
                 </span>
                 <div className="top">
                   <span className="num">00{idx + 1} · {flavor.flavor.split(' ')[0].toUpperCase()}</span>
@@ -790,7 +847,7 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
                     <span className="mg">+ {flavor.adaptogen} · {flavor.direction}</span>
                     <br />
                     {flavor.product
-                      ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{isLive ? 'SHOP →' : isPreorder ? 'PREORDER →' : 'COMING SOON'}</span></>
+                      ? <>{formatCentsToUSD(flavor.product.price_cents).toUpperCase()} · <span className="mg">{soldOut ? 'SOLD OUT' : isLive ? 'SHOP →' : isPreorder ? 'PREORDER →' : 'COMING SOON'}</span></>
                       : <span className="mg">NOTIFY ME →</span>}
                   </div>
                 </div>
@@ -1116,8 +1173,6 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
         </div>
       </section>
 
-      <RaffleForm />
-
       {/* ===== ZONE 7 · FAQ ===== */}
       <section
         className="zfaq"
@@ -1207,7 +1262,15 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           </div>
           <p>
             made small in salt lake, dosed for the dance floor. shipping since {new Date().getFullYear()}.
-            {launchProduct ? <> drop 001 · {launchProduct.in_stock} kiwi pop in stock.</> : null}
+            {launchProduct ? (
+              preorderMode || launchProduct.preorder_only ? (
+                <> drop 001 · preorder.</>
+              ) : launchProduct.in_stock > 0 ? (
+                <> drop 001 · {launchProduct.in_stock} kiwi pop in stock.</>
+              ) : (
+                <> drop 001 · sold out.</>
+              )
+            ) : null}
           </p>
         </div>
         <div className="col">
@@ -1217,7 +1280,19 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
               key={flavor.sku}
               href={flavor.product ? `/products/${flavor.product.id}` : '#shop'}
             >
-              {flavor.name} {flavor.status === 'soon' ? '· coming soon' : null}
+              {flavor.name}{' '}
+              {flavor.product &&
+              isSoldOut({
+                inStock: flavor.product.in_stock,
+                preorderOnly: flavor.product.preorder_only,
+                sitePreorderMode: preorderMode,
+              })
+                ? '· sold out'
+                : flavor.product && isPreorderProduct(flavor.product)
+                  ? '· preorder'
+                  : flavor.status === 'soon'
+                    ? '· coming soon'
+                    : null}
             </Link>
           ))}
         </div>

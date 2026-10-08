@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store';
 import { useAuth } from '@/lib/auth-context';
 import { formatCentsToUSD } from '@/lib/format';
+import { classifyCartLine } from '@/lib/commerce';
+import { useStorefrontAvailability } from '@/lib/use-availability';
 import {
   checkoutRequestSchema,
   type ShippingAddress,
@@ -22,7 +24,15 @@ interface CheckoutResponse {
 export default function CheckoutPage() {
   const items = useCart((s) => s.items);
   const total = useCart((s) => s.getTotalPrice());
-  const hasPreorder = items.some((item) => item.isPreorder);
+  const { availability, loading: availabilityLoading } = useStorefrontAvailability(
+    items.map((item) => item.productId)
+  );
+  const lines = items.map((item) => ({
+    item,
+    ...classifyCartLine(item, availability),
+  }));
+  const hasSoldOut = lines.some((line) => line.soldOut);
+  const checkoutBlocked = hasSoldOut || (items.length > 0 && availabilityLoading);
   const router = useRouter();
   const { user, profile } = useAuth();
 
@@ -132,6 +142,10 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (hasSoldOut) {
+      setError('Sold out. Remove the sold-out item before checking out.');
+      return;
+    }
 
     const codeToSend = (appliedDiscount?.code ?? discountCode).trim();
     const payload = {
@@ -354,10 +368,16 @@ export default function CheckoutPage() {
 
             <button
               type="submit"
-              disabled={submitting}
-              className="btn btn-primary btn-full"
+              disabled={submitting || checkoutBlocked}
+              className={`btn btn-primary btn-full${hasSoldOut ? ' is-sold-out' : ''}`}
             >
-              {submitting ? 'Redirecting to payment…' : 'Continue to payment'}
+              {hasSoldOut
+                ? 'Sold out'
+                : availabilityLoading
+                  ? 'Checking stock…'
+                  : submitting
+                    ? 'Redirecting to payment…'
+                    : 'Continue to payment'}
             </button>
           </form>
         </div>
@@ -365,28 +385,27 @@ export default function CheckoutPage() {
         <div className="cart-summary">
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
 
-          {hasPreorder && (
-            <div
-              className="alert"
-              style={{
-                marginBottom: '1rem',
-                borderColor: 'var(--ultraviolet)',
-                color: 'var(--ultraviolet)',
-                fontSize: '0.85rem',
-              }}
-            >
-              <strong style={{ letterSpacing: '0.12em' }}>PREORDER ·</strong>{' '}
-              charged now, ships when the next batch is ready.
-            </div>
+          {hasSoldOut && (
+            <p className="fulfillment-note" style={{ color: '#ff2d6a' }}>
+              A sold-out item is in your cart. Remove it to check out.
+            </p>
           )}
 
           <div className="mb-4 max-h-60 overflow-y-auto">
-            {items.map((item) => (
-              <div key={item.productId} className="summary-row text-sm">
-                <span>
-                  {item.name} x {item.quantity}
-                </span>
-                <span>{formatCentsToUSD(item.price * item.quantity)}</span>
+            {lines.map(({ item, soldOut, note, preorder }) => (
+              <div key={item.productId} style={{ marginBottom: '0.8rem' }}>
+                <div className="summary-row text-sm" style={{ marginBottom: '0.25rem' }}>
+                  <span>
+                    {item.name} x {item.quantity}
+                  </span>
+                  <span>{formatCentsToUSD(item.price * item.quantity)}</span>
+                </div>
+                {soldOut ? (
+                  <span className="status-badge sold-out">Sold out</span>
+                ) : preorder ? (
+                  <span className="status-badge preorder">Preorder</span>
+                ) : null}
+                {note ? <p className="fulfillment-note">{note}</p> : null}
               </div>
             ))}
           </div>

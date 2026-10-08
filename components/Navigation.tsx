@@ -11,7 +11,6 @@ const LINKS: Array<{ href: string; label: string }> = [
   { href: '/#ingredients', label: 'spec' },
   { href: '/about', label: 'story' },
   { href: '/find-us', label: 'find us' },
-  { href: '/raffle', label: 'raffle' },
   { href: '/variety', label: 'variety' },
   { href: '/merch', label: 'merch' },
   { href: '/wholesale', label: 'wholesale' },

@@ -40,6 +40,8 @@ interface CheckoutLineItem {
   quantity: number;
   image?: string;
   stripePriceId?: string | null;
+  /** Shown on the Stripe Checkout line. Used for the preorder ship note. */
+  description?: string;
 }
 
 interface CreateCheckoutSessionParams {
@@ -133,28 +135,39 @@ const STANDARD_DOMESTIC_SHIPPING_RATE =
 const FREE_SHIPPING_THRESHOLD_CENTS =
   Number(process.env.FREE_SHIPPING_THRESHOLD_CENTS ?? '4000') || 4000;
 
+function inlineLineItem(
+  item: CheckoutLineItem
+): Stripe.Checkout.SessionCreateParams.LineItem {
+  return {
+    price_data: {
+      currency: 'usd',
+      product_data: {
+        name: item.name,
+        ...(item.description ? { description: item.description } : {}),
+        images: item.image ? [item.image] : [],
+        metadata: { productId: item.productId },
+      },
+      unit_amount: item.amount,
+    },
+    quantity: item.quantity,
+  };
+}
+
 export async function createCheckoutSession(params: CreateCheckoutSessionParams) {
   const inlineLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
-    params.items.map((item) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.name,
-          images: item.image ? [item.image] : [],
-          metadata: { productId: item.productId },
-        },
-        unit_amount: item.amount,
-      },
-      quantity: item.quantity,
-    }));
+    params.items.map(inlineLineItem);
 
-  const someItemUsesStripePrice = params.items.some((item) => item.stripePriceId);
+  // A catalog Price cannot carry a per-checkout description, so preorder
+  // lines (which need the ship note) always use inline price_data.
+  const someItemUsesStripePrice = params.items.some(
+    (item) => item.stripePriceId && !item.description
+  );
   const preferredLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
     someItemUsesStripePrice
-      ? params.items.map((item) =>
-          item.stripePriceId
+      ? params.items.map((item, index) =>
+          item.stripePriceId && !item.description
             ? { price: item.stripePriceId, quantity: item.quantity }
-            : inlineLineItems[params.items.indexOf(item)],
+            : inlineLineItems[index]
         )
       : inlineLineItems;
 

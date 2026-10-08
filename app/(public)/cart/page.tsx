@@ -3,12 +3,22 @@
 import { useCart } from '@/lib/store';
 import { CartItem } from '@/components/CartItem';
 import { formatCentsToUSD } from '@/lib/format';
+import { classifyCartLine } from '@/lib/commerce';
+import { useStorefrontAvailability } from '@/lib/use-availability';
 import Link from 'next/link';
 
 export default function CartPage() {
   const { items, getTotalPrice } = useCart();
   const total = getTotalPrice();
-  const hasPreorder = items.some((item) => item.isPreorder);
+  const { availability, loading } = useStorefrontAvailability(
+    items.map((item) => item.productId)
+  );
+  const lines = items.map((item) => ({
+    item,
+    ...classifyCartLine(item, availability),
+  }));
+  const hasSoldOut = lines.some((line) => line.soldOut);
+  const checkoutBlocked = hasSoldOut || (items.length > 0 && loading);
 
   if (items.length === 0) {
     return (
@@ -65,28 +75,24 @@ export default function CartPage() {
 
       <div className="cart-container">
         <div className="cart-items">
-          {items.map((item) => (
-            <CartItem key={item.productId} item={item} />
+          {lines.map(({ item, soldOut, preorder, note }) => (
+            <CartItem
+              key={item.productId}
+              item={item}
+              soldOut={soldOut}
+              preorder={preorder}
+              note={note}
+            />
           ))}
         </div>
 
         <div className="cart-summary">
           <div className="card-title">order summary</div>
 
-          {hasPreorder && (
-            <div
-              className="alert"
-              style={{
-                marginBottom: '1rem',
-                borderColor: 'var(--ultraviolet)',
-                color: 'var(--ultraviolet)',
-                fontSize: '0.85rem',
-              }}
-            >
-              <strong style={{ letterSpacing: '0.12em' }}>PREORDER ·</strong>{' '}
-              charged now, ships when the next batch is ready. we&apos;ll email
-              you the day before it moves.
-            </div>
+          {hasSoldOut && (
+            <p className="fulfillment-note" style={{ color: '#ff2d6a' }}>
+              A sold-out item is in your cart. Remove it to check out.
+            </p>
           )}
 
           <div className="summary-row">
@@ -106,13 +112,24 @@ export default function CartPage() {
             </span>
           </div>
 
-          <Link
-            href="/checkout"
-            className="btn btn-primary btn-full"
-            style={{ marginTop: '1rem' }}
-          >
-            checkout →
-          </Link>
+          {checkoutBlocked ? (
+            <button
+              type="button"
+              className={`btn btn-primary btn-full${hasSoldOut ? ' is-sold-out' : ''}`}
+              style={{ marginTop: '1rem' }}
+              disabled
+            >
+              {hasSoldOut ? 'Sold out' : 'Checking stock…'}
+            </button>
+          ) : (
+            <Link
+              href="/checkout"
+              className="btn btn-primary btn-full"
+              style={{ marginTop: '1rem' }}
+            >
+              checkout →
+            </Link>
+          )}
           <Link
             href="/"
             className="btn btn-secondary btn-full"

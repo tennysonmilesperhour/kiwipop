@@ -6,12 +6,17 @@ import { useRouter } from 'next/navigation';
 import { useProductsBySkus } from '@/lib/hooks';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
+import { isPreorderItem, isSoldOut, preorderFulfillmentNote } from '@/lib/commerce';
+import { useStorefrontAvailability } from '@/lib/use-availability';
 import { FLAVORS, FLAVOR_IMG, VARIETY_TIERS, type VarietyTier } from '@/lib/flavors';
 
 const TIER_SKUS = VARIETY_TIERS.map((t) => t.sku);
 
 export default function VarietyPage() {
   const { data: products } = useProductsBySkus(TIER_SKUS);
+  const { availability } = useStorefrontAvailability((products ?? []).map((row) => row.id));
+  const sitePreorderMode = availability?.preorderOnlyMode ?? false;
+  const modeKnown = availability !== null;
   const { addItem } = useCart();
   const router = useRouter();
 
@@ -33,16 +38,31 @@ export default function VarietyPage() {
   const linePriceCents = (selectedProduct?.price_cents ?? selectedTier.priceCents) * quantity;
   const strikeCents = selectedTier.size * 500 * quantity;
 
+  const selectedIsPreorder = selectedProduct
+    ? isPreorderItem({
+        preorderOnly: Boolean(selectedProduct.preorder_only),
+        sitePreorderMode,
+      })
+    : false;
+  const selectedSoldOut =
+    Boolean(selectedProduct) &&
+    modeKnown &&
+    isSoldOut({
+      inStock: selectedProduct?.in_stock ?? 0,
+      preorderOnly: Boolean(selectedProduct?.preorder_only),
+      sitePreorderMode,
+    });
+
   const handleAddToCart = () => {
-    if (!selectedProduct) return;
+    if (!selectedProduct || selectedSoldOut) return;
     addItem({
       productId: selectedProduct.id,
       name: selectedProduct.name,
       price: selectedProduct.price_cents,
       quantity,
       image: selectedProduct.image_url ?? FLAVOR_IMG['KP-KIWI-KITTY'] ?? undefined,
-      isPreorder: selectedProduct.preorder_only,
-      preorderDeadline: selectedProduct.preorder_deadline,
+      isPreorder: selectedIsPreorder,
+      preorderDeadline: selectedProduct.preorder_deadline ?? undefined,
     });
     // Jump straight to the cart so the user can finish checkout — the brief
     // "added" flash + 2s "view cart" button was easy to miss.
@@ -88,7 +108,10 @@ export default function VarietyPage() {
       >
         equal amounts of every flavor in one box · kiwi pop · luci ginger lemon ·
         molly matcha mint · mary caramel apple cinn · same functional payload across all
-        four · in stock, ships now.
+        four.
+        {sitePreorderMode
+          ? ' Preorder: your card is charged today. Ships when ready, we\'ll email you.'
+          : ' In-stock packs ship within 1–3 business days. Preorders ship when the batch is ready.'}
       </p>
 
       <div
@@ -109,6 +132,20 @@ export default function VarietyPage() {
             const product = productsBySku.get(tier.sku);
             const live = !!product;
             const active = selectedSize === tier.size;
+            const tierPreorder = product
+              ? isPreorderItem({
+                  preorderOnly: Boolean(product.preorder_only),
+                  sitePreorderMode,
+                })
+              : false;
+            const tierSoldOut =
+              Boolean(product) &&
+              modeKnown &&
+              isSoldOut({
+                inStock: product?.in_stock ?? 0,
+                preorderOnly: Boolean(product?.preorder_only),
+                sitePreorderMode,
+              });
             return (
               <button
                 key={tier.sku}
@@ -189,6 +226,15 @@ export default function VarietyPage() {
                 >
                   {formatCentsToUSD(tier.perPopCents)}/pop · {tier.perFlavor} of each flavor
                 </div>
+                {tierSoldOut ? (
+                  <div style={{ marginTop: 8 }}>
+                    <span className="status-badge sold-out">Sold out</span>
+                  </div>
+                ) : tierPreorder ? (
+                  <div style={{ marginTop: 8 }}>
+                    <span className="status-badge preorder">Preorder</span>
+                  </div>
+                ) : null}
               </button>
             );
           })}
@@ -278,17 +324,31 @@ export default function VarietyPage() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+          {selectedIsPreorder ? (
+            <span className="status-badge preorder">Preorder</span>
+          ) : selectedSoldOut ? (
+            <span className="status-badge sold-out">Sold out</span>
+          ) : null}
+          {selectedIsPreorder ? (
+            <p className="fulfillment-note">
+              {preorderFulfillmentNote(selectedProduct?.preorder_deadline)}
+            </p>
+          ) : null}
           <button
             type="button"
             className="btn btn-primary btn-full"
             onClick={handleAddToCart}
-            disabled={!selectedProduct}
+            disabled={!selectedProduct || selectedSoldOut}
           >
-            {added
-              ? '✓ added'
-              : selectedProduct
-                ? `add to cart · ${formatCentsToUSD(linePriceCents)}`
-                : 'unavailable'}
+            {selectedSoldOut
+              ? 'Sold out'
+              : added
+                ? '✓ added'
+                : selectedIsPreorder
+                  ? `Preorder · ${formatCentsToUSD(linePriceCents)}`
+                  : selectedProduct
+                    ? `Add to cart · ${formatCentsToUSD(linePriceCents)}`
+                    : 'unavailable'}
           </button>
           {added ? (
             <button
@@ -311,7 +371,11 @@ export default function VarietyPage() {
               margin: 0,
             }}
           >
-            in stock · ships now
+            {selectedSoldOut
+              ? 'sold out'
+              : selectedIsPreorder
+                ? 'preorder · charged today · ships when the batch is ready'
+                : 'in stock · ships in 1–3 business days'}
           </p>
         </div>
       </div>

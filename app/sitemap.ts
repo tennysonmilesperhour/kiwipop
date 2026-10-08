@@ -11,7 +11,6 @@ const STATIC_PATHS = [
   '/variety',
   '/merch',
   '/wholesale',
-  '/raffle',
   '/donate',
   '/legal/terms',
   '/legal/privacy',
