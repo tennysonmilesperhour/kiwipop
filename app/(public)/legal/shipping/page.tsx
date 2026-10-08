@@ -40,8 +40,10 @@ export default function ShippingPage() {
             <strong>$4.99</strong> standard. order more pops.
           </li>
           <li>
-            we ship within 1–3 business days. small batch · sometimes the
-            wax cools at its own speed.
+            in-stock items ship within 1–3 business days. preorders are
+            charged today and ship when that batch is ready — we email you
+            when it goes out. small batch · sometimes the wax cools at its
+            own speed.
           </li>
         </ul>
 
@@ -59,8 +61,9 @@ export default function ShippingPage() {
 
         <h2>availability</h2>
         <p>
-          all four flavors are <em>in stock and shipping now</em>. orders are
-          charged at checkout and go out from salt lake on the schedule above.
+          in-stock items go out from salt lake within 1–3 business days.
+          preorders ship when the batch is ready, and we email you when that
+          happens. orders are charged at checkout either way.
         </p>
       </div>
 

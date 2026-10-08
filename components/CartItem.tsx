@@ -6,9 +6,12 @@ import { formatCentsToUSD } from '@/lib/format';
 
 interface CartItemProps {
   item: CartItemType;
+  soldOut?: boolean;
+  preorder?: boolean;
+  note?: string | null;
 }
 
-export function CartItem({ item }: CartItemProps) {
+export function CartItem({ item, soldOut = false, preorder = false, note = null }: CartItemProps) {
   const { removeItem, updateQuantity } = useCart();
 
   return (
@@ -21,9 +24,14 @@ export function CartItem({ item }: CartItemProps) {
         )}
       </div>
       <div className="cart-item-details">
-        {item.isPreorder && <span className="preorder-label">preorder</span>}
+        {soldOut ? (
+          <span className="status-badge sold-out">Sold out</span>
+        ) : preorder ? (
+          <span className="status-badge preorder">Preorder</span>
+        ) : null}
         <h4 className="cart-item-name">{item.name}</h4>
         <p className="cart-item-price">{formatCentsToUSD(item.price)}</p>
+        {note ? <p className="fulfillment-note">{note}</p> : null}
       </div>
       <div className="cart-item-actions">
         <input

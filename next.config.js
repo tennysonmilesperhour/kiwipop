@@ -63,6 +63,8 @@ const nextConfig = {
         destination: 'https://www.kiwipop.fun/:path*',
         permanent: true,
       },
+      { source: '/raffle', destination: '/', permanent: false },
+      { source: '/admin/raffle', destination: '/admin/dashboard', permanent: false },
     ];
   },
   async headers() {

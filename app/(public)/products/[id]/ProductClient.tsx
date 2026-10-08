@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useProduct, useProductsBySkus } from '@/lib/hooks';
 import { useCart } from '@/lib/store';
 import { formatCentsToUSD } from '@/lib/format';
+import { isPreorderItem, isSoldOut, preorderFulfillmentNote } from '@/lib/commerce';
 import {
   FLAVORS_BY_SKU,
   FLAVOR_SKU_FOR,
@@ -110,9 +111,21 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
   // product/bundle is flagged preorder.
   const pageIsPreorder = preorderMode || Boolean(pageProduct.preorder_only);
   const checkoutIsPreorder = preorderMode || Boolean(checkoutProduct?.preorder_only);
+  const checkoutSoldOut = checkoutProduct
+    ? isSoldOut({
+        inStock: checkoutProduct.in_stock ?? 0,
+        preorderOnly: Boolean(checkoutProduct.preorder_only),
+        sitePreorderMode: preorderMode,
+      })
+    : false;
+  const preorderNote = checkoutIsPreorder
+    ? preorderFulfillmentNote(
+        checkoutProduct?.preorder_deadline ?? pageProduct.preorder_deadline
+      )
+    : null;
 
   const handleAddToCart = () => {
-    if (!checkoutProduct) return;
+    if (!checkoutProduct || checkoutSoldOut) return;
     addItem({
       productId: checkoutProduct.id,
       name: checkoutProduct.name,
@@ -155,16 +168,25 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
             width={600}
             height={600}
           />
-          {pageIsPreorder && (
-            <div className="preorder-badge">preorder</div>
-          )}
+          {checkoutSoldOut ? (
+            <div className="sold-out-badge">Sold out</div>
+          ) : pageIsPreorder ? (
+            <div className="preorder-badge">Preorder</div>
+          ) : null}
         </div>
 
         <div>
           <p className="product-eyebrow">
             {flavor ? flavor.feeling : '// kiwi pop'}
           </p>
-          <h1>{pageProduct.name.toLowerCase()}</h1>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem' }}>
+            <h1 style={{ marginBottom: 0 }}>{pageProduct.name.toLowerCase()}</h1>
+            {checkoutSoldOut ? (
+              <span className="status-badge sold-out">Sold out</span>
+            ) : checkoutIsPreorder ? (
+              <span className="status-badge preorder">Preorder</span>
+            ) : null}
+          </div>
           <p className="product-price">
             {checkoutProduct
               ? formatCentsToUSD(checkoutProduct.price_cents)
@@ -205,28 +227,7 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
             </div>
           )}
 
-          {pageIsPreorder && (
-            <div
-              className="alert"
-              style={{
-                marginTop: '1rem',
-                borderColor: 'var(--ultraviolet)',
-                color: 'var(--ultraviolet)',
-              }}
-            >
-              <strong style={{ letterSpacing: '0.15em' }}>
-                PREORDER ·
-              </strong>{' '}
-              charged now, ships{' '}
-              {pageProduct.preorder_deadline
-                ? new Date(pageProduct.preorder_deadline).toLocaleDateString(
-                    'en-US',
-                    { month: 'long', day: 'numeric', year: 'numeric' }
-                  )
-                : 'when the next batch is ready'}
-              . email goes out the day before the truck moves.
-            </div>
-          )}
+          {preorderNote ? <p className="fulfillment-note">{preorderNote}</p> : null}
 
           {hasFlavorPacks && flavorPacks && (
             <div className="form-group" style={{ marginTop: '2rem' }}>
@@ -272,6 +273,24 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
                       <div style={{ fontSize: '0.8rem', marginTop: '0.3rem' }}>
                         {tilePriceCents ? formatCentsToUSD(tilePriceCents) : '-'}
                       </div>
+                      {tileProduct &&
+                      isSoldOut({
+                        inStock: tileProduct.in_stock ?? 0,
+                        preorderOnly: Boolean(tileProduct.preorder_only),
+                        sitePreorderMode: preorderMode,
+                      }) ? (
+                        <div style={{ fontSize: '0.6rem', marginTop: '0.3rem', color: '#ff2d6a' }}>
+                          Sold out
+                        </div>
+                      ) : tileProduct &&
+                        isPreorderItem({
+                          preorderOnly: Boolean(tileProduct.preorder_only),
+                          sitePreorderMode: preorderMode,
+                        }) ? (
+                        <div style={{ fontSize: '0.6rem', marginTop: '0.3rem', color: 'var(--lemon, #f5ff3d)' }}>
+                          Preorder
+                        </div>
+                      ) : null}
                       {tile.badge && (
                         <div
                           style={{
@@ -371,16 +390,18 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
           <button
             type="button"
             onClick={handleAddToCart}
-            disabled={!checkoutProduct}
-            aria-disabled={!checkoutProduct}
-            className="btn btn-primary btn-full"
+            disabled={!checkoutProduct || checkoutSoldOut}
+            aria-disabled={!checkoutProduct || checkoutSoldOut}
+            className={`btn btn-primary btn-full${checkoutSoldOut ? ' is-sold-out' : ''}`}
             style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}
           >
-            {added
-              ? '✓ added'
-              : checkoutIsPreorder
-              ? 'preorder now'
-              : 'add to cart'}
+            {checkoutSoldOut
+              ? 'Sold out'
+              : added
+                ? '✓ added'
+                : checkoutIsPreorder
+                  ? 'Preorder'
+                  : 'Add to cart'}
           </button>
           <button
             type="button"
@@ -402,9 +423,11 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
           >
             <div>sku · {checkoutProduct?.sku ?? pageProduct.sku}</div>
             <div>
-              {checkoutIsPreorder
-                ? 'preorder · ships next batch'
-                : `in stock · ${checkoutProduct?.in_stock ?? pageProduct.in_stock}`}
+              {checkoutSoldOut
+                ? 'sold out'
+                : checkoutIsPreorder
+                  ? 'preorder'
+                  : `in stock · ${checkoutProduct?.in_stock ?? pageProduct.in_stock}`}
             </div>
           </div>
         </div>

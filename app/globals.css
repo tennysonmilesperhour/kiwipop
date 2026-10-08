@@ -1066,17 +1066,63 @@ button { font: inherit; }
   padding: 2px 6px;
   margin-bottom: 0.4rem;
 }
-.preorder-badge {
+.preorder-badge,
+.sold-out-badge {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  z-index: 2;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  padding: 0.45rem 0.75rem;
+  line-height: 1;
+}
+.preorder-badge {
   background: var(--ultraviolet);
   color: var(--paper);
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.5rem;
+}
+.sold-out-badge {
+  background: #ff2d6a;
+  color: #fff8fb;
+}
+.status-badge {
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  padding: 0.2rem 0.55rem;
+  margin-bottom: 0.35rem;
+  line-height: 1.15;
+}
+.status-badge.preorder {
+  background: var(--ultraviolet);
+  color: var(--paper);
+}
+.status-badge.sold-out {
+  background: #ff2d6a;
+  color: #fff8fb;
+}
+.fulfillment-note {
+  font-family: var(--body, inherit);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--paper);
+  margin: 0.55rem 0 0.15rem;
+  max-width: 40rem;
+}
+.btn.is-sold-out:disabled {
+  opacity: 1;
+  background: #ff2d6a;
+  color: #1a0010;
+  cursor: not-allowed;
 }
 
 .cart-summary {
