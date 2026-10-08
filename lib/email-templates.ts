@@ -50,7 +50,7 @@ function layout(body: string): string {
 
 // ---- templates ----
 
-export function welcomeEmail(email: string): { subject: string; html: string; text: string } {
+export function welcomeEmail(_email: string): { subject: string; html: string; text: string } {
   return {
     subject: 'welcome to the club · kiwi pop',
     html: layout(`

@@ -728,7 +728,7 @@ export default function OrdersPage() {
               {buyAllResult.errors.join(' · ')}
             </>
           ) : null}
-          {' · '}use <b>print unprinted labels</b> when you're ready to print.
+          {' · '}use <b>print unprinted labels</b> when you&apos;re ready to print.
         </div>
       )}
       {unprintedPdf && (
@@ -1123,6 +1123,13 @@ function ProductionSummaryCard({
    ORDER MODAL — full shipping/items detail + actions + nav
    ----------------------------------------------------------- */
 
+interface OrderLineItem {
+  id: string;
+  quantity?: number;
+  price_cents?: number;
+  products?: { name?: string | null } | null;
+}
+
 interface OrderModalProps {
   orderId: string;
   autoPrint: boolean;
@@ -1397,7 +1404,7 @@ function OrderModal({
                 <h3 className="orders-modal-section-title">Items</h3>
                 <div className="orders-modal-items">
                   {order.items?.length ? (
-                    order.items.map((item: any) => (
+                    (order.items as OrderLineItem[]).map((item) => (
                       <div key={item.id} className="orders-modal-item">
                         <span className="orders-modal-item-name">
                           {item.products?.name ?? 'Unknown'}{' '}

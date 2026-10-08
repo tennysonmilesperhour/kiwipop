@@ -442,6 +442,15 @@ Replace these strings with real content as it firms up. The design holds.
 
 ---
 
+## Baseline checklist
+
+[ ] private repo + main protected + CI   [x] dependabot + lockfile
+[ ] advisors clean (or exceptions noted)  [ ] backups/PITR confirmed
+[x] PostHog + exceptions on               [ ] uptime incl. checkout URL
+[x] privacy / terms / contact (+refund/shipping/disclaimers if selling)
+[ ] support@ email works                  [ ] domain auto-renew on
+[ ] revenue lands in business account     [ ] sales tax configured (physical goods)
+
 ## License
 
 Private. © Kiwi Pop / Tennyson Taggart, 2026.
