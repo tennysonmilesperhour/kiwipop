@@ -335,7 +335,6 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           <Link href="/variety" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>VARIETY</Link>
           <Link href="/wholesale" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>WHOLESALE</Link>
           <Link href="/find-us" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>FIND US</Link>
-          <Link href="/auth/signin?next=/admin/dashboard" className="kp-nav-link--secondary" onClick={() => setMenuOpen(false)}>ADMIN</Link>
           <div className="kp-nav-more">
             <button
               type="button"
@@ -353,7 +352,6 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
               <Link href="/variety" role="menuitem">VARIETY</Link>
               <Link href="/wholesale" role="menuitem">WHOLESALE</Link>
               <Link href="/find-us" role="menuitem">FIND US</Link>
-              <Link href="/auth/signin?next=/admin/dashboard" role="menuitem">ADMIN</Link>
             </div>
           </div>
         </div>
@@ -665,7 +663,11 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           </h2>
         </div>
         <div className="zvid-feature">
-          <ReelPlayer src="/videos/kp-reel-1.mp4" label="FIRST VIRAL KP REEL" />
+          <ReelPlayer
+            src="/videos/kp-reel-1.mp4"
+            poster="/videos/posters/kp-reel-1.jpg"
+            label="FIRST VIRAL KP REEL"
+          />
           <div className="zvid-copy">
             <span className="zvid-copy-tag">// the one that did it</span>
             <h3 className="zvid-copy-h">
@@ -684,7 +686,11 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
         </div>
 
         <div className="zvid-feature is-reversed">
-          <ReelPlayer src="/videos/not-ai-just-tennyson.mp4" label="NOT AI · JUST TENNYSON" />
+          <ReelPlayer
+            src="/videos/not-ai-just-tennyson.mp4"
+            poster="/videos/posters/not-ai-just-tennyson.jpg"
+            label="NOT AI · JUST TENNYSON"
+          />
           <div className="zvid-copy">
             <span className="zvid-copy-tag">// cofounder · tennyson</span>
             <h3 className="zvid-copy-h">
@@ -1224,7 +1230,6 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           <Link href="/faq">faq</Link>
           <Link href="/research">research</Link>
           <Link href="/donate">donate</Link>
-          <Link href="/auth/signin?next=/admin/dashboard">admin login</Link>
         </div>
         <div className="col">
           <h4>CONTACT</h4>
@@ -1243,6 +1248,10 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           <span className="kw">⚠</span> THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FDA. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE. NOT FOR USE BY PERSONS UNDER 18. PREGNANT OR NURSING PERSONS SHOULD CONSULT A HEALTHCARE PROFESSIONAL BEFORE USE. CONTAINS JAMBU (ACMELLA OLERACEA), THEOBROMINE, B12, MAGNESIUM GLYCINATE, TAURINE, ELECTROLYTES, COCONUT OIL, EDIBLE MICA + A PER-FLAVOR ADAPTOGEN (GINSENG/SPIRULINA, ASHWAGANDHA, MACA/CINNAMON, OR L-THEANINE/CHAMOMILE) ON A COCONUT OIL + ISOMALT BASE. <strong>ALLERGEN: CONTAINS COCONUT (A TREE NUT).</strong> SUGAR ALCOHOLS (ISOMALT, XYLITOL) MAY CAUSE GI UPSET IN LARGE QUANTITIES. <strong>XYLITOL IS TOXIC TO DOGS. KEEP AWAY FROM PETS.</strong> CALIFORNIA RESIDENTS: SEE PROP 65 NOTICE ON THE <Link href="/legal/fda-disclaimer" className="kw">FDA + SAFETY</Link> PAGE.
           <br />
           <br />© KIWI POP&trade; · {new Date().getFullYear()} · DROP 001 · MFD SALT LAKE · ALL RIGHTS RESERVED · <span className="kw">舐 一下</span>
+          {' · '}
+          <a href="https://tennysontaggart.com" target="_blank" rel="noopener noreferrer">
+            by Tennyson Taggart
+          </a>
         </div>
       </footer>
 

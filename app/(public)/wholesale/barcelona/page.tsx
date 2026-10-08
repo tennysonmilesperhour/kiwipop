@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHARE_IMAGE_PATH } from '@/lib/seo';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Noto_Serif_JP } from 'next/font/google';
@@ -25,11 +26,13 @@ export const metadata: Metadata = {
     description,
     url: '/wholesale/barcelona',
     type: 'website',
+    images: [SHARE_IMAGE_PATH],
   },
   twitter: {
     card: 'summary_large_image',
     title,
     description,
+    images: [SHARE_IMAGE_PATH],
   },
   robots: { index: false, follow: false },
 };

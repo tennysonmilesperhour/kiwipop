@@ -11,9 +11,6 @@ export function RaffleForm() {
   const [social, setSocial] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
-  // Drop the artwork file at public/landing/img/pride-raffle-art.jpg. Until it
-  // exists the <img> 404s and we fall back to the "dropping soon" placeholder.
-  const [artOk, setArtOk] = useState(true);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -72,20 +69,10 @@ export function RaffleForm() {
 
       <figure className="raffle-art">
         <div className="raffle-art-frame">
-          {artOk ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src="/landing/img/pride-raffle-art.jpg"
-              alt="the original Pride art giveaway piece up for grabs"
-              className="raffle-art-img"
-              loading="lazy"
-              onError={() => setArtOk(false)}
-            />
-          ) : (
-            <div className="raffle-art-ph" aria-hidden="true">
-              <span>pride art · dropping soon</span>
-            </div>
-          )}
+          {/* Artwork file was never shipped (pride-raffle-art.jpg 404'd). */}
+          <div className="raffle-art-ph">
+            <span>pride art · dropping soon</span>
+          </div>
         </div>
         <figcaption className="raffle-art-cap">
           one original Pride piece · one winner

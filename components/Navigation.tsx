@@ -79,13 +79,6 @@ export function Navigation() {
             <Link className="nav-link" href="/auth/signup" onClick={() => setMenuOpen(false)}>
               create account
             </Link>
-            <Link
-              className="nav-link"
-              href="/auth/signin?next=/admin/dashboard"
-              onClick={() => setMenuOpen(false)}
-            >
-              admin login
-            </Link>
           </>
         )}
       </div>

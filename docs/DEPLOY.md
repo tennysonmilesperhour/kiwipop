@@ -143,6 +143,6 @@ receipt by URL without auth.
 - Wholesale **quote PDF generation**: quotes table exists, no UI yet
   (the wholesale page covers tier pricing setup and account approvals).
 - Email confirmations on order paid (wire Resend or Supabase Auth SMTP).
-- Real product imagery / OG image (`public/og-image.png` referenced in
-  metadata but not committed — drop in your hero image).
+- Share card is the static 1200×630 PNG at `public/og/kiwi-pop-share.png`
+  (do not point metadata back at `/opengraph-image` or `/og-image.png`).
 - Lighthouse pass (target ≥ 85 mobile performance, 95 accessibility/SEO).
