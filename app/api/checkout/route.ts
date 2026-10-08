@@ -7,12 +7,14 @@ import { checkoutRequestSchema } from '@/lib/validators';
 import { resolveDiscount } from '@/lib/discounts';
 import { getPreorderOnlyMode } from '@/lib/settings';
 import { preorderFulfillmentNote } from '@/lib/commerce';
+import { retiredCheckoutRejection } from '@/lib/retired';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface ProductRow {
   id: string;
+  sku: string | null;
   name: string;
   price_cents: number;
   image_url: string | null;
@@ -30,7 +32,7 @@ interface CheckoutItem {
 async function loadProducts(productIds: string[]): Promise<Map<string, ProductRow>> {
   const { data, error } = await supabaseAdmin
     .from('products')
-    .select('id, name, price_cents, image_url, in_stock, preorder_only, preorder_deadline, stripe_price_id')
+    .select('id, sku, name, price_cents, image_url, in_stock, preorder_only, preorder_deadline, stripe_price_id')
     .in('id', productIds);
 
   if (error) {
@@ -79,6 +81,21 @@ export async function POST(request: NextRequest) {
   }
 
   const productsById = await loadProducts(parsed.items.map((i) => i.productId));
+
+  // Retired SKUs are hidden, not deleted. Reject before any order row or
+  // Stripe session so a stale cart cannot buy them.
+  const retired = retiredCheckoutRejection(
+    parsed.items.flatMap((item) => {
+      const product = productsById.get(item.productId);
+      return product ? [product] : [];
+    })
+  );
+  if (retired) {
+    return NextResponse.json(
+      { error: retired.error },
+      { status: retired.status }
+    );
+  }
 
   // Site-wide "preorder only" mode (Admin → Products). When on, every line is
   // a preorder regardless of stock, so the out-of-stock guard is skipped.

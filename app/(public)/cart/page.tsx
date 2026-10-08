@@ -18,7 +18,8 @@ export default function CartPage() {
     ...classifyCartLine(item, availability),
   }));
   const hasSoldOut = lines.some((line) => line.soldOut);
-  const checkoutBlocked = hasSoldOut || (items.length > 0 && loading);
+  const hasUnavailable = lines.some((line) => line.unavailable);
+  const checkoutBlocked = hasSoldOut || hasUnavailable || (items.length > 0 && loading);
 
   if (items.length === 0) {
     return (
@@ -75,11 +76,12 @@ export default function CartPage() {
 
       <div className="cart-container">
         <div className="cart-items">
-          {lines.map(({ item, soldOut, preorder, note }) => (
+          {lines.map(({ item, soldOut, unavailable, preorder, note }) => (
             <CartItem
               key={item.productId}
               item={item}
               soldOut={soldOut}
+              unavailable={unavailable}
               preorder={preorder}
               note={note}
             />
@@ -89,6 +91,11 @@ export default function CartPage() {
         <div className="cart-summary">
           <div className="card-title">order summary</div>
 
+          {hasUnavailable && (
+            <p className="fulfillment-note" style={{ color: '#ff2d6a' }}>
+              This item is no longer available. Remove it to check out.
+            </p>
+          )}
           {hasSoldOut && (
             <p className="fulfillment-note" style={{ color: '#ff2d6a' }}>
               A sold-out item is in your cart. Remove it to check out.
@@ -115,11 +122,11 @@ export default function CartPage() {
           {checkoutBlocked ? (
             <button
               type="button"
-              className={`btn btn-primary btn-full${hasSoldOut ? ' is-sold-out' : ''}`}
+              className={`btn btn-primary btn-full${hasSoldOut || hasUnavailable ? ' is-sold-out' : ''}`}
               style={{ marginTop: '1rem' }}
               disabled
             >
-              {hasSoldOut ? 'Sold out' : 'Checking stock…'}
+              {hasUnavailable ? 'Unavailable' : hasSoldOut ? 'Sold out' : 'Checking stock…'}
             </button>
           ) : (
             <Link

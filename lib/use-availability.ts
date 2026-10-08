@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { RETIRED_ITEM_ERROR } from '@/lib/retired';
 
 export interface AvailabilityProduct {
   id: string;
@@ -12,6 +13,8 @@ export interface AvailabilityProduct {
 export interface StorefrontAvailability {
   preorderOnlyMode: boolean;
   products: AvailabilityProduct[];
+  /** Set when the stock check rejects a retired SKU still sitting in the cart. */
+  retiredProductIds?: string[];
 }
 
 /**
@@ -40,8 +43,23 @@ export function useStorefrontAvailability(productIds: string[]): {
       body: JSON.stringify({ productIds: key.split(',') }),
     })
       .then(async (response) => {
+        const json = (await response.json()) as StorefrontAvailability & {
+          error?: string;
+          retiredProductIds?: string[];
+        };
+        if (
+          response.status === 409 &&
+          json.error === RETIRED_ITEM_ERROR &&
+          Array.isArray(json.retiredProductIds)
+        ) {
+          return {
+            preorderOnlyMode: false,
+            products: [],
+            retiredProductIds: json.retiredProductIds,
+          } satisfies StorefrontAvailability;
+        }
         if (!response.ok) throw new Error('availability failed');
-        return (await response.json()) as StorefrontAvailability;
+        return json;
       })
       .then((json) => {
         if (!cancel) setAvailability(json);

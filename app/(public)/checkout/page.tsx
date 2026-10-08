@@ -32,7 +32,9 @@ export default function CheckoutPage() {
     ...classifyCartLine(item, availability),
   }));
   const hasSoldOut = lines.some((line) => line.soldOut);
-  const checkoutBlocked = hasSoldOut || (items.length > 0 && availabilityLoading);
+  const hasUnavailable = lines.some((line) => line.unavailable);
+  const checkoutBlocked =
+    hasSoldOut || hasUnavailable || (items.length > 0 && availabilityLoading);
   const router = useRouter();
   const { user, profile } = useAuth();
 
@@ -142,6 +144,10 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (hasUnavailable) {
+      setError('This item is no longer available. Remove it before checking out.');
+      return;
+    }
     if (hasSoldOut) {
       setError('Sold out. Remove the sold-out item before checking out.');
       return;
@@ -369,9 +375,11 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={submitting || checkoutBlocked}
-              className={`btn btn-primary btn-full${hasSoldOut ? ' is-sold-out' : ''}`}
+              className={`btn btn-primary btn-full${hasSoldOut || hasUnavailable ? ' is-sold-out' : ''}`}
             >
-              {hasSoldOut
+              {hasUnavailable
+                ? 'Unavailable'
+                : hasSoldOut
                 ? 'Sold out'
                 : availabilityLoading
                   ? 'Checking stock…'
@@ -385,6 +393,11 @@ export default function CheckoutPage() {
         <div className="cart-summary">
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
 
+          {hasUnavailable && (
+            <p className="fulfillment-note" style={{ color: '#ff2d6a' }}>
+              This item is no longer available. Remove it to check out.
+            </p>
+          )}
           {hasSoldOut && (
             <p className="fulfillment-note" style={{ color: '#ff2d6a' }}>
               A sold-out item is in your cart. Remove it to check out.
@@ -392,7 +405,7 @@ export default function CheckoutPage() {
           )}
 
           <div className="mb-4 max-h-60 overflow-y-auto">
-            {lines.map(({ item, soldOut, note, preorder }) => (
+            {lines.map(({ item, soldOut, unavailable, note, preorder }) => (
               <div key={item.productId} style={{ marginBottom: '0.8rem' }}>
                 <div className="summary-row text-sm" style={{ marginBottom: '0.25rem' }}>
                   <span>
@@ -400,7 +413,9 @@ export default function CheckoutPage() {
                   </span>
                   <span>{formatCentsToUSD(item.price * item.quantity)}</span>
                 </div>
-                {soldOut ? (
+                {unavailable ? (
+                  <span className="status-badge sold-out">Unavailable</span>
+                ) : soldOut ? (
                   <span className="status-badge sold-out">Sold out</span>
                 ) : preorder ? (
                   <span className="status-badge preorder">Preorder</span>
