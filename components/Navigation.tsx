@@ -84,7 +84,7 @@ export function Navigation() {
       </div>
 
       <div className="nav-actions">
-        {isAdmin ? (
+        {user && isAdmin ? (
           <Link
             href="/admin/dashboard"
             className="nav-cta nav-cta-admin"

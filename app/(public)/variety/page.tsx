@@ -17,7 +17,7 @@ export default function VarietyPage() {
 
   const [selectedSize, setSelectedSize] = useState<VarietyTier['size']>(20);
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
+  const [added] = useState(false);
 
   const productsBySku = useMemo(() => {
     const map = new Map<string, NonNullable<typeof products>[number]>();
