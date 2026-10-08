@@ -7,11 +7,18 @@ import { formatCentsToUSD } from '@/lib/format';
 interface CartItemProps {
   item: CartItemType;
   soldOut?: boolean;
+  unavailable?: boolean;
   preorder?: boolean;
   note?: string | null;
 }
 
-export function CartItem({ item, soldOut = false, preorder = false, note = null }: CartItemProps) {
+export function CartItem({
+  item,
+  soldOut = false,
+  unavailable = false,
+  preorder = false,
+  note = null,
+}: CartItemProps) {
   const { removeItem, updateQuantity } = useCart();
 
   return (
@@ -24,7 +31,9 @@ export function CartItem({ item, soldOut = false, preorder = false, note = null 
         )}
       </div>
       <div className="cart-item-details">
-        {soldOut ? (
+        {unavailable ? (
+          <span className="status-badge sold-out">Unavailable</span>
+        ) : soldOut ? (
           <span className="status-badge sold-out">Sold out</span>
         ) : preorder ? (
           <span className="status-badge preorder">Preorder</span>

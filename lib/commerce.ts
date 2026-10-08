@@ -1,7 +1,10 @@
+import { RETIRED_ITEM_ERROR } from '@/lib/retired';
+
 /**
  * Storefront availability. Uses products.in_stock, products.preorder_only,
  * products.preorder_deadline, and the site-wide preorder-only setting.
- * A preorder is never treated as sold out.
+ * A preorder is never treated as sold out. A retired SKU is unavailable
+ * even when the cart still has it.
  */
 
 export function isPreorderItem(input: {
@@ -45,14 +48,24 @@ export function classifyCartLine(
       preorder_only: boolean;
       preorder_deadline: string | null;
     }>;
+    retiredProductIds?: string[];
   } | null
-): { preorder: boolean; soldOut: boolean; note: string | null } {
+): { preorder: boolean; soldOut: boolean; unavailable: boolean; note: string | null } {
+  if (live?.retiredProductIds?.includes(item.productId)) {
+    return {
+      preorder: false,
+      soldOut: false,
+      unavailable: true,
+      note: RETIRED_ITEM_ERROR,
+    };
+  }
   const row = live?.products.find((product) => product.id === item.productId);
   if (!row || !live) {
     const preorder = item.isPreorder;
     return {
       preorder,
       soldOut: false,
+      unavailable: false,
       note: preorder ? preorderFulfillmentNote(item.preorderDeadline) : null,
     };
   }
@@ -67,6 +80,7 @@ export function classifyCartLine(
       preorderOnly: row.preorder_only,
       sitePreorderMode: live.preorderOnlyMode,
     }),
+    unavailable: false,
     note: preorder
       ? preorderFulfillmentNote(row.preorder_deadline ?? item.preorderDeadline)
       : null,
