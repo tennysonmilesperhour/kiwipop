@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHARE_IMAGE_PATH } from '@/lib/seo';
 import Link from 'next/link';
 import { MerchSection } from '@/components/home/MerchSection';
 
@@ -10,8 +11,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: '/merch' },
-  openGraph: { title: `${title} · kiwi pop`, description, url: '/merch', type: 'website' },
-  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
+  openGraph: { title: `${title} · kiwi pop`, description, url: '/merch', type: 'website', images: [SHARE_IMAGE_PATH] },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description, images: [SHARE_IMAGE_PATH] },
 };
 
 export default function MerchPage() {

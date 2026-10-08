@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHARE_IMAGE_PATH } from '@/lib/seo';
 
 const title = 'variety pack · try all four flavors';
 const description =
@@ -13,11 +14,13 @@ export const metadata: Metadata = {
     description,
     url: '/variety',
     type: 'website',
+    images: [SHARE_IMAGE_PATH],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${title} · kiwi pop`,
     description,
+    images: [SHARE_IMAGE_PATH],
   },
 };
 

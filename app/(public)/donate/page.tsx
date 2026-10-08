@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHARE_IMAGE_PATH } from '@/lib/seo';
 import { DonateForm } from '@/components/landing/DonateForm';
 import { loadFundraiserSnapshot } from '@/lib/fundraiser';
 
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: '/donate' },
-  openGraph: { title: `${title} · kiwi pop`, description, url: '/donate', type: 'website' },
-  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
+  openGraph: { title: `${title} · kiwi pop`, description, url: '/donate', type: 'website', images: [SHARE_IMAGE_PATH] },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description, images: [SHARE_IMAGE_PATH] },
 };
 
 export default async function DonatePage() {

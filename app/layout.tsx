@@ -12,6 +12,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { PostHogScript } from '@/components/PostHogScript';
 import { JsonLd } from '@/components/JsonLd';
 import { SiteChrome } from '@/components/SiteChrome';
+import { SHARE_IMAGE_PATH } from '@/lib/seo';
 import { VersionWatcher } from '@/components/VersionWatcher';
 import { Providers } from './providers';
 import './globals.css';
@@ -94,10 +95,11 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: '/og-image.png',
+        url: SHARE_IMAGE_PATH,
         width: 1200,
         height: 630,
         alt: 'kiwi pop, lollipop shaped party supplements',
+        type: 'image/png',
       },
     ],
   },
@@ -106,7 +108,7 @@ export const metadata: Metadata = {
     title: 'kiwi pop · lollipop shaped party supplements',
     description:
       'lollipop shaped party supplements. <1g of sugar, vegan, functional lollipops.',
-    images: ['/og-image.png'],
+    images: [SHARE_IMAGE_PATH],
   },
   robots: {
     index: true,

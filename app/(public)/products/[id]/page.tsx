@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/JsonLd';
 import { FLAVORS_BY_SKU, FLAVOR_SKU_FOR, imageForProduct } from '@/lib/flavors';
-import { buildBreadcrumbLd, SITE_URL } from '@/lib/seo';
+import { absoluteUrl, buildBreadcrumbLd, SHARE_IMAGE_PATH, SITE_URL } from '@/lib/seo';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { getPreorderOnlyMode } from '@/lib/settings';
 import ProductClient from './ProductClient';
@@ -61,13 +61,17 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       description,
       url: `/products/${product.id}`,
       type: 'website',
-      images: image ? [{ url: image, width: 1200, height: 1200, alt: product.name }] : undefined,
+      images: [
+        image
+          ? { url: image, width: 1200, height: 1200, alt: product.name }
+          : { url: SHARE_IMAGE_PATH, width: 1200, height: 630, alt: product.name },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} · kiwi pop`,
       description,
-      images: image ? [image] : undefined,
+      images: [image ?? SHARE_IMAGE_PATH],
     },
   };
 }
@@ -104,7 +108,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       name: product.name,
       description,
       sku: product.sku ?? undefined,
-      image: image ? [`${SITE_URL}${image.startsWith('http') ? '' : ''}${image}`] : undefined,
+      image: image ? [absoluteUrl(image)] : undefined,
       brand: { '@type': 'Brand', name: 'Kiwi Pop' },
       offers: {
         '@type': 'Offer',

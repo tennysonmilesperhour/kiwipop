@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/JsonLd';
-import { buildBreadcrumbLd } from '@/lib/seo';
+import { buildBreadcrumbLd, SHARE_IMAGE_PATH } from '@/lib/seo';
 import { OrderMap } from '@/components/map/OrderMap';
 
 const title = 'the map · where kiwi pop lands';
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: '/community' },
-  openGraph: { title: `${title} · kiwi pop`, description, url: '/community', type: 'website' },
-  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
+  openGraph: { title: `${title} · kiwi pop`, description, url: '/community', type: 'website', images: [SHARE_IMAGE_PATH] },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description, images: [SHARE_IMAGE_PATH] },
 };
 
 const breadcrumbLd = buildBreadcrumbLd([{ name: 'The Map', url: '/community' }]);

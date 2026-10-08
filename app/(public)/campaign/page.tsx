@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHARE_IMAGE_PATH } from '@/lib/seo';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { loadFundraiserSnapshot } from '@/lib/fundraiser';
 import { CampaignPage, type CampaignUpdate } from '@/components/campaign/CampaignPage';
@@ -18,8 +19,9 @@ export const metadata: Metadata = {
     description,
     url: '/campaign',
     type: 'website',
+    images: [SHARE_IMAGE_PATH],
   },
-  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description },
+  twitter: { card: 'summary_large_image', title: `${title} · kiwi pop`, description, images: [SHARE_IMAGE_PATH] },
 };
 
 async function loadUpdates(): Promise<CampaignUpdate[]> {

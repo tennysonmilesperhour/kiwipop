@@ -214,7 +214,14 @@ export const metadata: Metadata = {
     title: 'kiwi pop · wholesale brand sheet',
     description:
       'a <1g-sugar functional lollipop engineered for energy, focus, and a tingle you can feel. tokyo at 3am in 2099.',
-    images: ['/og-image.png'],
+    images: ['/og/kiwi-pop-share.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'kiwi pop · wholesale brand sheet',
+    description:
+      'a <1g-sugar functional lollipop engineered for energy, focus, and a tingle you can feel. tokyo at 3am in 2099.',
+    images: ['/og/kiwi-pop-share.png'],
   },
 };
 

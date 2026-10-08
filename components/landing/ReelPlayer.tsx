@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 
 interface ReelPlayerProps {
   src: string;
   label: string;
+  poster: string;
 }
 
 function formatTime(seconds: number): string {
@@ -14,13 +15,41 @@ function formatTime(seconds: number): string {
   return `${m}:${s}`;
 }
 
-export function ReelPlayer({ src, label }: ReelPlayerProps) {
+export function ReelPlayer({ src, label, poster }: ReelPlayerProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const srcAttached = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isScrubbing, setIsScrubbing] = useState(false);
+
+  const attachSrc = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || srcAttached.current) return video;
+    srcAttached.current = true;
+    video.preload = 'none';
+    video.src = src;
+    return video;
+  }, [src]);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          attachSrc();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px 0px' },
+    );
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [attachSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -52,10 +81,21 @@ export function ReelPlayer({ src, label }: ReelPlayerProps) {
   }, [isScrubbing]);
 
   const togglePlay = () => {
-    const video = videoRef.current;
+    const video = attachSrc();
     if (!video) return;
     if (video.paused || video.ended) {
-      void video.play();
+      const attempt = video.play();
+      if (attempt) {
+        attempt.catch(() => {
+          video.addEventListener(
+            'canplay',
+            () => {
+              void video.play();
+            },
+            { once: true },
+          );
+        });
+      }
     } else {
       video.pause();
     }
@@ -78,16 +118,22 @@ export function ReelPlayer({ src, label }: ReelPlayerProps) {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="zvid-player">
-      <div className="zvid-stage">
+    <div className="zvid-player" ref={rootRef}>
+      <div
+        className="zvid-stage"
+        style={{
+          backgroundImage: `url(${poster})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <video
           ref={videoRef}
-          src={src}
+          poster={poster}
           playsInline
           loop
           muted
-          autoPlay
-          preload="metadata"
+          preload="none"
           aria-label={label}
           onClick={togglePlay}
         />

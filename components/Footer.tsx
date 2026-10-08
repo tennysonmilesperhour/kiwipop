@@ -9,6 +9,16 @@ export function Footer() {
           © {new Date().getFullYear()} kiwi pop · salt lake · do not eat the
           wrapper. all rights reserved.
         </div>
+        <div style={{ marginTop: '0.35rem', opacity: 0.6 }}>
+          <a
+            href="https://tennysontaggart.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-link"
+          >
+            by Tennyson Taggart
+          </a>
+        </div>
         <div
           style={{
             marginTop: '0.75rem',
