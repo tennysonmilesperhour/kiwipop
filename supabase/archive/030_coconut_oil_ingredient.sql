@@ -1,3 +1,8 @@
+-- ARCHIVED. Effects are already live in production (RM-COCONUT-OIL exists).
+-- This file has no production history row. It was moved out of
+-- supabase/migrations/ so the GitHub integration will not run it again.
+-- Do not move it back unless the version is marked applied without executing.
+--
 -- 030_coconut_oil_ingredient.sql
 --
 -- Coconut oil is an ingredient in every flavor (it is the fat base every pop

@@ -1,0 +1,4 @@
+-- Applied directly in production.
+-- Version 20260507223741, name create_reviews_table.
+-- This file exists so local history matches the production migration version.
+-- The original statements were applied directly in production and are not stored here.
