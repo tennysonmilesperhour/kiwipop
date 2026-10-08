@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import type { Metadata, Viewport } from 'next';
 import {
   Bricolage_Grotesque,
@@ -179,6 +180,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <SiteChrome>{children}</SiteChrome>
           <VersionWatcher />
         </Providers>
+        <Script src="/site-analytics.js" strategy="afterInteractive" />
         <Analytics />
         <SpeedInsights />
         <PostHogScript />
