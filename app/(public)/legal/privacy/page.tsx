@@ -69,6 +69,16 @@ export default function PrivacyPage() {
           retargeting pixels or advertising trackers.
         </p>
 
+        <p>
+          with your permission, google analytics also measures visits to public pages,
+          scrolling, and outbound link destinations. it uses analytics cookies and
+          processes basic device and usage information. we do not send form contents,
+          account or checkout activity, or URL query strings to google analytics.
+          choose &ldquo;analytics choices&rdquo; to change your preference at any time.
+          browser privacy signals keep this optional tracking off. see the{' '}
+          <a href="https://policies.google.com/privacy">google privacy policy</a>.
+        </p>
+
         <h2>third-party service providers</h2>
         <p>
           we share data only with service providers necessary to operate the
@@ -78,6 +88,7 @@ export default function PrivacyPage() {
           <li><strong>stripe</strong>: payment processing (PCI-DSS compliant)</li>
           <li><strong>supabase</strong>: database and authentication</li>
           <li><strong>vercel</strong>: hosting and analytics</li>
+          <li><strong>google analytics</strong>: optional public website usage measurement</li>
           <li><strong>resend</strong>: transactional email</li>
           <li><strong>usps / shipping carriers</strong>: order fulfillment</li>
         </ul>
