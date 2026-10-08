@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
  * is the manual safety net for when the Stripe webhook (`/api/webhooks/stripe`)
  * isn't firing in production — admins can hit this endpoint to flip orders
  * that actually paid in Stripe but never got their `paid` status updated
- * locally.
+ * locally. The same transition decrements product stock and awards points.
  *
  * Safe to run repeatedly. Only updates orders whose current status is
  * `pending`. `paid` / `shipped` / `completed` / `cancelled` are left alone.

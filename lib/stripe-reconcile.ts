@@ -3,6 +3,7 @@ import 'server-only';
 import type Stripe from 'stripe';
 import { stripe } from './stripe';
 import { supabaseAdmin } from './supabase-admin';
+import { applyPaidCheckoutSession } from './order-paid';
 
 interface PendingOrderRow {
   id: string;
@@ -45,6 +46,11 @@ interface ReconcileOptions {
  * (or `cancelled`) based on what actually happened on Stripe. Used both by
  * the admin "reconcile now" button and by the financials summary endpoint
  * so dashboards self-heal when the webhook isn't firing.
+ *
+ * A paid session goes through applyPaidCheckoutSession, the same pending →
+ * paid transition as the webhook, so stock, points, and sale emails run
+ * once. Matching on status = pending keeps a later webhook from decrementing
+ * a second time.
  */
 export async function reconcilePendingOrdersWithStripe(
   options: ReconcileOptions = {},
@@ -117,25 +123,11 @@ export async function reconcilePendingOrdersWithStripe(
           typeof session.payment_intent === 'string'
             ? session.payment_intent
             : session.payment_intent?.id ?? null;
-        const amountTotal =
-          typeof session.amount_total === 'number'
-            ? session.amount_total
-            : null;
 
-        const { error } = await supabaseAdmin
-          .from('orders')
-          .update({
-            status: 'paid',
-            stripe_payment_intent_id: paymentIntentId,
-            ...(amountTotal !== null ? { total_cents: amountTotal } : {}),
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', orderId)
-          .eq('status', 'pending');
-
-        if (error) {
-          summary.errors.push(`update ${orderId}: ${error.message}`);
-        } else {
+        const result = await applyPaidCheckoutSession(session);
+        if (result.error) {
+          summary.errors.push(`update ${orderId}: ${result.error}`);
+        } else if (result.transitioned) {
           summary.marked_paid++;
           summary.changes.push({
             order_id: orderId,
