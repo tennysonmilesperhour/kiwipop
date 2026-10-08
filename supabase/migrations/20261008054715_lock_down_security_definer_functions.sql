@@ -19,7 +19,9 @@
 --   * keeps rls_auto_enable() executable by the roles that run DDL
 --   * pins search_path on the two trigger functions the linter flagged
 --
--- Not applied by this commit. Run it on a branch or staging database first.
+-- Production already applied the unconditional form of this file as version
+-- 20261008054715. This copy keeps that version so db push will not re-run it
+-- there. The rls_auto_enable revoke below is conditional for a fresh setup.
 -- ============================================================================
 
 -- Reject Data API callers that are not the server (service_role) or an admin
@@ -412,18 +414,38 @@ GRANT EXECUTE ON FUNCTION public.is_admin() TO anon, authenticated, service_role
 REVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.handle_new_user() TO service_role;
 
--- Event trigger behind ensure_rls. Direct RPC calls fail. DDL roles still
--- need EXECUTE or CREATE TABLE aborts when the event trigger runs.
-REVOKE ALL ON FUNCTION public.rls_auto_enable() FROM PUBLIC, anon, authenticated;
-GRANT EXECUTE ON FUNCTION public.rls_auto_enable() TO service_role;
-
+-- Signup trigger role. handle_new_user() is created in repo migrations.
 DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'supabase_auth_admin') THEN
     GRANT EXECUTE ON FUNCTION public.handle_new_user() TO supabase_auth_admin;
   END IF;
-  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'supabase_admin') THEN
-    GRANT EXECUTE ON FUNCTION public.rls_auto_enable() TO supabase_admin;
+END;
+$$;
+
+-- Event trigger behind ensure_rls. This function is created by Supabase on
+-- hosted projects and is not in the repo migrations, so a fresh database
+-- following docs/DEPLOY.md does not have it. REVOKE on a missing function
+-- aborts the migration. Direct RPC calls fail (RETURNS event_trigger). DDL
+-- roles still need EXECUTE when the function exists, or CREATE TABLE aborts
+-- when the event trigger runs.
+-- EXECUTE is used so PostgreSQL does not resolve the function at parse time
+-- when pg_proc has no row.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public'
+      AND p.proname = 'rls_auto_enable'
+      AND pg_get_function_identity_arguments(p.oid) = ''
+  ) THEN
+    EXECUTE 'REVOKE ALL ON FUNCTION public.rls_auto_enable() FROM PUBLIC, anon, authenticated';
+    EXECUTE 'GRANT EXECUTE ON FUNCTION public.rls_auto_enable() TO service_role';
+    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'supabase_admin') THEN
+      EXECUTE 'GRANT EXECUTE ON FUNCTION public.rls_auto_enable() TO supabase_admin';
+    END IF;
   END IF;
 END;
 $$;
@@ -442,5 +464,7 @@ GRANT EXECUTE ON FUNCTION public.sync_product_cost_from_basis() TO service_role;
 
 -- New functions created by postgres should not be executable by the public
 -- Data API roles until a migration grants them. service_role is unchanged.
+-- Default privileges do not fully cover PUBLIC: every new function still
+-- needs an explicit REVOKE ALL ON FUNCTION ... FROM PUBLIC, anon, authenticated.
 ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public
   REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC, anon, authenticated;
