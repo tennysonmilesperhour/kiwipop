@@ -1,0 +1,4 @@
+-- Applied directly in production.
+-- Version 20260726154005, name international_shipment_carriers.
+-- This file exists so local history matches the production migration version.
+-- The original statements were applied directly in production and are not stored here.

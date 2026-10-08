@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 const PG_UNDEFINED_TABLE = '42P01';
 
 const MIGRATION_PENDING_MESSAGE =
-  'cash_donations table not found — apply supabase/migrations/012_cash_donations.sql (`supabase db push`) and refresh.';
+  'cash_donations table not found — apply supabase/migrations/20260503021032_012_cash_donations.sql (`supabase db push`) and refresh.';
 
 function isMissingTable(err: { code?: string; message?: string } | null | undefined): boolean {
   if (!err) return false;
