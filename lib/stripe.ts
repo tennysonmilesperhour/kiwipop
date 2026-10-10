@@ -120,13 +120,26 @@ async function getOrCreateOnceAmountCoupon(amountCents: number): Promise<string>
 }
 
 /**
- * Stripe Shipping Rate ID for the standard US-domestic option. Pulled
- * from STRIPE_SHIPPING_RATE_DOMESTIC if set, otherwise falls back to the
- * production rate created in the Stripe dashboard. Kept in code so a
- * missing env var doesn't silently disable shipping.
+ * Optional Stripe Shipping Rate ID. The dashboard rate
+ * shr_1TTXXlLMKed5UHTWC8xs9zTm has tax_behavior=unspecified, which Stripe
+ * rejects once automatic_tax is on. When STRIPE_SHIPPING_RATE_DOMESTIC is
+ * unset, checkout sends an inline tax-inclusive shipping_rate_data instead.
  */
-const STANDARD_DOMESTIC_SHIPPING_RATE =
-  process.env.STRIPE_SHIPPING_RATE_DOMESTIC ?? 'shr_1TTXXlLMKed5UHTWC8xs9zTm';
+const STANDARD_DOMESTIC_SHIPPING_RATE = process.env.STRIPE_SHIPPING_RATE_DOMESTIC;
+
+const INLINE_DOMESTIC_SHIPPING: Stripe.Checkout.SessionCreateParams.ShippingOption =
+  {
+    shipping_rate_data: {
+      type: 'fixed_amount',
+      display_name: 'Standard Domestic (US)',
+      fixed_amount: { amount: 499, currency: 'usd' },
+      tax_behavior: 'inclusive',
+      delivery_estimate: {
+        minimum: { unit: 'business_day', value: 2 },
+        maximum: { unit: 'business_day', value: 4 },
+      },
+    },
+  };
 
 /**
  * Free shipping kicks in once subtotal hits this threshold (matches the
@@ -146,8 +159,10 @@ function inlineLineItem(
         ...(item.description ? { description: item.description } : {}),
         images: item.image ? [item.image] : [],
         metadata: { productId: item.productId },
+        tax_code: 'txcd_40090001',
       },
       unit_amount: item.amount,
+      tax_behavior: 'inclusive',
     },
     quantity: item.quantity,
   };
@@ -171,7 +186,7 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
         )
       : inlineLineItems;
 
-  // Shipping: free over the threshold, $5 standard otherwise. Stripe collects
+  // Shipping: free over the threshold, $4.99 standard otherwise. Stripe collects
   // the shipping address so the rate can be applied + so we get a
   // delivery-grade address attached to the session/payment_intent.
   const subtotal = params.subtotalCents ?? null;
@@ -180,7 +195,11 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
 
   const shippingOptions: Stripe.Checkout.SessionCreateParams.ShippingOption[] =
     needsShippingCharge
-      ? [{ shipping_rate: STANDARD_DOMESTIC_SHIPPING_RATE }]
+      ? [
+          STANDARD_DOMESTIC_SHIPPING_RATE
+            ? { shipping_rate: STANDARD_DOMESTIC_SHIPPING_RATE }
+            : INLINE_DOMESTIC_SHIPPING,
+        ]
       : [];
 
   // A wholesale welcome code (or any percent discount) is attached as a
@@ -204,6 +223,7 @@ export async function createCheckoutSession(params: CreateCheckoutSessionParams)
       metadata: { orderId: params.orderId },
     },
     shipping_address_collection: { allowed_countries: ['US'] },
+    automatic_tax: { enabled: true },
     ...(shippingOptions.length > 0 ? { shipping_options: shippingOptions } : {}),
     ...(discountCouponId ? { discounts: [{ coupon: discountCouponId }] } : {}),
   };

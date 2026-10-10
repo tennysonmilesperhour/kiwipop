@@ -44,8 +44,10 @@ export async function POST(request: NextRequest) {
           name: item.name,
           description: item.blurb,
           metadata: { merchSlug: item.slug, kind: 'merch' },
+          tax_code: 'txcd_30011000',
         },
         unit_amount: item.priceCents,
+        tax_behavior: 'inclusive',
       },
       quantity,
     },
@@ -59,6 +61,7 @@ export async function POST(request: NextRequest) {
       success_url: `${origin}/checkout/success?merch=${item.slug}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/merch`,
       shipping_address_collection: { allowed_countries: ['US', 'CA', 'MX'] },
+      automatic_tax: { enabled: true },
       metadata: { merchSlug: item.slug, kind: 'merch' },
     });
 
