@@ -17,6 +17,13 @@ const eslintConfig = defineConfig([
     ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"]
   },
   {
+    files: ["tests/**/*.js"],
+    rules: {
+      // Node's test runner loads these as CommonJS. The app itself stays ESM.
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
     rules: {
       // Visible "// label" copy is brand voice, not a JavaScript comment.
       "react/jsx-no-comment-textnodes": "off",
