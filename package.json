@@ -21,7 +21,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "axios": "^1.6.2",
     "geist": "^1.7.0",
-    "jose": "^5.1.0",
+    "jose": "^6.2.12",
     "js-cookie": "^3.0.5",
     "leaflet": "^1.9.4",
     "next": "16.4.0",
