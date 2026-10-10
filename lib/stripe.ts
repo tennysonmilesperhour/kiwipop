@@ -159,7 +159,7 @@ function inlineLineItem(
         ...(item.description ? { description: item.description } : {}),
         images: item.image ? [item.image] : [],
         metadata: { productId: item.productId },
-        tax_code: 'txcd_40090001',
+        tax_code: 'txcd_40100001',
       },
       unit_amount: item.amount,
       tax_behavior: 'inclusive',
