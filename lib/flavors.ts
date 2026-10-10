@@ -377,9 +377,9 @@ export const PACKS: readonly PackTier[] = [
  * Variety pack tiers: equal amounts of every flavor in one bundle.
  * The numbers below match the matching SKUs in the products table:
  *
- *   KP-VARIETY-PACK-8    8 pops  · 2 of each flavor   · $30 · price_1TSqZZ…
- *   KP-VARIETY-PACK-20   20 pops · 5 of each flavor   · $60 · price_1TT4eR…
- *   KP-VARIETY-PACK-40   40 pops · 10 of each flavor  · $100 · price_1TT4g6…
+ *   KP-VARIETY-PACK-8    8 pops  · 2 of each flavor   · $30 · price_1UP5WXLMKed5UHTW4lrrkfA5
+ *   KP-VARIETY-PACK-20   20 pops · 5 of each flavor   · $60 · price_1UP5WXLMKed5UHTWfKS6CnLt
+ *   KP-VARIETY-PACK-40   40 pops · 10 of each flavor  · $100 · price_1UP5WYLMKed5UHTWDVjuuGq9
  *
  * The pre-pop math:
  *   8  →  $3.75/pop
