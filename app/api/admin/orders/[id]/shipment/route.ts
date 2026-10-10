@@ -6,7 +6,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 /**
@@ -14,7 +14,8 @@ interface RouteContext {
  * the order-detail modal to render either a "buy label" button or the
  * existing label/tracking link.
  */
-export async function GET(_request: NextRequest, { params }: RouteContext) {
+export async function GET(_request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 

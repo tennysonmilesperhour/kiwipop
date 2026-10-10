@@ -8,10 +8,11 @@ export const metadata: Metadata = {
 };
 
 interface SuccessPageProps {
-  searchParams: { order_id?: string; session_id?: string };
+  searchParams: Promise<{ order_id?: string; session_id?: string }>;
 }
 
-export default function CheckoutSuccessPage({ searchParams }: SuccessPageProps) {
+export default async function CheckoutSuccessPage(props: SuccessPageProps) {
+  const searchParams = await props.searchParams;
   const orderId = searchParams.order_id;
 
   return (

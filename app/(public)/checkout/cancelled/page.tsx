@@ -8,12 +8,11 @@ export const metadata: Metadata = {
 };
 
 interface CancelledPageProps {
-  searchParams: { order_id?: string };
+  searchParams: Promise<{ order_id?: string }>;
 }
 
-export default function CheckoutCancelledPage({
-  searchParams,
-}: CancelledPageProps) {
+export default async function CheckoutCancelledPage(props: CancelledPageProps) {
+  const searchParams = await props.searchParams;
   const orderId = searchParams.order_id;
 
   return (

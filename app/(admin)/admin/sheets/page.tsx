@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type JSX } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AdminLayout } from '@/components/AdminLayout';
 

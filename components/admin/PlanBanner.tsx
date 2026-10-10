@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import { formatCentsToUSD } from '@/lib/format';
 import {
@@ -10,6 +9,8 @@ import {
   SALARY_TARGET_CENTS,
   currentPlanMonth,
 } from '@/lib/plan';
+
+import type { JSX } from "react";
 
 /* =========================================================
    PLAN BANNER

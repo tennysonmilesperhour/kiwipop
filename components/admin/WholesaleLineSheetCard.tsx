@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type JSX } from 'react';
 
 const LINE_SHEET_PATH = '/wholesale/line-sheet';
 

@@ -15,7 +15,7 @@ interface AdminContext {
  * Returns either an AdminContext or a NextResponse to short-circuit the route.
  */
 export async function requireAdmin(): Promise<AdminContext | NextResponse> {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const {
     data: { user },
     error: userError,

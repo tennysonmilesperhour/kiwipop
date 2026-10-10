@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 /**
@@ -17,7 +17,8 @@ interface RouteContext {
  * recount); a positive delta adds it. Stock is floored at 0, so removing more
  * than is on hand simply zeroes it out.
  */
-export async function POST(request: NextRequest, { params }: RouteContext) {
+export async function POST(request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
 

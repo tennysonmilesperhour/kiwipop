@@ -8,8 +8,8 @@ import { cookies } from 'next/headers';
  * incoming request's auth cookies. Subject to RLS — use this when you want
  * the database to apply the caller's row-level policies.
  */
-export function createSupabaseServerClient() {
-  const cookieStore = cookies();
+export async function createSupabaseServerClient() {
+  const cookieStore = await cookies();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 

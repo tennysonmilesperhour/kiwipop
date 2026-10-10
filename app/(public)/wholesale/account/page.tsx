@@ -6,6 +6,8 @@ import { tierLabel, type WholesaleTier } from '@/lib/wholesale-tiers';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
+import type { JSX } from "react";
+
 export const metadata: Metadata = {
   title: 'wholesale · account',
   description: 'your wholesale application status and tier pricing.',
@@ -67,7 +69,7 @@ const STATUS_COPY: Record<
 };
 
 export default async function WholesaleAccountPage(): Promise<JSX.Element> {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

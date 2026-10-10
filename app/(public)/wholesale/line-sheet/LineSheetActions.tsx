@@ -1,6 +1,7 @@
 'use client';
-
 import Link from 'next/link';
+
+import type { JSX } from "react";
 
 /**
  * Floating action bar on the wholesale line sheet — print / save-as-PDF and a
