@@ -19,13 +19,6 @@ interface ShippingAddress {
   donationMessage?: string | null;
 }
 
-interface OrderLineItem {
-  id: string;
-  quantity?: number;
-  price_cents?: number;
-  products?: { name?: string | null } | null;
-}
-
 interface OrderRow {
   id: string;
   status: string;
@@ -1130,6 +1123,13 @@ function ProductionSummaryCard({
    ORDER MODAL — full shipping/items detail + actions + nav
    ----------------------------------------------------------- */
 
+interface OrderLineItem {
+  id: string;
+  quantity?: number;
+  price_cents?: number;
+  products?: { name?: string | null } | null;
+}
+
 interface OrderModalProps {
   orderId: string;
   autoPrint: boolean;
@@ -1403,9 +1403,8 @@ function OrderModal({
               <section>
                 <h3 className="orders-modal-section-title">Items</h3>
                 <div className="orders-modal-items">
-                  {(order.items as OrderLineItem[] | undefined)?.length ? (
-                    (order.items as OrderLineItem[]).map((item) => {
-                      return (
+                  {order.items?.length ? (
+                    (order.items as OrderLineItem[]).map((item) => (
                       <div key={item.id} className="orders-modal-item">
                         <span className="orders-modal-item-name">
                           {item.products?.name ?? 'Unknown'}{' '}
@@ -1419,8 +1418,7 @@ function OrderModal({
                           )}
                         </span>
                       </div>
-                      );
-                    })
+                    ))
                   ) : (
                     <p style={{ fontSize: 13 }}>no items</p>
                   )}

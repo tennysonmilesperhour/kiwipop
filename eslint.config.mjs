@@ -28,6 +28,13 @@ const eslintConfig = defineConfig([
       "react-hooks/refs": "warn",
       "react-hooks/preserve-manual-memoization": "warn",
       "react-hooks/purity": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ]);

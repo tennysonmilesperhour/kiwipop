@@ -11,7 +11,6 @@ const LINKS: Array<{ href: string; label: string }> = [
   { href: '/#ingredients', label: 'spec' },
   { href: '/about', label: 'story' },
   { href: '/find-us', label: 'find us' },
-  { href: '/raffle', label: 'raffle' },
   { href: '/variety', label: 'variety' },
   { href: '/merch', label: 'merch' },
   { href: '/wholesale', label: 'wholesale' },
@@ -84,7 +83,7 @@ export function Navigation() {
       </div>
 
       <div className="nav-actions">
-        {isAdmin ? (
+        {user && isAdmin ? (
           <Link
             href="/admin/dashboard"
             className="nav-cta nav-cta-admin"

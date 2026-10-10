@@ -132,7 +132,6 @@ export function Onepager({ fontVars }: OnepagerProps) {
     form.reset();
   };
 
-  const da = (l: Lang) => (l === lang ? '' : undefined);
   // For elements with data-lang where we want data-active when matching the active lang
   const langProps = (l: Lang) => ({
     'data-lang': l,

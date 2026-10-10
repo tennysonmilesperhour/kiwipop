@@ -15,6 +15,7 @@ export interface ProductRow {
   name: string;
   price_cents: number;
   preorder_only: boolean;
+  preorder_deadline: string | null;
   in_stock: number;
   image_url: string | null;
   description: string | null;
@@ -72,7 +73,7 @@ export async function loadLandingProducts(): Promise<LandingProducts> {
   try {
     const { data } = await supabaseAdmin
       .from('products')
-      .select('id, sku, name, price_cents, preorder_only, in_stock, image_url, description')
+      .select('id, sku, name, price_cents, preorder_only, preorder_deadline, in_stock, image_url, description')
       .in('sku', ALL_SKUS);
 
     if (data) {

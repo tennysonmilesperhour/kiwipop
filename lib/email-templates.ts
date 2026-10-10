@@ -50,7 +50,7 @@ function layout(body: string): string {
 
 // ---- templates ----
 
-export function welcomeEmail(email: string): { subject: string; html: string; text: string } {
+export function welcomeEmail(_email: string): { subject: string; html: string; text: string } {
   return {
     subject: 'welcome to the club · kiwi pop',
     html: layout(`
@@ -245,7 +245,7 @@ export function orderConfirmationEmail(params: {
         </tfoot>
       </table>
       
-      <p>you'll get a shipping confirmation with tracking once it's on its way. most orders ship within 1–3 business days.</p>
+      <p>you'll get a shipping confirmation with tracking once it's on its way. in-stock items usually ship within 1–3 business days. preorders ship when the batch is ready.</p>
       
       <div class="fact">
         <strong>tip:</strong> kiwi pop tastes best when you're about to do something fun. save it for the right moment.
@@ -261,7 +261,7 @@ ${itemsText}
 
 total: $${total}
 
-you'll get a shipping confirmation with tracking once it's on its way. most orders ship within 1-3 business days.
+you'll get a shipping confirmation with tracking once it's on its way. in-stock items usually ship within 1-3 business days. preorders ship when the batch is ready.
 
 tip: kiwi pop tastes best when you're about to do something fun. save it for the right moment.
 

@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { JsonLd } from '@/components/JsonLd';
 import { FLAVORS_BY_SKU, FLAVOR_SKU_FOR, imageForProduct } from '@/lib/flavors';
 import { absoluteUrl, buildBreadcrumbLd, SHARE_IMAGE_PATH, SITE_URL } from '@/lib/seo';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { getPreorderOnlyMode } from '@/lib/settings';
+import { isRetiredSku } from '@/lib/retired';
 import ProductClient from './ProductClient';
 
 interface ProductPageProps {
@@ -37,6 +39,7 @@ async function loadProduct(id: string): Promise<ProductRow | null> {
 export async function generateMetadata(props: ProductPageProps): Promise<Metadata> {
   const params = await props.params;
   const product = await loadProduct(params.id);
+  if (product && isRetiredSku(product.sku)) notFound();
   if (!product) {
     return {
       title: 'product · kiwi pop',
@@ -83,6 +86,8 @@ export default async function ProductPage(props: ProductPageProps) {
     loadProduct(params.id),
     getPreorderOnlyMode(),
   ]);
+
+  if (product && isRetiredSku(product.sku)) notFound();
 
   // Build Product JSON-LD with whatever data we have. If the row is
   // missing, fall through and let the client component render the

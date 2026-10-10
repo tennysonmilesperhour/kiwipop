@@ -1,0 +1,4 @@
+-- Applied directly in production.
+-- Version 20260726153120, name canonical_product_names.
+-- This file exists so local history matches the production migration version.
+-- The original statements were applied directly in production and are not stored here.

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { isRetiredSku } from '@/lib/retired';
 
 // Public, indexable pages only. Transactional surfaces (/cart, /auth/*,
 // /checkout/*) are intentionally omitted — robots.ts disallows them and
@@ -11,7 +12,6 @@ const STATIC_PATHS = [
   '/variety',
   '/merch',
   '/wholesale',
-  '/raffle',
   '/donate',
   '/legal/terms',
   '/legal/privacy',
@@ -43,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (supabaseUrl && anonKey && supabaseUrl.startsWith('http')) {
     try {
       const response = await fetch(
-        `${supabaseUrl}/rest/v1/products?select=id,created_at`,
+        `${supabaseUrl}/rest/v1/products?select=id,sku,created_at`,
         {
           headers: {
             apikey: anonKey,
@@ -53,9 +53,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
       );
       if (response.ok) {
-        const rows: Array<{ id: string; created_at: string }> =
+        const rows: Array<{ id: string; sku: string | null; created_at: string }> =
           await response.json();
-        productEntries = rows.map((row) => ({
+        productEntries = rows.filter((row) => !isRetiredSku(row.sku)).map((row) => ({
           url: `${base}/products/${row.id}`,
           lastModified: new Date(row.created_at),
           changeFrequency: 'weekly',

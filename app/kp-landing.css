@@ -354,6 +354,43 @@
 }
 .kp-page .fc .status-pill.live { color: var(--kiwi); border: 1px solid var(--kiwi); box-shadow: 0 0 10px rgba(182, 255, 26, 0.4); }
 .kp-page .fc .status-pill.soon { color: var(--rose-dust); border: 1px solid var(--rose-dust); }
+.kp-page .fc .status-pill.soldout,
+.kp-page .fc .status-pill.preorder {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  padding: 7px 12px;
+  text-shadow: none;
+}
+.kp-page .fc .status-pill.soldout {
+  color: #1a0010;
+  background: #ff2d6a;
+  border: 1px solid #ff2d6a;
+}
+.kp-page .fc .status-pill.preorder {
+  color: #120018;
+  background: var(--lemon);
+  border: 1px solid var(--lemon);
+  box-shadow: 0 0 14px rgba(245, 255, 61, 0.45);
+}
+.kp-page .fulfillment-note {
+  font-family: var(--font-body, inherit);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--bone);
+  margin: 4px 0 0;
+  max-width: 36rem;
+}
+.kp-page .cta-take:disabled {
+  opacity: 1;
+  background: #ff2d6a;
+  color: #1a0010;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
 
 /* added-to-cart confirmation flash on the take-one button */
 .kp-page .cta-take.added {
