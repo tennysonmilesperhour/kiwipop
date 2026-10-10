@@ -16,7 +16,8 @@ UPDATE public.products SET stripe_price_id = CASE stripe_price_id
  WHEN 'price_1TSqZZLMKed5UHTWkPhxHtZb' THEN 'price_1UP5WXLMKed5UHTW4lrrkfA5'
  WHEN 'price_1TT4eRLMKed5UHTWCt5ov44t' THEN 'price_1UP5WXLMKed5UHTWfKS6CnLt'
  WHEN 'price_1TT4g6LMKed5UHTWPu6HpzGX' THEN 'price_1UP5WYLMKed5UHTWDVjuuGq9'
+ WHEN 'price_1TSpusLMKed5UHTW7Qk28m2Q' THEN 'price_1UP5apLMKed5UHTWfL8t97C4'
+ WHEN 'price_1TSpyoLMKed5UHTWX7kgrw5x' THEN 'price_1UP5apLMKed5UHTW2FAJ8tuF'
+ WHEN 'price_1TSq03LMKed5UHTWtT0c2GP5' THEN 'price_1UP5aqLMKed5UHTWNbSiLCQf'
  ELSE stripe_price_id END
-WHERE stripe_price_id IN ('price_1TSlCzLMKed5UHTWIP6xSoqt','price_1TSlFCLMKed5UHTWoj4GGmgt','price_1TSlIDLMKed5UHTWDXJD9FpL','price_1TSpnuLMKed5UHTWv8DC2AIJ','price_1TSpq9LMKed5UHTWDthDOUb5','price_1TSprhLMKed5UHTWvG3gUGjm','price_1TSq2CLMKed5UHTWmVg29Kwd','price_1TSq2cLMKed5UHTWyhngebYR','price_1TSq3lLMKed5UHTWAEpwAzre','price_1TSqZZLMKed5UHTWkPhxHtZb','price_1TT4eRLMKed5UHTWCt5ov44t','price_1TT4g6LMKed5UHTWPu6HpzGX');
--- KP-MANGO-MOLLY* rows point at prices on ARCHIVED Stripe products; null them so checkout uses inline tax-inclusive price_data:
-UPDATE public.products SET stripe_price_id = NULL WHERE stripe_price_id IN ('price_1TSpusLMKed5UHTW7Qk28m2Q','price_1TSq03LMKed5UHTWtT0c2GP5','price_1TSpyoLMKed5UHTWX7kgrw5x');
+WHERE stripe_price_id IN ('price_1TSlCzLMKed5UHTWIP6xSoqt','price_1TSlFCLMKed5UHTWoj4GGmgt','price_1TSlIDLMKed5UHTWDXJD9FpL','price_1TSpnuLMKed5UHTWv8DC2AIJ','price_1TSpq9LMKed5UHTWDthDOUb5','price_1TSprhLMKed5UHTWvG3gUGjm','price_1TSq2CLMKed5UHTWmVg29Kwd','price_1TSq2cLMKed5UHTWyhngebYR','price_1TSq3lLMKed5UHTWAEpwAzre','price_1TSqZZLMKed5UHTWkPhxHtZb','price_1TT4eRLMKed5UHTWCt5ov44t','price_1TT4g6LMKed5UHTWPu6HpzGX','price_1TSpusLMKed5UHTW7Qk28m2Q','price_1TSpyoLMKed5UHTWX7kgrw5x','price_1TSq03LMKed5UHTWtT0c2GP5');
