@@ -1070,17 +1070,17 @@ const PORTFOLIO_IMAGES: PortfolioImage[] = [
     caption: 'KIWI POP · 舐',
   },
   {
-    src: '/landing/img/yellow-hair.jpg',
+    src: '/landing/img/yellow-hair.webp',
     alt: 'Kiwi Pop · Luci Ginger Lemon flavor',
     caption: 'LUCI GINGER LEMON',
   },
   {
-    src: '/landing/img/lips-lollipop.jpg',
+    src: '/landing/img/lips-lollipop.webp',
     alt: 'Kiwi Pop · Molly Matcha Mint flavor',
     caption: 'MOLLY MATCHA MINT',
   },
   {
-    src: '/landing/img/eye-galaxy.jpg',
+    src: '/landing/img/eye-galaxy.webp',
     alt: 'Kiwi Pop · Mary Caramel Apple Cinn flavor',
     caption: 'MARY CARAMEL APPLE CINN',
   },

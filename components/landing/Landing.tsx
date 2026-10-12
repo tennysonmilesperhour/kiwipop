@@ -332,9 +332,11 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
       <nav className="kp-nav">
         <Link href="/" className="kp-brand">
           <img
-            src="/landing/img/kiwi-kitty-pop.webp"
+            src="/landing/img/kiwi-kitty-mark.webp"
             alt=""
             className="kp-mark"
+            width={26}
+            height={26}
             aria-hidden="true"
           />
           <div className="nm">
@@ -437,7 +439,7 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
             The CSS classes keep the same layout, mask, drop-shadows. */}
         <div className="hero-img">
           <Image
-            src="/landing/img/lips-lollipop.jpg"
+            src="/landing/img/lips-lollipop.webp"
             alt="Kiwi Pop hero, anime portrait holding a swirl lollipop"
             fill
             priority
@@ -450,9 +452,10 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
             src="/landing/img/kiwi-kitty-pop.webp"
             alt=""
             fill
-            priority
+            loading="eager"
+            fetchPriority="low"
             aria-hidden="true"
-            sizes="(max-width: 1024px) 80vw, 40vw"
+            sizes="(max-width: 1024px) 45vw, 720px"
             style={{ objectFit: 'contain', objectPosition: 'bottom center' }}
           />
         </div>
@@ -518,6 +521,14 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
 
         <div className="boxes">
           <div className="img-foot">
+            <Image
+              src="/landing/img/dance-girl.webp"
+              alt=""
+              fill
+              loading="lazy"
+              sizes="(max-width: 1024px) 100vw, 588px"
+              style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
+            />
             <span className="ig-handle">@the.kiwi.pop · the lineup</span>
             <p className="quote">
               made by hand in salt lake city.{' '}
@@ -812,10 +823,11 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
                       position: absolute / inset: 0 / saturate filter,
                       and Image fills it with object-fit: cover. */}
                   <Image
-                    src={FLAVOR_IMG[flavor.sku] ?? '/landing/img/lips-lollipop.jpg'}
+                    src={FLAVOR_IMG[flavor.sku] ?? '/landing/img/lips-lollipop.webp'}
                     alt={`${flavor.name} kiwi pop flavor, ${flavor.flavor}`}
                     fill
-                    sizes="(max-width: 768px) 80vw, 25vw"
+                    loading="lazy"
+                    sizes="(max-width: 380px) 250px, (max-width: 560px) 280px, 340px"
                     style={{ objectFit: 'cover', objectPosition: 'center' }}
                   />
                 </div>
@@ -877,7 +889,16 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
 
       {/* ===== ZONE 4 · PEAK ===== */}
       <section className="z4" data-screen-label="04 Peak">
-        <div className="melt-bg" />
+        <div className="melt-bg" aria-hidden="true">
+          <Image
+            src="/landing/img/melt.webp"
+            alt=""
+            fill
+            loading="lazy"
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
         <div className="scan" />
         <div className="cn-huge">夜</div>
         <div className="bars">
@@ -1252,10 +1273,13 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
         <div className="col">
           <div className="brand-foot">
             <img
-              src="/landing/img/kiwi-kitty-pop.webp"
+              src="/landing/img/kiwi-kitty-mark.webp"
               alt=""
               className="kp-mark"
               aria-hidden="true"
+              width={36}
+              height={36}
+              loading="lazy"
               style={{ width: 36, height: 36 }}
             />
             <div className="nm">KIWI<span className="pk">.</span>POP</div>

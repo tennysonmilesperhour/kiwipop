@@ -111,9 +111,11 @@ export const FLAVORS_BY_SKU: Record<string, FlavorBrandInfo> = Object.fromEntrie
  */
 export const FLAVOR_IMG: Record<string, string> = {
   'KP-KIWI-KITTY': '/landing/img/kiwi-kitty-pop.webp',
-  'KP-LUCY-LEMON': '/landing/img/yellow-hair.jpg',
-  'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.jpg',
-  'KP-MARY-MINT': '/landing/img/eye-galaxy.jpg',
+  'KP-LUCY-LEMON': '/landing/img/yellow-hair.webp',
+  'KP-MANGO-MOLLY': '/landing/img/lips-lollipop.webp',
+  // Display-sized WebP. public/landing/img/eye-galaxy.jpg stays as a
+  // compressed JPEG at the old URL (cached CSS and indexed links).
+  'KP-MARY-MINT': '/landing/img/eye-galaxy.webp',
 };
 
 /**
