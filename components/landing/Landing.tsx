@@ -84,7 +84,7 @@ const FUNCTIONAL_ICONS = [
     <path d="M12 13c-3 0-6-2-6-6 3 0 6 2 6 6z" />
     <path d="M12 13c3 0 6-2 6-6-3 0-6 2-6 6z" />
   </g>,
-  // xylitol — tooth (tooth-friendly sweetener)
+  // xylitol — sweetener
   <g key="i7">
     <path d="M8 3c-2 0-4 2-4 5 0 3 1 4 2 7s1 6 3 6 2-3 3-6 2-3 3 0 1 6 3 6 2-3 3-6 2-4 2-7c0-3-2-5-4-5-2 0-3 1-4 1s-2-1-4-1z" />
   </g>,
@@ -468,7 +468,7 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
           <p className="sub">
             <span className="em">here to make you more kissable.</span>{' '}
             <span className="sub-hl">
-              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower that wakes the palate, increases salivation) + chilcuague (the mexican golden root that holds the tingle) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific adaptogen (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · coconut oil + isomalt base · xylitol-sweetened (tooth-friendly) · edible mica glitter swirled inside. contains coconut (a tree nut).
+              &lt;1g of sugar · vegan · ~35 cal · jambu (the buzz-button flower, for an electric mouth tingle) + chilcuague (the mexican golden root that holds the tingle) + theobromine + b12 + magnesium glycinate + taurine + electrolytes + a flavor-specific ingredient (ginseng/spirulina, ashwagandha, maca + cinnamon, or L-theanine + chamomile) · coconut oil + isomalt base · xylitol-sweetened · edible mica glitter swirled inside. contains coconut (a tree nut).
             </span>
           </p>
           <p className="sub" style={{ marginTop: '0.6rem', opacity: 0.78 }}>
@@ -914,7 +914,7 @@ export default function Landing({ products, fundraiser, preorderMode = false }: 
             YOUR <span className="lm">MOUTH.</span>
           </h2>
           <div className="right">
-            every functional doing real work, doses on the wrapper.{' '}
+            what&apos;s in the pop, doses on the wrapper.{' '}
             <span className="em">measured by gram · not by vibe.</span>
             <br />
             <span style={{ display: 'inline-block', marginTop: '0.5rem', opacity: 0.85 }}>

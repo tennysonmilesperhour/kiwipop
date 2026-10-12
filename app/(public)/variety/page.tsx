@@ -107,7 +107,7 @@ export default function VarietyPage() {
         }}
       >
         equal amounts of every flavor in one box · kiwi pop · luci ginger lemon ·
-        molly matcha mint · mary caramel apple cinn · same functional payload across all
+        molly matcha mint · mary caramel apple cinn · same base across all
         four.
         {sitePreorderMode
           ? ' Preorder: your card is charged today. Ships when ready, we\'ll email you.'

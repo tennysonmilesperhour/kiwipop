@@ -259,14 +259,14 @@ export function Onepager({ fontVars }: OnepagerProps) {
             <div className="why-card">
               <h3 {...langProps('en')}>Looks like fun, not medicine.</h3>
               <h3 {...langProps('es')}>Parece diversión, no medicina.</h3>
-              <p {...langProps('en')}>Bright wrapper, edible mica glitter, a swirl on a stick. It reads as a treat. The functional payload is real, but the moment is light.</p>
-              <p {...langProps('es')}>Envoltorio vivo, brillo de mica comestible, espiral en un palo. Se lee como un capricho. La carga funcional es real, pero el momento es ligero.</p>
+              <p {...langProps('en')}>Bright wrapper, edible mica glitter, a swirl on a stick. It reads as a treat. The moment is light, and we do not claim a medical effect.</p>
+              <p {...langProps('es')}>Envoltorio vivo, brillo de mica comestible, espiral en un palo. Se lee como un capricho. El momento es ligero, y no afirmamos un efecto médico.</p>
             </div>
             <div className="why-card">
               <h3 {...langProps('en')}>Designed for long nights.</h3>
               <h3 {...langProps('es')}>Pensada para noches largas.</h3>
-              <p {...langProps('en')}>Magnesium for the legs. Electrolytes for sweat. Theobromine and B12 for steady energy. The chemistry of a long night, in a lollipop. (The mouth tingle is the one piece we cannot bring to the EU yet — see the FAQ.)</p>
-              <p {...langProps('es')}>Magnesio para las piernas. Electrolitos para el sudor. Teobromina y B12 para una energía estable. La química de una noche larga, en una piruleta. (El cosquilleo es lo único que aún no podemos traer a la UE: véanse las preguntas frecuentes.)</p>
+              <p {...langProps('en')}>The formula includes magnesium, electrolytes, theobromine, and B12. We do not claim an effect on muscles, sweat, or energy. (The mouth tingle is the one piece we cannot bring to the EU yet — see the FAQ.)</p>
+              <p {...langProps('es')}>La fórmula incluye magnesio, electrolitos, teobromina y B12. No afirmamos un efecto sobre los músculos, el sudor o la energía. (El cosquilleo es lo único que aún no podemos traer a la UE: véanse las preguntas frecuentes.)</p>
             </div>
             <div className="why-card">
               <h3 {...langProps('en')}>Sits next to what you already sell.</h3>
@@ -302,16 +302,16 @@ export function Onepager({ fontVars }: OnepagerProps) {
               <span className="name">Theobromine</span>
               <span className="dose">175 mg*</span>
               <span className="role">
-                <span {...langProps('en')}>clean lift</span>
-                <span {...langProps('es')}>empuje limpio</span>
+                <span {...langProps('en')}>cocoa alkaloid, in the formula</span>
+                <span {...langProps('es')}>alcaloide del cacao, en la fórmula</span>
               </span>
             </div>
             <div className="ing">
               <span className="name">Ginseng</span>
               <span className="dose">150 mg*</span>
               <span className="role">
-                <span {...langProps('en')}>steady wake</span>
-                <span {...langProps('es')}>vigilia estable</span>
+                <span {...langProps('en')}>in the kiwi flavor</span>
+                <span {...langProps('es')}>en el sabor kiwi</span>
               </span>
             </div>
             <div className="ing">
@@ -321,16 +321,16 @@ export function Onepager({ fontVars }: OnepagerProps) {
               </span>
               <span className="dose">≤250 mg*</span>
               <span className="role">
-                <span {...langProps('en')}>muscle support; capped at the EFSA supplemental limit (US pop is 300 mg)</span>
-                <span {...langProps('es')}>soporte muscular; limitado al máximo EFSA (la piruleta de EE. UU. lleva 300 mg)</span>
+                <span {...langProps('en')}>in the formula; capped at the EFSA supplemental limit (US pop is 300 mg)</span>
+                <span {...langProps('es')}>en la fórmula; limitado al máximo EFSA (la piruleta de EE. UU. lleva 300 mg)</span>
               </span>
             </div>
             <div className="ing">
               <span className="name">Taurine</span>
               <span className="dose">250 mg*</span>
               <span className="role">
-                <span {...langProps('en')}>focus current</span>
-                <span {...langProps('es')}>concentración</span>
+                <span {...langProps('en')}>amino acid, in the formula</span>
+                <span {...langProps('es')}>aminoácido, en la fórmula</span>
               </span>
             </div>
             <div className="ing">
@@ -351,8 +351,8 @@ export function Onepager({ fontVars }: OnepagerProps) {
               </span>
               <span className="dose">1 mg*</span>
               <span className="role">
-                <span {...langProps('en')}>brain on</span>
-                <span {...langProps('es')}>claridad mental</span>
+                <span {...langProps('en')}>a form of vitamin B12, in the formula</span>
+                <span {...langProps('es')}>una forma de vitamina B12, en la fórmula</span>
               </span>
             </div>
             <div className="ing">
@@ -373,8 +373,8 @@ export function Onepager({ fontVars }: OnepagerProps) {
               </span>
               <span className="dose">~1.2 g*</span>
               <span className="role">
-                <span {...langProps('en')}>tooth-friendly sweetener</span>
-                <span {...langProps('es')}>edulcorante dental</span>
+                <span {...langProps('en')}>sweetener</span>
+                <span {...langProps('es')}>edulcorante</span>
               </span>
             </div>
           </div>
@@ -1385,14 +1385,14 @@ const FAQS: FaqEntry[] = [
   {
     qEn: 'How does it taste? Will my customers actually like it?',
     qEs: '¿A qué sabe? ¿Le gustará a mis clientes?',
-    aEn: 'The base flavor is fruit-forward and bright. Kiwi (sweet and tart) is the lead, with lemon-ginger, mint, and caramel apple flavors planned. The xylitol base sweetens like sugar but is tooth-friendly and won’t spike blood sugar. Note that the European version will taste like the US one but without the tingle, for the regulatory reasons above — so if we send you a US sample to try, the tingle in it is not something we can currently sell you. We would rather you taste both and tell us whether the untingled version still earns its shelf space.',
-    aEs: 'El sabor base es afrutado y brillante. El kiwi (dulce y ácido) es el principal, con sabores de limón-jengibre, menta y manzana acaramelada también previstos. La base de xilitol endulza como el azúcar pero es respetuosa con los dientes y no eleva la glucosa en sangre. Ten en cuenta que la versión europea sabrá igual que la estadounidense pero sin el cosquilleo, por los motivos regulatorios expuestos arriba: si te enviamos una muestra estadounidense, el cosquilleo que notes no es algo que podamos venderte hoy. Preferimos que probéis ambas y nos digáis si la versión sin cosquilleo se gana igualmente su sitio en el lineal.',
+    aEn: 'The base flavor is fruit-forward and bright. Kiwi (sweet and tart) is the lead, with lemon-ginger, mint, and caramel apple flavors planned. The xylitol base is a sweetener used in place of most of the sugar. We do not claim a dental or blood-sugar effect. Note that the European version will taste like the US one but without the tingle, for the regulatory reasons above — so if we send you a US sample to try, the tingle in it is not something we can currently sell you. We would rather you taste both and tell us whether the untingled version still earns its shelf space.',
+    aEs: 'El sabor base es afrutado y brillante. El kiwi (dulce y ácido) es el principal, con sabores de limón-jengibre, menta y manzana acaramelada también previstos. La base de xilitol es un edulcorante que sustituye a la mayor parte del azúcar. No afirmamos un efecto dental ni sobre la glucosa. Ten en cuenta que la versión europea sabrá igual que la estadounidense pero sin el cosquilleo, por los motivos regulatorios expuestos arriba: si te enviamos una muestra estadounidense, el cosquilleo que notes no es algo que podamos venderte hoy. Preferimos que probéis ambas y nos digáis si la versión sin cosquilleo se gana igualmente su sitio en el lineal.',
   },
   {
     qEn: 'How is this different from an energy drink or a functional shot?',
     qEs: '¿En qué se diferencia esto de una bebida energética o un shot funcional?',
-    aEn: 'No caffeine. The lift comes from theobromine (a milder, longer cousin of caffeine, the same compound that makes dark chocolate feel pleasant), B12, and a per-flavor adaptogen (ginseng + spirulina in Kiwi Pop, ashwagandha in Lemon Ginger, maca + cinnamon in Caramel Apple, or L-theanine + chamomile in Mint), with magnesium and electrolytes balancing it out. The point isn’t to spike someone up; it’s to keep them comfortable through a long night. It also takes the form of a lollipop, not a can or a shot, so it sits in a different mental category for the customer: a small treat, not a stimulant purchase.',
-    aEs: 'Sin cafeína. El empuje viene de la teobromina (un primo más suave y duradero de la cafeína, el mismo compuesto que hace que el chocolate negro siente bien), la B12 y un adaptógeno afinado por sabor (ginseng + espirulina en Kiwi Pop, ashwagandha en Lemon Ginger, maca + canela en Caramel Apple, o L-teanina + manzanilla en Mint), equilibrados con magnesio y electrolitos. La idea no es subir a nadie de golpe, sino mantenerle cómodo durante una noche larga. Además, tiene forma de piruleta, no de lata ni de chupito, así que para el cliente entra en una categoría mental distinta: un pequeño capricho, no la compra de un estimulante.',
+    aEn: 'The formula is not built as a caffeine product. Matcha in the mint flavor contributes a small amount of caffeine. Theobromine (an alkaloid in cocoa), B12, and a per-flavor ingredient (ginseng + spirulina in Kiwi Pop, ashwagandha in Lemon Ginger, maca + cinnamon in Caramel Apple, or L-theanine + chamomile in Mint) are in the pop, along with magnesium and electrolytes. We do not claim a lift, a stimulant effect, or that it will keep anyone comfortable through a long night. It takes the form of a lollipop, a small treat.',
+    aEs: 'La fórmula no está pensada como un producto de cafeína. El matcha del sabor menta aporta una pequeña cantidad de cafeína. La teobromina (un alcaloide del cacao), la B12 y un ingrediente por sabor (ginseng + espirulina en Kiwi Pop, ashwagandha en Lemon Ginger, maca + canela en Caramel Apple, o L-teanina + manzanilla en Mint) están en la piruleta, junto con magnesio y electrolitos. No afirmamos un empuje, un efecto estimulante ni que vaya a mantener a nadie cómodo durante una noche larga. Tiene forma de piruleta: un pequeño capricho.',
   },
   {
     qEn: 'What’s the shelf life and storage?',
@@ -1403,8 +1403,8 @@ const FAQS: FaqEntry[] = [
   {
     qEn: 'What about allergens and dietary restrictions?',
     qEs: '¿Y los alérgenos y restricciones alimentarias?',
-    aEn: 'Vegan. Gluten-free. No common allergens (no nuts, dairy, eggs, soy, or wheat) in the current formula. The xylitol base means it’s diabetic-friendly and doesn’t spike insulin. One real warning to flag with your customers: <strong>xylitol is highly toxic to dogs</strong>, so if a customer has a dog at the venue, the wrapper needs to stay out of reach. The full EU-compliant allergen panel will appear on the final wrapper in Spanish and English.',
-    aEs: 'Vegana. Sin gluten. Sin alérgenos comunes (sin frutos secos, lácteos, huevo, soja ni trigo) en la fórmula actual. La base de xilitol la hace apta para diabéticos y no eleva la insulina. Un aviso real que conviene comunicar a los clientes: <strong>el xilitol es muy tóxico para los perros</strong>, así que si un cliente lleva su perro a la sala, el envoltorio debe quedar fuera de su alcance. El panel completo de alérgenos conforme a la normativa de la UE aparecerá en el envoltorio final en español e inglés.',
+    aEn: 'Vegan and gluten-free. The base includes coconut oil, and it is not an allergen-free product or safe for everyone. We do not claim it is suitable for people with diabetes or that it affects insulin. One real warning to flag with your customers: <strong>xylitol is highly toxic to dogs</strong>, so if a customer has a dog at the venue, the wrapper needs to stay out of reach. The full EU-compliant allergen panel will appear on the final wrapper in Spanish and English.',
+    aEs: 'Vegana y sin gluten. La base incluye aceite de coco, y no es un producto libre de alérgenos ni apto para todo el mundo. No afirmamos que sea adecuada para personas con diabetes ni que afecte a la insulina. Un aviso real que conviene comunicar a los clientes: <strong>el xilitol es muy tóxico para los perros</strong>, así que si un cliente lleva su perro a la sala, el envoltorio debe quedar fuera de su alcance. El panel completo de alérgenos conforme a la normativa de la UE aparecerá en el envoltorio final en español e inglés.',
   },
   {
     qEn: 'Will you provide marketing materials in Spanish?',

@@ -3,7 +3,7 @@ import { SHARE_IMAGE_PATH } from '@/lib/seo';
 
 const title = 'variety pack · try all four flavors';
 const description =
-  "Try all four Kiwi Pop flavors in one pack. Kiwi, lemon ginger, mint, and caramel apple, same functional payload, equal counts. 8 / 20 / 40 sizes from $30.";
+  "Try all four Kiwi Pop flavors in one pack. Kiwi, lemon ginger, mint, and caramel apple, same base, equal counts. 8 / 20 / 40 sizes from $30.";
 
 export const metadata: Metadata = {
   title,

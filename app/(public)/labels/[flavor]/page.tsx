@@ -22,7 +22,7 @@ export async function generateMetadata(props: LabelFlavorPageProps): Promise<Met
   const name = label.flavor.name;
   return {
     title: `${name} · ingredients, nutrition + safety`,
-    description: `${name}: full ingredient statement, approximate nutrition, the functional payload with doses, and safety warnings.`,
+    description: `${name}: full ingredient statement, approximate nutrition, the other ingredients with doses, and safety warnings.`,
     alternates: { canonical: `/labels/${label.slug}` },
   };
 }

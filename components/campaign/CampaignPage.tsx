@@ -164,12 +164,12 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
           <section className="cp-story">
             <h1 className="cp-title">LAUNCH THE KIWI</h1>
             <p className="cp-subtitle">
-              Help us bring functional lollipops to every festival, every shelf, every hand that needs a better alternative.
+              Help us bring these lollipops to every festival, every shelf, every hand.
             </p>
             <div className="cp-story-body">
               <p>
-                <strong>Kiwi Pop</strong> is a lollipop-shaped party supplement, functional candy with less than 1g of sugar,
-                packed with a shared functional base (theobromine, B12, magnesium glycinate, taurine, electrolytes) plus a per-flavor adaptogen tuned to each flavor&apos;s direction.
+                <strong>Kiwi Pop</strong> is a lollipop-shaped party supplement, candy with less than 1g of sugar,
+                with a shared base (theobromine, B12, magnesium glycinate, taurine, electrolytes) plus a per-flavor ingredient.
                 We launched three days ago and our first video hit <strong>70,000 views</strong>.
                 People want this. Now we need to scale.
               </p>
@@ -179,7 +179,7 @@ export function CampaignPage({ snapshot, updates, videoUrl }: CampaignPageProps)
                 across the country. We&apos;re bootstrapping this with real love and real hustle.
               </p>
               <p>
-                <span className="cp-highlight">Health is inevitable. Kindness is invincible.</span> 💚
+                <span className="cp-highlight">Kindness is invincible.</span> 💚
               </p>
             </div>
           </section>

@@ -55,13 +55,13 @@ const SHEET = {
     brand: 'kiwi pop',
     tagline: 'tokyo at 3am in 2099.',
     positioning:
-      'a functional lollipop engineered for energy, focus, and a tingle you can feel. <1g sugar, ~35 cal, vegan — built for people who want their candy to do something.',
+      'a lollipop with a tingle you can taste. <1g sugar, ~35 cal, vegan.',
     // TODO: swap /hero-pop.png for the final vendor-facing product shot when ready.
     image: '/hero-pop.png',
   },
 
   whatItIs:
-    'kiwi pop is a hard-candy lollipop with a functional payload. it sits in the fast-growing intersection of confectionery and functional wellness — the indulgence and impulse-buy appeal of candy, with an active formulation that delivers a real sensory and physical effect. <1g sugar, ~35 cal, no crash, no compromise on flavor.',
+    'kiwi pop is a hard-candy lollipop. the indulgence and impulse-buy appeal of candy, with a mouth tingle from jambu and chilcuague. <1g sugar, ~35 cal, and the flavor comes first.',
 
   payload: [
     {
@@ -81,27 +81,27 @@ const SHEET = {
     {
       name: 'theobromine',
       benefit:
-        '175 mg. a smooth, sustained lift — like a square of dark chocolate, none of the caffeine jitter.',
+        '175 mg. the alkaloid found in cocoa. included in the formula.',
       color: '#a8ff3c',
     },
     {
       name: 'magnesium glycinate',
-      benefit: '300 mg. the un-cramp — muscles stay loose, mood steady.',
+      benefit: '300 mg. magnesium glycinate. included in the formula.',
       color: '#00f0ff',
     },
     {
       name: 'taurine',
-      benefit: '250 mg. a clean focus current, no energy-drink edge.',
+      benefit: '250 mg. an amino acid. included in the formula.',
       color: '#7b2dff',
     },
     {
       name: 'electrolytes',
-      benefit: '250 mg blend. sodium + potassium — hydration built into the candy.',
+      benefit: '250 mg blend. sodium + potassium. included in the formula.',
       color: '#ffce1f',
     },
     {
       name: 'b12',
-      benefit: '1 mg methylcobalamin. the active form. brain on, no buzz.',
+      benefit: '1 mg methylcobalamin, a form of vitamin B12. included in the formula.',
       color: '#ff1f3d',
     },
     {
@@ -117,7 +117,7 @@ const SHEET = {
       {
         no: 'no corn syrup',
         what: 'xylitol + monk fruit',
-        why: 'isomalt base, sweetened with xylitol and a touch of monk fruit. tooth-friendly, low-glycemic. <1g sugar.',
+        why: 'isomalt base, sweetened with xylitol and a touch of monk fruit. <1g sugar.',
       },
       {
         no: 'no artificial dyes',
@@ -125,9 +125,9 @@ const SHEET = {
         why: 'spirulina, turmeric, matcha, and lucuma do the color — never artificial dye.',
       },
       {
-        no: 'no caffeine crash',
-        what: 'theobromine, not caffeine',
-        why: 'a smooth lift from theobromine + per-flavor adaptogens. lifted, not wired.',
+        no: 'no caffeine as the point',
+        what: 'theobromine in the formula',
+        why: 'theobromine, the alkaloid in cocoa, is in the formula. matcha in the mint flavor contributes about 3 mg of caffeine. we do not claim a lift, a crash, or a stimulant effect.',
       },
     ] as Claim[],
     note: '<1g sugar · ~35 cal · vegan · gluten-free · edible mica glitter inside. clean-label positioning that holds up to scrutiny from health-conscious buyers and their customers.',
@@ -161,7 +161,7 @@ const SHEET = {
   ] as Flavor[],
 
   story:
-    "kiwi pop is built for the late-night, the neon-lit, the slightly unreal. the visual world is cyberpunk and y2k-harajuku: glossy, electric, and a little nostalgic for a future that never happened. it's candy for people who curate their aesthetic as carefully as their supplement stack. the brand doesn't whisper wellness — it glows.",
+    "kiwi pop is built for the late-night, the neon-lit, the slightly unreal. the visual world is cyberpunk and y2k-harajuku: glossy, electric, and a little nostalgic for a future that never happened. it's candy for people who curate their aesthetic. the brand glows.",
 
   wholesale: {
     rows: [
@@ -209,18 +209,18 @@ const SHEET = {
 export const metadata: Metadata = {
   title: 'brand sheet · for wholesale partners',
   description:
-    'kiwi pop wholesale brand sheet — a <1g-sugar functional lollipop with jambu + chilcuague (the buzz-button tingle), theobromine, magnesium glycinate, taurine, electrolytes, b12, and a per-flavor adaptogen. everything a buyer needs to evaluate stocking kiwi pop.',
+    'kiwi pop wholesale brand sheet — a <1g-sugar lollipop with jambu + chilcuague (the buzz-button tingle), theobromine, magnesium glycinate, taurine, electrolytes, b12, and a per-flavor ingredient. everything a buyer needs to evaluate stocking kiwi pop.',
   openGraph: {
     title: 'kiwi pop · wholesale brand sheet',
     description:
-      'a <1g-sugar functional lollipop engineered for energy, focus, and a tingle you can feel. tokyo at 3am in 2099.',
+      'a <1g-sugar lollipop with a mouth tingle you can taste. tokyo at 3am in 2099.',
     images: ['/og/kiwi-pop-share.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'kiwi pop · wholesale brand sheet',
     description:
-      'a <1g-sugar functional lollipop engineered for energy, focus, and a tingle you can feel. tokyo at 3am in 2099.',
+      'a <1g-sugar lollipop with a mouth tingle you can taste. tokyo at 3am in 2099.',
     images: ['/og/kiwi-pop-share.png'],
   },
 };
@@ -263,7 +263,7 @@ export default function BrandSheetPage() {
             <h2 className="section-title">
               <span className="num">01</span>what it is
             </h2>
-            <span className="section-meta">functional lollipop</span>
+            <span className="section-meta">lollipop</span>
           </div>
           <p className="brand-lead">{SHEET.whatItIs}</p>
         </div>
@@ -274,9 +274,9 @@ export default function BrandSheetPage() {
         <div className="brand-section-inner">
           <div className="section-header">
             <h2 className="section-title">
-              <span className="num">02</span>the functional payload
+              <span className="num">02</span>what&apos;s in it
             </h2>
-            <span className="section-meta">dosed, not decorative</span>
+            <span className="section-meta">listed in the formula</span>
           </div>
           <p className="brand-lead">
             every pop is dosed with a deliberate stack — real actives, framed
