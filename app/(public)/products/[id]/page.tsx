@@ -100,7 +100,7 @@ export default async function ProductPage(props: ProductPageProps) {
     const description =
       product.description?.trim() ||
       flavor?.description ||
-      'kiwi pop functional lollipop supplement.';
+      'kiwi pop lollipop.';
     const image = imageForProduct(product.sku, product.image_url);
     const priceUsd = (product.price_cents / 100).toFixed(2);
     const availability = preorderMode || product.preorder_only

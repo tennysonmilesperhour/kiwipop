@@ -71,15 +71,15 @@ export default function TermsPage() {
           intended to diagnose, treat, cure, or prevent any disease.
         </p>
         <p>
-          kiwi pop is a dietary supplement in confection form. every flavor
-          shares the same functional base (jambu, chilcuague, theobromine,
+          kiwi pop is a confection that includes dietary ingredients. every flavor
+          shares the same base (jambu, chilcuague, theobromine,
           b12, magnesium glycinate, taurine, electrolytes) plus a flavor-specific
-          adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon
+          ingredient (ginseng + spirulina in kiwi, ashwagandha in lemon
           ginger, maca + cinnamon in caramel apple, l-theanine + chamomile
-          in mint). also contains sugar alcohols (isomalt, xylitol). any
-          claims we make about our ingredients are structure/function claims.
-          they describe how nutrients may support normal body functions,
-          not treat or cure medical conditions.
+          in mint). also contains sugar alcohols (isomalt, xylitol). we do
+          not claim that kiwi pop diagnoses, treats, cures, or prevents any
+          disease, and we do not claim an effect on mood, cognition, immunity,
+          energy, sleep, blood sugar, or any medical condition.
         </p>
         <p>
           kiwi pop is not a drug, not a substitute for medical treatment, and

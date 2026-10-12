@@ -118,8 +118,8 @@ export function FlavorLabelCard({ label, qrUrl, variant = 'index' }: FlavorLabel
         ))}
       </div>
 
-      {/* Nutraceutical / functional payload */}
-      <h3 style={labelHeadingStyle}>functional (nutraceutical) payload</h3>
+      {/* Formula ingredients, doses on the label page */}
+      <h3 style={labelHeadingStyle}>other ingredients</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: '0.5rem' }}>
         {functionals.map((ing) => (
           <div

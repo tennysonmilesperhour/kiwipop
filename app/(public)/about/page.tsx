@@ -74,18 +74,16 @@ export default function AboutPage() {
             a seasoning in the sierra gorda highlands just as long.
             the shared base (theobromine, b12, magnesium glycinate,
             taurine, electrolytes) measured by gram, not by vibe. plus
-            an adaptogen tuned per flavor: ginseng + spirulina in kiwi
-            for the balanced lift, ashwagandha in lemon ginger for
-            calm-warming, maca + cinnamon in caramel apple for grounded
-            energy, l-theanine + chamomile in mint for calm-focus.
-            xylitol does the sweet
-            (tooth-friendly, low-glycemic, no insulin spike) with a touch
+            an ingredient per flavor: ginseng + spirulina in kiwi,
+            ashwagandha in lemon ginger, maca + cinnamon in caramel apple,
+            l-theanine + chamomile in mint.
+            xylitol does the sweet, with a touch
             of monk fruit. isomalt does the body. one stick.
             small batch. you can taste the small batch.
           </p>
           <p>
             <strong style={{ color: 'var(--lime)' }}>
-              make it shimmer. make it hydrating.
+              make it shimmer.
             </strong>{' '}
             that was the brief i kept giving myself.
           </p>

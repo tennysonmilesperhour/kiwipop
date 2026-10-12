@@ -31,7 +31,7 @@ export interface FlavorBrandInfo {
    * Source: kiwi_pop_costing_v2.xlsx Recipes tab (per-flavor swaps).
    */
   adaptogen: string;
-  /** Short direction tag — "balanced", "calm-warming", "grounded energy", "calm-focus". */
+  /** Short flavor tag — "bright", "warm citrus", "warm spice", "cool mint". */
   direction: string;
 }
 
@@ -46,10 +46,10 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#a8ff3c',
     status: 'live',
     description:
-      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. xylitol-sweetened (tooth-friendly, no insulin spike) with a touch of monk fruit on a coconut oil + isomalt base. shared functional base + ginseng & spirulina to keep it balanced and bright. a little secret in your mouth. contains coconut (a tree nut).",
+      "the launch flavor. bright kiwi, edible mica glitter swirled through the middle. ~35 cal. <1g of sugar. xylitol-sweetened, with a touch of monk fruit, on a coconut oil + isomalt base. shared base plus ginseng and spirulina. a little secret in your mouth. contains coconut (a tree nut).",
     pickerLabel: 'kiwi',
     adaptogen: 'ginseng + spirulina',
-    direction: 'balanced',
+    direction: 'bright',
   },
   {
     sku: 'KP-LUCY-LEMON',
@@ -61,10 +61,10 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#ffce1f',
     status: 'live',
     description:
-      "the g is for ginger. bright lemon out front, ginger snap on the back end, sharper, more awake. freeze-dried lemon and ground ginger riding on the same coconut oil + isomalt base. shared functional base, with ashwagandha swapped in to lean calm-warming (ginseng's bitter edge fights ginger). turmeric for color + warmth. contains coconut (a tree nut).",
+      "the g is for ginger. bright lemon out front, ginger snap on the back end. freeze-dried lemon and ground ginger on the same coconut oil + isomalt base. shared base, with ashwagandha in this flavor (ginseng's bitter edge fights ginger). turmeric for color. contains coconut (a tree nut).",
     pickerLabel: 'lemon ginger',
     adaptogen: 'ashwagandha',
-    direction: 'calm-warming',
+    direction: 'warm citrus',
   },
   {
     sku: 'KP-MANGO-MOLLY',
@@ -72,14 +72,14 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     display: 'molly matcha\nmint',
     feeling: '// cool down',
     fn: 'shared base · L-theanine + chamomile · luster dust',
-    flavor: 'matcha + mint · cool, clean, lifted',
+    flavor: 'matcha + mint · cool and clean',
     color: '#00f0ff',
     status: 'live',
     description:
-      "bright peppermint + spearmint, clean and cold on the back end. triple-cooling: mint, jambu, xylitol. shared functional base with L-theanine + chamomile tuned for calm-focus rather than alert, all on a coconut oil + isomalt base. matcha for natural color (≈3 mg caffeine, negligible). the mint that wakes you up without apologizing. contains coconut (a tree nut).",
+      "bright peppermint + spearmint, clean and cold on the back end. mint, jambu, and xylitol make it cool. shared base with L-theanine and chamomile in this flavor, on a coconut oil + isomalt base. matcha for natural color (about 3 mg caffeine from the matcha). contains coconut (a tree nut).",
     pickerLabel: 'mint',
     adaptogen: 'L-theanine + chamomile',
-    direction: 'calm-focus',
+    direction: 'cool mint',
   },
   {
     sku: 'KP-MARY-MINT',
@@ -91,10 +91,10 @@ export const FLAVORS: readonly FlavorBrandInfo[] = [
     color: '#d97539',
     status: 'live',
     description:
-      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared functional base with maca + cinnamon on a coconut oil + isomalt base. maca's malty backbone reinforces the caramel, cinnamon adds blood-sugar-modulating support that pairs with the magnesium for steady, grounded energy. lucuma for natural butterscotch depth. contains coconut (a tree nut).",
+      "warm caramel wrapped around tart green apple, glossy on the lips. autumn in lollipop form. shared base with maca and cinnamon on a coconut oil + isomalt base. maca's malty taste sits with the caramel. lucuma for natural butterscotch depth. contains coconut (a tree nut).",
     pickerLabel: 'caramel apple',
     adaptogen: 'maca + cinnamon',
-    direction: 'grounded energy',
+    direction: 'warm spice',
   },
 ] as const;
 
@@ -251,42 +251,42 @@ export const FUNCTIONALS: readonly FunctionalIngredient[] = [
   {
     name: 'chilcuague',
     amount: 'food-flavor amount',
-    why: 'the depth. mexican golden root (heliopsis longipes). its alkamide, affinin, is the same molecule as jambu\'s spilanthol — it holds the tingle open longer and turns it warm and numbing instead of just fizzy.',
+    why: 'the depth. mexican golden root (heliopsis longipes). its alkamide, affinin, is the same molecule as jambu\'s spilanthol. it holds the tingle open longer and turns it warmer.',
   },
   {
     name: 'theobromine',
     amount: '175 mg',
-    why: 'a small square of dark chocolate, in lollipop form. lifted, not jittery.',
+    why: 'the alkaloid found in cocoa. included in the formula.',
   },
   {
     name: 'magnesium glycinate',
     amount: '300 mg',
-    why: 'the un-cramp. legs stay loose on the floor.',
+    why: 'magnesium glycinate. included in the formula.',
   },
   {
     name: 'taurine',
     amount: '250 mg',
-    why: 'clean focus current. no energy-drink edge.',
+    why: 'an amino acid. included in the formula.',
   },
   {
     name: 'electrolytes',
     amount: '250 mg blend',
-    why: 'sodium + potassium. you sweat, we replace.',
+    why: 'sodium + potassium. included in the formula.',
   },
   {
     name: 'b12',
     amount: '1 mg methylcobalamin',
-    why: 'the active form. brain on, no buzz.',
+    why: 'methylcobalamin, a form of vitamin B12. included in the formula.',
   },
   {
     name: 'adaptogen',
     amount: 'tuned per flavor',
-    why: 'ginseng + spirulina in kiwi (balanced) · ashwagandha in lemon ginger (calm-warming) · maca + cinnamon in caramel apple (grounded energy) · L-theanine + chamomile in mint (calm-focus).',
+    why: 'ginseng + spirulina in kiwi · ashwagandha in lemon ginger · maca + cinnamon in caramel apple · L-theanine + chamomile in mint.',
   },
   {
     name: 'xylitol',
     amount: '~1.2 g',
-    why: 'tooth-friendly sweetener. starves cavity bacteria, low-glycemic, no insulin spike.',
+    why: 'a sweetener used in place of most of the sugar.',
   },
 ] as const;
 
@@ -330,17 +330,17 @@ export const TIMELINE: readonly TimelineMoment[] = [
   {
     index: '00:20',
     title: 'the spark',
-    body: 'jambu hits. the brazilian buzz-button flower wakes the palate, fizzy mouth-tingle, watering, fully awake. chilcuague, the mexican golden root, comes in just behind it and holds the tingle open — warmer, a little numbing. people have used both this way for centuries.',
+    body: 'jambu hits. the brazilian buzz-button flower brings a fizzy mouth-tingle. chilcuague, the mexican golden root, comes in just behind it and holds the tingle open, warmer.',
   },
   {
     index: '02:00',
-    title: 'the lift',
-    body: 'theobromine clicks in. shoulders drop, head clears. you smile a little, alone.',
+    title: 'the middle',
+    body: 'the flavor keeps going. sweet, tart, and a little glitter on the lips.',
   },
   {
     index: '20:00',
     title: 'the after',
-    body: 'theobromine + b12 + electrolytes doing the math in the background. you feel like you ate.',
+    body: 'the pop is finished. the glitter may still be on your lips.',
   },
 ] as const;
 

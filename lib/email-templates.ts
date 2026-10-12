@@ -65,8 +65,8 @@ export function welcomeEmail(_email: string): { subject: string; html: string; t
       less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city.
       heads up: every flavor contains coconut (a tree nut).</p>
       <p>jambu is the same flower bartenders use for the &ldquo;electric daisy&rdquo; tingle in
-      cocktails, and it&rsquo;s been studied for its effect on saliva flow and oral sensation, and
-      it&rsquo;s been in the human food supply for centuries. sources cited on
+      cocktails, and it has been in the human food supply for centuries. that history is not a
+      health claim. sources cited on
       <a href="https://www.kiwipop.fun/research">kiwipop.fun/research</a>.</p>
       <p>we don't do spam. you'll hear from us when something actually matters:
       new flavors, drops, events, and the occasional secret.</p>
@@ -81,7 +81,7 @@ you just joined something small and weird and kind of beautiful.
 
 kiwi pop is a lollipop-shaped party supplement: jambu (the brazilian buzz-button flower, for an electric mouth tingle on the first lick), chilcuague (the mexican golden root, which holds that tingle open a little longer), theobromine, B12, magnesium glycinate, taurine, electrolytes, coconut oil, edible mica glitter, and a flavor-specific adaptogen (ginseng + spirulina in kiwi, ashwagandha in lemon ginger, maca + cinnamon in caramel apple, L-theanine + chamomile in mint). less than 1g of sugar. vegan. ~35 calories. made in small batches in salt lake city. heads up: every flavor contains coconut (a tree nut).
 
-jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails, and it's been studied for its effect on saliva flow and oral sensation, and it's been in the human food supply for centuries. sources cited at https://www.kiwipop.fun/research.
+jambu is the same flower bartenders use for the "electric daisy" tingle in cocktails, and it has been in the human food supply for centuries. that history is not a health claim. sources cited at https://www.kiwipop.fun/research.
 
 we don't do spam. you'll hear from us when something actually matters: new flavors, drops, events, and the occasional secret.
 
@@ -104,20 +104,20 @@ export function ingredientDeepDiveEmail(): { subject: string; html: string; text
       
       <p><span class="highlight">the shared functional base, same dose in every flavor:</span></p>
       <ul>
-        <li><strong>jambu</strong>: the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.</li>
-        <li><strong>chilcuague</strong>: the depth. mexican golden root (heliopsis longipes), a traditional seasoning from the sierra gorda highlands. its alkamide, affinin, is the same molecule as jambu's spilanthol, but reads slower and warmer, so the tingle holds instead of fading after the first lick. food-flavor amount, not a supplement dose.</li>
-        <li><strong>theobromine</strong>: the gentle lift. it's what makes chocolate feel good, smooth energy without the jitters of caffeine.</li>
-        <li><strong>B12</strong>: the essentials. methylcobalamin form. keeps your energy metabolism running.</li>
-        <li><strong>magnesium glycinate</strong>: the one you're probably deficient in. helps with muscle relaxation, sleep, mood. glycinate form for absorption.</li>
-        <li><strong>taurine</strong>: the amino acid. supports cardiovascular function and helps regulate electrolytes.</li>
-        <li><strong>electrolytes</strong>: sodium + potassium blend. you sweat, we replace.</li>
+        <li><strong>jambu</strong>: the spark. brazilian flower (acmella oleracea), also called the buzz button. electric mouth tingle on the first lick. food-flavor amount.</li>
+        <li><strong>chilcuague</strong>: the depth. mexican golden root (heliopsis longipes), a traditional seasoning from the sierra gorda highlands. its alkamide, affinin, is the same molecule as jambu's spilanthol, and the tingle reads warmer and holds past the first lick. food-flavor amount.</li>
+        <li><strong>theobromine</strong>: the alkaloid found in cocoa. included in the formula. we do not claim an energy or mood effect.</li>
+        <li><strong>B12</strong>: methylcobalamin, a form of vitamin B12. included in the formula. we do not claim an energy or nerve effect.</li>
+        <li><strong>magnesium glycinate</strong>: included in the formula. we do not claim an effect on muscles, sleep, or mood.</li>
+        <li><strong>taurine</strong>: an amino acid. included in the formula. we do not claim a cardiovascular effect.</li>
+        <li><strong>electrolytes</strong>: sodium + potassium blend. included in the formula. we do not claim a hydration effect.</li>
       </ul>
       <p><span class="highlight">+ a flavor-specific adaptogen, tuned to direction:</span></p>
       <ul>
-        <li><strong>kiwi pop</strong>: ginseng + spirulina. balanced, all-purpose.</li>
-        <li><strong>luci ginger lemon</strong>: ashwagandha. calm-warming; pairs with ginger.</li>
-        <li><strong>mary caramel apple cinn</strong>: maca + cinnamon. grounded energy; reinforces caramel.</li>
-        <li><strong>molly matcha mint</strong>: L-theanine + chamomile. calm-focus; clean alongside mint.</li>
+        <li><strong>kiwi pop</strong>: ginseng + spirulina.</li>
+        <li><strong>luci ginger lemon</strong>: ashwagandha, alongside ginger.</li>
+        <li><strong>mary caramel apple cinn</strong>: maca + cinnamon, alongside caramel.</li>
+        <li><strong>molly matcha mint</strong>: L-theanine + chamomile, alongside mint.</li>
       </ul>
       
       <div class="fact">
@@ -134,20 +134,20 @@ you signed up a couple days ago. here's the part where most brands would send yo
 
 the shared functional base, same dose in every flavor:
 
-• jambu: the spark. brazilian flower (acmella oleracea), also called the buzz button. wakes the palate, increases saliva flow, and produces the distinctive electric mouth tingle on the first lick. food-flavor amount, not a supplement dose; reviewed by EFSA.
-• chilcuague: the depth. mexican golden root (heliopsis longipes), a traditional seasoning from the sierra gorda highlands. its alkamide, affinin, is the same molecule as jambu's spilanthol, but reads slower and warmer, so the tingle holds instead of fading after the first lick. food-flavor amount, not a supplement dose.
-• theobromine: the gentle lift. it's what makes chocolate feel good, smooth energy without the jitters of caffeine.
-• B12: methylcobalamin form. keeps your energy metabolism running.
-• magnesium glycinate: helps with muscle relaxation, sleep, mood. glycinate form for absorption.
-• taurine: supports cardiovascular function and electrolyte regulation.
-• electrolytes: sodium + potassium blend. you sweat, we replace.
+• jambu: the spark. brazilian flower (acmella oleracea), also called the buzz button. electric mouth tingle on the first lick. food-flavor amount.
+• chilcuague: the depth. mexican golden root (heliopsis longipes), a traditional seasoning from the sierra gorda highlands. its alkamide, affinin, is the same molecule as jambu's spilanthol, and the tingle reads warmer and holds past the first lick. food-flavor amount.
+• theobromine: the alkaloid found in cocoa. included in the formula. we do not claim an energy or mood effect.
+• B12: methylcobalamin, a form of vitamin B12. included in the formula. we do not claim an energy or nerve effect.
+• magnesium glycinate: included in the formula. we do not claim an effect on muscles, sleep, or mood.
+• taurine: an amino acid. included in the formula. we do not claim a cardiovascular effect.
+• electrolytes: sodium + potassium blend. included in the formula. we do not claim a hydration effect.
 
 + a flavor-specific adaptogen, tuned to direction:
 
-• kiwi pop: ginseng + spirulina. balanced, all-purpose.
-• luci ginger lemon: ashwagandha. calm-warming; pairs with ginger.
-• mary caramel apple cinn: maca + cinnamon. grounded energy; reinforces caramel.
-• molly matcha mint: L-theanine + chamomile. calm-focus; clean alongside mint.
+• kiwi pop: ginseng + spirulina.
+• luci ginger lemon: ashwagandha, alongside ginger.
+• mary caramel apple cinn: maca + cinnamon, alongside caramel.
+• molly matcha mint: L-theanine + chamomile, alongside mint.
 
 the base: coconut oil + isomalt (sugar alcohol), sweetened with monk fruit + xylitol. edible mica glitter swirled through the middle. heads up: every flavor contains coconut, which the FDA classifies as a tree nut.
 

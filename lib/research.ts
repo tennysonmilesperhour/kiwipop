@@ -33,46 +33,34 @@ const pubmed = (title: string): string =>
   `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(`"${title}"`)}`;
 
 export const SYNTHESIS = `
-the kiwi pop formula is built for one specific moment: a long, hot
-night where you want to feel something but not feel awful tomorrow.
-each ingredient maps to that moment cleanly. jambu wakes the palate
-on the first lick. it's a sensory hook, a conversation starter, and
-the literature on its active compound (spilanthol) is what put it in
-modern bartending and oral-care products. chilcuague, the mexican
-golden root, carries the same alkamide (affinin) with a slower,
-warmer, more numbing profile — it extends the tingle past jambu's
-initial fizz rather than duplicating it. theobromine, b12, and
-taurine give a clean, jitter-free lift; magnesium and electrolytes
-manage the soft-tissue and hydration cost of dancing for hours.
-the sweet half (xylitol, isomalt, monk fruit) is a deliberate
-choice: tooth-friendly, low-glycemic, and validated by decades of
-dental and metabolic research.
+kiwi pop is a candy built around a mouth tingle. jambu is the
+sensory hook on the first lick, the same flower used in some
+cocktails and oral-care flavors. chilcuague, the mexican golden
+root, carries the same alkamide (affinin) and holds that tingle
+warmer and longer. theobromine, b12, taurine, magnesium, and
+electrolytes are in the formula. xylitol, isomalt, and monk fruit
+are the sweeteners. none of that is a claim about mood, focus,
+energy, immunity, sleep, muscles, teeth, or blood sugar.
 
-every flavor shares that same functional base. what changes is the
-adaptogen, tuned to each flavor's sensory direction: ginseng +
-spirulina is the steady backbone in kiwi pop (balanced, all-purpose,
-the chinese pharmacopeia has trusted ginseng for two thousand years);
-ashwagandha takes its place in lemon ginger because its calmer profile
-sits better next to ginger's warmth; maca + cinnamon in caramel apple
-reinforce the malty backbone and add blood-sugar-modulating support;
-l-theanine + chamomile in mint round out the calm-focus direction the
-mint already leans into.
+every flavor shares that same base. what changes is one ingredient
+per flavor: ginseng + spirulina in kiwi, ashwagandha in lemon ginger,
+maca + cinnamon in caramel apple, l-theanine + chamomile in mint.
+those are flavor pairings, not effect directions.
 
-every ingredient is included at food-flavor or food-supplement
-amounts that are below the doses used in clinical trials. the goal
-is not megadose pharmacology. it's a candy that doesn't trash you,
-served in the kind of room that usually does.
+the papers below are background reading on ingredients. they are not
+evidence that a kiwi pop will produce any effect those papers
+examined. doses in published trials are often far above a food-flavor
+amount, and kiwi pop is not a clinical product.
 
-below: the studies, position statements, and authoritative reviews
-behind each ingredient. click any study title to read a plain-english
-summary of what the paper actually looked at.
+click any study title to read a plain-english note on what the paper
+looked at. published titles are left as printed.
 `.trim();
 
 export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'jambu (Acmella oleracea / spilanthol)',
     blurb:
-      'the brazilian buzz-button flower. wakes the palate on first lick. used for centuries in brazilian, indian, and east african cooking; standard now in modern bartending and oral-care products. the active compound, spilanthol, has been reviewed by EFSA as a food flavouring.',
+      'the brazilian buzz-button flower, used in brazilian, indian, and east african cooking and in some cocktail and oral-care flavors. in kiwi pop it is there for the electric mouth tingle, at a food-flavor amount. EFSA lists some spilanthol-bearing extracts in a flavouring database. that listing is not a statement that the pop is safe for everyone.',
     studies: [
       {
         title:
@@ -94,7 +82,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2013,
         url: pubmed('High therapeutic potential of Spilanthes acmella: a review'),
         summary:
-          'review of the chemistry, traditional use, and biological properties reported for acmella oleracea. discusses the local oral effects of spilanthol, including the increase in saliva flow and the cold-tingle palate sensation that gives the plant its english name "buzz button."',
+          'review of the chemistry and traditional food use of acmella oleracea, including the tingling mouth sensation behind the english name "buzz button." kiwi pop does not claim a saliva-flow or oral-health effect.',
       },
       {
         title:
@@ -104,7 +92,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2020,
         url: 'https://www.efsa.europa.eu/en/topics/topic/flavourings',
         summary:
-          'EFSA maintains a flavouring substances database in which spilanthol-bearing acmella extracts are listed and reviewed for use as a food flavouring. the agency has established a safe daily intake at typical food-flavor levels, well above the amount used in a single kiwi pop.',
+          'EFSA maintains a flavouring substances database in which some spilanthol-bearing acmella extracts are listed. that listing is background on food-flavour use. it is not a statement that kiwi pop is safe for everyone or free of interactions.',
       },
       {
         title: 'Alkamids: a new class of plant-derived bioactive compounds',
@@ -120,7 +108,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'chilcuague (Heliopsis longipes / affinin)',
     blurb:
-      'the mexican golden root, native to the sierra gorda highlands of guanajuato, querétaro, and san luis potosí. a traditional condiment in salsas, stews, and mezcal, and a folk remedy for numbing toothache. its active alkamide, affinin, is the same molecule as jambu\'s spilanthol — but the root profile reads slower, warmer, and more numbing, which is why it sits alongside jambu rather than replacing it. note: like jambu, chilcuague is not an authorised novel food in the EU, so both appear in the US formula only.',
+      'the mexican golden root, native to the sierra gorda highlands of guanajuato, querétaro, and san luis potosí. a traditional condiment in salsas, stews, and mezcal. its alkamide, affinin, is the same molecule as jambu\'s spilanthol, and in the pop the tingle reads warmer and longer. kiwi pop does not claim a pain, numbing, or medical use. like jambu, chilcuague is not an authorised novel food in the EU, so both appear in the US formula only.',
     studies: [
       {
         title:
@@ -153,7 +141,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2010,
         url: pubmed('Antinociceptive effect of Heliopsis longipes extract and affinin in mice'),
         summary:
-          'an animal study isolating affinin from chilcuague root and measuring its local numbing activity. relevant here only as the mechanism behind the warm, slightly numbing mouth sensation — kiwi pop uses a food-flavor amount, far below the doses studied.',
+          'an animal study of affinin extracted from chilcuague root. cited for chemical background only. kiwi pop uses a food-flavor amount and does not claim a numbing or pain-related effect.',
       },
       {
         title:
@@ -170,7 +158,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'theobromine',
     blurb:
-      'the active alkaloid in cocoa. a smoother, longer-lasting cousin of caffeine, gentler on the heart rate, less of the jittery edge, and the reason a bar of dark chocolate can feel like a small lift.',
+      'an alkaloid in cocoa, distinct from caffeine. included in the formula. kiwi pop does not claim an effect on heart rate, mood, or energy.',
     studies: [
       {
         title:
@@ -182,7 +170,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'The relevance of theobromine for the beneficial effects of cocoa consumption',
         ),
         summary:
-          'reviews how theobromine, distinct from caffeine, contributes to the cardiovascular and mood effects often attributed to cocoa. discusses theobromine\'s longer half-life and milder central-nervous-system profile compared to caffeine.',
+          'a review comparing theobromine with caffeine in the cocoa literature. background reading only. kiwi pop does not claim a cardiovascular, mood, or nervous-system effect.',
       },
       {
         title:
@@ -194,7 +182,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Differential contributions of theobromine and caffeine on mood, psychomotor performance and blood pressure',
         ),
         summary:
-          'a controlled crossover trial directly comparing the effects of theobromine, caffeine, and their combination on mood and performance. theobromine produced a measurably calmer subjective profile than caffeine at matched doses.',
+          'a controlled crossover trial that compared theobromine and caffeine. background reading only. kiwi pop does not claim a mood or performance effect.',
       },
       {
         title: 'Theobromine and the pharmacology of cocoa',
@@ -203,7 +191,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2011,
         url: pubmed('Theobromine and the pharmacology of cocoa'),
         summary:
-          'a foundational chapter-length review of theobromine pharmacology: absorption, metabolism, half-life, and effects across cardiovascular, respiratory, and central-nervous systems at dietary intake levels.',
+          'a review of theobromine pharmacology at dietary intake levels. background reading only. kiwi pop does not claim a cardiovascular, respiratory, or nervous-system effect.',
       },
       {
         title:
@@ -215,14 +203,14 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Acute effects of theobromine on cardiovascular function and mood',
         ),
         summary:
-          'human trial measuring blood pressure, heart rate, and subjective mood after isolated theobromine doses. observed mild changes in cardiovascular markers without the stimulating jitter typical of caffeine.',
+          'a human trial that measured blood pressure, heart rate, and subjective mood after isolated theobromine doses. background reading only. kiwi pop does not claim a blood-pressure, heart-rate, or mood effect.',
       },
     ],
   },
   {
     name: 'panax ginseng',
     blurb:
-      'the steady root. used in chinese herbal practice for over two thousand years. modern research has examined ginseng for cognitive performance, fatigue, and immune-system markers.',
+      'a root with a long history in food and traditional practice, included in the kiwi flavor. papers below have examined cognition, fatigue, and immune markers. kiwi pop does not claim a cognitive, fatigue, or immune effect.',
     studies: [
       {
         title: 'Asian ginseng: health professional fact sheet',
@@ -243,7 +231,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Panax ginseng (G115) improves aspects of working memory performance and subjective ratings of calmness in healthy young adults',
         ),
         summary:
-          'placebo-controlled trial in healthy adults examining the acute effect of ginseng on working memory and subjective state. found small but measurable improvements in mental task performance and self-rated calmness.',
+          'a placebo-controlled trial that examined ginseng and working-memory tasks. background reading only. kiwi pop does not claim a memory, calmness, or cognitive effect.',
       },
       {
         title:
@@ -255,7 +243,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'The effects of panax ginseng on quality of life: a systematic review',
         ),
         summary:
-          'systematic review pooling randomized trials of panax ginseng on subjective quality-of-life measures including fatigue and physical functioning. signals favor ginseng but the authors note heterogeneity across trial designs.',
+          'a systematic review of randomized trials that looked at panax ginseng and quality-of-life measures. background reading only. kiwi pop does not claim a fatigue or physical-function effect.',
       },
       {
         title:
@@ -265,14 +253,14 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2010,
         url: 'https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD007769.pub2/full',
         summary:
-          'Cochrane systematic review evaluating ginseng for cognitive function. concludes there is some evidence of benefit on aspects of cognition and mood in healthy adults but calls for larger, longer trials before broader clinical claims.',
+          'a Cochrane review that evaluated published trials of ginseng and cognitive measures. background reading only. kiwi pop does not claim a cognitive or mood effect.',
       },
     ],
   },
   {
     name: 'vitamin b12 (methylcobalamin)',
     blurb:
-      'the active form of B12. essential cofactor in energy metabolism and nerve function. methylcobalamin is the form your body uses directly, no conversion step required, unlike the cyanocobalamin found in cheaper supplements.',
+      'methylcobalamin, a form of vitamin B12 included in the formula. kiwi pop does not claim an effect on energy metabolism, nerves, or deficiency.',
     studies: [
       {
         title: 'Vitamin B12: health professional fact sheet',
@@ -290,7 +278,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2013,
         url: pubmed('Vitamin B12 deficiency'),
         summary:
-          'NEJM clinical-practice review of B12 deficiency: prevalence, causes, neurological and hematologic consequences, and what the literature shows about supplementation. cited in most modern B12 references.',
+          'a clinical-practice review of B12 deficiency. background reading only. kiwi pop does not claim to treat or prevent deficiency.',
       },
       {
         title:
@@ -300,7 +288,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2013,
         url: pubmed('Methylcobalamin: a potential vitamin of pain killer'),
         summary:
-          'reviews methylcobalamin specifically: its absorption, tissue uptake, and the reasons clinicians prefer it over cyanocobalamin in patients with neurological B12-deficiency symptoms.',
+          'a review of methylcobalamin as a form of B12. background reading only. kiwi pop does not claim a neurological or pain-related effect.',
       },
       {
         title:
@@ -312,14 +300,14 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Homocysteine-lowering by B vitamins slows the rate of accelerated brain atrophy',
         ),
         summary:
-          'placebo-controlled trial showing that B-vitamin supplementation (B12, folate, B6) reduced brain-atrophy rates in older adults with mild cognitive impairment. one of the most-cited papers underpinning modern interest in B-vitamin status.',
+          'a placebo-controlled trial of B vitamins in older adults. background reading only. kiwi pop does not claim an effect on brain atrophy or cognition.',
       },
     ],
   },
   {
     name: 'magnesium glycinate',
     blurb:
-      'the un-cramp. magnesium is one of the four most-deficient micronutrients in the modern american diet, and the glycinate form is well-tolerated and readily absorbed, used in the literature for muscle relaxation, sleep quality, and stress markers.',
+      'magnesium glycinate, included in the formula. papers below discuss magnesium intake. kiwi pop does not claim an effect on muscles, sleep, stress, mood, or deficiency.',
     studies: [
       {
         title: 'Magnesium: health professional fact sheet',
@@ -328,7 +316,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2024,
         url: 'https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/',
         summary:
-          'NIH\'s authoritative reference on magnesium intake, food sources, status assessment, deficiency, and supplementation. notes that nearly half of americans consume less magnesium than the estimated average requirement.',
+          'NIH reference on magnesium intake, food sources, and status. background reading only. kiwi pop does not claim to correct a deficiency.',
       },
       {
         title: 'The importance of magnesium in clinical healthcare',
@@ -337,7 +325,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2017,
         url: pubmed('The importance of magnesium in clinical healthcare'),
         summary:
-          'clinical-practice review summarizing the role of magnesium across cardiovascular, neuromuscular, and metabolic systems. covers why hypomagnesemia is under-diagnosed and the rationale for routine dietary attention to magnesium.',
+          'a clinical-practice review of magnesium in the medical literature. background reading only. kiwi pop does not claim a cardiovascular, muscle, or metabolic effect.',
       },
       {
         title:
@@ -349,7 +337,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'The effect of magnesium supplementation on primary insomnia in elderly: a double-blind placebo-controlled clinical trial',
         ),
         summary:
-          'randomized placebo-controlled trial of oral magnesium in adults with insomnia. magnesium improved subjective sleep measures and serum melatonin compared to placebo.',
+          'a randomized trial of oral magnesium in adults with insomnia. background reading only. kiwi pop does not claim a sleep effect.',
       },
       {
         title:
@@ -361,14 +349,14 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'The effects of magnesium supplementation on subjective anxiety and stress',
         ),
         summary:
-          'systematic review of randomized trials evaluating magnesium for self-reported anxiety. signals favor magnesium, especially in people with low baseline magnesium status, but the authors call for higher-quality trials before stronger conclusions.',
+          'a systematic review of trials that evaluated magnesium and self-reported anxiety. background reading only. kiwi pop does not claim an anxiety or stress effect.',
       },
     ],
   },
   {
     name: 'taurine',
     blurb:
-      'a conditionally essential amino acid present in cardiac, skeletal-muscle, and brain tissue. studied for cardiovascular function, exercise performance, and antioxidant activity.',
+      'an amino acid included in the formula. papers below are background reading. kiwi pop does not claim a cardiovascular, exercise, or antioxidant effect.',
     studies: [
       {
         title: 'The physiological role of taurine: from organism to organelle',
@@ -386,7 +374,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2018,
         url: pubmed('Effects and mechanisms of taurine as a therapeutic agent'),
         summary:
-          'review of the clinical literature on taurine supplementation across cardiovascular, hepatic, and metabolic conditions. covers safety profile and the dose ranges that have been studied.',
+          'a review of published taurine supplementation literature. background reading only. kiwi pop does not claim a therapeutic, cardiovascular, or metabolic effect.',
       },
       {
         title:
@@ -398,7 +386,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Effects of caffeine and taurine on simulated laparoscopy performed following sleep deprivation',
         ),
         summary:
-          'controlled study examining cognitive and motor task performance under sleep deprivation with and without taurine + caffeine. one of several papers that informs why energy-drink formulations pair the two.',
+          'a controlled study of task performance that included taurine and caffeine. background reading only. kiwi pop does not claim a cognitive, motor, or energy-drink effect.',
       },
       {
         title:
@@ -415,7 +403,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'electrolytes (sodium, potassium)',
     blurb:
-      'sweat replacement. heated rooms and long nights cost you sodium and potassium; replacing them is the difference between feeling sharp and feeling slightly hollow.',
+      'sodium and potassium, included in the formula. kiwi pop does not claim a hydration, performance, or "feeling sharp" effect.',
     studies: [
       {
         title: 'ACSM position stand: Exercise and fluid replacement',
@@ -433,7 +421,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2024,
         url: 'https://www.who.int/publications/i/item/WHO-MHP-HPS-EML-2023.02',
         summary:
-          'the WHO\'s formulation rationale for oral rehydration solutions: explains why a specific sodium / potassium / glucose ratio is more effective at restoring hydration than water alone, and why electrolytes appear in many performance and recovery products.',
+          'WHO background on oral rehydration solution formulas. cited as electrolyte context only. kiwi pop is not an oral rehydration solution and does not claim a hydration effect.',
       },
       {
         title:
@@ -443,7 +431,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2019,
         url: pubmed('Hydration assessment of athletes'),
         summary:
-          'review of practical hydration-status indicators and electrolyte considerations for active populations. relevant to long-night, hot-room contexts where the same physiology applies even without formal exercise.',
+          'a review of hydration-status indicators in athletes. background reading only. kiwi pop does not claim a hydration effect.',
       },
       {
         title:
@@ -453,14 +441,14 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2016,
         url: pubmed('A randomized trial of hydrating beverages on rehydration'),
         summary:
-          'compared the rehydration efficacy of common beverages: water, sports drinks, milk, oral rehydration solution, and others. found that drinks containing sodium and a small amount of carbohydrate retained more body water than plain water.',
+          'a trial that compared rehydration from common beverages. background reading only. kiwi pop does not claim a rehydration effect.',
       },
     ],
   },
   {
     name: 'blue spirulina (phycocyanin)',
     blurb:
-      'where the color comes from, and a real one. blue spirulina is the protein-rich extract phycocyanin, GRAS-affirmed by the FDA as a natural food coloring with a substantial antioxidant literature.',
+      'the color in the kiwi flavor. blue spirulina is phycocyanin, the subject of an FDA GRAS notice for use as a food color. kiwi pop does not claim an antioxidant, anti-inflammatory, or neuroprotective effect.',
     studies: [
       {
         title:
@@ -482,7 +470,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'C-Phycocyanin: a biliprotein with antioxidant, anti-inflammatory and neuroprotective effects',
         ),
         summary:
-          'foundational review of phycocyanin\'s biochemical activity. covers the antioxidant mechanism that distinguishes it from synthetic food dyes and the cellular pathways studied in subsequent in-vitro work.',
+          'a review of phycocyanin biochemistry. background reading only. kiwi pop uses spirulina as a color and does not claim an antioxidant or anti-inflammatory effect.',
       },
       {
         title:
@@ -492,14 +480,14 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2017,
         url: pubmed('Phycocyanin from spirulina platensis: a review'),
         summary:
-          'review of phycocyanin\'s structure, extraction methods, and the in-vitro and in-vivo studies on its antioxidant and anti-inflammatory properties. useful single-source overview of the modern literature.',
+          'a review of phycocyanin structure and extraction, plus later laboratory literature. background reading only. kiwi pop does not claim an antioxidant or anti-inflammatory effect.',
       },
     ],
   },
   {
     name: 'xylitol',
     blurb:
-      'the sweet that is friendly to your teeth. unlike sucrose, cavity-causing bacteria cannot metabolize xylitol. they starve on it. low-glycemic, no insulin spike, decades of dental and metabolic literature behind it.',
+      'a sugar alcohol used as a sweetener in place of most of the sugar. papers below discuss dental and glycemic research. kiwi pop does not claim to prevent cavities, starve bacteria, or change blood sugar or insulin.',
     studies: [
       {
         title:
@@ -509,7 +497,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2015,
         url: 'https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD010743.pub2/full',
         summary:
-          'Cochrane systematic review of xylitol for caries prevention. concludes there is low-to-moderate-quality evidence that xylitol-containing products can reduce caries incidence, the strongest available evidence base for any non-fluoride dental sweetener.',
+          'a Cochrane review of trials on xylitol and dental caries. background reading only. kiwi pop does not claim to prevent cavities.',
       },
       {
         title:
@@ -519,7 +507,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2009,
         url: pubmed('Xylitol: its role in caries control'),
         summary:
-          'review of xylitol\'s mechanism in dental caries: how it disrupts streptococcus mutans metabolism without providing a usable carbon source for bacteria. underpins the dental-association recommendations that followed.',
+          'a review of proposed mechanisms for xylitol and dental caries. background reading only. kiwi pop does not claim a dental or antibacterial effect.',
       },
       {
         title:
@@ -531,7 +519,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Glycemic and insulinemic responses to xylitol-containing foods',
         ),
         summary:
-          'examines blood-glucose and insulin response to xylitol versus sucrose-containing foods. xylitol produced a substantially attenuated postprandial response, the basis for its inclusion in low-glycemic and diabetic-friendly products.',
+          'a paper that measured blood glucose and insulin after xylitol-containing foods. background reading only. kiwi pop does not claim a blood-sugar, insulin, or diabetes-related effect.',
       },
       {
         title: 'Xylitol toxicity in dogs',
@@ -547,7 +535,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
   {
     name: 'isomalt',
     blurb:
-      'the body. isomalt is the sugar alcohol that gives kiwi pop its hard-candy structure without the sugar. EU- and FDA-approved, decades of dental and metabolic literature behind it.',
+      'the sugar alcohol that gives kiwi pop its hard-candy structure. it is an approved food additive in the US and EU. kiwi pop does not claim a dental, metabolic, or blood-glucose effect.',
     studies: [
       {
         title:
@@ -557,7 +545,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2012,
         url: pubmed('Health potential of polyols as sugar replacers'),
         summary:
-          'chapter-length review of isomalt and other polyols as sucrose replacers. covers metabolism, dental properties, glycemic response, and the gastrointestinal tolerance threshold above which sugar-alcohol intake can cause GI symptoms.',
+          'a review of isomalt and other polyols as sucrose replacers, including gastrointestinal tolerance. background reading only. kiwi pop does not claim a dental or blood-glucose effect. sugar alcohols can upset your stomach in larger amounts.',
       },
       {
         title:
@@ -567,7 +555,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2003,
         url: pubmed('Isomalt: a review of its physiological effects'),
         summary:
-          'review of isomalt\'s metabolic profile: slow, partial absorption in the small intestine and fermentation of the unabsorbed fraction in the colon. explains the low caloric density and minimal blood-glucose response.',
+          'a review of how isomalt is absorbed and fermented. background reading only. kiwi pop does not claim a blood-glucose effect.',
       },
       {
         title:
@@ -577,14 +565,14 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 1985,
         url: 'https://www.fao.org/food/food-safety-quality/scientific-advice/jecfa/en/',
         summary:
-          'JECFA, the international food-safety body, evaluated isomalt for use as a food additive and assigned an "ADI not specified", the most permissive safety category, applied only to additives with no observed toxicity at any tested dietary level.',
+          'JECFA evaluated isomalt for use as a food additive. that evaluation is regulatory background. it is not a statement that kiwi pop is safe for everyone.',
       },
     ],
   },
   {
     name: 'monk fruit (mogrosides)',
     blurb:
-      'the high-intensity sweetener. monk fruit (siraitia grosvenorii) extract carries 200x the sweetness of sugar with zero glycemic load. used for centuries in southern china, FDA GRAS-affirmed since 2010.',
+      'a high-intensity sweetener from monk fruit (siraitia grosvenorii), used in southern chinese food practice, with an FDA GRAS notice from 2010 for use as a sweetener. kiwi pop does not claim an effect on blood glucose.',
     studies: [
       {
         title:
@@ -604,7 +592,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
         year: 2013,
         url: pubmed('Pharmacology of monk fruit Siraitia grosvenorii: a review'),
         summary:
-          'review of the chemistry and pharmacology of the mogrosides: the cucurbitane glycosides responsible for monk fruit\'s intense sweetness. discusses why mogrosides are non-caloric and do not raise blood glucose.',
+          'a review of mogroside chemistry and sweetness. background reading only. kiwi pop does not claim a blood-glucose effect.',
       },
       {
         title:
@@ -616,7 +604,7 @@ export const RESEARCH: ReadonlyArray<IngredientResearch> = [
           'Effects of non-nutritive (artificial vs natural) sweeteners on 24-h glucose profiles',
         ),
         summary:
-          'human trial comparing the glycemic and energy-intake response to sucrose-, monk-fruit-, stevia-, and aspartame-sweetened beverages. monk fruit produced no measurable rise in blood glucose over the 24-hour test window.',
+          'a human trial that compared sweeteners and 24-hour glucose profiles. background reading only. kiwi pop does not claim a blood-glucose effect.',
       },
     ],
   },

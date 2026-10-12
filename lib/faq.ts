@@ -16,39 +16,39 @@ export interface FaqItem {
 export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   {
     q: 'What does Kiwi Pop feel like?',
-    a: 'The first lick brings a bright, electric tingle on the tongue and lips. That is jambu, the small flowering plant from Brazil also called the buzz button, backed by chilcuague, the Mexican golden root that holds the sensation open a little longer and turns it warmer. Behind the tingle, the rest of the formula is doing quieter work: theobromine for a clean lift, magnesium and taurine to soften the edges, electrolytes and B12 for that "you ate something real" feeling. Most people describe it as alert, social, and a little playful.',
+    a: 'The first lick brings a bright, electric tingle on the tongue and lips. That is jambu, the small flowering plant from Brazil also called the buzz button, backed by chilcuague, the Mexican golden root that holds the sensation open a little longer and turns it warmer. The pop also includes theobromine, magnesium, taurine, electrolytes, and B12. What people describe is the tingle: fizzy, warm, and a little playful. Kiwi Pop is candy. It is not a mood, focus, or energy product.',
   },
   {
     q: 'How long until I feel the tingle, and how long does it last?',
-    a: 'Instantly. The jambu sensation kicks in on the first lick and stays roughly as long as the pop does, a few minutes of light, fizzy mouth-tingle. Chilcuague arrives a beat later and carries it — a warmer, slightly numbing spread rather than a fizz. The other functional ingredients (theobromine, magnesium, B12, electrolytes) take about 15–30 minutes to settle in.',
+    a: 'The jambu sensation starts on the first lick and stays roughly as long as the pop does, a few minutes of light, fizzy mouth-tingle. Chilcuague arrives a beat later and carries it as a warmer spread rather than a fizz. We do not claim a later effect from the other ingredients. Follow the label serving size.',
   },
   {
     q: 'How many should I have?',
-    a: 'Start with one. The tingle is genuinely novel and the supplement payload is a real one, so most people find a single pop is plenty for an evening. We do not recommend more than three in a day.',
+    a: 'Start with one and follow the label serving size. The tingle is genuinely novel, and one pop is the intended serving. We do not recommend more than three in a day.',
   },
   {
     q: 'Can I drive after eating one?',
-    a: 'Yes. Nothing in the formula is sedating or impairing. Sugar alcohols (isomalt, xylitol) can be GI-disruptive in larger quantities, so do not stack a handful in one sitting.',
+    a: 'Do not drive or operate machinery if you feel any effects. Follow the label serving size. Sugar alcohols (isomalt, xylitol) can upset your stomach in larger amounts, so do not eat a handful in one sitting.',
   },
   {
     q: 'How is Kiwi Pop different from alcohol?',
-    a: 'No ethanol, no hangover, less than 1 gram of sugar. It is a sensory, social experience. The tingle is a conversation starter and the rest of the formula keeps you clear. A sober-curious option, not a buzz substitute.',
+    a: 'It contains no ethanol and less than 1 gram of sugar. It is a sensory candy: the tingle is a conversation starter. It is not a substitute for alcohol, and it is not meant to keep you clear, alert, or free of a hangover.',
   },
   {
     q: 'What is jambu, and is it safe?',
-    a: 'Jambu (Acmella oleracea), also called paracress, electric daisy, or the buzz button, is a small yellow-and-red flower native to South America. The active compound, spilanthol, produces the distinctive electric, salivating tingle. Jambu has a long culinary history in Brazilian, Indian, and East African cuisine and is widely used as a flavor in cocktails, chewing gum, and oral-care products. Reported uses include oral cooling, palate stimulation, and increased saliva flow. It is generally regarded as safe in food amounts and is used in Kiwi Pop in food-flavor quantities, not as a supplement dose. It is not psychoactive and does not interact with alcohol. The studies behind every ingredient in the formula are listed on our /research page.',
+    a: 'Jambu (Acmella oleracea), also called paracress, electric daisy, or the buzz button, is a small yellow-and-red flower native to South America. It has a long culinary history in Brazilian, Indian, and East African cuisine and is used as a flavor in some cocktails, chewing gum, and oral-care products. In Kiwi Pop it is there for the electric mouth tingle, at a food-flavor amount. That history is not a statement that it is safe for everyone, or that it has no interaction with alcohol or medication. If you have a plant allergy (especially the daisy / Asteraceae family), are pregnant or nursing, or take prescription medication, talk to a doctor first. See /legal/fda-disclaimer. Background reading is on /research.',
   },
   {
     q: 'What is chilcuague, and why is it in there next to jambu?',
-    a: 'Chilcuague (Heliopsis longipes), also called chilcuán, Aztec root, or golden root, is a plant native to the Sierra Gorda highlands of central Mexico — Guanajuato, Querétaro, and San Luis Potosí. The root is the part used, and its active alkamide, affinin, is the same molecule as the spilanthol in jambu. It is a traditional Mexican condiment, added to salsas, stews, and mezcal, and has a long folk-medicine history for numbing toothache. In Kiwi Pop it does something jambu cannot do alone: jambu delivers a fast, fizzy spark on the first lick, and chilcuague holds that sensation open, warmer and more numbing, for the rest of the pop. Both are used at food-flavor amounts, not supplement doses. Neither is psychoactive. One caveat for European readers: neither jambu nor chilcuague is an authorised novel food in the EU, so a European Kiwi Pop cannot currently carry the tingle at all — see /wholesale for where that stands.',
+    a: 'Chilcuague (Heliopsis longipes), also called chilcuán, Aztec root, or golden root, is a plant native to the Sierra Gorda highlands of central Mexico — Guanajuato, Querétaro, and San Luis Potosí. The root is the part used, and its alkamide, affinin, is the same molecule as the spilanthol in jambu. It is a traditional Mexican condiment, added to salsas, stews, and mezcal. In Kiwi Pop, jambu is the fast, fizzy spark on the first lick, and chilcuague holds that sensation open and warmer for the rest of the pop. Both are used at food-flavor amounts. We do not make a psychoactivity, pain, or drug-interaction claim about either plant. One caveat for European readers: neither jambu nor chilcuague is an authorised novel food in the EU, so a European Kiwi Pop cannot currently carry the tingle at all — see /wholesale for where that stands.',
   },
   {
     q: 'When do people typically have a Kiwi Pop?',
-    a: 'Festivals, house parties, dinner with friends, post-work decompress, sober-curious nights out, the ride home, the green room. Anywhere the conversation could use a little electricity.',
+    a: 'Festivals, house parties, dinner with friends, a night in, sober-curious nights out, the green room. Anywhere the conversation could use a little electricity. If you feel any effects, do not drive or operate machinery.',
   },
   {
     q: 'Can I mix Kiwi Pop with alcohol or coffee?',
-    a: 'Sure, there is nothing in the formula that conflicts with normal social use. That said, the supplement payload (theobromine, taurine, B12, magnesium) does real work, so do not stack five of them on top of three espressos.',
+    a: 'Kiwi Pop is candy. We do not claim it is safe to combine with alcohol, coffee, or medication. If you drink or take medicine, check with a doctor, follow the label serving size, and do not stack several pops on top of several espressos.',
   },
   {
     q: 'Who should not eat Kiwi Pop?',

@@ -26,7 +26,7 @@ const FORMULATION_CLAIMS = [
   {
     no: 'No corn syrup',
     what: 'xylitol + monk fruit',
-    why: 'Isomalt base, tooth-friendly and low-glycemic. Under 1g sugar.',
+    why: 'Isomalt base, sweetened with xylitol and a touch of monk fruit. Under 1g sugar.',
   },
   {
     no: 'No artificial dyes',
@@ -34,9 +34,9 @@ const FORMULATION_CLAIMS = [
     why: 'Spirulina, turmeric, matcha, and lucuma do the color — never artificial dye.',
   },
   {
-    no: 'No caffeine crash',
-    what: 'theobromine, not caffeine',
-    why: 'A smooth lift from theobromine plus a per-flavor adaptogen. Lifted, not wired.',
+    no: 'No caffeine as the point',
+    what: 'theobromine in the formula',
+    why: 'Theobromine, the alkaloid in cocoa, is in the formula. Matcha in the mint flavor contributes about 3 mg of caffeine. We do not claim a lift, a crash, or a stimulant effect.',
   },
 ] as const;
 
@@ -156,8 +156,8 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
       </header>
 
       <p className="ls-lede">
-        Lollipop-shaped party supplements. A glossy hard candy with a functional
-        payload — built for boutiques, late-night bars, festival vendors, and
+        Lollipop-shaped party supplements. A glossy hard candy with a mouth
+        tingle — built for boutiques, late-night bars, festival vendors, and
         gift shops that want something on the shelf nobody else has.
       </p>
 
@@ -183,11 +183,9 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
       <section className="ls-section">
         <h2 className="ls-h2">What it is</h2>
         <p className="ls-body">
-          Kiwi Pop is a hard-candy lollipop with a functional payload — sitting
-          in the fast-growing intersection of confectionery and functional
-          wellness. The indulgence and impulse-buy appeal of candy, with an
-          active formulation that delivers a real sensory and physical effect.
-          Under 1g sugar, ~35 calories, no crash, no compromise on flavor.
+          Kiwi Pop is a hard-candy lollipop. The indulgence and impulse-buy
+          appeal of candy, with a mouth tingle from jambu and chilcuague.
+          Under 1g sugar, ~35 calories, and the flavor comes first.
         </p>
       </section>
 
@@ -254,10 +252,9 @@ export default async function WholesaleLineSheetPage(): Promise<JSX.Element> {
         <h2 className="ls-h2">Who it&apos;s for</h2>
         <p className="ls-body">
           Kiwi Pop is built for the late-night and the neon-lit — candy for
-          people who curate their aesthetic as carefully as their supplement
-          stack. It lands in boutiques, late-night bars, festival booths, and
-          gift shops that want a high-margin impulse buy nobody else carries.
-          The brand doesn&apos;t whisper wellness — it glows.
+          people who curate their aesthetic. It lands in boutiques, late-night
+          bars, festival booths, and gift shops that want a high-margin impulse
+          buy nobody else carries. The brand glows.
         </p>
       </section>
 

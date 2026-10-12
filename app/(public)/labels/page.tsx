@@ -7,7 +7,7 @@ import { SITE_URL } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'ingredients, nutrition + safety labels',
   description:
-    'every kiwi pop flavor: full ingredient statement, approximate nutrition, the functional (nutraceutical) payload with doses, and safety warnings — plus a scannable QR for each flavor.',
+    'every kiwi pop flavor: full ingredient statement, approximate nutrition, the other ingredients with doses, and safety warnings — plus a scannable QR for each flavor.',
   alternates: { canonical: '/labels' },
 };
 
@@ -24,8 +24,8 @@ export default function LabelsPage() {
         <p>
           the lollipops don&apos;t carry their ingredients, nutrition, or
           warnings on the wrapper yet — so this page does. each flavor below has
-          its full ingredient statement, approximate nutrition, the functional
-          (nutraceutical) payload with doses, and safety warnings. the{' '}
+          its full ingredient statement, approximate nutrition, the other
+          ingredients with doses, and safety warnings. the{' '}
           <strong>QR next to each flavor links straight to that flavor&apos;s
           label page</strong>, so you can print it and stick it on the pop (use
           the <em>print qr</em> button). it&apos;s here on this page too so
