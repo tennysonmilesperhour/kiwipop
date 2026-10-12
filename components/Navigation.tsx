@@ -32,9 +32,11 @@ export function Navigation() {
     <nav className="nav">
       <Link href="/" className="nav-logo" aria-label="kiwi pop home">
         <img
-          src="/landing/img/kiwi-kitty-pop.webp"
+          src="/landing/img/kiwi-kitty-mark.webp"
           alt="kiwi pop"
           className="nav-logo-img"
+          width={40}
+          height={40}
         />
       </Link>
 

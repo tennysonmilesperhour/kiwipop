@@ -1557,9 +1557,9 @@
   background-repeat: no-repeat;
   filter: saturate(1.15) drop-shadow(0 0 24px rgba(0, 240, 255, 0.35));
 }
-.kp-page .fc.kiwi-flavor .img { background-image: url("/landing/img/anime-lollipop.jpg"); }
-.kp-page .fc.grape .img { background-image: url("/landing/img/eye-galaxy.jpg"); }
-.kp-page .fc.lemon .img { background-image: url("/landing/img/yellow-hair.jpg"); }
+/* Flavor photos are next/image children (lazy). Do not put the files back
+   on background-image — that fetched the raw JPEG (eye-galaxy was 1.6MB)
+   as soon as CSS loaded and bypassed the image optimizer. */
 
 /* Flavor-card hover/focus reveal: full per-flavor ingredient list. */
 .kp-page .fc .ing-pop {
@@ -1660,14 +1660,15 @@
 .kp-page .z4 .melt-bg {
   position: absolute;
   inset: 0;
-  background: url("/landing/img/melt.jpg") center/cover no-repeat;
   opacity: 0.85;
   filter: saturate(1.2);
+  overflow: hidden;
 }
 .kp-page .z4 .melt-bg::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: radial-gradient(ellipse at 50% 60%, transparent 30%, rgba(0, 0, 0, 0.5) 80%);
 }
 .kp-page .z4 .scan {
@@ -2451,7 +2452,6 @@
 .kp-page .z6 .img-foot {
   flex: 1;
   min-height: 420px;
-  background: url("/landing/img/dance-girl.jpg") center/cover no-repeat;
   border: 1.5px solid rgba(245, 255, 61, 0.4);
   box-shadow: 0 0 24px rgba(245, 255, 61, 0.2);
   position: relative;
@@ -2461,6 +2461,7 @@
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.65));
   pointer-events: none;
 }
