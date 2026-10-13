@@ -27,10 +27,6 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
     a: 'Start with one and follow the label serving size. The tingle is genuinely novel, and one pop is the intended serving. We do not recommend more than three in a day.',
   },
   {
-    q: 'Can I drive after eating one?',
-    a: 'Do not drive or operate machinery if you feel any effects. Follow the label serving size. Sugar alcohols (isomalt, xylitol) can upset your stomach in larger amounts, so do not eat a handful in one sitting.',
-  },
-  {
     q: 'How is Kiwi Pop different from alcohol?',
     a: 'It contains no ethanol and less than 1 gram of sugar. It is a sensory candy: the tingle is a conversation starter. It is not a substitute for alcohol, and it is not meant to keep you clear, alert, or free of a hangover.',
   },
@@ -44,7 +40,7 @@ export const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'When do people typically have a Kiwi Pop?',
-    a: 'Festivals, house parties, dinner with friends, a night in, sober-curious nights out, the green room. Anywhere the conversation could use a little electricity. If you feel any effects, do not drive or operate machinery.',
+    a: 'Festivals, house parties, dinner with friends, a night in, sober-curious nights out, the green room. Anywhere the conversation could use a little electricity.',
   },
   {
     q: 'Can I mix Kiwi Pop with alcohol or coffee?',
