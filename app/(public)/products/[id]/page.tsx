@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { JsonLd } from '@/components/JsonLd';
 import { FLAVORS_BY_SKU, FLAVOR_SKU_FOR, imageForProduct } from '@/lib/flavors';
 import { absoluteUrl, buildBreadcrumbLd, SHARE_IMAGE_PATH, SITE_URL } from '@/lib/seo';
+import { productPageTitle } from '@/lib/product-seo';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { getPreorderOnlyMode } from '@/lib/settings';
 import { isRetiredSku } from '@/lib/retired';
@@ -20,6 +21,7 @@ interface ProductRow {
   price_cents: number;
   in_stock: number;
   preorder_only: boolean;
+  preorder_deadline: string | null;
   image_url: string | null;
 }
 
@@ -27,7 +29,9 @@ async function loadProduct(id: string): Promise<ProductRow | null> {
   try {
     const { data } = await supabaseAdmin
       .from('products')
-      .select('id, name, description, sku, price_cents, in_stock, preorder_only, image_url')
+      .select(
+        'id, name, description, sku, price_cents, in_stock, preorder_only, preorder_deadline, image_url',
+      )
       .eq('id', id)
       .maybeSingle();
     return (data as ProductRow | null) ?? null;
@@ -42,7 +46,8 @@ export async function generateMetadata(props: ProductPageProps): Promise<Metadat
   if (product && isRetiredSku(product.sku)) notFound();
   if (!product) {
     return {
-      title: 'product · kiwi pop',
+      // Layout template appends " · kiwi pop".
+      title: 'product',
       description: 'lollipop shaped party supplements.',
     };
   }
@@ -54,14 +59,14 @@ export async function generateMetadata(props: ProductPageProps): Promise<Metadat
     flavor?.description ||
     'lollipop shaped party supplements, kiwi pop.';
   const image = imageForProduct(product.sku, product.image_url);
-  const title = product.name.toLowerCase();
+  const { metadataTitle, socialTitle } = productPageTitle(product.name);
 
   return {
-    title,
+    title: metadataTitle,
     description,
     alternates: { canonical: `/products/${product.id}` },
     openGraph: {
-      title: `${title} · kiwi pop`,
+      title: socialTitle,
       description,
       url: `/products/${product.id}`,
       type: 'website',
@@ -73,7 +78,7 @@ export async function generateMetadata(props: ProductPageProps): Promise<Metadat
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} · kiwi pop`,
+      title: socialTitle,
       description,
       images: [image ?? SHARE_IMAGE_PATH],
     },
@@ -136,7 +141,11 @@ export default async function ProductPage(props: ProductPageProps) {
     <>
       {productLd ? <JsonLd data={productLd} /> : null}
       {breadcrumbLd ? <JsonLd data={breadcrumbLd} /> : null}
-      <ProductClient params={params} preorderMode={preorderMode} />
+      <ProductClient
+        params={params}
+        preorderMode={preorderMode}
+        initialProduct={product}
+      />
     </>
   );
 }
