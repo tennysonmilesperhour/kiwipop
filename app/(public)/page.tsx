@@ -1,10 +1,16 @@
+import type { Metadata } from 'next';
 import { JsonLd } from '@/components/JsonLd';
 import Landing from '@/components/landing/Landing';
 import { imageForProduct } from '@/lib/flavors';
 import { loadFundraiserSnapshot } from '@/lib/fundraiser';
 import { loadLandingProducts, type ProductRow } from '@/lib/landing-products';
+import { HOME_META_DESCRIPTION } from '@/lib/product-seo';
 import { buildProductItemListLd, type OfferProduct } from '@/lib/seo';
 import { getPreorderOnlyMode } from '@/lib/settings';
+
+export const metadata: Metadata = {
+  description: HOME_META_DESCRIPTION,
+};
 
 // Revalidate every 60s instead of force-dynamic. Product data + the
 // fundraiser snapshot don't change every request; a 60s ISR cache cuts

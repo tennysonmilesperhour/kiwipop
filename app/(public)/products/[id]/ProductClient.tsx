@@ -17,10 +17,37 @@ import {
   imageForProduct,
 } from '@/lib/flavors';
 
+interface InitialProduct {
+  id: string;
+  name: string;
+  description: string | null;
+  sku: string | null;
+  price_cents: number;
+  in_stock: number;
+  preorder_only: boolean;
+  preorder_deadline: string | null;
+  image_url: string | null;
+}
+
 interface ProductClientProps {
   params: { id: string };
   /** Site-wide "preorder only" mode — forces this product to preorder. */
   preorderMode?: boolean;
+  /**
+   * Product row already loaded on the server. The first render (including
+   * the server HTML) uses it for the visible price and availability so
+   * crawlers don't have to wait on the client fetch.
+   */
+  initialProduct?: InitialProduct | null;
+}
+
+function packSizeForSku(sku: string | null | undefined): 1 | 6 | 20 {
+  if (!sku) return 1;
+  for (const packs of Object.values(PACK_SKUS_BY_FLAVOR)) {
+    if (packs[6] === sku) return 6;
+    if (packs[20] === sku) return 20;
+  }
+  return 1;
 }
 
 interface PackTile {
@@ -36,8 +63,13 @@ const PACK_TILES: readonly PackTile[] = [
   { size: 20, label: 'party pack', perPopCents: 300, badge: 'best value' },
 ];
 
-export default function ProductClient({ params, preorderMode = false }: ProductClientProps) {
-  const { data: pageProduct, isLoading, error } = useProduct(params.id);
+export default function ProductClient({
+  params,
+  preorderMode = false,
+  initialProduct = null,
+}: ProductClientProps) {
+  const { data: fetchedProduct, isLoading } = useProduct(params.id);
+  const pageProduct = fetchedProduct ?? initialProduct;
 
   // Resolve which flavor this product belongs to (works whether the page
   // is the flavor's single SKU or one of its pack SKUs).
@@ -53,7 +85,9 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
 
   const { data: packProducts } = useProductsBySkus(ladderSkus);
   const { addItem } = useCart();
-  const [packSize, setPackSize] = useState<1 | 6 | 20>(1);
+  const [packSize, setPackSize] = useState<1 | 6 | 20>(() =>
+    packSizeForSku(initialProduct?.sku),
+  );
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const router = useRouter();
@@ -74,10 +108,19 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
     ? packProductBySku.get(selectedPackSku)
     : undefined;
 
-  const checkoutProduct = hasFlavorPacks ? selectedPackProduct : pageProduct;
-  const linePriceCents = (checkoutProduct?.price_cents ?? 0) * quantity;
+  // The pack ladder is a client fetch. When the selected size is the product
+  // this URL already loaded, use that row so add-to-cart does not wait.
+  const checkoutProduct = hasFlavorPacks
+    ? selectedPackProduct ??
+      (pageProduct && selectedPackSku === pageProduct.sku ? pageProduct : undefined)
+    : pageProduct;
+  // Until the pack ladder loads, show the product this URL is for. That
+  // row is already on the server, so price and availability are in the
+  // HTML. After a pack is selected and loaded, the offer follows that row.
+  const displayProduct = checkoutProduct ?? pageProduct;
+  const linePriceCents = (displayProduct?.price_cents ?? 0) * quantity;
 
-  if (isLoading) {
+  if (!pageProduct && isLoading) {
     return (
       <div className="page-container loading-page">
         <p style={{ color: 'var(--bone)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
@@ -86,7 +129,7 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
       </div>
     );
   }
-  if (error || !pageProduct) {
+  if (!pageProduct) {
     return (
       <div className="page-container">
         <p className="alert alert-error">product not found.</p>
@@ -108,24 +151,23 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
     '/landing/img/kiwi-kitty-pop.webp';
 
   // Preorder if the whole store is in preorder-only mode, or this specific
-  // product/bundle is flagged preorder.
-  const pageIsPreorder = preorderMode || Boolean(pageProduct.preorder_only);
-  const checkoutIsPreorder = preorderMode || Boolean(checkoutProduct?.preorder_only);
-  const checkoutSoldOut = checkoutProduct
-    ? isSoldOut({
-        inStock: checkoutProduct.in_stock ?? 0,
-        preorderOnly: Boolean(checkoutProduct.preorder_only),
-        sitePreorderMode: preorderMode,
-      })
-    : false;
-  const preorderNote = checkoutIsPreorder
-    ? preorderFulfillmentNote(
-        checkoutProduct?.preorder_deadline ?? pageProduct.preorder_deadline
-      )
+  // product/bundle is flagged preorder. Availability is computed from the
+  // displayed offer so the server HTML matches the price next to it.
+  const displayIsPreorder = isPreorderItem({
+    preorderOnly: Boolean(displayProduct.preorder_only),
+    sitePreorderMode: preorderMode,
+  });
+  const displaySoldOut = isSoldOut({
+    inStock: displayProduct.in_stock ?? 0,
+    preorderOnly: Boolean(displayProduct.preorder_only),
+    sitePreorderMode: preorderMode,
+  });
+  const preorderNote = displayIsPreorder
+    ? preorderFulfillmentNote(displayProduct.preorder_deadline)
     : null;
 
   const handleAddToCart = () => {
-    if (!checkoutProduct || checkoutSoldOut) return;
+    if (!checkoutProduct || displaySoldOut) return;
     addItem({
       productId: checkoutProduct.id,
       name: checkoutProduct.name,
@@ -134,7 +176,7 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
       // Bundles fall back to the page hero (the flavor photo) so the cart
       // line item shows something recognizable.
       image: imageForProduct(checkoutProduct.sku, checkoutProduct.image_url) ?? heroImage,
-      isPreorder: checkoutIsPreorder,
+      isPreorder: displayIsPreorder,
       preorderDeadline: checkoutProduct.preorder_deadline,
     });
     setAdded(true);
@@ -168,9 +210,9 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
             width={600}
             height={600}
           />
-          {checkoutSoldOut ? (
+          {displaySoldOut ? (
             <div className="sold-out-badge">Sold out</div>
-          ) : pageIsPreorder ? (
+          ) : displayIsPreorder ? (
             <div className="preorder-badge">Preorder</div>
           ) : null}
         </div>
@@ -181,16 +223,14 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem' }}>
             <h1 style={{ marginBottom: 0 }}>{pageProduct.name.toLowerCase()}</h1>
-            {checkoutSoldOut ? (
+            {displaySoldOut ? (
               <span className="status-badge sold-out">Sold out</span>
-            ) : checkoutIsPreorder ? (
+            ) : displayIsPreorder ? (
               <span className="status-badge preorder">Preorder</span>
             ) : null}
           </div>
           <p className="product-price">
-            {checkoutProduct
-              ? formatCentsToUSD(checkoutProduct.price_cents)
-              : formatCentsToUSD(pageProduct.price_cents)}
+            {formatCentsToUSD(displayProduct?.price_cents ?? pageProduct.price_cents)}
             {hasFlavorPacks && selectedTile.size > 1 && selectedTile.perPopCents ? (
               <span
                 style={{
@@ -390,16 +430,16 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
           <button
             type="button"
             onClick={handleAddToCart}
-            disabled={!checkoutProduct || checkoutSoldOut}
-            aria-disabled={!checkoutProduct || checkoutSoldOut}
-            className={`btn btn-primary btn-full${checkoutSoldOut ? ' is-sold-out' : ''}`}
+            disabled={!checkoutProduct || displaySoldOut}
+            aria-disabled={!checkoutProduct || displaySoldOut}
+            className={`btn btn-primary btn-full${displaySoldOut ? ' is-sold-out' : ''}`}
             style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}
           >
-            {checkoutSoldOut
+            {displaySoldOut
               ? 'Sold out'
               : added
                 ? '✓ added'
-                : checkoutIsPreorder
+                : displayIsPreorder
                   ? 'Preorder'
                   : 'Add to cart'}
           </button>
@@ -421,13 +461,13 @@ export default function ProductClient({ params, preorderMode = false }: ProductC
               color: 'var(--bone)',
             }}
           >
-            <div>sku · {checkoutProduct?.sku ?? pageProduct.sku}</div>
-            <div>
-              {checkoutSoldOut
+            <div>sku · {displayProduct?.sku ?? pageProduct.sku}</div>
+            <div className="product-availability">
+              {displaySoldOut
                 ? 'sold out'
-                : checkoutIsPreorder
+                : displayIsPreorder
                   ? 'preorder'
-                  : `in stock · ${checkoutProduct?.in_stock ?? pageProduct.in_stock}`}
+                  : `in stock · ${displayProduct?.in_stock ?? pageProduct.in_stock}`}
             </div>
           </div>
         </div>
