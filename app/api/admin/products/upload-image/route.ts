@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { normalizeProductImage } from '@/lib/product-image.mjs';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -32,14 +33,18 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const ext = file.name.split('.').pop()?.toLowerCase() ?? 'bin';
-  const path = `${crypto.randomUUID()}.${ext}`;
-  const arrayBuffer = await file.arrayBuffer();
+  let image: Buffer;
+  try {
+    image = await normalizeProductImage(Buffer.from(await file.arrayBuffer()));
+  } catch {
+    return NextResponse.json({ error: 'Unsupported or invalid image' }, { status: 415 });
+  }
+  const path = `${crypto.randomUUID()}.webp`;
 
   const { error: uploadError } = await supabaseAdmin.storage
     .from(STORAGE_BUCKET)
-    .upload(path, arrayBuffer, {
-      contentType: file.type,
+    .upload(path, image, {
+      contentType: 'image/webp',
       cacheControl: '31536000',
       upsert: false,
     });
