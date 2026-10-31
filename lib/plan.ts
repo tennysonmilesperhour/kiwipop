@@ -146,6 +146,61 @@ export function currentPlanMonth(): PlanMonth | null {
   return planMonthFor(new Date());
 }
 
+/**
+ * The plan month key ("2026-11-01") for `date` on the business's own clock
+ * (Salt Lake City), so a month flips at local midnight rather than at UTC
+ * midnight, six or seven hours early.
+ */
+export function planMonthKeyInDenver(date: Date): string {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Denver',
+    year: 'numeric',
+    month: '2-digit',
+  }).formatToParts(date);
+  const year = parts.find((p) => p.type === 'year')?.value ?? '1970';
+  const month = parts.find((p) => p.type === 'month')?.value ?? '01';
+  return `${year}-${month}-01`;
+}
+
+/**
+ * Planned pops for the month containing `date`, or null outside the plan
+ * window. This is what app_settings.target_monthly_volume follows while
+ * target_volume_follows_plan is on.
+ */
+export function planTargetVolumeFor(date: Date): number | null {
+  const key = planMonthKeyInDenver(date);
+  return PLAN_MONTHS.find((m) => m.month === key)?.pops ?? null;
+}
+
+export interface TargetVolumeSettings {
+  target_monthly_volume: number;
+  target_volume_follows_plan?: boolean | null;
+}
+
+/**
+ * The volume the admin should divide overhead by: this month's plan figure
+ * while following the plan, otherwise (or outside the plan window) the stored
+ * number. Missing flag counts as following, matching the column default.
+ */
+export function effectiveTargetVolume(
+  settings: TargetVolumeSettings,
+  date: Date = new Date()
+): { volume: number; source: 'plan' | 'manual'; planLabel: string | null } {
+  const follows = settings.target_volume_follows_plan !== false;
+  const planned = follows ? planTargetVolumeFor(date) : null;
+  if (planned !== null) {
+    const label =
+      PLAN_MONTHS.find((m) => m.month === planMonthKeyInDenver(date))?.label ??
+      null;
+    return { volume: planned, source: 'plan', planLabel: label };
+  }
+  return {
+    volume: Math.max(1, settings.target_monthly_volume),
+    source: 'manual',
+    planLabel: null,
+  };
+}
+
 /** Plan totals across the whole Aug–Dec window. */
 export const PLAN_TOTALS = {
   pops: PLAN_MONTHS.reduce((s, m) => s + m.pops, 0),

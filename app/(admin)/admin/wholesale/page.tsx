@@ -23,7 +23,15 @@ interface WholesaleAccount {
   approval_status: 'pending' | 'approved' | 'rejected';
   tier: WholesaleTier;
   tax_id: string | null;
+  rep_id: string | null;
+  rep_assigned_at: string | null;
   created_at: string;
+}
+
+interface SalesRep {
+  id: string;
+  name: string;
+  active: boolean;
 }
 
 interface WholesalePricing {
@@ -58,8 +66,13 @@ type CostBasis =
 
 interface AppSettings {
   monthly_overhead_cents: number;
+  /** Effective volume: this month's plan figure while following the plan. */
   target_monthly_volume: number;
+  target_volume_follows_plan?: boolean;
+  target_volume_source?: 'plan' | 'manual';
+  target_volume_plan_label?: string | null;
   active_cost_basis: CostBasis;
+  wholesale_referral_codes_enabled?: boolean;
 }
 
 const BASIS_LABELS: Record<CostBasis, string> = {
@@ -105,6 +118,7 @@ export default function WholesalePage() {
   const [generatingCodes, setGeneratingCodes] = useState(false);
   const [pricing, setPricing] = useState<WholesalePricing[]>([]);
   const [products, setProducts] = useState<ProductOption[]>([]);
+  const [reps, setReps] = useState<SalesRep[]>([]);
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
   const [overheadUsdInput, setOverheadUsdInput] = useState('150');
   const [volumeInput, setVolumeInput] = useState('100');
@@ -126,7 +140,7 @@ export default function WholesalePage() {
 
   const refresh = async () => {
     setLoading(true);
-    const [acctRes, codesRes, priceRes, prodRes, settingsRes] =
+    const [acctRes, codesRes, priceRes, prodRes, settingsRes, repsRes] =
       await Promise.all([
         supabase
           .from('wholesale_accounts')
@@ -142,8 +156,13 @@ export default function WholesalePage() {
           .order('tier', { ascending: true }),
         supabase.from('products').select('id, name, cost_cents').order('name'),
         fetch('/api/admin/settings').then((r) => (r.ok ? r.json() : null)),
+        supabase
+          .from('sales_reps')
+          .select('id, name, active')
+          .order('name', { ascending: true }),
       ]);
     setAccounts(acctRes.data ?? []);
+    setReps((repsRes.data ?? []) as SalesRep[]);
     const grouped: Record<string, WholesaleCode[]> = {};
     for (const row of (codesRes.data ?? []) as WholesaleCode[]) {
       (grouped[row.wholesale_account_id] ??= []).push(row);
@@ -328,6 +347,7 @@ export default function WholesalePage() {
         );
       }
       setSettings(json);
+      setVolumeInput(String(json.target_monthly_volume));
       // Switching cost basis fires a server-side trigger that re-mirrors
       // products.cost_cents from cost_basis_cents[new basis]. Re-fetch
       // products so the table shows the new costs.
@@ -536,10 +556,42 @@ export default function WholesalePage() {
                 </p>
               </div>
 
+              <div>
+                <p className="text-gray-600">Sales rep</p>
+                <select
+                  value={selectedAccount.rep_id ?? ''}
+                  onChange={(e) =>
+                    updateAccount(selectedAccount.id, {
+                      rep_id: e.target.value || null,
+                    })
+                  }
+                  className="form-select text-sm"
+                  disabled={submitting}
+                >
+                  <option value="">House account (no rep)</option>
+                  {reps
+                    .filter((r) => r.active || r.id === selectedAccount.rep_id)
+                    .map((r) => (
+                      <option key={r.id} value={r.id}>
+                        {r.name}
+                      </option>
+                    ))}
+                </select>
+                {selectedAccount.rep_assigned_at && (
+                  <p
+                    className="text-xs"
+                    style={{ color: 'var(--admin-text-muted)', marginTop: 4 }}
+                  >
+                    since{' '}
+                    {new Date(selectedAccount.rep_assigned_at).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+
               {selectedAccount.approval_status === 'approved' && (
                 <div className="pt-2">
                   <p className="text-gray-600">Welcome discount codes</p>
-                  {(codesByAccount[selectedAccount.id]?.length ?? 0) > 0 ? (
+                  {(codesByAccount[selectedAccount.id]?.length ?? 0) > 0 && (
                     <div className="flex flex-col gap-1 mt-1">
                       {codesByAccount[selectedAccount.id].map((c) => (
                         <div
@@ -584,7 +636,12 @@ export default function WholesalePage() {
                         </div>
                       ))}
                     </div>
-                  ) : (
+                  )}
+                  {((codesByAccount[selectedAccount.id]?.length ?? 0) === 0 ||
+                    (settings.wholesale_referral_codes_enabled &&
+                      !codesByAccount[selectedAccount.id]?.some(
+                        (c) => c.kind === 'referral'
+                      ))) && (
                     <button
                       onClick={() => handleGenerateCodes(selectedAccount)}
                       className="btn btn-secondary mt-1"
@@ -761,6 +818,37 @@ export default function WholesalePage() {
               className="form-input"
               style={{ width: 140 }}
             />
+            <p
+              className="text-xs"
+              style={{ color: 'var(--admin-text-muted)', marginTop: 4, maxWidth: 220 }}
+            >
+              {settings.target_volume_source === 'plan' ? (
+                <>
+                  Following the {settings.target_volume_plan_label ?? 'current'}{' '}
+                  plan. Type a number to override.
+                </>
+              ) : (
+                <>
+                  Manual number.{' '}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      void saveSettings({ target_volume_follows_plan: true })
+                    }
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      padding: 0,
+                      color: 'var(--c-cyan)',
+                      textDecoration: 'underline',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Follow the plan
+                  </button>
+                </>
+              )}
+            </p>
           </div>
           <div
             style={{

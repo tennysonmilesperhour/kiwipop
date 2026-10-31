@@ -285,8 +285,9 @@ export default async function WholesaleAccountPage(): Promise<JSX.Element> {
               marginBottom: '1.5rem',
             }}
           >
-            one for your first order, the rest to hand out to referrals. each
-            works once. apply at checkout.
+            {codes.some((c) => c.kind === 'referral')
+              ? 'one for your first order, the rest to hand out to other shops. each works once. apply at checkout.'
+              : 'use it on your first order. it works once. apply at checkout.'}
           </p>
           <div
             style={{

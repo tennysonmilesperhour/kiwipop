@@ -3,9 +3,41 @@ import { ZodError } from 'zod';
 import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { appSettingsUpdateSchema } from '@/lib/validators';
+import { effectiveTargetVolume, planTargetVolumeFor } from '@/lib/plan';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+
+const SETTINGS_COLUMNS =
+  'monthly_overhead_cents, target_monthly_volume, target_volume_follows_plan, active_cost_basis, preorder_only_mode, abandoned_checkout_emails_enabled, wholesale_referral_codes_enabled, updated_at';
+
+interface SettingsRow {
+  monthly_overhead_cents: number;
+  target_monthly_volume: number;
+  target_volume_follows_plan: boolean | null;
+  active_cost_basis: string;
+  preorder_only_mode: boolean;
+  abandoned_checkout_emails_enabled: boolean;
+  wholesale_referral_codes_enabled: boolean;
+  updated_at: string;
+}
+
+/**
+ * `target_monthly_volume` in the response is the number pages should divide
+ * overhead by: this month's plan figure while following the plan, otherwise
+ * the stored override. The raw column comes back as
+ * `target_monthly_volume_stored`.
+ */
+function present(row: SettingsRow) {
+  const effective = effectiveTargetVolume(row);
+  return {
+    ...row,
+    target_monthly_volume: effective.volume,
+    target_monthly_volume_stored: row.target_monthly_volume,
+    target_volume_source: effective.source,
+    target_volume_plan_label: effective.planLabel,
+  };
+}
 
 export async function GET() {
   const auth = await requireAdmin();
@@ -13,16 +45,17 @@ export async function GET() {
 
   const { data, error } = await supabaseAdmin
     .from('app_settings')
-    .select(
-      'monthly_overhead_cents, target_monthly_volume, active_cost_basis, preorder_only_mode, updated_at'
-    )
+    .select(SETTINGS_COLUMNS)
     .eq('id', 1)
-    .single();
+    .single<SettingsRow>();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error || !data) {
+    return NextResponse.json(
+      { error: error?.message ?? 'Settings not found' },
+      { status: 500 }
+    );
   }
-  return NextResponse.json(data);
+  return NextResponse.json(present(data));
 }
 
 export async function PATCH(request: NextRequest) {
@@ -53,17 +86,32 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
   }
 
+  const update: Record<string, unknown> = { ...parsed };
+  // Typing a volume by hand is a manual override of the plan figure.
+  if (
+    parsed.target_monthly_volume !== undefined &&
+    parsed.target_volume_follows_plan === undefined
+  ) {
+    update.target_volume_follows_plan = false;
+  }
+  // Going back to the plan writes this month's figure straight away.
+  if (parsed.target_volume_follows_plan === true) {
+    const planned = planTargetVolumeFor(new Date());
+    if (planned !== null) update.target_monthly_volume = planned;
+  }
+
   const { data, error } = await supabaseAdmin
     .from('app_settings')
-    .update({ ...parsed, updated_at: new Date().toISOString() })
+    .update({ ...update, updated_at: new Date().toISOString() })
     .eq('id', 1)
-    .select(
-      'monthly_overhead_cents, target_monthly_volume, active_cost_basis, preorder_only_mode, updated_at'
-    )
-    .single();
+    .select(SETTINGS_COLUMNS)
+    .single<SettingsRow>();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error || !data) {
+    return NextResponse.json(
+      { error: error?.message ?? 'Settings not found' },
+      { status: 500 }
+    );
   }
-  return NextResponse.json(data);
+  return NextResponse.json(present(data));
 }

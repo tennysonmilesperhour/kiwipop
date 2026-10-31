@@ -165,6 +165,8 @@ export const wholesaleAccountUpdateSchema = z.object({
   tier: z.enum(['standard', 'premium', 'distributor']).optional(),
   business_name: z.string().trim().min(1).max(200).optional(),
   tax_id: z.string().trim().max(100).optional().or(z.literal('')),
+  // Sales rep who opened the door (sales_reps.id). null = house account.
+  rep_id: z.string().uuid().nullable().optional(),
 });
 
 export type WholesaleAccountUpdate = z.infer<typeof wholesaleAccountUpdateSchema>;
@@ -310,6 +312,12 @@ export const appSettingsUpdateSchema = z.object({
   // Site-wide "preorder only" mode — when true the storefront and checkout
   // switch from normal sales to preorders as the only option.
   preorder_only_mode: z.boolean().optional(),
+  // true = target_monthly_volume follows the current plan month (lib/plan.ts).
+  // Setting target_monthly_volume on its own turns this off (manual override).
+  target_volume_follows_plan: z.boolean().optional(),
+  // Outward-facing switches. Both default OFF; see docs/open-items.md.
+  abandoned_checkout_emails_enabled: z.boolean().optional(),
+  wholesale_referral_codes_enabled: z.boolean().optional(),
 });
 
 export type AppSettingsUpdate = z.infer<typeof appSettingsUpdateSchema>;
