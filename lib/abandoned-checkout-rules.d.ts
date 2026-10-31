@@ -20,3 +20,8 @@ export function decideRecovery(
 export function latestPerEmail<
   T extends { id: string; email: string; abandoned_at: string },
 >(rows: ReadonlyArray<T>): { keep: T[]; duplicates: T[] };
+
+export function abandonedAtFromSession(
+  expiresAtSeconds: number | null | undefined,
+  now: Date
+): string;

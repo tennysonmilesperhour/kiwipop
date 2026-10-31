@@ -43,7 +43,7 @@ async function handleCheckoutSessionExpired(
     .eq('id', orderId)
     .eq('status', 'pending');
 
-  await recordAbandonedCheckout(orderId, session.id);
+  await recordAbandonedCheckout(orderId, session.id, session.expires_at);
 }
 
 async function handleChargeRefunded(charge: Stripe.Charge): Promise<void> {

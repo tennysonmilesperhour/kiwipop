@@ -150,7 +150,7 @@ export async function reconcilePendingOrdersWithStripe(
         if (error) {
           summary.errors.push(`cancel ${orderId}: ${error.message}`);
         } else {
-          await recordAbandonedCheckout(orderId, session.id);
+          await recordAbandonedCheckout(orderId, session.id, session.expires_at);
           summary.marked_cancelled++;
           summary.changes.push({
             order_id: orderId,

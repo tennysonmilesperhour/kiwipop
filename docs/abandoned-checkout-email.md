@@ -25,9 +25,15 @@ so the admin can see what was left behind while the email waits.
   email address.
 - **Unsubscribe.** Every email has an unsubscribe link and the
   `List-Unsubscribe` / one-click headers Gmail and Apple Mail look for.
-  Unsubscribing marks the address in `email_signups.unsubscribed_at`, which
-  also stops it from getting any future marketing email. Order receipts
-  still go out.
+  Unsubscribing marks the address in `email_signups.unsubscribed_at` and
+  cancels any welcome or drip emails already queued for it. The email queue
+  also checks that column before every marketing send, so nothing queued
+  earlier can slip through. Order receipts, wholesale approvals and the sale
+  alert still go out (`lib/email-suppression.js` lists which types are
+  which).
+- **Real abandonment time.** `abandoned_at` is the Stripe session's own
+  expiry time, so a session reconcile only notices days later still counts
+  as old and is skipped by the 72-hour rule.
 - **Recovered sales.** When the same email later pays, the abandoned row gets
   `recovered_order_id` and `recovered_at`. Recovered by the email means
   `recovery_sent_at` is before `recovered_at`.
