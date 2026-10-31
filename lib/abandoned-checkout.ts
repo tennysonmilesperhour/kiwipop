@@ -8,8 +8,10 @@ import {
   getPreorderOnlyMode,
 } from '@/lib/settings';
 import { isRetiredSku } from '@/lib/retired';
+import { cancelPendingMarketingEmails } from '@/lib/email-queue';
 import {
   RECOVERY_COOLDOWN_DAYS,
+  abandonedAtFromSession,
   decideRecovery,
   latestPerEmail,
 } from '@/lib/abandoned-checkout-rules';
@@ -70,10 +72,14 @@ function likeExact(value: string): string {
  * Record an expired, unpaid storefront checkout. Idempotent per order. Never
  * throws: callers are the Stripe webhook and reconcile, which must not fail
  * because of this.
+ *
+ * `expiresAtSeconds` is the session's Stripe `expires_at`; it becomes
+ * abandoned_at so a session reconcile finds late keeps its real age.
  */
 export async function recordAbandonedCheckout(
   orderId: string,
-  stripeSessionId: string | null
+  stripeSessionId: string | null,
+  expiresAtSeconds: number | null | undefined
 ): Promise<void> {
   try {
     const { data: order, error } = await supabaseAdmin
@@ -140,6 +146,7 @@ export async function recordAbandonedCheckout(
           total_cents: order.total_cents,
           discount_code: order.discount_code,
           checkout_started_at: order.created_at,
+          abandoned_at: abandonedAtFromSession(expiresAtSeconds, new Date()),
         },
         { onConflict: 'order_id', ignoreDuplicates: true }
       );
@@ -416,6 +423,10 @@ export async function unsubscribeByRecoveryToken(token: string): Promise<boolean
       unsubscribed_at: nowIso,
     });
   }
+
+  // Drips already queued for this address must not go out. The queue also
+  // re-checks at send time, so this is belt and braces.
+  await cancelPendingMarketingEmails(row.email);
 
   return true;
 }

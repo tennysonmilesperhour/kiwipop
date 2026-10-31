@@ -12,6 +12,10 @@ import {
   adminSaleAlertEmail,
 } from '@/lib/email-templates';
 import type { AdminSaleAlertParams } from '@/lib/email-templates';
+import {
+  isMarketingEmailType,
+  suppressionDecision,
+} from '@/lib/email-suppression';
 
 /* =========================================================
    EMAIL QUEUE — simple drip email system
@@ -28,7 +32,67 @@ export type EmailType =
   | 'order_confirmation'
   | 'review_request'
   | 'wholesale_approved'
-  | 'admin_sale_alert';
+  | 'admin_sale_alert'
+  | 'abandoned_checkout';
+
+/** Escape % and _ so an address can be matched with ilike exactly. */
+function likeExact(value: string): string {
+  return value.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
+
+/**
+ * Whether an email to `to` may go out now. Transactional types never touch
+ * the database here. 'suppress' means a confirmed unsubscribe; 'defer' means
+ * the lookup failed, so hold the email this time but keep it pending.
+ */
+export async function checkSuppression(
+  to: string,
+  emailType: string
+): Promise<'send' | 'suppress' | 'defer'> {
+  if (!isMarketingEmailType(emailType)) return 'send';
+  const { data, error } = await supabaseAdmin
+    .from('email_signups')
+    .select('unsubscribed_at')
+    .ilike('email', likeExact(to.trim()))
+    .not('unsubscribed_at', 'is', null)
+    .limit(1);
+  if (error) {
+    console.error('[email-queue] suppression check failed; deferring email', {
+      emailType,
+      error,
+    });
+    return suppressionDecision(emailType, { error: true });
+  }
+  return suppressionDecision(emailType, { signup: data?.[0] ?? null });
+}
+
+/**
+ * Cancel every pending marketing email to `to`. Called on unsubscribe so
+ * queued drips never go out; receipts and other transactional rows are kept.
+ */
+export async function cancelPendingMarketingEmails(to: string): Promise<void> {
+  const { data, error } = await supabaseAdmin
+    .from('email_queue')
+    .select('id, email_type')
+    .ilike('to_email', likeExact(to.trim()))
+    .eq('status', 'pending');
+  if (error) {
+    console.error('[email-queue] failed to load pending emails to cancel', error);
+    return;
+  }
+  const ids = (data ?? [])
+    .filter((row) => isMarketingEmailType(row.email_type as string))
+    .map((row) => row.id as string);
+  if (ids.length === 0) return;
+  const { error: updateError } = await supabaseAdmin
+    .from('email_queue')
+    .update({ status: 'cancelled', error_message: 'unsubscribed' })
+    .in('id', ids)
+    .eq('status', 'pending');
+  if (updateError) {
+    console.error('[email-queue] failed to cancel pending emails', updateError);
+  }
+}
 
 interface QueueEmailParams {
   to: string;
@@ -71,6 +135,17 @@ export async function sendEmailNow(
   emailType: EmailType,
   metadata?: Record<string, unknown>
 ): Promise<{ ok: boolean; reason?: string }> {
+  const suppression = await checkSuppression(to, emailType);
+  if (suppression === 'suppress') {
+    return { ok: false, reason: 'unsubscribed' };
+  }
+  if (suppression === 'defer') {
+    // Could not confirm the address is still subscribed. Queue it instead of
+    // dropping it; the daily run re-checks before sending.
+    await queueEmail({ to, emailType, metadata });
+    return { ok: false, reason: 'deferred: suppression check failed' };
+  }
+
   const template = buildTemplate(emailType, to, metadata);
   if (!template) {
     return { ok: false, reason: `Unknown email type: ${emailType}` };
@@ -132,6 +207,23 @@ export async function processEmailQueue(): Promise<{
   const errors: string[] = [];
 
   for (const row of pendingEmails) {
+    // Checked at send time, not just at unsubscribe time, so a drip queued
+    // before an unsubscribe (or by a path that missed the cancel) never sends.
+    const suppression = await checkSuppression(row.to_email, row.email_type);
+    if (suppression === 'suppress') {
+      await supabaseAdmin
+        .from('email_queue')
+        .update({ status: 'cancelled', error_message: 'unsubscribed' })
+        .eq('id', row.id);
+      continue;
+    }
+    if (suppression === 'defer') {
+      // Lookup failed: leave the row pending so the next run retries it.
+      failed++;
+      errors.push(`Deferred ${row.email_type} to ${row.to_email}: suppression check failed`);
+      continue;
+    }
+
     const template = buildTemplate(
       row.email_type as EmailType,
       row.to_email,

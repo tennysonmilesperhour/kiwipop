@@ -57,3 +57,34 @@ describe('checkout recovery rules', () => {
     assert.deepEqual(duplicates.map((r) => r.id), ['1']);
   });
 });
+
+const { abandonedAtFromSession } = require('../lib/abandoned-checkout-rules');
+
+describe('abandoned_at comes from the Stripe session', () => {
+  it('uses the session expiry, not the time reconcile noticed it', () => {
+    const expiredFiveDaysAgo = Math.floor(NOW.getTime() / 1000) - 5 * 24 * 3600;
+    const abandonedAt = abandonedAtFromSession(expiredFiveDaysAgo, NOW);
+    assert.equal(abandonedAt, new Date(expiredFiveDaysAgo * 1000).toISOString());
+    // ...so a late-found old cart is still too old to email.
+    assert.deepEqual(
+      decideRecovery({ abandoned_at: abandonedAt, email: 'a@b.co', items: ITEMS }, clean),
+      { action: 'skip', reason: 'too_old' }
+    );
+  });
+
+  it('a late-found old cart does not outrank a newer one for the same address', () => {
+    const oldExpiry = Math.floor(NOW.getTime() / 1000) - 4 * 24 * 3600;
+    const rows = [
+      { id: 'old', email: 'a@b.co', abandoned_at: abandonedAtFromSession(oldExpiry, NOW) },
+      { id: 'new', email: 'a@b.co', abandoned_at: hoursAgo(10) },
+    ];
+    assert.deepEqual(latestPerEmail(rows).keep.map((r) => r.id), ['new']);
+  });
+
+  it('falls back to now without a usable expiry, and never returns the future', () => {
+    assert.equal(abandonedAtFromSession(null, NOW), NOW.toISOString());
+    assert.equal(abandonedAtFromSession(undefined, NOW), NOW.toISOString());
+    const future = Math.floor(NOW.getTime() / 1000) + 3600;
+    assert.equal(abandonedAtFromSession(future, NOW), NOW.toISOString());
+  });
+});
