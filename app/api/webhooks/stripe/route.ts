@@ -3,6 +3,7 @@ import type Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { applyPaidCheckoutSession } from '@/lib/order-paid';
+import { recordAbandonedCheckout } from '@/lib/abandoned-checkout';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -22,6 +23,27 @@ async function handlePaymentIntentFailed(
       updated_at: new Date().toISOString(),
     })
     .eq('id', orderId);
+}
+
+/**
+ * A Checkout Session expired unpaid (Stripe's default is 24 hours after it
+ * was created). Cancel the still-pending order, as reconcile would, and
+ * record the abandoned cart. Recording sends nothing; the recovery email is
+ * a separate switch (docs/abandoned-checkout-email.md).
+ */
+async function handleCheckoutSessionExpired(
+  session: Stripe.Checkout.Session
+): Promise<void> {
+  const orderId = session.metadata?.orderId;
+  if (!orderId) return;
+
+  await supabaseAdmin
+    .from('orders')
+    .update({ status: 'cancelled', updated_at: new Date().toISOString() })
+    .eq('id', orderId)
+    .eq('status', 'pending');
+
+  await recordAbandonedCheckout(orderId, session.id);
 }
 
 async function handleChargeRefunded(charge: Stripe.Charge): Promise<void> {
@@ -77,6 +99,9 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case 'checkout.session.completed':
         await applyPaidCheckoutSession(event.data.object as Stripe.Checkout.Session);
+        break;
+      case 'checkout.session.expired':
+        await handleCheckoutSessionExpired(event.data.object as Stripe.Checkout.Session);
         break;
       case 'payment_intent.payment_failed':
         await handlePaymentIntentFailed(event.data.object as Stripe.PaymentIntent);

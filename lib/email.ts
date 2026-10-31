@@ -55,6 +55,8 @@ export interface SendEmailParams {
   html?: string;
   /** Overrides the default reply-to inbox. */
   replyTo?: string;
+  /** Extra headers, e.g. List-Unsubscribe for marketing mail. */
+  headers?: Record<string, string>;
 }
 
 export async function sendNotificationEmail(params: SendEmailParams): Promise<{
@@ -74,6 +76,7 @@ export async function sendNotificationEmail(params: SendEmailParams): Promise<{
       text: params.text,
       ...(params.html ? { html: params.html } : {}),
       replyTo: getReplyTo(params.replyTo),
+      ...(params.headers ? { headers: params.headers } : {}),
     });
     if (error) {
       return { ok: false, reason: error.message };
