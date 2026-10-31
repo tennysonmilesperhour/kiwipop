@@ -9,7 +9,10 @@ import 'server-only';
 
 // ---- layout wrapper ----
 
-function layout(body: string): string {
+const DEFAULT_FOOTER_NOTE =
+  "you're getting this because you signed up at kiwipop.fun. if this wasn't you, just ignore this email.";
+
+function layout(body: string, footerNote: string = DEFAULT_FOOTER_NOTE): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +44,7 @@ function layout(body: string): string {
   <div class="footer">
     <p>kiwi pop · salt lake city, ut · <a href="https://www.kiwipop.fun">kiwipop.fun</a></p>
     <p><a href="https://www.instagram.com/the.kiwi.pop/">instagram</a></p>
-    <p style="margin-top: 12px; font-size: 11px;">you're getting this because you signed up at kiwipop.fun. if this wasn't you, just ignore this email.</p>
+    <p style="margin-top: 12px; font-size: 11px;">${footerNote}</p>
   </div>
 </div>
 </body>
@@ -281,21 +284,37 @@ export function wholesaleApprovedEmail(params: {
   const codeChip = (code: string) =>
     `<div style="display:inline-block; margin:6px 8px 6px 0; padding:10px 16px; background:rgba(168,255,60,0.10); border:1px solid #a8ff3c; border-radius:6px; font-family:'Courier New',monospace; font-size:16px; font-weight:700; letter-spacing:0.08em; color:#a8ff3c;">${code}</div>`;
 
+  const referralHtml =
+    referrals.length > 0
+      ? `
+      <p><span class="highlight">refer ${referrals.length} shops</span>: hand these out to other stores you think should stock kiwi pop. each is good for ${params.percentOff}% off one order:</p>
+      <p>${referrals.map((c) => codeChip(c.code)).join('')}</p>
+`
+      : '';
+  const referralText =
+    referrals.length > 0
+      ? `
+refer ${referrals.length} shops (hand these to other stores; each good for ${params.percentOff}% off, once):
+${referrals.map((c) => `  ${c.code}`).join('\n')}
+`
+      : '';
+  const intro =
+    params.codes.length === 1
+      ? `a one-time-use ${params.percentOff}% off code tied to your account`
+      : `${params.codes.length} one-time-use ${params.percentOff}% off codes tied to your account`;
+
   return {
     subject: `you're approved · ${params.percentOff}% off inside · kiwi pop`,
     html: layout(`
       <h1>you're in, ${params.businessName}.</h1>
-      <p>your wholesale account is <span class="highlight">approved</span>. as a welcome, here are
-      <strong>${params.codes.length} one-time-use ${params.percentOff}% off codes</strong> tied to your account.</p>
+      <p>your wholesale account is <span class="highlight">approved</span>. as a welcome, here's
+      <strong>${intro}</strong>.</p>
 
-      <p><span class="highlight">your first order</span> — use this on your first wholesale order:</p>
+      <p><span class="highlight">your first order</span>: use this on your first wholesale order:</p>
       <p>${firstOrder.map((c) => codeChip(c.code)).join('')}</p>
-
-      <p><span class="highlight">refer ${referrals.length} friends</span> — hand these out; each is good for ${params.percentOff}% off, once:</p>
-      <p>${referrals.map((c) => codeChip(c.code)).join('')}</p>
-
+${referralHtml}
       <div class="fact">
-        each code works once and is unique to your account. apply it at checkout — the
+        each code works once and is unique to your account. apply it at checkout and the
         ${params.percentOff}% comes off your product subtotal automatically.
       </div>
 
@@ -303,15 +322,12 @@ export function wholesaleApprovedEmail(params: {
     `),
     text: `you're in, ${params.businessName}.
 
-your wholesale account is approved. as a welcome, here are ${params.codes.length} one-time-use ${params.percentOff}% off codes tied to your account.
+your wholesale account is approved. as a welcome, here's ${intro}.
 
 your first order (use on your first wholesale order):
 ${firstOrder.map((c) => `  ${c.code}`).join('\n')}
-
-refer ${referrals.length} friends (each good for ${params.percentOff}% off, once):
-${referrals.map((c) => `  ${c.code}`).join('\n')}
-
-each code works once and is unique to your account. apply it at checkout — the ${params.percentOff}% comes off your product subtotal automatically.
+${referralText}
+each code works once and is unique to your account. apply it at checkout and the ${params.percentOff}% comes off your product subtotal automatically.
 
 view your account → https://www.kiwipop.fun/wholesale/account
 
@@ -508,4 +524,66 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// ---- checkout abandonment recovery ----
+
+export interface AbandonedCheckoutEmailParams {
+  firstName: string | null;
+  items: Array<{ name: string; quantity: number }>;
+  restoreUrl: string;
+  unsubscribeUrl: string;
+  /** Physical mailing address, required in every commercial email (CAN-SPAM). */
+  postalAddress: string;
+}
+
+/**
+ * The one recovery email a customer gets after their checkout expires unpaid.
+ * Copy is the proposal in docs/abandoned-checkout-email.md and is NOT live
+ * until app_settings.abandoned_checkout_emails_enabled is turned on. If you
+ * change the words here, change them in that doc too.
+ */
+export function abandonedCheckoutEmail(
+  params: AbandonedCheckoutEmailParams
+): { subject: string; html: string; text: string } {
+  const name = params.firstName?.trim().toLowerCase() || '';
+  const greeting = name ? `hey ${escapeHtml(name)},` : 'hey,';
+  const itemLines = params.items.map(
+    (i) => `${i.quantity} × ${i.name.toLowerCase()}`
+  );
+  const postal = escapeHtml(params.postalAddress);
+
+  const footerNote = `you're getting this one email because you started a checkout at kiwipop.fun with this address. we won't send another reminder about this cart. <a href="${params.unsubscribeUrl}">unsubscribe</a> from kiwi pop marketing email (order receipts still come through).<br />${postal}`;
+
+  return {
+    subject: 'your cart is still here · kiwi pop',
+    html: layout(
+      `
+      <h1>${greeting}</h1>
+      <p>you started a checkout at kiwipop.fun but it timed out before payment went through, so <span class="highlight">nothing was charged</span>.</p>
+      <p>here's what was in your cart:</p>
+      <ul>${itemLines.map((l) => `<li>${escapeHtml(l)}</li>`).join('')}</ul>
+      <p>if you still want them, this link puts the same pops back in your cart:</p>
+      <a href="${params.restoreUrl}" class="cta">back to my cart →</a>
+      <p>if something went wrong at checkout (a card that wouldn't go through, a shipping question, anything), just reply to this email. a real person reads every reply.</p>
+    `,
+      footerNote
+    ),
+    text: `${name ? `hey ${name},` : 'hey,'}
+
+you started a checkout at kiwipop.fun but it timed out before payment went through, so nothing was charged.
+
+here's what was in your cart:
+${itemLines.map((l) => `  ${l}`).join('\n')}
+
+if you still want them, this link puts the same pops back in your cart:
+${params.restoreUrl}
+
+if something went wrong at checkout (a card that wouldn't go through, a shipping question, anything), just reply to this email. a real person reads every reply.
+
+---
+you're getting this one email because you started a checkout at kiwipop.fun with this address. we won't send another reminder about this cart.
+unsubscribe from kiwi pop marketing email (order receipts still come through): ${params.unsubscribeUrl}
+${params.postalAddress}`,
+  };
 }

@@ -4,6 +4,7 @@ import type Stripe from 'stripe';
 import { stripe } from './stripe';
 import { supabaseAdmin } from './supabase-admin';
 import { applyPaidCheckoutSession } from './order-paid';
+import { recordAbandonedCheckout } from './abandoned-checkout';
 
 interface PendingOrderRow {
   id: string;
@@ -149,6 +150,7 @@ export async function reconcilePendingOrdersWithStripe(
         if (error) {
           summary.errors.push(`cancel ${orderId}: ${error.message}`);
         } else {
+          await recordAbandonedCheckout(orderId, session.id);
           summary.marked_cancelled++;
           summary.changes.push({
             order_id: orderId,

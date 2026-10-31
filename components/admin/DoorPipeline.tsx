@@ -80,7 +80,7 @@ export function DoorPipeline({
           <p className="text-gray-600">pending applications</p>
           <p className="text-lg font-bold">{pendingDoors}</p>
           <p className="text-xs" style={{ color: 'var(--admin-text-muted)' }}>
-            approve to mint their referral codes
+            approve to send their first-order code
           </p>
         </div>
         <div>

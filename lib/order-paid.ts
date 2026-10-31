@@ -4,6 +4,7 @@ import type Stripe from 'stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { queuePostPurchaseSeries, notifyAdminOfSale } from '@/lib/email-queue';
 import { redeemDiscountForOrder } from '@/lib/discounts';
+import { markAbandonedCheckoutsRecovered } from '@/lib/abandoned-checkout';
 
 interface OrderItemRow {
   product_id: string;
@@ -112,9 +113,10 @@ export async function applyPaidCheckoutSession(
     })
     .eq('id', orderId)
     .eq('status', 'pending')
-    .select('discount_code, shipping_address')
+    .select('discount_code, shipping_address, user_email')
     .maybeSingle<{
       discount_code: string | null;
+      user_email: string | null;
       shipping_address: Record<string, unknown> | null;
     }>();
 
@@ -146,6 +148,16 @@ export async function applyPaidCheckoutSession(
   }
 
   const customerEmail = session.customer_details?.email ?? session.customer_email;
+
+  // A paid order closes out this customer's earlier abandoned carts, so no
+  // recovery email goes out for something they already bought.
+  await markAbandonedCheckoutsRecovered(orderId, updatedOrder.user_email);
+  if (
+    customerEmail &&
+    customerEmail.toLowerCase() !== updatedOrder.user_email?.toLowerCase()
+  ) {
+    await markAbandonedCheckoutsRecovered(orderId, customerEmail);
+  }
 
   const { data: orderItems } = await supabaseAdmin
     .from('order_items')

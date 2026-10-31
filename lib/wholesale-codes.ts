@@ -1,14 +1,23 @@
 import 'server-only';
 
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { getWholesaleReferralCodesEnabled } from '@/lib/settings';
 
 /* =========================================================
    WHOLESALE DISCOUNT CODES
    =========================================================
-   On approval, every wholesale account gets 4 one-time-use
-   25%-off codes: one for its own first order, three to hand
-   out to referrals. Helpers here generate them idempotently,
-   look one up at checkout, and mark it redeemed on payment.
+   On approval, every wholesale account gets a one-time-use
+   25%-off code for its own first order. With the referral
+   switch on (app_settings.wholesale_referral_codes_enabled)
+   it also gets three referral codes to hand out to other
+   shops. Helpers here generate them idempotently, look one
+   up at checkout, and mark it redeemed on payment.
+
+   The switch is OFF by default. While it is off, no referral
+   codes are minted and any that exist are refused at
+   checkout. Turning it on and pressing "Issue & email codes"
+   on an approved account tops that account up to 3 referral
+   codes without touching its first-order code.
    ========================================================= */
 
 export const WHOLESALE_DISCOUNT_PERCENT = 25;
@@ -26,14 +35,30 @@ export interface WholesaleDiscountCode {
   created_at: string;
 }
 
-// The set of codes minted per approved account: 1 for their first order,
-// 3 for referrals = 4 total.
-const CODE_PLAN: WholesaleCodeKind[] = [
-  'first_order',
-  'referral',
-  'referral',
-  'referral',
-];
+// The codes an approved account should hold: 1 for its own first order, plus
+// 3 for referrals when the referral switch is on.
+export const REFERRAL_CODES_PER_ACCOUNT = 3;
+
+export function codePlan(referralsEnabled: boolean): WholesaleCodeKind[] {
+  return referralsEnabled
+    ? ['first_order', ...Array<WholesaleCodeKind>(REFERRAL_CODES_PER_ACCOUNT).fill('referral')]
+    : ['first_order'];
+}
+
+/** Kinds still to mint, given the codes an account already has. */
+export function missingCodeKinds(
+  existing: ReadonlyArray<{ kind: WholesaleCodeKind }>,
+  referralsEnabled: boolean
+): WholesaleCodeKind[] {
+  const have: Record<WholesaleCodeKind, number> = { first_order: 0, referral: 0 };
+  for (const c of existing) have[c.kind] += 1;
+  const missing: WholesaleCodeKind[] = [];
+  for (const kind of codePlan(referralsEnabled)) {
+    if (have[kind] > 0) have[kind] -= 1;
+    else missing.push(kind);
+  }
+  return missing;
+}
 
 // Unambiguous alphabet — no 0/O/1/I so codes are easy to read aloud / type.
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -81,14 +106,15 @@ interface AccountRow {
 }
 
 /**
- * Ensure an approved account has its 4 welcome codes. Idempotent: if codes
- * already exist for the account, returns them untouched. Returns the full
- * set of codes for the account (existing + any just-created).
+ * Ensure an approved account has its welcome codes: the first-order code
+ * always, plus referral codes when the referral switch is on. Idempotent:
+ * only missing codes are minted, existing ones are never changed. Returns
+ * the account's full set of codes (existing + any just-created).
  */
 export async function ensureWholesaleCodes(
   accountId: string
 ): Promise<WholesaleDiscountCode[]> {
-  const { data: existing, error: existingError } = await supabaseAdmin
+  const { data: existingRows, error: existingError } = await supabaseAdmin
     .from('wholesale_discount_codes')
     .select('*')
     .eq('wholesale_account_id', accountId)
@@ -97,9 +123,11 @@ export async function ensureWholesaleCodes(
   if (existingError) {
     throw new Error(`Failed to load wholesale codes: ${existingError.message}`);
   }
-  if (existing && existing.length > 0) {
-    return existing as WholesaleDiscountCode[];
-  }
+  const existing = (existingRows ?? []) as WholesaleDiscountCode[];
+
+  const referralsEnabled = await getWholesaleReferralCodesEnabled();
+  const missing = missingCodeKinds(existing, referralsEnabled);
+  if (missing.length === 0) return existing;
 
   const { data: account, error: accountError } = await supabaseAdmin
     .from('wholesale_accounts')
@@ -121,7 +149,7 @@ export async function ensureWholesaleCodes(
     kind: WholesaleCodeKind;
   }> = [];
 
-  for (const kind of CODE_PLAN) {
+  for (const kind of missing) {
     // eslint-disable-next-line no-await-in-loop
     const code = await makeUniqueCode(prefix);
     rows.push({
@@ -141,7 +169,7 @@ export async function ensureWholesaleCodes(
     throw new Error(`Failed to create wholesale codes: ${insertError.message}`);
   }
 
-  return (inserted ?? []) as WholesaleDiscountCode[];
+  return [...existing, ...((inserted ?? []) as WholesaleDiscountCode[])];
 }
 
 /**
@@ -173,8 +201,9 @@ export async function resolveAccountEmail(
 }
 
 /**
- * Look up a code that is valid to apply at checkout: it exists and has not
- * been redeemed yet. Returns null otherwise.
+ * Look up a code that is valid to apply at checkout: it exists, has not been
+ * redeemed yet, and (for a referral code) the referral switch is on. Returns
+ * null otherwise.
  */
 export async function findRedeemableCode(
   code: string
@@ -189,7 +218,11 @@ export async function findRedeemableCode(
     .is('redeemed_at', null)
     .maybeSingle<WholesaleDiscountCode>();
 
-  return data ?? null;
+  if (!data) return null;
+  if (data.kind === 'referral' && !(await getWholesaleReferralCodesEnabled())) {
+    return null;
+  }
+  return data;
 }
 
 /**

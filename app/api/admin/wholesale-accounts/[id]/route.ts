@@ -48,6 +48,11 @@ export async function PATCH(request: NextRequest, props: RouteContext) {
     if (value === undefined) continue;
     updates[key] = value === '' ? null : value;
   }
+  // Start the 12-month ownership clock whenever the rep changes
+  // (docs/sales-commission-plan.md). Clearing the rep clears the date.
+  if (parsed.rep_id !== undefined) {
+    updates.rep_assigned_at = parsed.rep_id ? new Date().toISOString() : null;
+  }
   if (Object.keys(updates).length === 0) {
     return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
   }
@@ -66,8 +71,8 @@ export async function PATCH(request: NextRequest, props: RouteContext) {
     );
   }
 
-  // On approval, mint the account's 4 welcome discount codes (idempotent) and
-  // email them out. Failures here must not fail the approval itself.
+  // On approval, mint the account's welcome discount codes (idempotent; the
+  // referral ones only when that switch is on) and email them out. Failures here must not fail the approval itself.
   let codes: WholesaleDiscountCode[] = [];
   if (parsed.approval_status === 'approved') {
     try {
