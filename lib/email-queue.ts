@@ -14,7 +14,7 @@ import {
 import type { AdminSaleAlertParams } from '@/lib/email-templates';
 import {
   isMarketingEmailType,
-  shouldSuppressEmail,
+  suppressionDecision,
 } from '@/lib/email-suppression';
 
 /* =========================================================
@@ -41,15 +41,15 @@ function likeExact(value: string): string {
 }
 
 /**
- * True when `to` has unsubscribed and `emailType` is marketing. Transactional
- * types never touch the database here. On a lookup error, marketing mail is
- * held back rather than risk emailing someone who opted out.
+ * Whether an email to `to` may go out now. Transactional types never touch
+ * the database here. 'suppress' means a confirmed unsubscribe; 'defer' means
+ * the lookup failed, so hold the email this time but keep it pending.
  */
-export async function isSuppressed(
+export async function checkSuppression(
   to: string,
   emailType: string
-): Promise<boolean> {
-  if (!isMarketingEmailType(emailType)) return false;
+): Promise<'send' | 'suppress' | 'defer'> {
+  if (!isMarketingEmailType(emailType)) return 'send';
   const { data, error } = await supabaseAdmin
     .from('email_signups')
     .select('unsubscribed_at')
@@ -57,13 +57,13 @@ export async function isSuppressed(
     .not('unsubscribed_at', 'is', null)
     .limit(1);
   if (error) {
-    console.error('[email-queue] suppression check failed; holding email', {
+    console.error('[email-queue] suppression check failed; deferring email', {
       emailType,
       error,
     });
-    return true;
+    return suppressionDecision(emailType, { error: true });
   }
-  return shouldSuppressEmail(emailType, data?.[0] ?? null);
+  return suppressionDecision(emailType, { signup: data?.[0] ?? null });
 }
 
 /**
@@ -135,8 +135,15 @@ export async function sendEmailNow(
   emailType: EmailType,
   metadata?: Record<string, unknown>
 ): Promise<{ ok: boolean; reason?: string }> {
-  if (await isSuppressed(to, emailType)) {
+  const suppression = await checkSuppression(to, emailType);
+  if (suppression === 'suppress') {
     return { ok: false, reason: 'unsubscribed' };
+  }
+  if (suppression === 'defer') {
+    // Could not confirm the address is still subscribed. Queue it instead of
+    // dropping it; the daily run re-checks before sending.
+    await queueEmail({ to, emailType, metadata });
+    return { ok: false, reason: 'deferred: suppression check failed' };
   }
 
   const template = buildTemplate(emailType, to, metadata);
@@ -202,11 +209,18 @@ export async function processEmailQueue(): Promise<{
   for (const row of pendingEmails) {
     // Checked at send time, not just at unsubscribe time, so a drip queued
     // before an unsubscribe (or by a path that missed the cancel) never sends.
-    if (await isSuppressed(row.to_email, row.email_type)) {
+    const suppression = await checkSuppression(row.to_email, row.email_type);
+    if (suppression === 'suppress') {
       await supabaseAdmin
         .from('email_queue')
         .update({ status: 'cancelled', error_message: 'unsubscribed' })
         .eq('id', row.id);
+      continue;
+    }
+    if (suppression === 'defer') {
+      // Lookup failed: leave the row pending so the next run retries it.
+      failed++;
+      errors.push(`Deferred ${row.email_type} to ${row.to_email}: suppression check failed`);
       continue;
     }
 

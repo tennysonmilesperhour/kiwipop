@@ -53,3 +53,22 @@ describe('unsubscribe suppression', () => {
     }
   });
 });
+
+const { suppressionDecision } = require('../lib/email-suppression');
+
+describe('suppression decision when the lookup fails', () => {
+  it('defers marketing mail instead of cancelling it', () => {
+    assert.equal(suppressionDecision('welcome', { error: true }), 'defer');
+    assert.equal(suppressionDecision('review_request', { error: true }), 'defer');
+  });
+
+  it('only a confirmed unsubscribe cancels', () => {
+    assert.equal(suppressionDecision('welcome', { signup: unsubscribed }), 'suppress');
+    assert.equal(suppressionDecision('welcome', { signup: null }), 'send');
+  });
+
+  it('never holds back transactional mail, even when the lookup fails', () => {
+    assert.equal(suppressionDecision('order_confirmation', { error: true }), 'send');
+    assert.equal(suppressionDecision('order_confirmation', { signup: unsubscribed }), 'send');
+  });
+});
