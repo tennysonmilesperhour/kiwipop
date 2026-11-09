@@ -1,3 +1,4 @@
+import { patchPayload } from '@/lib/patch-payload';
 import { NextResponse, type NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 import { requireAdmin } from '@/lib/admin-auth';
@@ -36,11 +37,7 @@ export async function PATCH(request: NextRequest, props: RouteContext) {
     throw err;
   }
 
-  const updates: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(parsed)) {
-    if (value === undefined) continue;
-    updates[key] = value === '' ? null : value;
-  }
+  const updates = patchPayload(parsed);
 
   if (Object.keys(updates).length === 0) {
     return NextResponse.json({ error: 'No fields to update' }, { status: 400 });

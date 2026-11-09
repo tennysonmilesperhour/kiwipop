@@ -27,21 +27,27 @@ export const checkoutRequestSchema = z.object({
 
 export type CheckoutRequest = z.infer<typeof checkoutRequestSchema>;
 
-export const productCreateSchema = z.object({
+const productFieldsSchema = z.object({
   name: z.string().trim().min(1).max(200),
   description: z.string().trim().max(2000).optional().or(z.literal('')),
   sku: z.string().trim().min(1).max(50),
   price_cents: z.number().int().positive(),
-  preorder_only: z.boolean().default(false),
+  preorder_only: z.boolean(),
   preorder_deadline: z.string().datetime().nullable().optional(),
-  in_stock: z.number().int().min(0).default(0),
+  in_stock: z.number().int().min(0),
   cost_cents: z.number().int().min(0).optional(),
   image_url: z.string().url().nullable().optional().or(z.literal('')),
 });
 
+// Defaults belong to creation only: Zod 4 applies nested defaults even in partial objects.
+export const productCreateSchema = productFieldsSchema.extend({
+  preorder_only: productFieldsSchema.shape.preorder_only.default(false),
+  in_stock: productFieldsSchema.shape.in_stock.default(0),
+});
+
 export type ProductCreate = z.infer<typeof productCreateSchema>;
 
-export const productUpdateSchema = productCreateSchema.partial();
+export const productUpdateSchema = productFieldsSchema.partial();
 export type ProductUpdate = z.infer<typeof productUpdateSchema>;
 
 export const inventoryAdjustSchema = z.object({
@@ -193,13 +199,13 @@ export type SupplierUpdate = z.infer<typeof supplierUpdateSchema>;
 
 const optionalUrl = z.string().trim().url().max(2000).nullable().optional().or(z.literal(''));
 
-export const rawMaterialCreateSchema = z.object({
+const rawMaterialFieldsSchema = z.object({
   name: z.string().trim().min(1).max(200),
   sku: z.string().trim().min(1).max(50),
   // Stock is tracked by weight/volume/count so quantities can be fractional.
-  quantity_available: z.number().min(0).default(0),
-  quantity_reserved: z.number().min(0).default(0),
-  reorder_point: z.number().min(0).default(0),
+  quantity_available: z.number().min(0),
+  quantity_reserved: z.number().min(0),
+  reorder_point: z.number().min(0),
   unit: z.enum(['g', 'kg', 'ml', 'l', 'ea']).optional(),
   cost_per_unit_cents: z.number().min(0).nullable().optional(),
   reference_url: optionalUrl,
@@ -211,8 +217,14 @@ export const rawMaterialCreateSchema = z.object({
   supplier_id: z.string().uuid().nullable().optional(),
 });
 
+export const rawMaterialCreateSchema = rawMaterialFieldsSchema.extend({
+  quantity_available: rawMaterialFieldsSchema.shape.quantity_available.default(0),
+  quantity_reserved: rawMaterialFieldsSchema.shape.quantity_reserved.default(0),
+  reorder_point: rawMaterialFieldsSchema.shape.reorder_point.default(0),
+});
+
 export type RawMaterialCreate = z.infer<typeof rawMaterialCreateSchema>;
-export const rawMaterialUpdateSchema = rawMaterialCreateSchema.partial();
+export const rawMaterialUpdateSchema = rawMaterialFieldsSchema.partial();
 export type RawMaterialUpdate = z.infer<typeof rawMaterialUpdateSchema>;
 
 // Restocking a raw material: either a saved preset ("retail" / "wholesale"
