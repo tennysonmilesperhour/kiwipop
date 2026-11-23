@@ -3,7 +3,7 @@
 > *refreshing club lolli.*
 > *a little secret in your mouth.*
 
-This repo holds the **kiwi pop** webapp — storefront, admin cockpit, financial model, and inventory in one place — plus the brand reference materials, landing-page demo, and strategy docs that came before it.
+This repo holds the **kiwi pop** webapp — storefront, admin cockpit, financial model, and inventory in one place — plus the brand reference and the plans and runbooks behind it.
 
 ---
 
@@ -24,7 +24,7 @@ Positioned for the rave / festival / party scene as a "candy that does something
 
 Same codebase. Same database. Different routes, different auth.
 
-Plus a `/docs/` folder with the brand strategy work, voice guide, reference research, and the original landing-page demo (`landing-demo/index.html`) the live site is built out from.
+Plus a `docs/` folder with the revenue, sourcing, production and email plans, and the open items list.
 
 ### Why one app, not Shopify + spreadsheets + tools
 
@@ -40,84 +40,89 @@ One app means one source of truth.
 
 ---
 
-## What's in this folder
+## The code
+
+A Next.js app on Vercel, backed by Supabase (Postgres and Auth), Stripe for payments, Resend for email and ShipStation for USPS labels.
+
+| Layer | Tool |
+|---|---|
+| Framework | Next.js 16 (App Router), React 19, TypeScript |
+| Styling | Tailwind CSS 3 plus global CSS (`app/globals.css`, `app/kp-landing.css`, `app/campaign.css`) |
+| Database and auth | Supabase (`@supabase/ssr`, `@supabase/supabase-js`) |
+| Payments | Stripe (Checkout, webhooks, reconciliation) |
+| Email | Resend, queued in the database and sent by a daily cron |
+| Shipping | ShipStation V1 API (USPS labels) |
+| Analytics | PostHog, Vercel Analytics and Speed Insights |
+| Hosting | Vercel (Hobby plan: crons run at most once a day) |
+
+### Folder map
 
 ```
-kiwi-pop/
-├── frontend/                    # the website (storefront + admin UI)
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── storefront/      # public — what customers see
-│   │   │   │   ├── Home.jsx               (the four-floor descent)
-│   │   │   │   ├── DropPage.jsx
-│   │   │   │   ├── FlavorPage.jsx
-│   │   │   │   ├── Cart.jsx
-│   │   │   │   └── Checkout.jsx
-│   │   │   └── admin/           # private — only Tennyson logs in here
-│   │   │       ├── Dashboard.jsx
-│   │   │       ├── Orders.jsx
-│   │   │       ├── Inventory.jsx
-│   │   │       ├── Drops.jsx
-│   │   │       ├── Customers.jsx
-│   │   │       ├── Financials.jsx
-│   │   │       └── Recipes.jsx
-│   │   ├── components/          # reusable building blocks
-│   │   ├── styles/              # design tokens, the four-floor palette
-│   │   └── lib/                 # API client, auth helpers, three.js scene
-│   └── public/                  # logo, fonts, mascot art, reference images
-│
-├── backend/                     # the brain
-│   ├── app/
-│   │   ├── routes/              # API endpoints
-│   │   │   ├── storefront.py    # public endpoints (catalog, checkout)
-│   │   │   ├── admin.py         # admin-only endpoints
-│   │   │   └── webhooks.py      # Stripe webhooks, etc.
-│   │   ├── models/              # database tables defined as Python classes
-│   │   │   ├── product.py
-│   │   │   ├── order.py
-│   │   │   ├── inventory.py
-│   │   │   ├── customer.py
-│   │   │   ├── drop.py
-│   │   │   ├── recipe.py
-│   │   │   └── financial.py
-│   │   ├── services/            # business logic (margin calc, drop scheduling)
-│   │   └── core/                # config, database connection, auth
-│   ├── alembic/                 # database migration history
-│   └── tests/
-│
-├── docs/                        # all the markdown reference files
-│   ├── kiwi_pop_research.md             # competitive landscape + 3-direction exploration
-│   ├── rave_candy_brand_references.md   # 5-brand deep dive on chosen direction
-│   ├── shopify_launch_spec.md           # the alternative path, kept for reference
-│   ├── kiwi-pop-branding-and-web-design.md   # earlier Atomic Neon brand doc
-│   └── voice_guide.md                   # see "Brand voice" section below
-│
-├── landing-demo/                # the original four-floor static landing page
-│   ├── index.html
-│   └── images/
-│       ├── ref_candy_font.png
-│       ├── ref_cyber_anime.png
-│       ├── ref_ukiyo_wave.png
-│       └── ref_neon_machinery.png
-│
-├── CLAUDE.md                    # instructions for Claude Code on this project
-├── README.md                    # you are here
-└── .env.example                 # template for secrets (never commit real .env)
+kiwipop/
+├── app/
+│   ├── (public)/          the storefront: home, products, variety, cart, checkout,
+│   │                      order-confirmation, account, auth, about, faq, research,
+│   │                      brand, wholesale, merch, campaign, donate, community,
+│   │                      find-us, live, labels, legal
+│   ├── (admin)/admin/     the cockpit: dashboard, orders, products, inventory,
+│   │                      ingredients, manufacturing, financials, logistics, map,
+│   │                      wholesale, list, reviews, sheets, team, pitch,
+│   │                      campaign, cash-donations
+│   ├── api/               route handlers: checkout, webhooks (Stripe), storefront,
+│   │                      account, admin/*, cron/process-emails, wholesale, list,
+│   │                      reviews, live, locations, order-map, version and more
+│   ├── layout.tsx, providers.tsx, error.tsx, not-found.tsx, robots.ts, sitemap.ts
+├── components/            shared UI: Navigation, Footer, ProductCard, CartItem,
+│                          AdminLayout, plus admin/, campaign/, home/, landing/,
+│                          labels/ and map/ groups
+├── lib/                   server and shared logic: stripe.ts, stripe-reconcile.ts,
+│                          order-paid.ts, commerce.ts, inventory.ts,
+│                          production-cost.ts, shipstation.ts, email*.ts,
+│                          abandoned-checkout.ts, discounts.ts, rewards.ts,
+│                          supabase*.ts, admin-auth.ts, seo.ts and more
+├── supabase/migrations/   every schema change, in order (apply through Supabase)
+├── tests/                 node:test unit tests for pure lib modules
+├── scripts/               one-off helpers (Stripe product feed upload)
+├── docs/                  plans and runbooks (see below)
+├── public/                images, fonts and static files
+├── proxy.ts               request proxy that sends signed-out visitors on /admin to sign-in
+└── vercel.json            the daily cron (/api/cron/process-emails at 09:00 UTC)
 ```
 
-To view the original landing-page demo: open `landing-demo/index.html` in any modern browser. No build step, no server. The live storefront is being rebuilt from this demo into the React app under `/frontend`.
+The admin cockpit is styled separately under `.admin-layout`; admin CSS never reaches the storefront.
 
----
+### Run it locally
 
-## How to read this package
+```bash
+npx --yes npm@12.2.1 ci --ignore-scripts
+cp .env.example .env.local   # then fill in the values
+npm run dev                  # http://localhost:3000
+```
 
-If you're picking this up cold, read in this order:
+| Script | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build and server |
+| `npm run lint` | ESLint |
+| `npm test` | Unit tests (`node --test tests/*.test.js`) |
 
-1. **`docs/kiwi_pop_research.md`** — competitive landscape, the breakout-brand playbook (Liquid Death etc.), and the three creative directions explored. Two (Trash Wellness, Sweet Riot) were rejected. We went with **Rave Candy**.
-2. **`docs/rave_candy_brand_references.md`** — five reference brands sharing DNA with the chosen direction (Cyberdog, GHOST Energy, RYSE Fuel, Liquid Death, Happy Pop) with specific tactics to steal from each. Most actionable single takeaway: GHOST's festival-collab strategy.
-3. **`landing-demo/index.html`** — the original landing page that embodies all the strategy in code. Open it and scroll all the way down to feel the four-floor descent.
-4. **`docs/shopify_launch_spec.md`** — the alternative path: a Shopify-based launch. Kept for reference. We chose to build custom instead — see "Why one app, not Shopify" above.
-5. **The setup instructions further down this file** — when you're ready to actually run the webapp.
+CI (`.github/workflows/ci.yml`) runs install, lint, tests and the build on every pull request and push to `main`.
+
+`.env.example` lists every variable. The groups are Supabase (URL, anon key, service role key), Stripe (publishable key, secret key, webhook secret), PostHog, the site URL, Resend (API key, from and reply-to addresses, notification emails) and ShipStation (API key and secret, carrier, service, package, ship-from address and parcel size). Without the ShipStation keys the buy-label endpoint returns a 503 and the rest of the site works. Never commit a real `.env`.
+
+### Data and money
+
+- **Stripe is the source of truth for paid revenue**, not `orders.status`. The admin financials page and the daily cron reconcile against Stripe.
+- Schema changes go in `supabase/migrations/` and are applied to the Supabase project through Supabase.
+- Shipping labels are bought through ShipStation and the label PDF is stored on the `shipments` row, because the V1 API cannot fetch it again later.
+
+### Further reading
+
+- `CLAUDE.md`: the working rules (PR flow, admin theme, Vercel cron limit, shipping)
+- `QUICKSTART.md` and `docs/DEPLOY.md`: setup and deployment
+- `SYSTEM_OVERVIEW.md`: how the pieces connect
+- `docs/open-items.md`: what is unresolved, with the switches waiting on you
+- `docs/revenue-plan-2026.md`, `docs/ingredient-sourcing.md`, `docs/production-staffing-plan.md`, `docs/sales-commission-plan.md`, `docs/EMAIL_DELIVERABILITY.md`, `docs/abandoned-checkout-email.md`
 
 ---
 
@@ -135,9 +140,10 @@ The functional payload is the thing the category doesn't have. Wellness candy is
 
 ---
 
-## The landing page (the four floors)
 
-The original demo (`landing-demo/index.html`) is structured as a **vertical descent** from a clean rooftop bar at the top to a cyberpunk afterhours basement at the bottom. Each "floor" has its own content type and its own progressively more chaotic visual treatment:
+## Design origins (the four floors)
+
+The original landing-page demo, which came before this app and is no longer in the repo, was structured as a **vertical descent** from a clean rooftop bar at the top to a cyberpunk afterhours basement at the bottom. Each "floor" has its own content type and its own progressively more chaotic visual treatment:
 
 | Floor | Tag | Content | Visual energy |
 |-------|-----|---------|---------------|
@@ -146,7 +152,7 @@ The original demo (`landing-demo/index.html`) is structured as a **vertical desc
 | **B1** | Basement | Founder story, contact info, brand culture, customer comment pull-quotes | Magenta-hot dominant. Pink scanlines. h2 headlines glitch on hover. |
 | **B2** | Underground | Terminal block, festival events, retail locator, social handles, "back to dawn" CTA | Full afterhours. Near-black background, terminal green, double scanlines, glitch-shifted floor number, VT323 monospace font. |
 
-A fixed elevator on the right side of the screen tracks which floor you're on as you scroll, and clicking buttons jumps you between them. The whole structure migrates to the React frontend as one route (`Home.jsx`) with the four floors as section components.
+A fixed elevator on the right side of the screen tracks which floor you're on as you scroll, and clicking buttons jumps you between them.
 
 ### The lollipop in the hero
 
@@ -162,7 +168,7 @@ Every glass surface uses three layered techniques to approximate Apple's liquid 
 2. **Inner highlight gradient** — 135° linear gradient from translucent white to nothing creates the specular catch you get on real glass when light hits an edge.
 3. **RGB-split shadow on deeper floors** — a 1px magenta shadow on one side and 1px cyan on the other mimics chromatic aberration around the glass edges. Effect intensifies as you descend through the floors.
 
-This is the strongest CSS-only liquid glass possible. To match Apple 1:1 you'd need WebGL shaders. There's an SVG displacement filter at the top of the demo file (`#liquid-glass`) ready to apply to specific elements if you want true content-warping refraction on a hero element later.
+This is the strongest CSS-only liquid glass possible. To match Apple 1:1 you'd need WebGL shaders.
 
 ### Color palette
 
@@ -194,6 +200,7 @@ Two typefaces, both Google Fonts (no licensing issue):
 - **VT323** — old terminal monospace, *only on Floor B2* for the cyberpunk afterhours feel.
 
 ---
+
 
 ## Brand voice
 
@@ -247,200 +254,17 @@ The international demand callout on Floor 4 references actual interest from Aust
 
 ---
 
-## The webapp (build plan)
-
-### Stack
-
-| Layer | Tool | Why |
-|---|---|---|
-| Frontend framework | **React + Vite** | Fast dev, huge ecosystem, easy for AI tools and contractors |
-| Styling | **Tailwind CSS** | Fast to write the four-floor design language without fighting CSS files |
-| 3D candy | **Three.js** | Already proven in the landing demo |
-| Backend framework | **Python + FastAPI** | Same stack as Tennyson's other projects (Geck Inspect, Utah Forage Map) — one mental model |
-| Database | **PostgreSQL** | Free on Railway, handles everything kiwi pop will ever need |
-| ORM | **SQLAlchemy + Alembic** | Standard Python pattern for managing the database |
-| Auth | **Auth0** | Same auth Tennyson already runs elsewhere; admin gate is one config flag |
-| Payments | **Stripe** | Industry standard, low fees, great API |
-| Email | **Resend** or **Postmark** | Drop announcements, order confirmations, the list |
-| Frontend hosting | **Vercel** | Free tier, deploys on every git push |
-| Backend + DB hosting | **Railway** | $5/mo, runs the API and Postgres in one place |
-| AI dev assistant | **Claude Code** | The build partner — see `CLAUDE.md` |
-
-Total monthly cost while small: **$0–$25/month.**
-
-### Features
-
-**Storefront (public):**
-- The four-floor home page (rooftop → main → basement → underground)
-- Flavor pages — one per flavor, each in its own color story
-- Drop archive — past drops, sold-out badges
-- Cart & Stripe checkout — guest checkout supported
-- Account area — order history, saved addresses, "you're on the list" status
-- Email list capture — drop alerts
-- Three.js 3D candy hero, liquid glass system, glitch transitions
-
-**Admin cockpit (private):**
-- Dashboard — today's orders, current inventory, this drop's burn rate, cash position
-- Orders — every order, status, fulfillment, refunds
-- Inventory — finished pops *and* raw ingredients (isomalt, xylitol, monk fruit extract, coconut oil, kiwi powder, theobromine, ginseng, magnesium glycinate, taurine, B12 methylcobalamin, electrolyte blend, spirulina, citric acid, mica, sticks)
-- Drops — schedule a drop, set quantity caps, set go-live date, write copy, set color story
-- Customers — full list with order count, lifetime value, last order date
-- Financials — live P&L, cost-per-pop, margin per flavor, break-even quantities, runway
-- Recipes — formulation per flavor, what each ingredient costs, where it's sourced (the spreadsheet, but as a database table the financial model reads from)
-
-**The connections that matter:**
-- A drop sells → inventory drops in real time
-- Inventory hits threshold → storefront flips to "sold out" automatically
-- Recipe ingredient cost changes in admin → financial model recalculates margin → if margin drops below threshold, dashboard flags it
-
-### Setup (when you're ready to start coding)
-
-You won't do this alone — Claude Code will walk you through each step. The rough order:
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/<your-handle>/kiwi-pop.git
-cd kiwi-pop
-
-# 2. Frontend setup
-cd frontend
-npm install
-cp .env.example .env.local      # then fill in the values
-npm run dev                     # storefront at http://localhost:5173
-
-# 3. Backend setup (in a second terminal)
-cd backend
-python -m venv .venv
-source .venv/bin/activate       # on Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env            # then fill in the values
-alembic upgrade head            # creates the database tables
-uvicorn app.main:app --reload   # API at http://localhost:8000
-```
-
-Each command is explained in `docs/setup.md` — every flag, every file, every thing-you-just-typed.
-
-### Environment variables
-
-API keys and database passwords don't go in the code (anyone with repo access would see them). They go in a `.env` file that stays on your machine and on the hosting platform.
-
-`.env.example` lists every variable. Fill in your own values in a real `.env`. **Never commit `.env`.**
-
-```bash
-# Database
-DATABASE_URL=postgresql://...
-
-# Auth0
-AUTH0_DOMAIN=...
-AUTH0_CLIENT_ID=...
-AUTH0_CLIENT_SECRET=...
-
-# Stripe
-STRIPE_SECRET_KEY=...
-STRIPE_WEBHOOK_SECRET=...
-
-# Email
-RESEND_API_KEY=...
-
-# Admin gate — only this email gets admin access
-ADMIN_EMAIL=tennysontaggart@gmail.com
-```
-
-### Deploying
-
-- **Frontend → Vercel.** Push to `main`, auto-deploys to the live domain.
-- **Backend + database → Railway.** One project, two services (API + Postgres). Deploys on push.
-- **Custom domain** managed in Vercel. SSL automatic.
-
-First deployment is the only fiddly one. After that, every change is live within ~90 seconds of pushing to GitHub.
-
----
-
-## What's still placeholder
-
-The landing demo's code structure is production-quality but several content fields are placeholders. Search the file for `[placeholder` (literal text marker) to find them all. The big ones:
-
-- **Founder story paragraph** on B1. Currently a generic "started in a kitchen" narrative.
-- **Contact email** — currently `thekiwipop@gmail.com` everywhere.
-- **Festival event dates and statuses** on B2. Currently aspirational ("in negotiation", "tba").
-- **Retailer city list** ("[retailer placeholder]" entries) on B2.
-- **Social handles** (@kiwipop on IG/TikTok/Discord/Newsletter) on B2.
-- **Studio location** on the contact list ("[city, state]").
-
-Replace these strings with real content as it firms up. The design holds.
-
----
-
-## Roadmap
-
-### Phase 1 — Storefront MVP (weeks 1–3)
-- Migrate the four-floor demo into the React frontend
-- Single drop page (one flavor: kiwipop)
-- Stripe checkout end to end
-- Email signup
-- Admin: orders list, manual inventory adjustment
-
-### Phase 2 — Admin cockpit (weeks 4–6)
-- Full inventory (finished + raw)
-- Recipes table with cost-per-pop calculation
-- Financial dashboard (P&L, margin per flavor, break-even)
-- Drop scheduler
-
-### Phase 3 — Full brand (weeks 7–10)
-- All four flavors live, each with its own color story (RYSE Fuel-style flavor worlds)
-- Real product photography of the actual lollipop, not just the Three.js render
-- Drop archive
-- Festival collab calendar (one limited drop tied to one major festival per year — GHOST playbook)
-
-### Phase 4 — Once shipping is real
-- Subscriptions (every drop, auto-shipped)
-- Wholesale portal (festivals, clubs, bodegas)
-- Loyalty / referral system
-
-**The trap to avoid:** spending Phase 1 polishing the design system before a single pop ships. Phase 1 ends when **a stranger can buy a real lollipop on the site and you can fulfill it.** Everything else is downstream.
-
----
-
-## What I'd do next, in priority order
-
-1. **Replace the placeholders** with real founder story, real emails, real social handles, real retail cities. Without those, the basement and underground floors feel hollow.
-2. **Lock in the four flavor identities.** Three flavors are still "coming soon." Each wants its own color story, its own functional pairing, and its own personality — modeled on how RYSE Fuel treats each flavor as a distinct visual world.
-3. **Plan the festival collab calendar.** GHOST playbook (covered in `docs/rave_candy_brand_references.md`): one limited-edition flavor drop tied to one major festival per year, with custom packaging that becomes a collectible. The events section on B2 is the structural hook.
-4. **Get real product photography** of the actual lollipop. The Three.js 3D candy is great as a brand element, but a product page eventually needs real photos of the packaging and the candy itself.
-5. **Start the webapp build.** The landing demo proves the design works. The next step is rebuilding it inside `/frontend` connected to a real backend so the storefront and admin cockpit can come online together.
-
----
 
 ## Working with Claude Code
 
-1. Open this repo in Claude Code (terminal or VS Code extension)
-2. It reads `CLAUDE.md` automatically — that file tells it the conventions, the design language, and the priority order
-3. Describe what you want in plain English ("add a flavor page for the second flavor"), Claude Code makes the changes, you review, you commit, you push, Vercel deploys
+1. Open this repo in Claude Code (terminal, desktop or web).
+2. It reads `CLAUDE.md` automatically: the PR flow, the admin theme, the Vercel cron limit and the shipping setup.
+3. Describe what you want in plain English. Claude Code makes the change, opens a pull request, and merges it to `main`; Vercel deploys.
 
-`CLAUDE.md` is the single most important file in this repo for keeping work consistent. Don't let it drift.
-
----
-
-## Technical notes for whoever picks this up
-
-### The landing demo (`landing-demo/index.html`)
-
-- Single self-contained HTML file. No build, no framework.
-- Three.js loads from cdnjs, fonts from Google Fonts CDN.
-- Reference images load from `landing-demo/images/`.
-- The 3D scene is GPU-accelerated and should hit 60fps on modern laptops/phones. On older devices, the ribbon-tube count and particle count are the first things to dial down (in the JavaScript at the bottom of the file).
-- All major sections (`#floor-1` through `#floor-4`) are self-contained and can be reordered or removed without breaking each other.
-- Mobile layout is in media queries at the bottom of the `<style>` block. Floor indicator hides below 900px.
-- Accessibility: heading hierarchy is correct (one h1, h2s for major sections, h3s for subsections), all images have alt text. The Three.js canvas has no fallback content currently — if accessibility is a priority, add a static product image as a `<noscript>` or `<canvas>` fallback child.
-
-### The webapp (`/frontend` and `/backend`)
-
-- Frontend and backend in the same repo (a "monorepo") so changes that touch both — like adding a new field to inventory and showing it in the admin UI — happen in one commit.
-- The frontend's design system inherits the CSS variables from the demo. To retune the palette, change them in one place.
-- Backend follows the same FastAPI + SQLAlchemy + Alembic pattern as Tennyson's other projects. RLS-style authorization on admin routes — only the ADMIN_EMAIL identity passes the gate.
-- Stripe webhooks are the source of truth for order status. Never trust frontend-reported payment state.
+`CLAUDE.md` is the single most important file for keeping work consistent. Don't let it drift.
 
 ---
+
 
 ## Baseline checklist
 
